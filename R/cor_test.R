@@ -80,7 +80,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
       "MAD" = 0,
       "CI_low" = 1,
       "CI_high" = 1,
-      "pd" = 0,
+      "pd" = 100,
       "ROPE_Percentage" = 0,
       "BF" = Inf,
       "Prior" = prior
