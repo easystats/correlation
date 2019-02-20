@@ -102,7 +102,6 @@
 <h2 class="hasAnchor">
 <a href="#correlations" class="anchor"></a>Correlations</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris)</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris), <span class="dt">n=</span><span class="dv">6</span>), <span class="dt">digits=</span><span class="dv">2</span>)</a></code></pre></div>
 <table class="table table">
 <thead><tr class="header">
 <th align="left">Parameter1</th>
@@ -191,24 +190,19 @@
 </tr>
 </tbody>
 </table>
-<p>As you can see, the output is not a square matrix, but a long dataframe with all correlations tests per row.</p>
+<p>The output is not a square matrix, but a long dataframe with all correlations tests per row.</p>
 </div>
 <div id="grouped-dataframes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#grouped-dataframes" class="anchor"></a>Grouped Dataframes</h2>
 <p>This comes with the advantage of being compatible with the tidyverse workflow.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb5-2" title="2"></a>
-<a class="sourceLine" id="cb5-3" title="3">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="st">  </span><span class="kw">select</span>(Species, <span class="kw">starts_with</span>(<span class="st">"Sepal"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(r <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.9</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw">select</span>(Species, <span class="kw">starts_with</span>(<span class="st">"Sepal"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(r <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.9</span>), <span class="dt">digits=</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="st">  </span><span class="kw">select</span>(Species, <span class="kw">starts_with</span>(<span class="st">"Sepal"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(r <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.9</span>)</a></code></pre></div>
 <table class="table table">
 <thead><tr class="header">
 <th align="left">Group</th>
@@ -309,12 +303,9 @@
 <h2 class="hasAnchor">
 <a href="#partial-and-semi-partial-correlations" class="anchor"></a>Partial and Semi-partial Correlations</h2>
 <p>It also supports <strong>partial</strong> and <strong>semi-partial</strong> correlations.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="kw">select</span>(iris, Species, <span class="kw">starts_with</span>(<span class="st">"Sepal"</span>)),</a>
-<a class="sourceLine" id="cb7-2" title="2">            <span class="kw">select</span>(iris, Species, <span class="kw">starts_with</span>(<span class="st">"Petal"</span>)),</a>
-<a class="sourceLine" id="cb7-3" title="3">            <span class="dt">partial=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="kw">select</span>(iris, Species, <span class="kw">starts_with</span>(<span class="st">"Sepal"</span>)),</a>
-<a class="sourceLine" id="cb8-2" title="2">            <span class="kw">select</span>(iris, Species, <span class="kw">starts_with</span>(<span class="st">"Petal"</span>)),</a>
-<a class="sourceLine" id="cb8-3" title="3">            <span class="dt">partial=</span><span class="ot">TRUE</span>), <span class="dt">digits=</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="kw">select</span>(iris, Species, <span class="kw">starts_with</span>(<span class="st">"Sepal"</span>)),</a>
+<a class="sourceLine" id="cb5-2" title="2">            <span class="kw">select</span>(iris, Species, <span class="kw">starts_with</span>(<span class="st">"Petal"</span>)),</a>
+<a class="sourceLine" id="cb5-3" title="3">            <span class="dt">partial=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <table class="table table">
 <thead><tr class="header">
 <th align="left">Parameter1</th>
@@ -359,8 +350,7 @@
 <h2 class="hasAnchor">
 <a href="#bayesian-correlations" class="anchor"></a>Bayesian Correlations</h2>
 <p>Finally, it is very easy to switch to a Bayesian framework.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris, <span class="dt">bayesian=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris, <span class="dt">bayesian=</span><span class="ot">TRUE</span>), <span class="dt">n=</span><span class="dv">6</span>), <span class="dt">digits=</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris, <span class="dt">bayesian=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <table class="table table">
 <thead><tr class="header">
 <th align="left">Parameter1</th>
@@ -394,8 +384,8 @@
 <td align="right">0.08</td>
 <td align="right">-0.24</td>
 <td align="right">0.02</td>
-<td align="right">92.18</td>
-<td align="right">19.26</td>
+<td align="right">91.59</td>
+<td align="right">19.81</td>
 <td align="right">5.100000e-01</td>
 <td align="left">medium</td>
 </tr>
@@ -405,7 +395,7 @@
 <td align="right">0.86</td>
 <td align="right">0.02</td>
 <td align="right">0.83</td>
-<td align="right">0.90</td>
+<td align="right">0.89</td>
 <td align="right">100.00</td>
 <td align="right">0.00</td>
 <td align="right">2.136483e+43</td>
@@ -428,10 +418,10 @@
 <td align="left">Sepal.Width</td>
 <td align="right">-0.11</td>
 <td align="right">0.08</td>
-<td align="right">-0.24</td>
+<td align="right">-0.25</td>
 <td align="right">0.02</td>
-<td align="right">91.89</td>
-<td align="right">18.85</td>
+<td align="right">91.74</td>
+<td align="right">20.17</td>
 <td align="right">5.100000e-01</td>
 <td align="left">medium</td>
 </tr>

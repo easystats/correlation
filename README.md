@@ -40,10 +40,6 @@ parameters.
 correlation(iris)
 ```
 
-``` r
-knitr::kable(head(correlation(iris), n=6), digits=2)
-```
-
 | Parameter1   | Parameter2   |      r |      t | DoF |   p | CI\_low | CI\_high | CI\_level | Method  |
 | :----------- | :----------- | -----: | -----: | --: | --: | ------: | -------: | --------: | :------ |
 | Sepal.Length | Sepal.Length |   1.00 |    Inf | 148 | 0.0 |    1.00 |     1.00 |      0.95 | Pearson |
@@ -53,8 +49,8 @@ knitr::kable(head(correlation(iris), n=6), digits=2)
 | Sepal.Length | Sepal.Width  | \-0.12 | \-1.44 | 148 | 0.3 |  \-0.27 |     0.04 |      0.95 | Pearson |
 | Sepal.Width  | Sepal.Width  |   1.00 |    Inf | 148 | 0.0 |    1.00 |     1.00 |      0.95 | Pearson |
 
-As you can see, the output is not a square matrix, but a long dataframe
-with all correlations tests per row.
+The output is not a square matrix, but a long dataframe with all
+correlations tests per row.
 
 ## Grouped Dataframes
 
@@ -69,14 +65,6 @@ iris %>%
   group_by(Species) %>% 
   correlation() %>% 
   filter(r < 0.9)
-```
-
-``` r
-knitr::kable(iris %>% 
-  select(Species, starts_with("Sepal")) %>% 
-  group_by(Species) %>% 
-  correlation() %>% 
-  filter(r < 0.9), digits=2)
 ```
 
 | Group      | Parameter1   | Parameter2   |    r |    t | DoF | p | CI\_low | CI\_high | CI\_level | Method  |
@@ -98,12 +86,6 @@ correlation(select(iris, Species, starts_with("Sepal")),
             partial=TRUE)
 ```
 
-``` r
-knitr::kable(correlation(select(iris, Species, starts_with("Sepal")),
-            select(iris, Species, starts_with("Petal")),
-            partial=TRUE), digits=2)
-```
-
 | Parameter1   | Parameter2   |      r |      t | p |
 | :----------- | :----------- | -----: | -----: | -: |
 | Sepal.Length | Petal.Length |   0.72 |  12.50 | 0 |
@@ -120,15 +102,11 @@ framework.
 correlation(iris, bayesian=TRUE)
 ```
 
-``` r
-knitr::kable(head(correlation(iris, bayesian=TRUE), n=6), digits=2)
-```
-
 | Parameter1   | Parameter2   | Median |  MAD | CI\_low | CI\_high |     pd | ROPE\_Percentage |           BF | Prior  |
 | :----------- | :----------- | -----: | ---: | ------: | -------: | -----: | ---------------: | -----------: | :----- |
 | Sepal.Length | Sepal.Length |   1.00 | 0.00 |    1.00 |     1.00 |   0.00 |             0.00 |          Inf | medium |
-| Sepal.Width  | Sepal.Length | \-0.11 | 0.08 |  \-0.24 |     0.02 |  91.77 |            19.64 | 5.100000e-01 | medium |
+| Sepal.Width  | Sepal.Length | \-0.11 | 0.08 |  \-0.24 |     0.01 |  92.52 |            20.32 | 5.100000e-01 | medium |
 | Petal.Length | Sepal.Length |   0.86 | 0.02 |    0.83 |     0.90 | 100.00 |             0.00 | 2.136483e+43 | medium |
 | Petal.Width  | Sepal.Length |   0.81 | 0.03 |    0.76 |     0.85 | 100.00 |             0.00 | 2.621977e+33 | medium |
-| Sepal.Length | Sepal.Width  | \-0.11 | 0.08 |  \-0.24 |     0.02 |  92.01 |            20.08 | 5.100000e-01 | medium |
+| Sepal.Length | Sepal.Width  | \-0.11 | 0.08 |  \-0.25 |     0.02 |  91.67 |            19.31 | 5.100000e-01 | medium |
 | Sepal.Width  | Sepal.Width  |   1.00 | 0.00 |    1.00 |     1.00 |   0.00 |             0.00 |          Inf | medium |

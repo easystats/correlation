@@ -61,11 +61,11 @@ The main function is `correlation()`, which comes with a number of possible para
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
 correlation(iris)
 ```
-```{r message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 knitr::kable(head(correlation(iris), n=6), digits=2)
 ```
 
-As you can see, the output is not a square matrix, but a long dataframe with all correlations tests per row. 
+The output is not a square matrix, but a long dataframe with all correlations tests per row. 
 
 
 ## Grouped Dataframes
@@ -81,7 +81,7 @@ iris %>%
   correlation() %>% 
   filter(r < 0.9)
 ```
-```{r message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 knitr::kable(iris %>% 
   select(Species, starts_with("Sepal")) %>% 
   group_by(Species) %>% 
@@ -98,7 +98,7 @@ correlation(select(iris, Species, starts_with("Sepal")),
             select(iris, Species, starts_with("Petal")),
             partial=TRUE)
 ```
-```{r message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 knitr::kable(correlation(select(iris, Species, starts_with("Sepal")),
             select(iris, Species, starts_with("Petal")),
             partial=TRUE), digits=2)
@@ -112,6 +112,6 @@ Finally, it is very easy to switch to a Bayesian framework.
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
 correlation(iris, bayesian=TRUE)
 ```
-```{r message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 knitr::kable(head(correlation(iris, bayesian=TRUE), n=6), digits=2)
 ```
