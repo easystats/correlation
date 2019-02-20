@@ -1,0 +1,117 @@
+---
+output: 
+  github_document:
+    toc: false
+    fig_width: 10.08
+    fig_height: 6
+tags: [r, bayesian, posterior, test]
+vignette: >
+  %\VignetteIndexEntry{README}
+  \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+# correlation <img src='man/figures/logo.png' align="right" height="139" />
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.path = "README-"
+)
+```
+
+
+[![Build Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
+[![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/easystats/correlation)
+[![HitCount](http://hits.dwyl.io/easystats/correlation.svg)](http://hits.dwyl.io/easystats/correlation) [![Documentation](https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
+
+
+
+`correlation` is a lightweight package helping with correlation analysis.
+
+
+## Installation
+
+
+Run the following:
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+install.packages("devtools")
+devtools::install_github("easystats/correlation")
+```
+```{r message=FALSE, warning=FALSE}
+library("correlation")
+```
+
+## Documentation
+
+The package documentation can be found [**here**](https://easystats.github.io/correlation/).
+
+# Features
+
+The main function is `correlation()`, which comes with a number of possible parameters.
+
+## Correlations
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+correlation(iris)
+```
+```{r message=FALSE, warning=FALSE}
+knitr::kable(head(correlation(iris), n=6), digits=2)
+```
+
+As you can see, the output is not a square matrix, but a long dataframe with all correlations tests per row. 
+
+
+## Grouped Dataframes
+
+This comes with the advantage of being compatible with the tidyverse workflow.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+
+iris %>% 
+  select(Species, starts_with("Sepal")) %>% 
+  group_by(Species) %>% 
+  correlation() %>% 
+  filter(r < 0.9)
+```
+```{r message=FALSE, warning=FALSE}
+knitr::kable(iris %>% 
+  select(Species, starts_with("Sepal")) %>% 
+  group_by(Species) %>% 
+  correlation() %>% 
+  filter(r < 0.9), digits=2)
+```
+
+## Partial and Semi-partial Correlations
+
+It also supports **partial** and **semi-partial** correlations.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+correlation(select(iris, Species, starts_with("Sepal")),
+            select(iris, Species, starts_with("Petal")),
+            partial=TRUE)
+```
+```{r message=FALSE, warning=FALSE}
+knitr::kable(correlation(select(iris, Species, starts_with("Sepal")),
+            select(iris, Species, starts_with("Petal")),
+            partial=TRUE), digits=2)
+```
+
+## Bayesian Correlations
+
+
+Finally, it is very easy to switch to a Bayesian framework.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+correlation(iris, bayesian=TRUE)
+```
+```{r message=FALSE, warning=FALSE}
+knitr::kable(head(correlation(iris, bayesian=TRUE), n=6), digits=2)
+```

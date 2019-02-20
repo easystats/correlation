@@ -1,0 +1,32 @@
+Package: correlation
+Type: Package
+Title: Easy peasy correlations
+Version: 0.1.0
+Authors@R: c(
+	person("Dominique", 
+		"Makowski", 
+		email = "dom.makowski@gmail.com",
+		role = c("aut", "cre"), 
+		comment = c(ORCID = "0000-0001-5375-9967"))
+	)
+Maintainer: Dominique Makowski <dom.makowski@gmail.com>
+Description: Offers functions for computing different kinds of correlations.
+Imports:
+	insight,
+	bayestestR,
+	parameters,
+	dplyr
+Suggests:
+	knitr,
+	rmarkdown,
+	testthat,
+	covr,
+	BayesFactor
+Remotes: 
+	easystats/insight,
+	easystats/bayestestR,
+	easystats/parameters
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
