@@ -349,7 +349,7 @@
 <div id="bayesian-correlations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayesian-correlations" class="anchor"></a>Bayesian Correlations</h2>
-<p>Finally, it is very easy to switch to a Bayesian framework.</p>
+<p>It is very easy to switch to a Bayesian framework.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris, <span class="dt">bayesian=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <table class="table table">
 <thead><tr class="header">
@@ -372,7 +372,7 @@
 <td align="right">0.00</td>
 <td align="right">1.00</td>
 <td align="right">1.00</td>
-<td align="right">0.00</td>
+<td align="right">100.00</td>
 <td align="right">0.00</td>
 <td align="right">Inf</td>
 <td align="left">medium</td>
@@ -383,8 +383,8 @@
 <td align="right">-0.11</td>
 <td align="right">0.08</td>
 <td align="right">-0.24</td>
-<td align="right">0.02</td>
-<td align="right">91.59</td>
+<td align="right">0.01</td>
+<td align="right">92.07</td>
 <td align="right">19.81</td>
 <td align="right">5.100000e-01</td>
 <td align="left">medium</td>
@@ -418,10 +418,10 @@
 <td align="left">Sepal.Width</td>
 <td align="right">-0.11</td>
 <td align="right">0.08</td>
-<td align="right">-0.25</td>
+<td align="right">-0.24</td>
 <td align="right">0.02</td>
-<td align="right">91.74</td>
-<td align="right">20.17</td>
+<td align="right">92.04</td>
+<td align="right">19.39</td>
 <td align="right">5.100000e-01</td>
 <td align="left">medium</td>
 </tr>
@@ -432,10 +432,117 @@
 <td align="right">0.00</td>
 <td align="right">1.00</td>
 <td align="right">1.00</td>
-<td align="right">0.00</td>
+<td align="right">100.00</td>
 <td align="right">0.00</td>
 <td align="right">Inf</td>
 <td align="left">medium</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="reports-and-tables" class="section level2">
+<h2 class="hasAnchor">
+<a href="#reports-and-tables" class="anchor"></a>Reports and tables</h2>
+<p>The correlations are also compatible with the <a href="https://github.com/easystats/report">report</a> package to produce text…</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(report)</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(report)</a>
+<a class="sourceLine" id="cb7-3" title="3">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="st">  </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">"Sepal"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="dt">bayesian=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="st">  </span><span class="kw">report</span>()</a></code></pre></div>
+<pre><code>## We ran a Bayesian correlation analysis (prior scale set to medium). The Region of Practical Equivalence (ROPE) percentage was defined as the proportion of the posterior distribution within the [-0.05, 0.05] range. Effect sizes were labelled following Cohen's (1988) recommendations.
+## 
+##   - There is extreme evidence (BF &gt; 999) in favour of a positive and large correlation between Sepal.Length and Sepal.Length (r's median = 1.00, 90% CI [1.00, 1.00], pd = 100%, 0.00% in ROPE).
+##   - There is anecdotal evidence (BF = 0.51) against a negative and small correlation between Sepal.Width and Sepal.Length (r's median = -0.11, 90% CI [-0.24, 0.02], pd = 92.24%, 19.21% in ROPE).
+##   - There is anecdotal evidence (BF = 0.51) against a negative and small correlation between Sepal.Length and Sepal.Width (r's median = -0.11, 90% CI [-0.23, 0.03], pd = 92.04%, 19.53% in ROPE).
+##   - There is extreme evidence (BF &gt; 999) in favour of a positive and large correlation between Sepal.Width and Sepal.Width (r's median = 1.00, 90% CI [1.00, 1.00], pd = 100%, 0.00% in ROPE).</code></pre>
+<p>Or tables:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="st">  </span><span class="kw">report</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="st">  </span><span class="kw">to_table</span>()</a></code></pre></div>
+<table class="table table">
+<thead><tr class="header">
+<th></th>
+<th align="left">Group</th>
+<th align="left">Parameter</th>
+<th align="left">Petal.Length</th>
+<th align="left">Petal.Width</th>
+<th align="left">Sepal.Length</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>2</td>
+<td align="left">setosa</td>
+<td align="left">Petal.Width</td>
+<td align="left">0.33</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="left">setosa</td>
+<td align="left">Sepal.Length</td>
+<td align="left">0.27</td>
+<td align="left">0.28</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td align="left">setosa</td>
+<td align="left">Sepal.Width</td>
+<td align="left">0.18</td>
+<td align="left">0.23</td>
+<td align="left">0.74***</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td align="left">versicolor</td>
+<td align="left">Petal.Width</td>
+<td align="left">0.79***</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td align="left">versicolor</td>
+<td align="left">Sepal.Length</td>
+<td align="left">0.75***</td>
+<td align="left">0.55***</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td align="left">versicolor</td>
+<td align="left">Sepal.Width</td>
+<td align="left">0.56***</td>
+<td align="left">0.66***</td>
+<td align="left">0.53***</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td align="left">virginica</td>
+<td align="left">Petal.Width</td>
+<td align="left">0.32</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td align="left">virginica</td>
+<td align="left">Sepal.Length</td>
+<td align="left">0.86***</td>
+<td align="left">0.28</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td>14</td>
+<td align="left">virginica</td>
+<td align="left">Sepal.Width</td>
+<td align="left">0.40*</td>
+<td align="left">0.54***</td>
+<td align="left">0.46**</td>
 </tr>
 </tbody>
 </table>

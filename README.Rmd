@@ -107,7 +107,7 @@ knitr::kable(correlation(select(iris, Species, starts_with("Sepal")),
 ## Bayesian Correlations
 
 
-Finally, it is very easy to switch to a Bayesian framework.
+It is very easy to switch to a Bayesian framework.
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
 correlation(iris, bayesian=TRUE)
@@ -115,3 +115,50 @@ correlation(iris, bayesian=TRUE)
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 knitr::kable(head(correlation(iris, bayesian=TRUE), n=6), digits=2)
 ```
+
+
+## Reports and tables
+
+The correlations are also compatible with the [report](https://github.com/easystats/report) package to produce text...
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+library(report)
+library(report)
+iris %>% 
+  select(starts_with("Sepal")) %>% 
+  correlation(bayesian=TRUE) %>% 
+  report()
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(report)
+options(knitr.kable.NA = '')
+
+iris %>% 
+  select(starts_with("Sepal")) %>% 
+  correlation(bayesian=TRUE) %>% 
+  report()
+```
+
+
+Or tables:
+
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+iris %>% 
+  group_by(Species) %>% 
+  correlation() %>% 
+  report() %>% 
+  to_table()
+```
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+table <- iris %>% 
+  group_by(Species) %>% 
+  correlation() %>% 
+  report() %>% 
+  to_table()
+
+table <- table[rowSums(is.na(table)) != ncol(table),]
+
+knitr::kable(table)
+```
+
+
