@@ -29,9 +29,9 @@ generalized_inverse <- function(A, tol = .Machine$double.eps^(2 / 3)) {
 #' @param x Correlation.
 #' @param ... Arguments passed to or from other methods.
 #'
-#' @method as.list correlation
+#' @method as.list easycorrelation
 #' @export
-as.list.correlation <- function(x, ...) {
+as.list.easycorrelation <- function(x, ...) {
   attributes <- attributes(x)
   attributes$names <- NULL
   attributes$row.names <- NULL
@@ -39,3 +39,41 @@ as.list.correlation <- function(x, ...) {
   return(c(list("data" = x),
            attributes))
 }
+
+
+
+
+#' Remove redundant correlations
+#'
+#' @param cor \link{correlation} object.
+#' @importFrom utils combn
+#' @export
+remove_triangular <- function(cor){
+
+  # First proposal
+  levels <- levels(cor$Parameter1)
+  uniques <- as.character(unique(cor$Parameter1))
+  if(!all(uniques %in% as.character(unique(cor$Parameter2)))){
+    stop("Correlation matrix must be squared.")
+  }
+  combinations <- as.data.frame(t(combn(uniques, m=2)), stringsAsFactors = FALSE)
+  out <- cor[paste0(cor$Parameter1, cor$Parameter2) %in% paste0(combinations$V1, combinations$V2),]
+  levels(out$Parameter1) <- levels
+  levels(out$Parameter2) <- levels
+
+
+  # Second proposal
+  out <- data.frame()
+  # for(row in 1:nrow(cor)){
+  #   current_row <- cor[row, ]
+  #   if(!paste(current_row$Parameter2, current_row$Parameter1) %in% paste(out$Parameter1, out$Parameter2)){
+  #     out <- rbind(out, current_row)
+  #   }
+  # }
+  # out <- out[out$Parameter1 != out$Parameter2, ]
+
+
+  return(out)
+}
+
+
