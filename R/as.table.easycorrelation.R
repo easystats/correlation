@@ -105,6 +105,9 @@ as.table.easycorrelation <- function(x, which_column=NULL, reorder=TRUE, reorder
     reorder_distance <- x
     reorder_distance$Parameter <- NULL
     reorder_distance$Group <- NULL
+  } else{
+    reorder_distance$Parameter <- NULL
+    reorder_distance$Group <- NULL
   }
 
   if (ncol(x) != nrow(x) | ncol(reorder_distance) != nrow(reorder_distance)) {
