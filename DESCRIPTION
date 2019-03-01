@@ -10,6 +10,8 @@ Authors@R: c(
 		comment = c(ORCID = "0000-0001-5375-9967"))
 	)
 Maintainer: Dominique Makowski <dom.makowski@gmail.com>
+URL: https://github.com/easystats/correlation
+BugReports: https://github.com/easystats/correlation/issues
 Description: Offers functions for computing different kinds of correlations.
 Imports:
 	insight,

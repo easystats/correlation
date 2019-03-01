@@ -34,8 +34,8 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 .cor_test_freq <- function(data, x, y, ci = 0.95, method = "pearson", ...) {
   var_x <- data[[x]]
   var_y <- data[[y]]
-  var_x <- var_x[complete.cases(var_x, var_y)]
-  var_y <- var_y[complete.cases(var_x, var_y)]
+  var_x <- var_x[complete.cases(data[[x]], data[[y]])]
+  var_y <- var_y[complete.cases(data[[x]], data[[y]])]
 
   rez <- cor.test(var_x, var_y, conf.level = ci, method = match.arg(method, c("pearson", "kendall", "spearman"), several.ok = FALSE), alternative = "two.sided")
 

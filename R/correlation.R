@@ -111,7 +111,7 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
                            "rope_bounds" = rope_bounds,
                            "prior"=prior))
 
-  class(out) <- c("correlation", class(out))
+  class(out) <- c("easycorrelation", class(out))
   return(out)
 }
 
