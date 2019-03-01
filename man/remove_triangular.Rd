@@ -4,10 +4,12 @@
 \alias{remove_triangular}
 \title{Remove redundant correlations}
 \usage{
-remove_triangular(cor)
+remove_triangular(cor, which_column = NULL)
 }
 \arguments{
 \item{cor}{\link{correlation} object.}
+
+\item{which_column}{Which column to use for the filtering.}
 }
 \description{
 Remove redundant correlations

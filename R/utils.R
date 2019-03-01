@@ -23,6 +23,11 @@ generalized_inverse <- function(A, tol = .Machine$double.eps^(2 / 3)) {
 
 
 
+
+
+
+
+
 #' Lists – Generic and Dotted Pairs
 #'
 #' @rdname list
@@ -43,37 +48,53 @@ as.list.easycorrelation <- function(x, ...) {
 
 
 
+
+#' @export
+summary.easycorrelation <- function(object, ...){
+  summary(as.data.frame(object))
+}
+
+
 #' Remove redundant correlations
 #'
 #' @param cor \link{correlation} object.
+#' @param which_column Which column to use for the filtering.
 #' @importFrom utils combn
 #' @export
-remove_triangular <- function(cor){
+remove_triangular <- function(cor, which_column = NULL){
 
-  # First proposal
-  levels <- levels(cor$Parameter1)
-  uniques <- as.character(unique(cor$Parameter1))
-  if(!all(uniques %in% as.character(unique(cor$Parameter2)))){
-    stop("Correlation matrix must be squared.")
+  if(is.null(which_column)){
+    if("r" %in% names(cor)){
+      which_column <- "r"
+    } else if("Median" %in% names(cor)){
+      which_column <- "Median"
+    } else{
+      stop("Please specify `which_column`.")
+    }
   }
-  combinations <- as.data.frame(t(combn(uniques, m=2)), stringsAsFactors = FALSE)
-  out <- cor[paste0(cor$Parameter1, cor$Parameter2) %in% paste0(combinations$V1, combinations$V2),]
-  levels(out$Parameter1) <- levels
-  levels(out$Parameter2) <- levels
 
+  m <- as.table(cor, which_column = which_column)
 
-  # Second proposal
-  out <- data.frame()
-  # for(row in 1:nrow(cor)){
-  #   current_row <- cor[row, ]
-  #   if(!paste(current_row$Parameter2, current_row$Parameter1) %in% paste(out$Parameter1, out$Parameter2)){
-  #     out <- rbind(out, current_row)
-  #   }
-  # }
-  # out <- out[out$Parameter1 != out$Parameter2, ]
+  # Filter parameter1
+  x <- names(m)[!names(m) %in% c("Group", "Parameter")]
+  cor <- cor[cor$Parameter1 %in% x,]
+  cor$Parameter1 <- factor(cor$Parameter1, levels=x)
 
+  # Filter parameter2
+  y <- m$Parameter
+  cor <- cor[cor$Parameter2 %in% y,]
+  cor$Parameter2 <- factor(cor$Parameter2, levels=rev(y))
 
-  return(out)
+  # Remove NANs
+  cor <- cor[as.character(cor$Parameter1) != as.character(cor$Parameter2), ]
+  for(i in 1:nrow(cor)){
+    current_row <- cor[i, ]
+    cor[i, which_column] <- m[m$Parameter == current_row$Parameter2, names(m)==current_row$Parameter1]
+  }
+
+  cor <- cor[!is.na(cor[[which_column]]),]
+
+  return(cor)
 }
 
 
