@@ -4,7 +4,7 @@ output:
     toc: false
     fig_width: 10.08
     fig_height: 6
-tags: [r, bayesian, posterior, test]
+tags: [r, correlation]
 vignette: >
   %\VignetteIndexEntry{README}
   \usepackage[utf8]{inputenc}

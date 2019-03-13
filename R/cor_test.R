@@ -60,7 +60,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 #' @importFrom stats complete.cases mad median
 #' @importFrom utils install.packages
 #' @keywords internal
-.cor_test_bayes <- function(data, x, y, ci = 0.90, iterations = 10^4, rope_full = TRUE, rope_bounds = c(-0.05, 0.05), prior="medium",  ...) {
+.cor_test_bayes <- function(data, x, y, ci = 0.90, iterations = 10^4, rope_full = TRUE, rope_range = c(-0.05, 0.05), prior="medium",  ...) {
   if (!requireNamespace("BayesFactor")) {
     warning("This function needs `BayesFactor` to be installed... installing now.")
     install.packages("BayesFactor")
@@ -91,9 +91,9 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
     posterior <- posterior$rho
     hdi <- bayestestR::hdi(posterior, ci = ci)
     if (rope_full == TRUE) {
-      rope <- bayestestR::rope(posterior, bounds = rope_bounds, ci = 1)
+      rope <- bayestestR::rope(posterior, range = rope_range, ci = 1)
     } else {
-      rope <- bayestestR::rope(posterior, bounds = rope_bounds, ci = ci)
+      rope <- bayestestR::rope(posterior, range = rope_range, ci = ci)
     }
 
     params <- data.frame(
