@@ -33,9 +33,18 @@
 #' @importFrom dplyr enquos
 #' @export
 correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, iterations = 10^4, rope_full = TRUE, rope_bounds = c(-0.05, 0.05), prior="medium", ...) {
+
+  # Sanity checks
   if (partial == TRUE & bayesian == TRUE) {
     warning("Bayesian partial correlations are not supported yet. Running frequentist analysis...")
     bayesian <- FALSE
+  }
+
+  # CI level
+  if (bayesian == FALSE) {
+    if (ci == "default") ci <- 0.95
+  } else {
+    if (ci == "default") ci <- 0.9
   }
 
   if (inherits(data, "grouped_df")) {

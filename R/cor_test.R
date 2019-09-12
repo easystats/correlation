@@ -17,7 +17,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
     out <- .cor_test_bayes(data, x, y, ci = ci, iterations = iterations, rope_full = rope_full, rope_bounds = rope_bounds)
   }
 
-  return(out)
+  out
 }
 
 
@@ -49,7 +49,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
     if("S" %in% names(params)) params$S <- Inf
   }
 
-  return(params)
+  params
 }
 
 
@@ -62,9 +62,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 #' @keywords internal
 .cor_test_bayes <- function(data, x, y, ci = 0.90, iterations = 10^4, rope_full = TRUE, rope_range = c(-0.05, 0.05), prior="medium",  ...) {
   if (!requireNamespace("BayesFactor")) {
-    warning("This function needs `BayesFactor` to be installed... installing now.")
-    install.packages("BayesFactor")
-    requireNamespace("BayesFactor")
+    stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
   }
 
   var_x <- data[[x]]
@@ -112,5 +110,26 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   }
 
 
-  return(params)
+  params
 }
+
+
+
+
+#' #' @examples
+#' #' x <- ifelse(iris$Sepal.Width > median(iris$Sepal.Width), 1, 0)
+#' #' y <- ifelse(iris$Petal.Width > median(iris$Petal.Width), 1, 0)
+#' #' @keywords internal
+#' .cor_test_tetrachoric <- function(x, y, ci = 0.95, ...) {
+#'
+#'   if (!requireNamespace("psych", quietly = TRUE)) {
+#'     stop("Package `psych` required for tetrachoric correlations. Please install it.", call. = FALSE)
+#'   }
+#'
+#'   data <- data.frame(x=x, y=y)
+#'   rez <- psych::tetrachoric(data)
+#'
+#'   rez$rho
+#'
+#' }
+
