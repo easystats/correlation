@@ -1,4 +1,6 @@
-#' Tidy version of cor.test
+#' Correlation test
+#'
+#' This function perfoms a correlation test between two variables.
 #'
 #' @inheritParams correlation
 #' @param x Name of a variable.
@@ -11,13 +13,21 @@
 #' cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
 #' cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
 #'
+#' # Tetrachoric
 #' data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 #' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 #' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 #'
+#' # When one variable is continuous, will run 'biserial' correlation
+#' cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
+#'
+#' # Polychoric
 #' data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
 #' data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
 #' cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+#'
+#' # When one variable is continuous, will run 'polyserial' correlation
+#' cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 #' @export
 cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = FALSE, ...) {
 
@@ -137,7 +147,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 .cor_test_tetrachoric <- function(data, x, y, ...) {
 
   if (!requireNamespace("psych", quietly = TRUE)) {
-    stop("Package `psych` required for tetrachoric correlations. Please install it.", call. = FALSE)
+    stop("Package `psych` required for tetrachoric correlations. Please install it by running `install.packages('psych').", call. = FALSE)
   }
 
   var_x <- data[[x]]
@@ -146,20 +156,28 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   var_y <- var_y[complete.cases(var_x, var_y)]
 
   # Sanity check
-  if(length(unique(var_x)) > 2 | length(unique(var_y)) > 2){
+  if(length(unique(var_x)) > 2 & length(unique(var_y)) > 2){
     stop("Tetrachoric correlations can only be ran on dichotomous data.")
   }
 
   # Reconstruct dataframe
   dat <- data.frame(var_x, var_y)
   names(dat) <- c(x, y)
-  rez <- psych::tetrachoric(dat, ...)
+
+  if(length(unique(var_x)) > 2 | length(unique(var_y)) > 2){
+    suppressMessages(r <- psych::biserial(x = dat[sapply(dat, function(x) length(unique(x)) > 2)],
+                                          y = dat[sapply(dat, function(x) !length(unique(x)) > 2)])[1])
+    method <- "Polychoric"
+  } else{
+    r <- psych::tetrachoric(dat, ...)$rho[2, 1]
+    method <- "Tetrachoric"
+  }
 
  data.frame(
     Parameter1 = x,
     Parameter2 = y,
-    rho = rez$rho[2, 1],
-    Method = "Tetrachoric",
+    rho = r,
+    Method = method,
     stringsAsFactors = FALSE
   )
 }
@@ -171,7 +189,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 .cor_test_polychoric <- function(data, x, y, ...) {
 
   if (!requireNamespace("psych", quietly = TRUE)) {
-    stop("Package `psych` required for tetrachoric correlations. Please install it.", call. = FALSE)
+    stop("Package `psych` required for tetrachoric correlations. Please install it by running `install.packages('psych').", call. = FALSE)
   }
 
   var_x <- data[[x]]
@@ -180,20 +198,36 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   var_y <- var_y[complete.cases(var_x, var_y)]
 
   # Sanity check
-  if(!is.factor(var_x) | !is.factor(var_y)){
+  if(!is.factor(var_x) & !is.factor(var_y)){
     stop("Polychoric correlations can only be ran on ordinal factors.")
   }
 
-  # Reconstruct dataframe
-  dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
-  names(dat) <- c(x, y)
-  rez <- psych::polychoric(dat, ...)
+
+
+  if(!is.factor(var_x) | !is.factor(var_y)){
+    if (!requireNamespace("polycor", quietly = TRUE)) {
+      stop("Package `polycor` required for polyserial correlations. Please install it by running `install.packages('polycor').", call. = FALSE)
+    }
+    r <- polycor::polyserial(x = if(is.factor(var_x)) as.numeric(var_y) else as.numeric(var_x),
+                               y = if(is.factor(var_x)) as.numeric(var_x) else as.numeric(var_y))
+    method <- "Polyserial"
+  } else{
+    # Reconstruct dataframe
+    dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
+    names(dat) <- c(x, y)
+    r <- psych::polychoric(dat, ...)$rho[2, 1]
+    method <- "Polychoric"
+  }
+
+
+
 
   data.frame(
     Parameter1 = x,
     Parameter2 = y,
-    rho = rez$rho[2, 1],
-    Method = "Polychoric",
+    rho = r,
+    Method = method,
     stringsAsFactors = FALSE
   )
 }
+

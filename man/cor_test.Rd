@@ -2,7 +2,7 @@
 % Please edit documentation in R/cor_test.R
 \name{cor_test}
 \alias{cor_test}
-\title{Tidy version of cor.test}
+\title{Correlation test}
 \usage{
 cor_test(data, x, y, ci = "default", method = "pearson",
   bayesian = FALSE, ...)
@@ -23,7 +23,7 @@ cor_test(data, x, y, ci = "default", method = "pearson",
 \item{...}{(e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}})}
 }
 \description{
-Tidy version of cor.test
+This function perfoms a correlation test between two variables.
 }
 \examples{
 data <- iris
@@ -32,11 +32,19 @@ cor_test(iris, "Petal.Length", "Petal.Width")
 cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
 cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
 
+# Tetrachoric
 data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 
+# When one variable is continuous, will run 'biserial' correlation
+cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
+
+# Polychoric
 data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
 data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
 cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+
+# When one variable is continuous, will run 'polyserial' correlation
+cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 }

@@ -28,6 +28,7 @@ Suggests:
 	BayesFactor,
 	knitr,
 	rmarkdown,
+	polycor,
 	testthat,
 	covr,
 	psych
