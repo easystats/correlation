@@ -20,11 +20,20 @@ cor_test(data, x, y, ci = "default", method = "pearson",
 
 \item{bayesian}{If TRUE, the arguments below apply.}
 
-\item{...}{Arguments passed to or from other methods (\code{\link[=parameters]{model_parameters.BFBayesFactor}}).}
+\item{...}{(e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}})}
 }
 \description{
 Tidy version of cor.test
 }
 \examples{
+data <- iris
+
 cor_test(iris, "Petal.Length", "Petal.Width")
+cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
+cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
+
+data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
+data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
+cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
+
 }

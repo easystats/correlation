@@ -3,20 +3,43 @@
 #' @inheritParams correlation
 #' @param x Name of a variable.
 #' @param y Name of a variable.
-#' @param ... Arguments passed to or from other methods (\code{\link[=parameters]{model_parameters.BFBayesFactor}}).
 #'
 #' @examples
+#' data <- iris
+#'
 #' cor_test(iris, "Petal.Length", "Petal.Width")
+#' cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
+#' cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
+#'
+#' data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
+#' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
+#' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
+#'
 #' @export
 cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = FALSE, ...) {
+
+  # Frequentist
   if (bayesian == FALSE) {
     if (ci == "default") ci <- 0.95
-    out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
+
+    if(method %in% c("tetra", "tetrachoric")){
+      out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
+    } else{
+      out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
+    }
+
+  # Bayesian
   } else {
     if (ci == "default") ci <- 0.89
-    out <- .cor_test_bayes(data, x, y, ci = ci, ...)
+
+    if(method %in% c("tetra", "tetrachoric")){
+      stop("Tetrachoric Bayesian correlations are not supported yet.")
+    } else{
+      out <- .cor_test_bayes(data, x, y, ci = ci, ...)
+    }
   }
 
+  class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out
 }
 
@@ -104,20 +127,35 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 
 
 
-#' #' @examples
-#' #' x <- ifelse(iris$Sepal.Width > median(iris$Sepal.Width), 1, 0)
-#' #' y <- ifelse(iris$Petal.Width > median(iris$Petal.Width), 1, 0)
-#' #' @keywords internal
-#' .cor_test_tetrachoric <- function(x, y, ci = 0.95, ...) {
-#'
-#'   if (!requireNamespace("psych", quietly = TRUE)) {
-#'     stop("Package `psych` required for tetrachoric correlations. Please install it.", call. = FALSE)
-#'   }
-#'
-#'   data <- data.frame(x=x, y=y)
-#'   rez <- psych::tetrachoric(data)
-#'
-#'   rez$rho
-#'
-#' }
+#' @importFrom stats complete.cases
+#' @keywords internal
+.cor_test_tetrachoric <- function(data, x, y, ci = 0.95, ...) {
+
+  if (!requireNamespace("psych", quietly = TRUE)) {
+    stop("Package `psych` required for tetrachoric correlations. Please install it.", call. = FALSE)
+  }
+
+  var_x <- data[[x]]
+  var_y <- data[[y]]
+  var_x <- var_x[complete.cases(var_x, var_y)]
+  var_y <- var_y[complete.cases(var_x, var_y)]
+
+  # Sanity check
+  if(length(unique(var_x)) > 2 | length(unique(var_y)) > 2){
+    stop("Tetrachoric correlations can only be ran on dichotomous data.")
+  }
+
+  # Reconstruct dataframe
+  dat <- data.frame(var_x, var_y)
+  names(dat) <- c(x, y)
+  rez <- psych::tetrachoric(dat)
+
+ data.frame(
+    Parameter1 = x,
+    Parameter2 = y,
+    rho = rez$rho[2, 1],
+    Method = "Tetrachoric",
+    stringsAsFactors = FALSE
+  )
+}
 

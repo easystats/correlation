@@ -25,11 +25,12 @@ Imports:
 	stats,
 	dplyr
 Suggests:
+	BayesFactor,
 	knitr,
 	rmarkdown,
 	testthat,
 	covr,
-	BayesFactor
+	psych
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
