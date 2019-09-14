@@ -16,7 +16,7 @@ test_that("correlation frequentist", {
 
   out <- correlation(iris, partial = "semi")
   testthat::expect_equal(nrow(out), 16)
-  testthat::expect_equal(length(as.list(out)), 10)
+  testthat::expect_equal(length(as.list(out)), 7)
 
   out <- iris %>%
     select(starts_with("Sepal")) %>%

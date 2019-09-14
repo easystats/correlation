@@ -5,8 +5,7 @@
 \title{Tidy version of cor.test}
 \usage{
 cor_test(data, x, y, ci = "default", method = "pearson",
-  bayesian = FALSE, iterations = 10^4, rope_full = TRUE,
-  rope_bounds = c(-0.05, 0.05), ...)
+  bayesian = FALSE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -15,19 +14,13 @@ cor_test(data, x, y, ci = "default", method = "pearson",
 
 \item{y}{Name of a variable.}
 
-\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.9 for Bayesian.}
+\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
 \item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", can be abbreviated.}
 
 \item{bayesian}{If TRUE, the arguments below apply.}
 
-\item{iterations}{The number of iterations to sample.}
-
-\item{rope_full}{If TRUE, use the proportion of the entire posterior distribution for the equivalence test. Otherwise, use the proportion of HDI as indicated by the \code{ci} argument.}
-
-\item{rope_bounds}{\href{https://easystats.github.io/bayestestR/articles/1_IndicesDescription.html#rope}{ROPE's} lower and higher bounds. Should be a list of two values (e.g., \code{c(-0.05, 0.05)}).}
-
-\item{...}{Arguments passed to or from other methods.}
+\item{...}{Arguments passed to or from other methods (\code{\link[=parameters]{model_parameters.BFBayesFactor}}).}
 }
 \description{
 Tidy version of cor.test

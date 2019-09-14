@@ -6,7 +6,6 @@
 \usage{
 correlation(data, data2 = NULL, ci = "default", method = "pearson",
   p_adjust = "holm", partial = FALSE, bayesian = FALSE,
-  iterations = 10^4, rope_full = TRUE, rope_bounds = c(-0.05, 0.05),
   prior = "medium", ...)
 }
 \arguments{
@@ -14,7 +13,7 @@ correlation(data, data2 = NULL, ci = "default", method = "pearson",
 
 \item{data2}{An optional dataframe.}
 
-\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.9 for Bayesian.}
+\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
 \item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", can be abbreviated.}
 
@@ -24,13 +23,7 @@ correlation(data, data2 = NULL, ci = "default", method = "pearson",
 
 \item{bayesian}{If TRUE, the arguments below apply.}
 
-\item{iterations}{The number of iterations to sample.}
-
-\item{rope_full}{If TRUE, use the proportion of the entire posterior distribution for the equivalence test. Otherwise, use the proportion of HDI as indicated by the \code{ci} argument.}
-
-\item{rope_bounds}{\href{https://easystats.github.io/bayestestR/articles/1_IndicesDescription.html#rope}{ROPE's} lower and higher bounds. Should be a list of two values (e.g., \code{c(-0.05, 0.05)}).}
-
-\item{prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to r scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
+\item{prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
 
 \item{...}{Arguments passed to or from other methods.}
 }

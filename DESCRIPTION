@@ -24,10 +24,6 @@ Suggests:
 	testthat,
 	covr,
 	BayesFactor
-Remotes: 
-	easystats/insight,
-	easystats/bayestestR,
-	easystats/parameters
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

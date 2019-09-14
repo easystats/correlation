@@ -3,18 +3,18 @@
 #' @inheritParams correlation
 #' @param x Name of a variable.
 #' @param y Name of a variable.
-#' @param ... Arguments passed to or from other methods.
+#' @param ... Arguments passed to or from other methods (\code{\link[=parameters]{model_parameters.BFBayesFactor}}).
 #'
 #' @examples
 #' cor_test(iris, "Petal.Length", "Petal.Width")
 #' @export
-cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = FALSE, iterations = 10^4, rope_full = TRUE, rope_bounds = c(-0.05, 0.05), ...) {
+cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = FALSE, ...) {
   if (bayesian == FALSE) {
     if (ci == "default") ci <- 0.95
     out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
   } else {
-    if (ci == "default") ci <- 0.9
-    out <- .cor_test_bayes(data, x, y, ci = ci, iterations = iterations, rope_full = rope_full, rope_bounds = rope_bounds)
+    if (ci == "default") ci <- 0.89
+    out <- .cor_test_bayes(data, x, y, ci = ci, ...)
   }
 
   out
@@ -57,10 +57,10 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 
 
 
-#' @importFrom stats complete.cases mad median
+#' @importFrom stats complete.cases rnorm
 #' @importFrom utils install.packages
 #' @keywords internal
-.cor_test_bayes <- function(data, x, y, ci = 0.90, iterations = 10^4, rope_full = TRUE, rope_range = c(-0.05, 0.05), prior="medium",  ...) {
+.cor_test_bayes <- function(data, x, y, ci = 0.89, prior="medium",  ...) {
   if (!requireNamespace("BayesFactor")) {
     stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
   }
@@ -71,46 +71,28 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   var_y <- var_y[complete.cases(var_x, var_y)]
 
   if(x == y){
-    params <- data.frame(
-      "Parameter1" = x,
-      "Parameter2" = y,
-      "Median" = 1,
-      "MAD" = 0,
-      "CI_low" = 1,
-      "CI_high" = 1,
-      "pd" = 100,
-      "ROPE_Percentage" = 0,
-      "BF" = Inf,
-      "Prior" = prior
-    )
+    # Avoid error in the case of perfect correlation
+    rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale=prior)
+    params <- parameters::model_parameters(rez, ...)
+    if("Median" %in% names(params)) params$Median <- 1
+    if("Mean" %in% names(params)) params$Mean <- 1
+    if("MAP" %in% names(params)) params$MAP <- 1
+    if("SD" %in% names(params)) params$SD <- 0
+    if("MAD" %in% names(params)) params$MAD <- 0
+    if("CI_low" %in% names(params)) params$CI_low <- 1
+    if("CI_high" %in% names(params)) params$CI_high <- 1
+    if("pd" %in% names(params)) params$pd <- 1
+    if("ROPE_Percentage" %in% names(params)) params$ROPE_Percentage <- 0
+    if("BF" %in% names(params)) params$BF <- Inf
+
   } else{
     rez <- BayesFactor::correlationBF(var_x, var_y, rscale=prior)
-    posterior <- as.data.frame(suppressMessages(BayesFactor::posterior(rez, iterations = iterations, progress = FALSE)))
-    posterior <- posterior$rho
-    hdi <- bayestestR::hdi(posterior, ci = ci)
-    if (rope_full == TRUE) {
-      rope <- bayestestR::rope(posterior, range = rope_range, ci = 1)
-    } else {
-      rope <- bayestestR::rope(posterior, range = rope_range, ci = ci)
-    }
-
-    params <- data.frame(
-      "Parameter1" = x,
-      "Parameter2" = y,
-      "Median" = median(posterior),
-      "MAD" = mad(posterior),
-      "CI_low" = hdi$CI_low,
-      "CI_high" = hdi$CI_high,
-      "pd" = bayestestR::p_direction(posterior),
-      "ROPE_Percentage" = rope$ROPE_Percentage,
-      "BF" = exp(rez@bayesFactor$bf),
-      "Prior" = prior,
-      stringsAsFactors = FALSE
-    )
+    params <- parameters::model_parameters(rez, ...)
   }
-
-
-  params
+  params <- params[names(params) != "Parameter"]
+  params$Parameter1 <- x
+  params$Parameter2 <- y
+  params[unique(c("Parameter1", "Parameter2", names(params)))]
 }
 
 

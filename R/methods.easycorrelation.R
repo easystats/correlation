@@ -1,3 +1,25 @@
+#' @export
+summary.easycorrelation <- function(object, ...){
+  summary(as.data.frame(object))
+}
+
+
+
+
+
+#' @method as.list easycorrelation
+#' @export
+as.list.easycorrelation <- function(x, ...) {
+  attributes <- attributes(x)
+  attributes$names <- NULL
+  attributes$row.names <- NULL
+  attributes$class <- NULL
+  return(c(list("data" = x),
+           attributes))
+}
+
+
+
 #' Create correlation table
 #'
 #' @param x Object of class \link{correlation}.

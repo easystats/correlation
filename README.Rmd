@@ -58,11 +58,8 @@ The main function is `correlation()`, which comes with a number of possible para
 
 ## Correlations
 
-```{r eval=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 correlation(iris)
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-knitr::kable(head(correlation(iris), n=6), digits=2)
 ```
 
 The output is not a square matrix, but a long dataframe with all correlations tests per row. 
