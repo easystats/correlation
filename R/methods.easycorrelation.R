@@ -137,8 +137,8 @@ as.table.easycorrelation <- function(x, which_column=NULL, reorder=TRUE, reorder
     return(x)
   }
 
-  reorder_distance <- as.dist((1 - reorder_distance) / 2, diag = TRUE, upper = TRUE)
-  hc <- hclust(reorder_distance, method=method)
+  reorder_distance <- stats::as.dist((1 - reorder_distance) / 2, diag = TRUE, upper = TRUE)
+  hc <- stats::hclust(reorder_distance, method = method)
   x <- x[hc$order, hc$order]
   return(x)
 }

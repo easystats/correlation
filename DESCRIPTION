@@ -17,6 +17,7 @@ Imports:
 	insight,
 	bayestestR,
 	parameters,
+	stats,
 	dplyr
 Suggests:
 	knitr,
