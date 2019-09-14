@@ -89,6 +89,12 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
     rez <- BayesFactor::correlationBF(var_x, var_y, rscale=prior)
     params <- parameters::model_parameters(rez, ...)
   }
+
+  # Rename coef
+  if(sum(names(params) %in% c("Median", "Mean", "MAP")) == 1){
+    names(params)[names(params) %in% c("Median", "Mean", "MAP")] <- "r"
+  }
+
   params <- params[names(params) != "Parameter"]
   params$Parameter1 <- x
   params$Parameter2 <- y

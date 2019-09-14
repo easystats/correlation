@@ -69,50 +69,32 @@ The output is not a square matrix, but a long dataframe with all correlations te
 
 This comes with the advantage of being compatible with the tidyverse workflow.
 
-```{r eval=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 library(dplyr)
 
 iris %>% 
   select(Species, starts_with("Sepal")) %>% 
   group_by(Species) %>% 
-  correlation() %>% 
-  filter(r < 0.9)
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-knitr::kable(iris %>% 
-  select(Species, starts_with("Sepal")) %>% 
-  group_by(Species) %>% 
-  correlation() %>% 
-  filter(r < 0.9), digits=2)
+  correlation()
 ```
 
 ## Partial and Semi-partial Correlations
 
 It also supports **partial** and **semi-partial** correlations.
 
-```{r eval=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 correlation(select(iris, Species, starts_with("Sepal")),
             select(iris, Species, starts_with("Petal")),
             partial=TRUE)
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-knitr::kable(correlation(select(iris, Species, starts_with("Sepal")),
-            select(iris, Species, starts_with("Petal")),
-            partial=TRUE), digits=2)
-```
 
 ## Bayesian Correlations
 
-
 It is very easy to switch to a Bayesian framework.
 
-```{r eval=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
 correlation(iris, bayesian=TRUE)
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-knitr::kable(head(correlation(iris, bayesian=TRUE), n=6), digits=2)
-```
-
 
 ## Reports and tables
 
@@ -120,15 +102,6 @@ The correlations are also compatible with the [report](https://github.com/easyst
 
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
 library(report)
-library(report)
-iris %>% 
-  select(starts_with("Sepal")) %>% 
-  correlation(bayesian=TRUE) %>% 
-  report()
-```
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-library(report)
-options(knitr.kable.NA = '')
 
 iris %>% 
   select(starts_with("Sepal")) %>% 
@@ -146,16 +119,4 @@ iris %>%
   report() %>% 
   to_table()
 ```
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-table <- iris %>% 
-  group_by(Species) %>% 
-  correlation() %>% 
-  report() %>% 
-  to_table()
-
-table <- table[rowSums(is.na(table)) != ncol(table),]
-
-knitr::kable(table)
-```
-
 

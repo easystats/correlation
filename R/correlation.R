@@ -105,7 +105,7 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
                            "partial" = partial,
                            "prior"=prior))
 
-  class(out) <- c("easycorrelation", class(out))
+  class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out
 }
 
