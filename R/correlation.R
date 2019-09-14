@@ -55,8 +55,8 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
         ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
         out <- data.frame()
         for (i in names(xlist)) {
-          rez <- .correlation(dplyr::select_if(xlist[[i]], is.numeric),
-            data2 = dplyr::select_if(ylist[[i]], is.numeric),
+          rez <- .correlation(xlist[[i]][sapply(xlist[[i]], is.numeric)],
+            data2 = ylist[[i]][sapply(ylist[[i]], is.numeric)],
             ci = ci,
             method = method,
             bayesian = bayesian,
