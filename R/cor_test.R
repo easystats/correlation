@@ -15,6 +15,9 @@
 #' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 #' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 #'
+#' data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
+#' data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
+#' cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
 #' @export
 cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = FALSE, ...) {
 
@@ -22,9 +25,11 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   if (bayesian == FALSE) {
     if (ci == "default") ci <- 0.95
 
-    if(method %in% c("tetra", "tetrachoric")){
-      out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
-    } else{
+    if(tolower(method) %in% c("tetra", "tetrachoric")){
+      out <- .cor_test_tetrachoric(data, x, y, ...)
+    } else if(tolower(method) %in% c("poly", "polychoric")){
+      out <- .cor_test_polychoric(data, x, y, ...)
+    } else {
       out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
     }
 
@@ -129,7 +134,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 
 #' @importFrom stats complete.cases
 #' @keywords internal
-.cor_test_tetrachoric <- function(data, x, y, ci = 0.95, ...) {
+.cor_test_tetrachoric <- function(data, x, y, ...) {
 
   if (!requireNamespace("psych", quietly = TRUE)) {
     stop("Package `psych` required for tetrachoric correlations. Please install it.", call. = FALSE)
@@ -148,7 +153,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   # Reconstruct dataframe
   dat <- data.frame(var_x, var_y)
   names(dat) <- c(x, y)
-  rez <- psych::tetrachoric(dat)
+  rez <- psych::tetrachoric(dat, ...)
 
  data.frame(
     Parameter1 = x,
@@ -159,3 +164,36 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   )
 }
 
+
+
+#' @importFrom stats complete.cases
+#' @keywords internal
+.cor_test_polychoric <- function(data, x, y, ...) {
+
+  if (!requireNamespace("psych", quietly = TRUE)) {
+    stop("Package `psych` required for tetrachoric correlations. Please install it.", call. = FALSE)
+  }
+
+  var_x <- data[[x]]
+  var_y <- data[[y]]
+  var_x <- var_x[complete.cases(var_x, var_y)]
+  var_y <- var_y[complete.cases(var_x, var_y)]
+
+  # Sanity check
+  if(!is.factor(var_x) | !is.factor(var_y)){
+    stop("Polychoric correlations can only be ran on ordinal factors.")
+  }
+
+  # Reconstruct dataframe
+  dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
+  names(dat) <- c(x, y)
+  rez <- psych::polychoric(dat, ...)
+
+  data.frame(
+    Parameter1 = x,
+    Parameter2 = y,
+    rho = rez$rho[2, 1],
+    Method = "Polychoric",
+    stringsAsFactors = FALSE
+  )
+}
