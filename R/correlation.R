@@ -27,7 +27,6 @@
 #' iris %>%
 #'   group_by(Species) %>%
 #'   correlation()
-#' @importFrom dplyr enquos
 #' @export
 correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, prior="medium", ...) {
 
@@ -45,6 +44,11 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
   }
 
   if (inherits(data, "grouped_df")) {
+
+    if (!requireNamespace("dplyr")) {
+      stop("This function needs `dplyr` to be installed. Please install by running `install.packages('dplyr')`.")
+    }
+
     groups <- dplyr::group_vars(data)
     ungrouped_x <- dplyr::ungroup(data)
     xlist <- split(ungrouped_x, ungrouped_x[groups], sep = " - ")
