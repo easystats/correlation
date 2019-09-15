@@ -130,7 +130,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 
   # Rename coef
   if(sum(names(params) %in% c("Median", "Mean", "MAP")) == 1){
-    names(params)[names(params) %in% c("Median", "Mean", "MAP")] <- "r"
+    names(params)[names(params) %in% c("Median", "Mean", "MAP")] <- "rho"
   }
 
   params <- params[names(params) != "Parameter"]
@@ -143,6 +143,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 
 
 #' @importFrom stats complete.cases
+#' @importFrom utils capture.output
 #' @keywords internal
 .cor_test_tetrachoric <- function(data, x, y, ...) {
 
@@ -165,11 +166,11 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   names(dat) <- c(x, y)
 
   if(length(unique(var_x)) > 2 | length(unique(var_y)) > 2){
-    suppressMessages(r <- psych::biserial(x = dat[sapply(dat, function(x) length(unique(x)) > 2)],
+    junk <- capture.output(r <- psych::biserial(x = dat[sapply(dat, function(x) length(unique(x)) > 2)],
                                           y = dat[sapply(dat, function(x) !length(unique(x)) > 2)])[1])
-    method <- "Polychoric"
+    method <- "Biserial"
   } else{
-    r <- psych::tetrachoric(dat, ...)$rho[2, 1]
+    junk <- capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
     method <- "Tetrachoric"
   }
 
@@ -185,6 +186,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 
 
 #' @importFrom stats complete.cases
+#' @importFrom utils capture.output
 #' @keywords internal
 .cor_test_polychoric <- function(data, x, y, ...) {
 
@@ -215,7 +217,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
     # Reconstruct dataframe
     dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
     names(dat) <- c(x, y)
-    r <- psych::polychoric(dat, ...)$rho[2, 1]
+    junk <- capture.output(r <- psych::polychoric(dat)$rho[2, 1])
     method <- "Polychoric"
   }
 

@@ -15,7 +15,7 @@ correlation(data, data2 = NULL, ci = "default", method = "pearson",
 
 \item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", can be abbreviated.}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).}
 
 \item{p_adjust}{Correction method for frequentist correlations. One of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".}
 
@@ -45,4 +45,9 @@ iris \%>\%
 iris \%>\%
   group_by(Species) \%>\%
   correlation()
+
+data <- mtcars
+data$cyl <- as.factor(data$cyl)
+correlation(data, method = "auto")
+
 }

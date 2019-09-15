@@ -16,7 +16,7 @@ cor_test(data, x, y, ci = "default", method = "pearson",
 
 \item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", can be abbreviated.}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).}
 
 \item{bayesian}{If TRUE, the arguments below apply.}
 

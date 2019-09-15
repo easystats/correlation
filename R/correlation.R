@@ -4,7 +4,7 @@
 #' @param data A dataframe.
 #' @param data2 An optional dataframe.
 #' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", can be abbreviated.
+#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).
 #' @param p_adjust Correction method for frequentist correlations. One of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
 #' @param bayesian If TRUE, the arguments below apply.
@@ -27,6 +27,11 @@
 #' iris %>%
 #'   group_by(Species) %>%
 #'   correlation()
+#'
+#' data <- mtcars
+#' data$cyl <- as.factor(data$cyl)
+#' correlation(data, method = "auto")
+#'
 #' @export
 correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, prior="medium", ...) {
 
@@ -122,8 +127,6 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
   vars <- vars[sapply(data[vars], is.numeric)]
 
   if (is.null(data2)) {
-    # combinations <- as.data.frame(t(combn(vars, m=2)),  stringsAsFactors = FALSE)
-    # names(combinations) <- c("Var1", "Var2")
     combinations <- expand.grid(vars, vars)
   } else {
     vars2 <- names(data2)
@@ -132,20 +135,50 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
     data <- cbind(data, data2)
   }
 
-
+  # Regular Correlations
   if (partial == FALSE) {
     params <- data.frame()
     for (i in 1:nrow(combinations)) {
+
+      name_x <- as.character(combinations$Var2[i])
+      name_y <- as.character(combinations$Var1[i])
+
+      # Auto-Find type
+      if(method == "auto"){
+        if(length(unique(data[[name_x]])) == 2 | length(unique(data[[name_y]])) == 2){
+          current_method <- "tetrachoric"
+        } else if(is.factor(data[name_x]) | is.factor(data[name_y])){
+          current_method <- "polychoric"
+        } else{
+          current_method <- "pearson"
+        }
+      } else{
+        current_method <- method
+      }
+
       result <- cor_test(data,
-        x = as.character(combinations$Var1[i]),
-        y = as.character(combinations$Var2[i]),
+        x = name_x,
+        y = name_y,
         ci = ci,
-        method = method,
+        method = current_method,
         bayesian = bayesian,
         prior=prior
       )
-      params <- rbind(params, result)
+
+      # Merge
+      if(nrow(params) == 0){
+        params <- result
+      } else{
+        if(!all(names(result) %in% names(params))){
+          if("rho" %in% names(result) & !"rho" %in% names(params)){
+            names(result)[names(result) == "rho"] <- "r"
+          }
+          result[names(params)[!names(params) %in% names(result)]] <- NA
+        }
+        params <- rbind(params, result)
+      }
     }
+  # Partial Correlations
   } else {
     if (partial == TRUE | partial == "full") {
       params <- .partial_correlation(data, method = method, semi = FALSE)
