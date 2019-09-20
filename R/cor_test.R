@@ -1,22 +1,60 @@
-#' Tidy version of cor.test
+#' Correlation test
+#'
+#' This function perfoms a correlation test between two variables.
 #'
 #' @inheritParams correlation
 #' @param x Name of a variable.
 #' @param y Name of a variable.
-#' @param ... Arguments passed to or from other methods.
 #'
 #' @examples
+#' data <- iris
+#'
 #' cor_test(iris, "Petal.Length", "Petal.Width")
+#' cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
+#' cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
+#'
+#' # Tetrachoric
+#' data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
+#' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
+#' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
+#'
+#' # When one variable is continuous, will run 'biserial' correlation
+#' cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
+#'
+#' # Polychoric
+#' data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
+#' data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
+#' cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+#'
+#' # When one variable is continuous, will run 'polyserial' correlation
+#' cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 #' @export
-cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = FALSE, iterations = 10^4, rope_full = TRUE, rope_bounds = c(-0.05, 0.05), ...) {
+cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = FALSE, ...) {
+
+  # Frequentist
   if (bayesian == FALSE) {
     if (ci == "default") ci <- 0.95
-    out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
+
+    if(tolower(method) %in% c("tetra", "tetrachoric")){
+      out <- .cor_test_tetrachoric(data, x, y, ...)
+    } else if(tolower(method) %in% c("poly", "polychoric")){
+      out <- .cor_test_polychoric(data, x, y, ...)
+    } else {
+      out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
+    }
+
+  # Bayesian
   } else {
-    if (ci == "default") ci <- 0.9
-    out <- .cor_test_bayes(data, x, y, ci = ci, iterations = iterations, rope_full = rope_full, rope_bounds = rope_bounds)
+    if (ci == "default") ci <- 0.89
+
+    if(method %in% c("tetra", "tetrachoric")){
+      stop("Tetrachoric Bayesian correlations are not supported yet.")
+    } else{
+      out <- .cor_test_bayes(data, x, y, ci = ci, ...)
+    }
   }
 
+  class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out
 }
 
@@ -57,10 +95,10 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 
 
 
-#' @importFrom stats complete.cases mad median
+#' @importFrom stats complete.cases rnorm
 #' @importFrom utils install.packages
 #' @keywords internal
-.cor_test_bayes <- function(data, x, y, ci = 0.90, iterations = 10^4, rope_full = TRUE, rope_range = c(-0.05, 0.05), prior="medium",  ...) {
+.cor_test_bayes <- function(data, x, y, ci = 0.89, prior="medium",  ...) {
   if (!requireNamespace("BayesFactor")) {
     stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
   }
@@ -71,65 +109,127 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   var_y <- var_y[complete.cases(var_x, var_y)]
 
   if(x == y){
-    params <- data.frame(
-      "Parameter1" = x,
-      "Parameter2" = y,
-      "Median" = 1,
-      "MAD" = 0,
-      "CI_low" = 1,
-      "CI_high" = 1,
-      "pd" = 100,
-      "ROPE_Percentage" = 0,
-      "BF" = Inf,
-      "Prior" = prior
-    )
+    # Avoid error in the case of perfect correlation
+    rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale=prior)
+    params <- parameters::model_parameters(rez, ...)
+    if("Median" %in% names(params)) params$Median <- 1
+    if("Mean" %in% names(params)) params$Mean <- 1
+    if("MAP" %in% names(params)) params$MAP <- 1
+    if("SD" %in% names(params)) params$SD <- 0
+    if("MAD" %in% names(params)) params$MAD <- 0
+    if("CI_low" %in% names(params)) params$CI_low <- 1
+    if("CI_high" %in% names(params)) params$CI_high <- 1
+    if("pd" %in% names(params)) params$pd <- 1
+    if("ROPE_Percentage" %in% names(params)) params$ROPE_Percentage <- 0
+    if("BF" %in% names(params)) params$BF <- Inf
+
   } else{
     rez <- BayesFactor::correlationBF(var_x, var_y, rscale=prior)
-    posterior <- as.data.frame(suppressMessages(BayesFactor::posterior(rez, iterations = iterations, progress = FALSE)))
-    posterior <- posterior$rho
-    hdi <- bayestestR::hdi(posterior, ci = ci)
-    if (rope_full == TRUE) {
-      rope <- bayestestR::rope(posterior, range = rope_range, ci = 1)
-    } else {
-      rope <- bayestestR::rope(posterior, range = rope_range, ci = ci)
-    }
-
-    params <- data.frame(
-      "Parameter1" = x,
-      "Parameter2" = y,
-      "Median" = median(posterior),
-      "MAD" = mad(posterior),
-      "CI_low" = hdi$CI_low,
-      "CI_high" = hdi$CI_high,
-      "pd" = bayestestR::p_direction(posterior),
-      "ROPE_Percentage" = rope$ROPE_Percentage,
-      "BF" = exp(rez@bayesFactor$bf),
-      "Prior" = prior,
-      stringsAsFactors = FALSE
-    )
+    params <- parameters::model_parameters(rez, ...)
   }
 
+  # Rename coef
+  if(sum(names(params) %in% c("Median", "Mean", "MAP")) == 1){
+    names(params)[names(params) %in% c("Median", "Mean", "MAP")] <- "rho"
+  }
 
-  params
+  params <- params[names(params) != "Parameter"]
+  params$Parameter1 <- x
+  params$Parameter2 <- y
+  params[unique(c("Parameter1", "Parameter2", names(params)))]
 }
 
 
 
 
-#' #' @examples
-#' #' x <- ifelse(iris$Sepal.Width > median(iris$Sepal.Width), 1, 0)
-#' #' y <- ifelse(iris$Petal.Width > median(iris$Petal.Width), 1, 0)
-#' #' @keywords internal
-#' .cor_test_tetrachoric <- function(x, y, ci = 0.95, ...) {
-#'
-#'   if (!requireNamespace("psych", quietly = TRUE)) {
-#'     stop("Package `psych` required for tetrachoric correlations. Please install it.", call. = FALSE)
-#'   }
-#'
-#'   data <- data.frame(x=x, y=y)
-#'   rez <- psych::tetrachoric(data)
-#'
-#'   rez$rho
-#'
-#' }
+#' @importFrom stats complete.cases
+#' @importFrom utils capture.output
+#' @keywords internal
+.cor_test_tetrachoric <- function(data, x, y, ...) {
+
+  if (!requireNamespace("psych", quietly = TRUE)) {
+    stop("Package `psych` required for tetrachoric correlations. Please install it by running `install.packages('psych').", call. = FALSE)
+  }
+
+  var_x <- data[[x]]
+  var_y <- data[[y]]
+  var_x <- var_x[complete.cases(var_x, var_y)]
+  var_y <- var_y[complete.cases(var_x, var_y)]
+
+  # Sanity check
+  if(length(unique(var_x)) > 2 & length(unique(var_y)) > 2){
+    stop("Tetrachoric correlations can only be ran on dichotomous data.")
+  }
+
+  # Reconstruct dataframe
+  dat <- data.frame(var_x, var_y)
+  names(dat) <- c(x, y)
+
+  if(length(unique(var_x)) > 2 | length(unique(var_y)) > 2){
+    junk <- capture.output(r <- psych::biserial(x = dat[sapply(dat, function(x) length(unique(x)) > 2)],
+                                          y = dat[sapply(dat, function(x) !length(unique(x)) > 2)])[1])
+    method <- "Biserial"
+  } else{
+    junk <- capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
+    method <- "Tetrachoric"
+  }
+
+ data.frame(
+    Parameter1 = x,
+    Parameter2 = y,
+    rho = r,
+    Method = method,
+    stringsAsFactors = FALSE
+  )
+}
+
+
+
+#' @importFrom stats complete.cases
+#' @importFrom utils capture.output
+#' @keywords internal
+.cor_test_polychoric <- function(data, x, y, ...) {
+
+  if (!requireNamespace("psych", quietly = TRUE)) {
+    stop("Package `psych` required for tetrachoric correlations. Please install it by running `install.packages('psych').", call. = FALSE)
+  }
+
+  var_x <- data[[x]]
+  var_y <- data[[y]]
+  var_x <- var_x[complete.cases(var_x, var_y)]
+  var_y <- var_y[complete.cases(var_x, var_y)]
+
+  # Sanity check
+  if(!is.factor(var_x) & !is.factor(var_y)){
+    stop("Polychoric correlations can only be ran on ordinal factors.")
+  }
+
+
+
+  if(!is.factor(var_x) | !is.factor(var_y)){
+    if (!requireNamespace("polycor", quietly = TRUE)) {
+      stop("Package `polycor` required for polyserial correlations. Please install it by running `install.packages('polycor').", call. = FALSE)
+    }
+    r <- polycor::polyserial(x = if(is.factor(var_x)) as.numeric(var_y) else as.numeric(var_x),
+                               y = if(is.factor(var_x)) as.numeric(var_x) else as.numeric(var_y))
+    method <- "Polyserial"
+  } else{
+    # Reconstruct dataframe
+    dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
+    names(dat) <- c(x, y)
+    junk <- capture.output(r <- psych::polychoric(dat)$rho[2, 1])
+    method <- "Polychoric"
+  }
+
+
+
+
+  data.frame(
+    Parameter1 = x,
+    Parameter2 = y,
+    rho = r,
+    Method = method,
+    stringsAsFactors = FALSE
+  )
+}
 

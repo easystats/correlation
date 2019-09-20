@@ -7,28 +7,31 @@ Authors@R: c(
 		"Makowski", 
 		email = "dom.makowski@gmail.com",
 		role = c("aut", "cre"), 
-		comment = c(ORCID = "0000-0001-5375-9967"))
+		comment = c(ORCID = "0000-0001-5375-9967")),
+	person("Daniel", 
+		"Lüdecke", 
+		role = c("aut"), 
+		email = "d.luedecke@uke.de", 
+		comment = c(ORCID = "0000-0002-8895-3206"))
 	)
 Maintainer: Dominique Makowski <dom.makowski@gmail.com>
 URL: https://github.com/easystats/correlation
 BugReports: https://github.com/easystats/correlation/issues
 Description: Offers functions for computing different kinds of correlations.
 Imports:
+	stats,
 	insight,
 	bayestestR,
-	parameters,
-	stats,
-	dplyr
+	parameters
 Suggests:
+	BayesFactor,
+	dplyr,
 	knitr,
 	rmarkdown,
+	polycor,
 	testthat,
 	covr,
-	BayesFactor
-Remotes: 
-	easystats/insight,
-	easystats/bayestestR,
-	easystats/parameters
+	psych
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

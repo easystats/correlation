@@ -3,16 +3,13 @@
 #'
 #' @param data A dataframe.
 #' @param data2 An optional dataframe.
-#' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.9 for Bayesian.
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", can be abbreviated.
+#' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
+#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).
 #' @param p_adjust Correction method for frequentist correlations. One of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
 #' @param bayesian If TRUE, the arguments below apply.
-#' @param iterations The number of iterations to sample.
-#' @param rope_full If TRUE, use the proportion of the entire posterior distribution for the equivalence test. Otherwise, use the proportion of HDI as indicated by the \code{ci} argument.
-#' @param rope_bounds \href{https://easystats.github.io/bayestestR/articles/1_IndicesDescription.html#rope}{ROPE's} lower and higher bounds. Should be a list of two values (e.g., \code{c(-0.05, 0.05)}).
-#' @param prior For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to r scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.
-#' @param ... Arguments passed to or from other methods.
+#' @param prior For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.
+#' @param ... (e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}})
 #'
 #'
 #' @examples
@@ -30,9 +27,13 @@
 #' iris %>%
 #'   group_by(Species) %>%
 #'   correlation()
-#' @importFrom dplyr enquos
+#'
+#' data <- mtcars
+#' data$cyl <- as.factor(data$cyl)
+#' correlation(data, method = "auto")
+#'
 #' @export
-correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, iterations = 10^4, rope_full = TRUE, rope_bounds = c(-0.05, 0.05), prior="medium", ...) {
+correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, prior="medium", ...) {
 
   # Sanity checks
   if (partial == TRUE & bayesian == TRUE) {
@@ -44,10 +45,15 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
   if (bayesian == FALSE) {
     if (ci == "default") ci <- 0.95
   } else {
-    if (ci == "default") ci <- 0.9
+    if (ci == "default") ci <- 0.89
   }
 
   if (inherits(data, "grouped_df")) {
+
+    if (!requireNamespace("dplyr")) {
+      stop("This function needs `dplyr` to be installed. Please install by running `install.packages('dplyr')`.")
+    }
+
     groups <- dplyr::group_vars(data)
     ungrouped_x <- dplyr::ungroup(data)
     xlist <- split(ungrouped_x, ungrouped_x[groups], sep = " - ")
@@ -58,16 +64,13 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
         ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
         out <- data.frame()
         for (i in names(xlist)) {
-          rez <- .correlation(dplyr::select_if(xlist[[i]], is.numeric),
-            data2 = dplyr::select_if(ylist[[i]], is.numeric),
+          rez <- .correlation(xlist[[i]][sapply(xlist[[i]], is.numeric)],
+            data2 = ylist[[i]][sapply(ylist[[i]], is.numeric)],
             ci = ci,
             method = method,
             bayesian = bayesian,
             p_adjust = p_adjust,
             partial=partial,
-            iterations = iterations,
-            rope_full = rope_full,
-            rope_bounds = rope_bounds,
             prior=prior
           )
           rez$Group <- i
@@ -86,9 +89,6 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
                             bayesian = bayesian,
                             p_adjust = p_adjust,
                             partial=partial,
-                            iterations = iterations,
-                            rope_full = rope_full,
-                            rope_bounds = rope_bounds,
                             prior=prior)
         rez$Group <- i
         out <- rbind(out, rez)
@@ -103,9 +103,6 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
                         bayesian = bayesian,
                         p_adjust = p_adjust,
                         partial = partial,
-                        iterations = iterations,
-                        rope_full = rope_full,
-                        rope_bounds = rope_bounds,
                         prior=prior)
   }
 
@@ -115,24 +112,21 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
                            "bayesian" = bayesian,
                            "p_adjust" = p_adjust,
                            "partial" = partial,
-                           "iterations" = iterations,
-                           "rope_full" = rope_full,
-                           "rope_bounds" = rope_bounds,
                            "prior"=prior))
 
-  class(out) <- c("easycorrelation", class(out))
-  return(out)
+  class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
+  out
 }
 
 
+
+
 #' @keywords internal
-.correlation <- function(data, data2 = NULL, ci = 0.95, method = "pearson", bayesian = FALSE, p_adjust = "holm", partial = FALSE, iterations = 10^4, rope_full = TRUE, rope_bounds = c(-0.05, 0.05), prior="medium", ...) {
+.correlation <- function(data, data2 = NULL, ci = 0.95, method = "pearson", bayesian = FALSE, p_adjust = "holm", partial = FALSE, prior="medium", ...) {
   vars <- names(data)
   vars <- vars[sapply(data[vars], is.numeric)]
 
   if (is.null(data2)) {
-    # combinations <- as.data.frame(t(combn(vars, m=2)),  stringsAsFactors = FALSE)
-    # names(combinations) <- c("Var1", "Var2")
     combinations <- expand.grid(vars, vars)
   } else {
     vars2 <- names(data2)
@@ -141,23 +135,50 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
     data <- cbind(data, data2)
   }
 
-
+  # Regular Correlations
   if (partial == FALSE) {
     params <- data.frame()
     for (i in 1:nrow(combinations)) {
+
+      name_x <- as.character(combinations$Var2[i])
+      name_y <- as.character(combinations$Var1[i])
+
+      # Auto-Find type
+      if(method == "auto"){
+        if(length(unique(data[[name_x]])) == 2 | length(unique(data[[name_y]])) == 2){
+          current_method <- "tetrachoric"
+        } else if(is.factor(data[name_x]) | is.factor(data[name_y])){
+          current_method <- "polychoric"
+        } else{
+          current_method <- "pearson"
+        }
+      } else{
+        current_method <- method
+      }
+
       result <- cor_test(data,
-        x = as.character(combinations$Var1[i]),
-        y = as.character(combinations$Var2[i]),
+        x = name_x,
+        y = name_y,
         ci = ci,
-        method = method,
+        method = current_method,
         bayesian = bayesian,
-        iterations = iterations,
-        rope_full = rope_full,
-        rope_bounds = rope_bounds,
         prior=prior
       )
-      params <- rbind(params, result)
+
+      # Merge
+      if(nrow(params) == 0){
+        params <- result
+      } else{
+        if(!all(names(result) %in% names(params))){
+          if("rho" %in% names(result) & !"rho" %in% names(params)){
+            names(result)[names(result) == "rho"] <- "r"
+          }
+          result[names(params)[!names(params) %in% names(result)]] <- NA
+        }
+        params <- rbind(params, result)
+      }
     }
+  # Partial Correlations
   } else {
     if (partial == TRUE | partial == "full") {
       params <- .partial_correlation(data, method = method, semi = FALSE)
@@ -165,8 +186,8 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
       params <- .partial_correlation(data, method = method, semi = TRUE)
     }
     if (!is.null(data2)) {
-      params <- dplyr::filter_(params, "Parameter1 %in% vars")
-      params <- dplyr::filter_(params, "Parameter2 %in% vars2")
+      params <- params[params$Parameter1 %in% vars, ]
+      params <- params[params$Parameter2 %in% vars2, ]
     }
   }
 
@@ -175,5 +196,5 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
     params$p <- p.adjust(params$p, method = p_adjust)
   }
 
-  return(params)
+  params
 }

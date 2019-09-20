@@ -2,11 +2,10 @@
 % Please edit documentation in R/cor_test.R
 \name{cor_test}
 \alias{cor_test}
-\title{Tidy version of cor.test}
+\title{Correlation test}
 \usage{
 cor_test(data, x, y, ci = "default", method = "pearson",
-  bayesian = FALSE, iterations = 10^4, rope_full = TRUE,
-  rope_bounds = c(-0.05, 0.05), ...)
+  bayesian = FALSE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -15,23 +14,37 @@ cor_test(data, x, y, ci = "default", method = "pearson",
 
 \item{y}{Name of a variable.}
 
-\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.9 for Bayesian.}
+\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", can be abbreviated.}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).}
 
 \item{bayesian}{If TRUE, the arguments below apply.}
 
-\item{iterations}{The number of iterations to sample.}
-
-\item{rope_full}{If TRUE, use the proportion of the entire posterior distribution for the equivalence test. Otherwise, use the proportion of HDI as indicated by the \code{ci} argument.}
-
-\item{rope_bounds}{\href{https://easystats.github.io/bayestestR/articles/1_IndicesDescription.html#rope}{ROPE's} lower and higher bounds. Should be a list of two values (e.g., \code{c(-0.05, 0.05)}).}
-
-\item{...}{Arguments passed to or from other methods.}
+\item{...}{(e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}})}
 }
 \description{
-Tidy version of cor.test
+This function perfoms a correlation test between two variables.
 }
 \examples{
+data <- iris
+
 cor_test(iris, "Petal.Length", "Petal.Width")
+cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
+cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
+
+# Tetrachoric
+data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
+data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
+cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
+
+# When one variable is continuous, will run 'biserial' correlation
+cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
+
+# Polychoric
+data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
+data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
+cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+
+# When one variable is continuous, will run 'polyserial' correlation
+cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 }
