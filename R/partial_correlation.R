@@ -32,7 +32,7 @@
   # inverse covariance matrix
   if (det(cvx) < .Machine$double.eps) {
     warning("The inverse of variance-covariance matrix is calculated using Moore-Penrose generalized matrix invers due to its determinant of zero.")
-    icvx <- generalized_inverse(cvx)
+    icvx <- matrix_inverse(cvx)
   } else {
     icvx <- solve(cvx)
   }

@@ -1,5 +1,6 @@
 #' Correlation Analysis
 #'
+#' Performs a correlation analysis.
 #'
 #' @param data A dataframe.
 #' @param data2 An optional dataframe.
@@ -31,9 +32,8 @@
 #' data <- mtcars
 #' data$cyl <- as.factor(data$cyl)
 #' correlation(data, method = "auto")
-#'
 #' @export
-correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, prior="medium", ...) {
+correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, prior = "medium", ...) {
 
   # Sanity checks
   if (partial == TRUE & bayesian == TRUE) {
@@ -49,7 +49,6 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
   }
 
   if (inherits(data, "grouped_df")) {
-
     if (!requireNamespace("dplyr")) {
       stop("This function needs `dplyr` to be installed. Please install by running `install.packages('dplyr')`.")
     }
@@ -70,8 +69,8 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
             method = method,
             bayesian = bayesian,
             p_adjust = p_adjust,
-            partial=partial,
-            prior=prior
+            partial = partial,
+            prior = prior
           )
           rez$Group <- i
           out <- rbind(out, rez)
@@ -83,13 +82,14 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
       out <- data.frame()
       for (i in names(xlist)) {
         rez <- .correlation(xlist[[i]],
-                            data2 = data2,
-                            ci = ci,
-                            method = method,
-                            bayesian = bayesian,
-                            p_adjust = p_adjust,
-                            partial=partial,
-                            prior=prior)
+          data2 = data2,
+          ci = ci,
+          method = method,
+          bayesian = bayesian,
+          p_adjust = p_adjust,
+          partial = partial,
+          prior = prior
+        )
         rez$Group <- i
         out <- rbind(out, rez)
       }
@@ -97,22 +97,30 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
     out <- out[c("Group", names(out)[names(out) != "Group"])]
   } else {
     out <- .correlation(data,
-                        data2 = data2,
-                        ci = ci,
-                        method = method,
-                        bayesian = bayesian,
-                        p_adjust = p_adjust,
-                        partial = partial,
-                        prior=prior)
+      data2 = data2,
+      ci = ci,
+      method = method,
+      bayesian = bayesian,
+      p_adjust = p_adjust,
+      partial = partial,
+      prior = prior
+    )
   }
 
-  attributes(out) <- c(attributes(out),
-                       list("ci" = ci,
-                           "method" = method,
-                           "bayesian" = bayesian,
-                           "p_adjust" = p_adjust,
-                           "partial" = partial,
-                           "prior"=prior))
+  # Reorder
+  out <- out[order(out$Parameter1, out$Parameter2), ]
+
+  attributes(out) <- c(
+    attributes(out),
+    list(
+      "ci" = ci,
+      "method" = method,
+      "bayesian" = bayesian,
+      "p_adjust" = p_adjust,
+      "partial" = partial,
+      "prior" = prior
+    )
+  )
 
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out
@@ -122,7 +130,7 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
 
 
 #' @keywords internal
-.correlation <- function(data, data2 = NULL, ci = 0.95, method = "pearson", bayesian = FALSE, p_adjust = "holm", partial = FALSE, prior="medium", ...) {
+.correlation <- function(data, data2 = NULL, ci = 0.95, method = "pearson", bayesian = FALSE, p_adjust = "holm", partial = FALSE, prior = "medium", ...) {
   vars <- names(data)
   vars <- vars[sapply(data[vars], is.numeric)]
 
@@ -139,20 +147,19 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
   if (partial == FALSE) {
     params <- data.frame()
     for (i in 1:nrow(combinations)) {
-
       name_x <- as.character(combinations$Var2[i])
       name_y <- as.character(combinations$Var1[i])
 
       # Auto-Find type
-      if(method == "auto"){
-        if(length(unique(data[[name_x]])) == 2 | length(unique(data[[name_y]])) == 2){
+      if (method == "auto") {
+        if (length(unique(data[[name_x]])) == 2 | length(unique(data[[name_y]])) == 2) {
           current_method <- "tetrachoric"
-        } else if(is.factor(data[name_x]) | is.factor(data[name_y])){
+        } else if (is.factor(data[name_x]) | is.factor(data[name_y])) {
           current_method <- "polychoric"
-        } else{
+        } else {
           current_method <- "pearson"
         }
-      } else{
+      } else {
         current_method <- method
       }
 
@@ -162,15 +169,15 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
         ci = ci,
         method = current_method,
         bayesian = bayesian,
-        prior=prior
+        prior = prior
       )
 
       # Merge
-      if(nrow(params) == 0){
+      if (nrow(params) == 0) {
         params <- result
-      } else{
-        if(!all(names(result) %in% names(params))){
-          if("rho" %in% names(result) & !"rho" %in% names(params)){
+      } else {
+        if (!all(names(result) %in% names(params))) {
+          if ("rho" %in% names(result) & !"rho" %in% names(params)) {
             names(result)[names(result) == "rho"] <- "r"
           }
           result[names(params)[!names(params) %in% names(result)]] <- NA
@@ -178,7 +185,7 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
         params <- rbind(params, result)
       }
     }
-  # Partial Correlations
+    # Partial Correlations
   } else {
     if (partial == TRUE | partial == "full") {
       params <- .partial_correlation(data, method = method, semi = FALSE)

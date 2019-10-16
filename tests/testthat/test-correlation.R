@@ -8,7 +8,7 @@ test_that("correlation frequentist", {
   out <- correlation(iris)
   testthat::expect_equal(nrow(out), 16)
 
-  out <- correlation(iris, bayesian=TRUE)
+  out <- correlation(iris, bayesian = TRUE)
   testthat::expect_equal(nrow(out), 16)
 
   out <- correlation(iris, partial = TRUE)

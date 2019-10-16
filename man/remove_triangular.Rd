@@ -14,3 +14,7 @@ remove_triangular(cor, which_column = NULL)
 \description{
 Remove redundant correlations
 }
+\examples{
+cor <- correlation(iris)
+remove_triangular(cor)
+}

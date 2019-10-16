@@ -3,40 +3,37 @@
 #' @param cor \link{correlation} object.
 #' @param which_column Which column to use for the filtering.
 #' @importFrom utils combn
+#'
+#' @examples
+#' cor <- correlation(iris)
+#' remove_triangular(cor)
 #' @export
-remove_triangular <- function(cor, which_column = NULL){
+remove_triangular <- function(cor, which_column = NULL) {
+  rows <- .get_rows_non_NA(summary(cor))
+  cor[paste0(cor$Parameter1, "_", cor$Parameter2) %in% rows, ]
+}
 
-  if(is.null(which_column)){
-    if("r" %in% names(cor)){
-      which_column <- "r"
-    } else if("Median" %in% names(cor)){
-      which_column <- "Median"
-    } else{
-      stop("Please specify `which_column`.")
+
+
+
+
+
+
+
+
+#' @keywords internal
+.get_rows_non_NA <- function(m) {
+  rows <- c()
+  cols <- c()
+
+  for (col in names(m)[-1]) {
+    for (row in 1:nrow(m)) {
+      if (!is.na(m[row, col])) {
+        rows <- c(rows, m$Parameter[row])
+        cols <- c(cols, col)
+      }
     }
   }
 
-  m <- as.table(cor, which_column = which_column)
-
-  # Filter parameter1
-  x <- names(m)[!names(m) %in% c("Group", "Parameter")]
-  cor <- cor[cor$Parameter1 %in% x,]
-  cor$Parameter1 <- factor(cor$Parameter1, levels=x)
-
-  # Filter parameter2
-  y <- m$Parameter
-  cor <- cor[cor$Parameter2 %in% y,]
-  cor$Parameter2 <- factor(cor$Parameter2, levels=rev(y))
-
-  # Remove NANs
-  cor <- cor[as.character(cor$Parameter1) != as.character(cor$Parameter2), ]
-  for(i in 1:nrow(cor)){
-    current_row <- cor[i, ]
-    cor[i, which_column] <- m[m$Parameter == current_row$Parameter2, names(m)==current_row$Parameter1]
-  }
-
-  cor <- cor[!is.na(cor[[which_column]]),]
-
-  cor
+  paste0(rows, "_", cols)
 }
-

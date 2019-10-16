@@ -3,7 +3,6 @@ context("as.table.easycorrelation")
 
 
 test_that("as.table.easycorrelation", {
-
   cor <- correlation(iris)
   m <- as.table(cor)
   testthat::expect_equal(c(nrow(m), ncol(m)), c(3, 4))

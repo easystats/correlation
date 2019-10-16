@@ -37,7 +37,7 @@ data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 
-# When one variable is continuous, will run 'biserial' correlation
+# When one variable is continuous and the other binary, will run 'biserial' correlation
 cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
 
 # Polychoric

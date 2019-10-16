@@ -18,7 +18,7 @@
 #' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 #' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 #'
-#' # When one variable is continuous, will run 'biserial' correlation
+#' # When one variable is continuous and the other binary, will run 'biserial' correlation
 #' cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
 #'
 #' # Polychoric
@@ -35,21 +35,21 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   if (bayesian == FALSE) {
     if (ci == "default") ci <- 0.95
 
-    if(tolower(method) %in% c("tetra", "tetrachoric")){
+    if (tolower(method) %in% c("tetra", "tetrachoric")) {
       out <- .cor_test_tetrachoric(data, x, y, ...)
-    } else if(tolower(method) %in% c("poly", "polychoric")){
+    } else if (tolower(method) %in% c("poly", "polychoric")) {
       out <- .cor_test_polychoric(data, x, y, ...)
     } else {
       out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
     }
 
-  # Bayesian
+    # Bayesian
   } else {
     if (ci == "default") ci <- 0.89
 
-    if(method %in% c("tetra", "tetrachoric")){
+    if (method %in% c("tetra", "tetrachoric")) {
       stop("Tetrachoric Bayesian correlations are not supported yet.")
-    } else{
+    } else {
       out <- .cor_test_bayes(data, x, y, ci = ci, ...)
     }
   }
@@ -81,10 +81,10 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   params$Parameter1 <- x
   params$Parameter2 <- y
 
-  if(x == y){
-    if("t" %in% names(params)) params$t <- Inf
-    if("z" %in% names(params)) params$z <- Inf
-    if("S" %in% names(params)) params$S <- Inf
+  if (x == y) {
+    if ("t" %in% names(params)) params$t <- Inf
+    if ("z" %in% names(params)) params$z <- Inf
+    if ("S" %in% names(params)) params$S <- Inf
   }
 
   params
@@ -98,7 +98,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 #' @importFrom stats complete.cases rnorm
 #' @importFrom utils install.packages
 #' @keywords internal
-.cor_test_bayes <- function(data, x, y, ci = 0.89, prior="medium",  ...) {
+.cor_test_bayes <- function(data, x, y, ci = 0.89, prior = "medium", ...) {
   if (!requireNamespace("BayesFactor")) {
     stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
   }
@@ -108,28 +108,27 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   var_x <- var_x[complete.cases(var_x, var_y)]
   var_y <- var_y[complete.cases(var_x, var_y)]
 
-  if(x == y){
+  if (x == y) {
     # Avoid error in the case of perfect correlation
-    rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale=prior)
+    rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale = prior)
     params <- parameters::model_parameters(rez, ...)
-    if("Median" %in% names(params)) params$Median <- 1
-    if("Mean" %in% names(params)) params$Mean <- 1
-    if("MAP" %in% names(params)) params$MAP <- 1
-    if("SD" %in% names(params)) params$SD <- 0
-    if("MAD" %in% names(params)) params$MAD <- 0
-    if("CI_low" %in% names(params)) params$CI_low <- 1
-    if("CI_high" %in% names(params)) params$CI_high <- 1
-    if("pd" %in% names(params)) params$pd <- 1
-    if("ROPE_Percentage" %in% names(params)) params$ROPE_Percentage <- 0
-    if("BF" %in% names(params)) params$BF <- Inf
-
-  } else{
-    rez <- BayesFactor::correlationBF(var_x, var_y, rscale=prior)
+    if ("Median" %in% names(params)) params$Median <- 1
+    if ("Mean" %in% names(params)) params$Mean <- 1
+    if ("MAP" %in% names(params)) params$MAP <- 1
+    if ("SD" %in% names(params)) params$SD <- 0
+    if ("MAD" %in% names(params)) params$MAD <- 0
+    if ("CI_low" %in% names(params)) params$CI_low <- 1
+    if ("CI_high" %in% names(params)) params$CI_high <- 1
+    if ("pd" %in% names(params)) params$pd <- 1
+    if ("ROPE_Percentage" %in% names(params)) params$ROPE_Percentage <- 0
+    if ("BF" %in% names(params)) params$BF <- Inf
+  } else {
+    rez <- BayesFactor::correlationBF(var_x, var_y, rscale = prior)
     params <- parameters::model_parameters(rez, ...)
   }
 
   # Rename coef
-  if(sum(names(params) %in% c("Median", "Mean", "MAP")) == 1){
+  if (sum(names(params) %in% c("Median", "Mean", "MAP")) == 1) {
     names(params)[names(params) %in% c("Median", "Mean", "MAP")] <- "rho"
   }
 
@@ -146,7 +145,6 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 #' @importFrom utils capture.output
 #' @keywords internal
 .cor_test_tetrachoric <- function(data, x, y, ...) {
-
   if (!requireNamespace("psych", quietly = TRUE)) {
     stop("Package `psych` required for tetrachoric correlations. Please install it by running `install.packages('psych').", call. = FALSE)
   }
@@ -157,7 +155,7 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   var_y <- var_y[complete.cases(var_x, var_y)]
 
   # Sanity check
-  if(length(unique(var_x)) > 2 & length(unique(var_y)) > 2){
+  if (length(unique(var_x)) > 2 & length(unique(var_y)) > 2) {
     stop("Tetrachoric correlations can only be ran on dichotomous data.")
   }
 
@@ -165,16 +163,18 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   dat <- data.frame(var_x, var_y)
   names(dat) <- c(x, y)
 
-  if(length(unique(var_x)) > 2 | length(unique(var_y)) > 2){
-    junk <- capture.output(r <- psych::biserial(x = dat[sapply(dat, function(x) length(unique(x)) > 2)],
-                                          y = dat[sapply(dat, function(x) !length(unique(x)) > 2)])[1])
+  if (length(unique(var_x)) > 2 | length(unique(var_y)) > 2) {
+    junk <- capture.output(r <- psych::biserial(
+      x = dat[sapply(dat, function(x) length(unique(x)) > 2)],
+      y = dat[sapply(dat, function(x) !length(unique(x)) > 2)]
+    )[1])
     method <- "Biserial"
-  } else{
+  } else {
     junk <- capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
     method <- "Tetrachoric"
   }
 
- data.frame(
+  data.frame(
     Parameter1 = x,
     Parameter2 = y,
     rho = r,
@@ -189,7 +189,6 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
 #' @importFrom utils capture.output
 #' @keywords internal
 .cor_test_polychoric <- function(data, x, y, ...) {
-
   if (!requireNamespace("psych", quietly = TRUE)) {
     stop("Package `psych` required for tetrachoric correlations. Please install it by running `install.packages('psych').", call. = FALSE)
   }
@@ -200,20 +199,22 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
   var_y <- var_y[complete.cases(var_x, var_y)]
 
   # Sanity check
-  if(!is.factor(var_x) & !is.factor(var_y)){
+  if (!is.factor(var_x) & !is.factor(var_y)) {
     stop("Polychoric correlations can only be ran on ordinal factors.")
   }
 
 
 
-  if(!is.factor(var_x) | !is.factor(var_y)){
+  if (!is.factor(var_x) | !is.factor(var_y)) {
     if (!requireNamespace("polycor", quietly = TRUE)) {
       stop("Package `polycor` required for polyserial correlations. Please install it by running `install.packages('polycor').", call. = FALSE)
     }
-    r <- polycor::polyserial(x = if(is.factor(var_x)) as.numeric(var_y) else as.numeric(var_x),
-                               y = if(is.factor(var_x)) as.numeric(var_x) else as.numeric(var_y))
+    r <- polycor::polyserial(
+      x = if (is.factor(var_x)) as.numeric(var_y) else as.numeric(var_x),
+      y = if (is.factor(var_x)) as.numeric(var_x) else as.numeric(var_y)
+    )
     method <- "Polyserial"
-  } else{
+  } else {
     # Reconstruct dataframe
     dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
     names(dat) <- c(x, y)
@@ -232,4 +233,3 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
     stringsAsFactors = FALSE
   )
 }
-
