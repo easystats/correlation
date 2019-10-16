@@ -30,7 +30,7 @@ correlation(data, data2 = NULL, ci = "default", method = "pearson",
 
 \item{prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
 
-\item{...}{(e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}})}
+\item{...}{Arguments passed to or from other methods (e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}}).}
 
 \item{object}{Object of class \link{correlation}.}
 

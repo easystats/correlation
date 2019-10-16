@@ -20,7 +20,7 @@ cor_test(data, x, y, ci = "default", method = "pearson",
 
 \item{bayesian}{If TRUE, the arguments below apply.}
 
-\item{...}{(e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}})}
+\item{...}{Arguments passed to or from other methods (e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}}).}
 }
 \description{
 This function perfoms a correlation test between two variables.

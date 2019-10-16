@@ -13,7 +13,11 @@
 matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {
 
   # Sanity checks
-  .check_if_square(m)
+  # sanity checks
+  if(!isSquare(m)){
+    stop("The matrix should be a square matrix.")
+  }
+
   stopifnot(is.numeric(m), length(dim(m)) == 2, is.matrix(m))
 
   s <- svd(m)

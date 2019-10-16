@@ -15,7 +15,9 @@
 cor2cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2 / 3)) {
 
   # sanity checks
-  .check_if_square(cor)
+  if(!isSquare(cor)){
+    stop("The matrix should be a square matrix.")
+  }
 
   if(is.null(sd)){
     if(is.null(variance)){
@@ -57,9 +59,3 @@ cor2cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(
 
 
 
-#' @keywords internal
-.check_if_square <- function(m){
-  if(dim(m)[1] != dim(m)[2]){
-    stop("The matrix should be a square matrix.")
-  }
-}
