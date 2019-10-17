@@ -1,33 +1,6 @@
-#' Correlation Matrix Object
+#' Check if matrix ressembles a correlation matrix
 #'
-#' @param ... rguments passed to or from other methods.
-#'
-#' @export
-cormatrix <- function(...){
-  UseMethod("cormatrix")
-}
-
-
-
-
-
-#' @rdname cormatrix
-#' @export
-as.cormatrix <- cormatrix
-
-
-
-
-
-
-
-
-
-
-
-
-#' @param x A matrix x.
-#' @rdname cormatrix
+#' @param x A matrix.
 #' @export
 is.cor <- function(x){
   square <- isSquare(x)
@@ -48,11 +21,6 @@ is.cor <- function(x){
 
 
 
-#' @rdname cormatrix
-#' @export
-is.cormatrix <- function(x){
-  inherits(x, "cormatrix")
-}
 
 
 

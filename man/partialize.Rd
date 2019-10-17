@@ -10,15 +10,15 @@ partialize(data, x, y, include_factors = TRUE, random = FALSE,
 \arguments{
 \item{data}{A dataframe.}
 
-\item{x}{Name of a variable.}
+\item{x}{Names of two variables present in the data.}
 
-\item{y}{Name of a variable.}
+\item{y}{Names of two variables present in the data.}
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
 
 \item{random}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out the same as the other numeric variables.}
 
-\item{bayesian}{If TRUE, the arguments below apply.}
+\item{bayesian}{If TRUE, will run a Bayesian correlation.}
 }
 \description{
 This function can be used to (slowly) get the data of which a regular correlation is equivalent to the partial correlation between two variables (adjusted for the rest of the dataset). As it is based on underlying fitting of multiple regressions, it allows more flexibility, such as including factors as random effects and/or fitting the models under a Bayesian framework. The values returned by this function are the residuals of the regression models.

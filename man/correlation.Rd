@@ -5,9 +5,12 @@
 \alias{summary.easycorrelation}
 \title{Correlation Analysis}
 \usage{
-correlation(data, data2 = NULL, ci = "default", method = "pearson",
-  p_adjust = "holm", partial = FALSE, bayesian = FALSE,
-  prior = "medium", ...)
+correlation(data, data2 = NULL, method = "pearson",
+  p_adjust = "holm", ci = "default", bayesian = FALSE,
+  bayesian_prior = "medium", bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"), partial = FALSE,
+  partial_include_factors = TRUE, partial_random = FALSE,
+  partial_bayesian = FALSE, ...)
 
 \method{summary}{easycorrelation}(object, which_column = NULL,
   reorder = TRUE, reorder_method = "complete", lower = TRUE,
@@ -18,19 +21,29 @@ correlation(data, data2 = NULL, ci = "default", method = "pearson",
 
 \item{data2}{An optional dataframe.}
 
-\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
-
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, and pearson otherwise).}
 
 \item{p_adjust}{Correction method for frequentist correlations. One of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".}
 
+\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
+
+\item{bayesian}{If TRUE, will run a Bayesian correlation.}
+
+\item{bayesian_prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
+
+\item{bayesian_ci_method}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
+
+\item{bayesian_test}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
+
 \item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
 
-\item{bayesian}{If TRUE, the arguments below apply.}
+\item{partial_include_factors}{See arguments of \code{\link{partialize}}.}
 
-\item{prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
+\item{partial_random}{See arguments of \code{\link{partialize}}.}
 
-\item{...}{Arguments passed to or from other methods (e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}}).}
+\item{partial_bayesian}{See arguments of \code{\link{partialize}}.}
+
+\item{...}{Arguments passed to or from other methods.}
 
 \item{object}{Object of class \link{correlation}.}
 

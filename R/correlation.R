@@ -4,13 +4,8 @@
 #'
 #' @param data A dataframe.
 #' @param data2 An optional dataframe.
-#' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).
 #' @param p_adjust Correction method for frequentist correlations. One of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".
-#' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
-#' @param bayesian If TRUE, the arguments below apply.
-#' @param prior For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.
-#' @param ... Arguments passed to or from other methods (e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}}).
+#' @inheritParams cor_test
 #'
 #'
 #' @examples
@@ -33,7 +28,7 @@
 #' data$cyl <- as.factor(data$cyl)
 #' correlation(data, method = "auto")
 #' @export
-correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, prior = "medium", ...) {
+correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), partial = FALSE, partial_include_factors = TRUE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
 
 
   # data <- .clean_data(data, include_factors = include_factors, random = random)
@@ -139,80 +134,60 @@ correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", 
 
 
 
-
 #' @keywords internal
-.correlation <- function(data, data2 = NULL, ci = 0.95, method = "pearson", bayesian = FALSE, p_adjust = "holm", partial = FALSE, prior = "medium", ...) {
-  vars <- names(data)
-  vars <- vars[sapply(data[vars], is.numeric)]
+.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), partial = FALSE, partial_include_factors = TRUE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
 
-  if (is.null(data2)) {
-    combinations <- expand.grid(vars, vars)
-  } else {
-    vars2 <- names(data2)
-    vars2 <- vars2[sapply(data2[vars2], is.numeric)]
-    combinations <- expand.grid(vars, vars2)
+  if(!is.null(data2)){
     data <- cbind(data, data2)
   }
 
-  # Regular Correlations
-  if (partial == FALSE) {
-    params <- data.frame()
-    for (i in 1:nrow(combinations)) {
-      name_x <- as.character(combinations$Var2[i])
-      name_y <- as.character(combinations$Var1[i])
 
-      # Auto-Find type
-      if (method == "auto") {
-        if (length(unique(data[[name_x]])) == 2 | length(unique(data[[name_y]])) == 2) {
-          current_method <- "tetrachoric"
-        } else if (is.factor(data[name_x]) | is.factor(data[name_y])) {
-          current_method <- "polychoric"
-        } else {
-          current_method <- "pearson"
-        }
-      } else {
-        current_method <- method
-      }
+  combinations <- .get_combinations(data, data2 = NULL, redundant = FALSE, include_factors = partial_include_factors, random = partial_random)
 
-      result <- cor_test(data,
-        x = name_x,
-        y = name_y,
-        ci = ci,
-        method = current_method,
-        bayesian = bayesian,
-        prior = prior
-      )
+  for (i in 1:nrow(combinations)) {
+    x <- as.character(combinations[i, "Parameter1"])
+    y <- as.character(combinations[i, "Parameter2"])
 
-      # Merge
-      if (nrow(params) == 0) {
-        params <- result
-      } else {
-        if (!all(names(result) %in% names(params))) {
-          if ("rho" %in% names(result) & !"rho" %in% names(params)) {
-            names(result)[names(result) == "rho"] <- "r"
-          }
-          result[names(params)[!names(params) %in% names(result)]] <- NA
-        }
-        params <- rbind(params, result)
-      }
-    }
-    # Partial Correlations
-  } else {
-    if (partial == TRUE | partial == "full") {
-      params <- .partial_correlation(data, method = method, semi = FALSE)
+    result <- cor_test(data,
+                       x = x,
+                       y = y,
+                       ci = ci,
+                       method = method,
+                       bayesian = bayesian,
+                       bayesian_prior = bayesian_prior,
+                       bayesian_ci_method = bayesian_ci_method,
+                       bayesian_test = bayesian_test,
+                       ...)
+
+    # Merge
+    if (i == 1) {
+      params <- result
     } else {
-      params <- .partial_correlation(data, method = method, semi = TRUE)
+      if (!all(names(result) %in% names(params))) {
+        if ("rho" %in% names(result) & !"rho" %in% names(params)) {
+          names(result)[names(result) == "rho"] <- "r"
+        }
+        result[names(params)[!names(params) %in% names(result)]] <- NA
+      }
+      params <- rbind(params, result)
     }
-    if (!is.null(data2)) {
-      params <- params[params$Parameter1 %in% vars, ]
-      params <- params[params$Parameter2 %in% vars2, ]
-    }
+  }
   }
 
   # P-values adjustments
   if ("p" %in% names(params)) {
-    params$p <- p.adjust(params$p, method = p_adjust)
+    params$p <- p.adjust(params$p,
+                         method = p_adjust,
+                         n = nrow(.get_combinations(data, data2 = data2, redundant = FALSE)))
   }
+
+  if (!is.null(data2)) {
+    params <- params[params$Parameter1 %in% vars, ]
+    params <- params[params$Parameter2 %in% vars2, ]
+  }
+
+
 
   params
 }
+
