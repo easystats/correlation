@@ -6,8 +6,8 @@
 #'
 #'
 #'
-#' @param cor,pcor A (partial) correlation matrix.
-#' @param cov An optional covariance matrix (or a vector of the SD of the variables). Required for semi-partial correlations.
+#' @param cor,pcor,spcor A correlation matrix, or a partial or a semipartial correlation matrix.
+#' @param cov A covariance matrix (or a vector of the SD of the variables). Required for semi-partial correlations.
 #' @param semi Semi-partial correlations.
 #' @param tol Relative tolerance to detect zero singular values.
 #'
@@ -21,34 +21,80 @@
 #' round(pcor - ppcor::pcor(iris[1:4])$estimate, 2)
 #'
 #' # Semi-partial
-#' spcor <- cor_to_pcor(cor, cov = sapply(iris[1:4], sd), semi = TRUE)
+#' spcor <- cor_to_spcor(cor, cov = sapply(iris[1:4], sd))
 #' round(spcor - ppcor::spcor(iris[1:4])$estimate, 2)
 #'
 #' # Inverse
 #' round(pcor_to_cor(pcor) - cor, 2)
 #' # round(pcor_to_cor(spcor, semi = TRUE) - cor, 2)
 #' @export
-cor_to_pcor = function(cor = NULL, cov = NULL, semi = FALSE, tol = .Machine$double.eps^(2 / 3)){
+cor_to_pcor = function(cor = NULL, tol = .Machine$double.eps^(2 / 3)){
+
+  # Get cor
+  cor <- .get_cor(cor, cov = NULL)
+
+  # Partial
+  inverted <- .invert_matrix(cor, tol = tol)
+  out <- -cov2cor(inverted)
+
+  diag(out) <- 1
+  out
+}
+
+
+
+
+
+
+
+#' @rdname cor_to_pcor
+#' @export
+pcor_to_cor = function(pcor = NULL, tol = .Machine$double.eps^(2 / 3)) {
+
+  # Get cor
+  pcor <- .get_cor(pcor, cov = NULL)
+
+  # negate off-diagonal entries, then invert
+  m <- -pcor
+  diag(m) <- -diag(m)
+
+  inverted <- .invert_matrix(m, tol = tol)
+  out <- cov2cor(inverted)
+
+  out
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' @rdname cor_to_pcor
+#' @export
+cor_to_spcor = function(cor = NULL, cov = NULL, tol = .Machine$double.eps^(2 / 3)){
 
 
   # Get cor
   cor <- .get_cor(cor, cov)
 
-
-  # Partial
-  if(semi){
-    if(is.null(cov)){
-      stop("Covariance matrix (or vector of SD of variables) needs to be passed for semi-partial correlations.")
-    } else{
-      if(!is.matrix(cov)){
-        cov <- cor2cov(cor, sd = cov)
-      }
-      inverted <- .invert_matrix(cov, tol = tol)
-      out <- -cov2cor(inverted) / sqrt(diag(cov)) / sqrt(abs(diag(inverted)-t(t(inverted^2) / diag(inverted))))
-    }
+  # Semi-partial
+  if(is.null(cov)){
+    stop("Covariance matrix (or vector of SD of variables) needs to be passed for semi-partial correlations.")
   } else{
-    inverted <- .invert_matrix(cor, tol = tol)
-    out <- -cov2cor(inverted)
+    if(!is.matrix(cov)){
+      cov <- cor2cov(cor, sd = cov)
+    }
+    inverted <- .invert_matrix(cov, tol = tol)
+    out <- -cov2cor(inverted) / sqrt(diag(cov)) / sqrt(abs(diag(inverted)-t(t(inverted^2) / diag(inverted))))
   }
 
   diag(out) <- 1
@@ -58,39 +104,48 @@ cor_to_pcor = function(cor = NULL, cov = NULL, semi = FALSE, tol = .Machine$doub
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #' @rdname cor_to_pcor
 #' @export
-pcor_to_cor = function(pcor = NULL, cov = NULL, semi = FALSE, tol = .Machine$double.eps^(2 / 3)) {
+spcor_to_cor = function(spcor = NULL, cov = NULL, semi = FALSE, tol = .Machine$double.eps^(2 / 3)) {
 
   # Get cor
-  pcor <- .get_cor(pcor, cov)
+  spcor <- .get_cor(spcor, cov)
 
   # negate off-diagonal entries, then invert
-  m <- -pcor
+  m <- -spcor
   diag(m) <- -diag(m)
 
+  stop("Cannot convert semi-partial correlations to correlations yet. We need help for that.")
+  # if(is.null(cov)){
+  #   stop("Covariance matrix (or vector of SD of variables) needs to be passed for semi-partial correlations.")
+  # } else{
+  #   if(!is.matrix(cov)){
+  #     cov <- cor2cov(spcor, sd = cov)
+  #   }
+  #   inverted <- inverted * sqrt(diag(cov)) * sqrt(abs(diag(inverted) - t(t(inverted^2) / diag(inverted))))
+  # }
 
-  if(semi){
-    stop("Cannot convert semi-partial correlations to correlations yet. We need help for that.")
-    # if(is.null(cov)){
-    #   stop("Covariance matrix (or vector of SD of variables) needs to be passed for semi-partial correlations.")
-    # } else{
-    #   if(!is.matrix(cov)){
-    #     cov <- cor2cov(pcor, sd = cov)
-    #   }
-    #   inverted <- inverted * sqrt(diag(cov)) * sqrt(abs(diag(inverted) - t(t(inverted^2) / diag(inverted))))
-    # }
-  } else{
-    inverted <- .invert_matrix(m, tol = tol)
-    out <- cov2cor(inverted)
-  }
-
-  out
+  # out
 }
-
-
-
-
 
 
 

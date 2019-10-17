@@ -1,14 +1,15 @@
-#' Partial Correlation Data
+#' Partialize Data
 #'
 #' This function can be used to (slowly) get the data of which a regular correlation is equivalent to the partial correlation between two variables (adjusted for the rest of the dataset). As it is based on underlying fitting of multiple regressions, it allows more flexibility, such as including factors as random effects and/or fitting the models under a Bayesian framework. The values returned by this function are the residuals of the regression models.
 #'
 #' @inheritParams cor_test
+#' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.
 #' @param random If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out the same as the other numeric variables.
 #'
 #' @examples
-#' pcordata <- partial_correlation_data(x = "Sepal.Length",
-#'                                      y = "Sepal.Width",
-#'                                      data = iris[1:4])
+#' pcordata <- partialize(data = iris[1:4],
+#'                        x = "Sepal.Length",
+#'                        y = "Sepal.Width")
 #' cor(pcordata)
 #'
 #' # Is equivalent to
@@ -16,17 +17,17 @@
 #'
 #' \donttest{
 #' # Which is close the the Bayesian alternative
-#' pcordata <- partial_correlation_data(x = "Sepal.Length",
-#'                                      y = "Sepal.Width",
-#'                                      data = iris[1:4],
-#'                                      bayesian = TRUE)
+#' pcordata <- partialize(data = iris[1:4],
+#'                        x = "Sepal.Length",
+#'                        y = "Sepal.Width",
+#'                        bayesian = TRUE)
 #'  cor(pcordata)
 #' }
 #'
 #'
 #'
 #' @export
-partial_correlation_data <- function(data, x, y, random = FALSE, bayesian = FALSE){
+partialize <- function(data, x, y, include_factors = TRUE, random = FALSE, bayesian = FALSE){
 
 
   if(random == FALSE){
@@ -48,7 +49,7 @@ partial_correlation_data <- function(data, x, y, random = FALSE, bayesian = FALS
     facs_formula <-  paste(" + ", paste0("(1|", facs, ")"), collapse = " + ")
   }
 
-  .correlation_data_get(x, y, data, nums_formula, facs_formula, random, bayesian)
+  .get_partialized(x, y, data, nums_formula, facs_formula, random, bayesian)
 }
 
 
@@ -56,12 +57,12 @@ partial_correlation_data <- function(data, x, y, random = FALSE, bayesian = FALS
 
 
 #' @keywords internal
-.correlation_data_get <- function(x, y, data, nums_formula, facs_formula, random = FALSE, bayesian = FALSE){
+.get_partialized <- function(x, y, data, nums_formula, facs_formula, random = FALSE, bayesian = FALSE){
   formula1 <- paste0(x, " ~ ", nums_formula, facs_formula)
-  m1 <- .correlation_data_model(formula1, data, random, bayesian)
+  m1 <- .partialize_fit_model(formula1, data, random, bayesian)
 
   formula2 <- paste0(y, " ~ ", nums_formula, facs_formula)
-  m2 <- .correlation_data_model(formula2, data, random, bayesian)
+  m2 <- .partialize_fit_model(formula2, data, random, bayesian)
 
   out <- data.frame(m1, m2)
   names(out) <- c(x, y)
@@ -75,7 +76,7 @@ partial_correlation_data <- function(data, x, y, random = FALSE, bayesian = FALS
 
 #' @importFrom stats lm residuals
 #' @keywords internal
-.correlation_data_model <- function(formula, data, random = FALSE, bayesian = FALSE){
+.partialize_fit_model <- function(formula, data, random = FALSE, bayesian = FALSE){
   if(random == FALSE){
     if(bayesian == FALSE){
       lm(formula, data = data)$residuals

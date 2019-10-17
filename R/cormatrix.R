@@ -1,40 +1,9 @@
-#' Correlation Matrix Object
-#'
-#' @param x A matrix x.
-#' @param ... rguments passed to or from other methods.
-#'
-#' @export
-cormatrix <- function(...){
-  UseMethod("cormatrix")
-}
-
-
 #' @rdname cormatrix
+#' @param cor A correlation matrix. Created by \code{\link{cor}}.
 #' @export
-as.cormatrix <- cormatrix
-
-
-
-#' @rdname cormatrix
-#' @export
-is.cormatrix <- function(x){
-  square <- isSquare(x)
-  symetric <- isSymmetric(x)
-  ismatrix <- is.matrix(x)
-}
-
-
-
-
-#' Check if Square Matrix
-#'
-#' @param m A matrix.
-#'
-#' @export
-isSquare <- function(m){
-  if(dim(m)[1] != dim(m)[2]){
-    FALSE
-  } else{
-    TRUE
+cormatrix.matrix <- function(cor, ...){
+  if(!is.cor(cor)){
+    stop("The input should be a square correlation matrix")
   }
+
 }

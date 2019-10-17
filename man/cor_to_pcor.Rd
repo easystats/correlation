@@ -3,22 +3,27 @@
 \name{cor_to_pcor}
 \alias{cor_to_pcor}
 \alias{pcor_to_cor}
+\alias{cor_to_spcor}
+\alias{spcor_to_cor}
 \title{Correlation Matrix to (Semi) Partial Correlations}
 \usage{
-cor_to_pcor(cor = NULL, cov = NULL, semi = FALSE,
-  tol = .Machine$double.eps^(2/3))
+cor_to_pcor(cor = NULL, tol = .Machine$double.eps^(2/3))
 
-pcor_to_cor(pcor = NULL, cov = NULL, semi = FALSE,
+pcor_to_cor(pcor = NULL, tol = .Machine$double.eps^(2/3))
+
+cor_to_spcor(cor = NULL, cov = NULL, tol = .Machine$double.eps^(2/3))
+
+spcor_to_cor(spcor = NULL, cov = NULL, semi = FALSE,
   tol = .Machine$double.eps^(2/3))
 }
 \arguments{
-\item{cor, pcor}{A (partial) correlation matrix.}
-
-\item{cov}{An optional covariance matrix (or a vector of the SD of the variables). Required for semi-partial correlations.}
-
-\item{semi}{Semi-partial correlations.}
+\item{cor, pcor, spcor}{A correlation matrix, or a partial or a semipartial correlation matrix.}
 
 \item{tol}{Relative tolerance to detect zero singular values.}
+
+\item{cov}{A covariance matrix (or a vector of the SD of the variables). Required for semi-partial correlations.}
+
+\item{semi}{Semi-partial correlations.}
 }
 \description{
 Convert a correlation matrix to a (semi)partial correlation matrix. Partial correlations are a measure of the correlation between two variables that remains after controlling for (i.e., "partialling" out) all the other relationships. They can be used for graphical Gaussian models, as they represent the direct interactions between two variables, conditioned on all remaining variables. This means that the squared partial correlation between a predictor X1 and a response variable Y can be interpreted as the proportion of (unique) variance accounted for by X1 relative to the residual or unexplained variance of Y that cannot be accounted by the other variables.
@@ -36,7 +41,7 @@ pcor <- cor_to_pcor(cor)
 round(pcor - ppcor::pcor(iris[1:4])$estimate, 2)
 
 # Semi-partial
-spcor <- cor_to_pcor(cor, cov = sapply(iris[1:4], sd), semi = TRUE)
+spcor <- cor_to_spcor(cor, cov = sapply(iris[1:4], sd))
 round(spcor - ppcor::spcor(iris[1:4])$estimate, 2)
 
 # Inverse

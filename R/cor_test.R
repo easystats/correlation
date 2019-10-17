@@ -233,3 +233,50 @@ cor_test <- function(data, x, y, ci = "default", method = "pearson", bayesian = 
     stringsAsFactors = FALSE
   )
 }
+
+
+
+
+#' @keywords internal
+.cor_test_biweight <- function(data, x, y, ...) {
+  if (!requireNamespace("WGCNA", quietly = TRUE)) {
+    stop("Package `WGCNA` required for tetrachoric correlations. Please install it by running `install.packages('WGCNA').", call. = FALSE)
+  }
+
+  var_x <- data[[x]]
+  var_y <- data[[y]]
+  var_x <- var_x[complete.cases(var_x, var_y)]
+  var_y <- var_y[complete.cases(var_x, var_y)]
+
+  # Based on equation of https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3465711/
+  u <- (var_x - median(var_x)) / 9 * mad(var_x, constant = 1)
+  v <- (var_y - median(var_y)) / 9 * mad(var_y, constant = 1)
+
+  I_x <- ifelse((1 - abs(u)) > 0, 1, 0)
+  I_y <- ifelse((1 - abs(v)) > 0, 1, 0)
+
+  wa_x <- (1-u^2)^2 - (I_x * (1 - abs(u)))
+  wa_x <- (1-v^2)^2 - (I_y * (1 - abs(v)))
+
+
+
+
+  # Reconstruct dataframe
+  dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
+  names(dat) <- c(x, y)
+
+  junk <- capture.output(r <- psych::polychoric(dat)$rho[2, 1])
+  method <- "Polychoric"
+
+
+
+
+  data.frame(
+    Parameter1 = x,
+    Parameter2 = y,
+    rho = r,
+    Method = method,
+    stringsAsFactors = FALSE
+  )
+}
+

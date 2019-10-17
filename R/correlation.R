@@ -35,6 +35,17 @@
 #' @export
 correlation <- function(data, data2 = NULL, ci = "default", method = "pearson", p_adjust = "holm", partial = FALSE, bayesian = FALSE, prior = "medium", ...) {
 
+
+  # data <- .clean_data(data, include_factors = include_factors, random = random)
+  # combinations <- .get_combinations(data, redundant = FALSE, include_factors = include_factors, random = random)
+  #
+  # for(i in 1:nrow(combinations)){
+  #   partialized <- partialize_specific(data,
+  #                                      combinations[i, "Parameter1"], combinations[i, "Parameter2"],
+  #                                      include_factors = include_factors, random = random, bayesian = bayesian)
+  # }
+
+
   # Sanity checks
   if (partial == TRUE & bayesian == TRUE) {
     warning("Bayesian partial correlations are not supported yet. Running frequentist analysis...")

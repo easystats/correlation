@@ -20,20 +20,3 @@ remove_triangular <- function(cor, which_column = NULL) {
 
 
 
-
-#' @keywords internal
-.get_rows_non_NA <- function(m) {
-  rows <- c()
-  cols <- c()
-
-  for (col in names(m)[-1]) {
-    for (row in 1:nrow(m)) {
-      if (!is.na(m[row, col])) {
-        rows <- c(rows, m$Parameter[row])
-        cols <- c(cols, col)
-      }
-    }
-  }
-
-  paste0(rows, "_", cols)
-}
