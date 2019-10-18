@@ -20,8 +20,8 @@
 
 
 #' @keywords internal
-.get_matrix <- function(data){
-  if(all(data$Parameter1 %in% data$Parameter2) && all(data$Parameter2 %in% data$Parameter1)){
+.get_matrix <- function(data, square = FALSE){
+  if((all(data$Parameter1 %in% data$Parameter2) && all(data$Parameter2 %in% data$Parameter1)) | square){
     vars <- as.character(unique(data$Parameter1))
     dim <- length(vars)
     m <- matrix(nrow = dim, ncol = dim, dimnames = list(vars, vars))

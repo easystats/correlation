@@ -39,18 +39,18 @@
 #' # When one variable is continuous, will run 'polyserial' correlation
 #' cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 #' @export
-cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), partial = FALSE, partial_include_factors = TRUE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
+cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), partial = FALSE, include_factors = TRUE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
 
   # Partial
   if(partial){
-    data <- partialize(data, x, y, include_factors = partial_include_factors, random = partial_random, bayesian = partial_bayesian)
+    data <- partialize(data, x, y, include_factors = include_factors, random = partial_random, bayesian = partial_bayesian)
   }
 
   # Frequentist
   if (bayesian == FALSE) {
     if (ci == "default") ci <- 0.95
 
-    if(method == "auto") .cor_test_findtype(data, x, y)
+    if(method == "auto") method <- .cor_test_findtype(data, x, y)
 
     if (tolower(method) %in% c("tetra", "tetrachoric")) {
       out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
@@ -200,6 +200,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
     Parameter2 = y,
     rho = r,
     t = stats$statistic,
+    df = length(var_x) - 2,
     p = stats$p,
     CI_low = stats$ci_low,
     CI_high = stats$ci_high,
@@ -255,6 +256,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
     Parameter2 = y,
     rho = r,
     t = stats$statistic,
+    df = length(var_x) - 2,
     p = stats$p,
     CI_low = stats$ci_low,
     CI_high = stats$ci_high,
@@ -301,6 +303,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
     Parameter2 = y,
     r = r,
     t = stats$statistic,
+    df = length(var_x) - 2,
     p = stats$p,
     CI_low = stats$ci_low,
     CI_high = stats$ci_high,
@@ -321,5 +324,6 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   } else {
     current_method <- "pearson"
   }
+  current_method
 }
 

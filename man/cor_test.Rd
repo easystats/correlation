@@ -7,8 +7,8 @@
 cor_test(data, x, y, method = "pearson", ci = "default",
   bayesian = FALSE, bayesian_prior = "medium",
   bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"),
-  partial = FALSE, partial_include_factors = TRUE,
-  partial_random = FALSE, partial_bayesian = FALSE, ...)
+  partial = FALSE, include_factors = TRUE, partial_random = FALSE,
+  partial_bayesian = FALSE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -27,9 +27,9 @@ cor_test(data, x, y, method = "pearson", ci = "default",
 
 \item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
 
-\item{partial_include_factors, partial_random, partial_bayesian}{See arguments of \code{\link{partialize}}.}
-
 \item{...}{Arguments passed to or from other methods.}
+
+\item{partial_include_factors, partial_random, partial_bayesian}{See arguments of \code{\link{partialize}}.}
 }
 \description{
 This function perfoms a correlation test between two variables.

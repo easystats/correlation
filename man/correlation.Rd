@@ -8,8 +8,8 @@
 correlation(data, data2 = NULL, method = "pearson",
   p_adjust = "holm", ci = "default", bayesian = FALSE,
   bayesian_prior = "medium", bayesian_ci_method = "hdi",
-  bayesian_test = c("pd", "rope", "bf"), partial = FALSE,
-  partial_include_factors = TRUE, partial_random = FALSE,
+  bayesian_test = c("pd", "rope", "bf"), redundant = FALSE,
+  include_factors = TRUE, partial = FALSE, partial_random = FALSE,
   partial_bayesian = FALSE, ...)
 
 \method{summary}{easycorrelation}(object, which_column = NULL,
@@ -35,9 +35,11 @@ correlation(data, data2 = NULL, method = "pearson",
 
 \item{bayesian_test}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
 
-\item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
+\item{redundant}{Shoud the data include redundant rows (where each given correlation is repeated two times).}
 
-\item{partial_include_factors}{See arguments of \code{\link{partialize}}.}
+\item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
+
+\item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
 
 \item{partial_random}{See arguments of \code{\link{partialize}}.}
 
