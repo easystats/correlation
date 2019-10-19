@@ -4,23 +4,34 @@
 \alias{cor_test}
 \title{Correlation test}
 \usage{
-cor_test(data, x, y, ci = "default", method = "pearson",
-  bayesian = FALSE, ...)
+cor_test(data, x, y, method = "pearson", ci = "default",
+  bayesian = FALSE, bayesian_prior = "medium",
+  bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"),
+  partial = FALSE, include_factors = TRUE, partial_random = FALSE,
+  partial_bayesian = FALSE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
 
-\item{x}{Name of a variable.}
+\item{x, y}{Names of two variables present in the data.}
 
-\item{y}{Name of a variable.}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, and pearson otherwise).}
 
 \item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).}
+\item{bayesian}{If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
-\item{bayesian}{If TRUE, the arguments below apply.}
+\item{bayesian_prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
 
-\item{...}{(e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}})}
+\item{bayesian_ci_method, bayesian_test}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
+
+\item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
+
+\item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
+
+\item{partial_random, partial_bayesian}{See arguments of \code{\link{partialize}}.}
+
+\item{...}{Arguments passed to or from other methods.}
 }
 \description{
 This function perfoms a correlation test between two variables.
@@ -30,6 +41,8 @@ data <- iris
 
 cor_test(iris, "Petal.Length", "Petal.Width")
 cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
+cor_test(iris, "Petal.Length", "Petal.Width", method = "kendall")
+cor_test(iris, "Petal.Length", "Petal.Width", method = "biweight")
 cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
 
 # Tetrachoric
@@ -37,7 +50,7 @@ data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 
-# When one variable is continuous, will run 'biserial' correlation
+# When one variable is continuous and the other binary, will run 'biserial' correlation
 cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
 
 # Polychoric

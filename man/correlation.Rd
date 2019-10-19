@@ -4,50 +4,58 @@
 \alias{correlation}
 \title{Correlation Analysis}
 \usage{
-correlation(data, data2 = NULL, ci = "default", method = "pearson",
-  p_adjust = "holm", partial = FALSE, bayesian = FALSE,
-  prior = "medium", ...)
+correlation(data, data2 = NULL, method = "pearson",
+  p_adjust = "holm", ci = "default", bayesian = FALSE,
+  bayesian_prior = "medium", bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"), redundant = FALSE,
+  include_factors = TRUE, partial = FALSE, partial_random = FALSE,
+  partial_bayesian = FALSE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
 
 \item{data2}{An optional dataframe.}
 
-\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
-
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved).}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, and pearson otherwise).}
 
 \item{p_adjust}{Correction method for frequentist correlations. One of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".}
 
+\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
+
+\item{bayesian}{If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
+
+\item{bayesian_prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
+
+\item{bayesian_ci_method}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
+
+\item{bayesian_test}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
+
+\item{redundant}{Shoud the data include redundant rows (where each given correlation is repeated two times).}
+
+\item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
+
 \item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
 
-\item{bayesian}{If TRUE, the arguments below apply.}
+\item{partial_random}{See arguments of \code{\link{partialize}}.}
 
-\item{prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
+\item{partial_bayesian}{See arguments of \code{\link{partialize}}.}
 
-\item{...}{(e.g., to \code{\link[=parameters]{model_parameters.BFBayesFactor}})}
+\item{...}{Arguments passed to or from other methods.}
 }
 \description{
-Correlation Analysis
+Performs a correlation analysis.
 }
 \examples{
 library(dplyr)
-correlation(iris)
+cor <- correlation(iris)
 
-iris \%>\%
-  select(starts_with("Sepal")) \%>\%
-  correlation()
-
-iris \%>\%
-  select(starts_with("Sepal")) \%>\%
-  correlation(select(iris, starts_with("Petal")))
+cor
+summary(cor)
+as.table(cor)
 
 iris \%>\%
   group_by(Species) \%>\%
   correlation()
 
-data <- mtcars
-data$cyl <- as.factor(data$cyl)
-correlation(data, method = "auto")
-
+correlation(mtcars[-2], method = "auto")
 }

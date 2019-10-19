@@ -3,11 +3,11 @@ language: r
 os:
   #- windows
   - linux
-  - osx
+  #- osx
   
 r:
   - release
-  #- devel
+  - devel
 
 # Copied from broom
 sudo: required
