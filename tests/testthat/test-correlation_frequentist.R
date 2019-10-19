@@ -2,7 +2,7 @@ context("correlation")
 
 
 
-test_that("correlation basic", {
+test_that("correlation basic [comparison with other packages]", {
   library(dplyr)
 
   # Pearson
@@ -32,6 +32,13 @@ test_that("correlation basic", {
   p <- as.matrix(attributes(rez)$p[2:5])
   testthat::expect_equal(mean(p - hmisc$P, na.rm = TRUE), 0, tol= 0.0001)
 
+  # Kendall
+  out <- correlation(iris, include_factors = FALSE, method = "kendall")
+  rez <- as.data.frame(as.table(out))
+
+  r <- as.matrix(rez[2:5])
+  testthat::expect_equal(mean(r - cor(iris[1:4], method = "kendall")), 0, tol= 0.0001)
+})
 
   # Size
 
@@ -71,4 +78,4 @@ test_that("correlation basic", {
   # testthat::expect_error(iris %>%
   #   group_by(Species) %>%
   #   correlation(iris))
-})
+

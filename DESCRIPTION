@@ -40,7 +40,7 @@ Suggests:
 Remotes:
 	easystats/bayestestR@dev,
 	easystats/parameters@dev,
-	easystats/parameters
+	easystats/effectsize
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

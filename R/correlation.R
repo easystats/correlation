@@ -158,10 +158,12 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
       params <- result
     } else {
       if (!all(names(result) %in% names(params))) {
-        if ("rho" %in% names(result) & !"rho" %in% names(params)) {
-          names(result)[names(result) == "rho"] <- "r"
-        } else if ("r" %in% names(result) & !"r" %in% names(params)) {
-          names(params)[names(params) == "rho"] <- "r"
+        if("r" %in% names(params) & !"r" %in% names(result)){
+          names(result)[names(result) %in% c("rho", "tau")] <- "r"
+        }
+        if(!"r" %in% names(params) & any(c("rho", "tau") %in% names(result))){
+          names(params)[names(params) %in% c("rho", "tau")] <- "r"
+          names(result)[names(result) %in% c("rho", "tau")] <- "r"
         }
         result[names(params)[!names(params) %in% names(result)]] <- NA
       }
@@ -204,9 +206,11 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
   if ("Group" %in% names(params)) diagonal$Group <- unique(params$Group)[1]
   if ("r" %in% names(params)) diagonal$r <- 1
   if ("rho" %in% names(params)) diagonal$rho <- 1
+  if ("tau" %in% names(params)) diagonal$tau <- 1
   if ("p" %in% names(params)) diagonal$p <- 0
   if ("t" %in% names(params)) diagonal$t <- Inf
   if ("S" %in% names(params)) diagonal$S <- Inf
+  if ("z" %in% names(params)) diagonal$z <- Inf
   if ("df" %in% names(params)) diagonal$df <- unique(params$df)[1]
   if ("CI_low" %in% names(params)) diagonal$CI_low <- 1
   if ("CI_high" %in% names(params)) diagonal$CI_high <- 1

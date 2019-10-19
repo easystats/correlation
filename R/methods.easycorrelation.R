@@ -1,11 +1,11 @@
 #' @export
-summary.easycorrelation <- function(object, lower = TRUE, ...){
+summary.easycorrelation <- function(object, redundant = FALSE, ...){
 
   if ("Group" %in% names(object)) {
     datalist <- split(object, object$Group)
     m <- list()
     for (group in names(datalist)) {
-      m[[group]] <- .summary_easycorrelation(datalist[[group]], lower = lower)
+      m[[group]] <- .summary_easycorrelation(datalist[[group]], redundant = redundant)
     }
     out <- do.call(rbind, m)
     row.names(out) <- NULL
@@ -21,7 +21,7 @@ summary.easycorrelation <- function(object, lower = TRUE, ...){
     }
 
   } else{
-    out <- .summary_easycorrelation(object, lower = lower)
+    out <- .summary_easycorrelation(object, redundant = redundant)
   }
 
   class(out) <- c("easycormatrix", class(out))
@@ -32,7 +32,7 @@ summary.easycorrelation <- function(object, lower = TRUE, ...){
 
 #' @export
 as.table.easycorrelation <- function(x, ...) {
-  summary(x, lower = FALSE)
+  summary(x, redundant = TRUE)
 }
 
 
@@ -44,16 +44,16 @@ as.table.easycorrelation <- function(x, ...) {
 
 
 #' @keywords internal
-.summary_easycorrelation <- function(object, lower = TRUE){
+.summary_easycorrelation <- function(object, redundant = FALSE){
 
-  frame <- .get_matrix(object, square = !lower)
+  frame <- .get_matrix(object, square = redundant)
 
   # Add redundant
-  if(lower == FALSE){
+  if(redundant){
     object <- .add_redundant(object)
   }
 
-  r_col <- names(object)[names(object) %in% c("r", "rho", "Median")][1]
+  r_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median")][1]
   out <- .fill_matrix(frame, object, column = r_col)
 
   # If grouped
@@ -73,7 +73,7 @@ as.table.easycorrelation <- function(x, ...) {
   }
 
   # Remove upper triangular
-  if(lower){
+  if(redundant == FALSE){
     out[-1][lower.tri(out[-1])] <- NA
     out <- out[c(1, ncol(out):2)]
   }
