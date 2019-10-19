@@ -16,6 +16,7 @@
 #'
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall")
 #' cor_to_p(-0.07699679, n = 150, ci = 0.95, method = "kendall")
+#' @importFrom stats mad median qnorm
 #' @export
 cor_to_p <- function(cor, n, ci = 0.95, method = "pearson"){
 

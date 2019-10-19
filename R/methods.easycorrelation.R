@@ -1,8 +1,5 @@
-#' @rdname correlation
-#'
-#' @param lower Remove the upper triangular part of the matrix.
 #' @export
-summary.easycorrelation <- function(object, lower = TRUE){
+summary.easycorrelation <- function(object, lower = TRUE, ...){
 
   if ("Group" %in% names(object)) {
     datalist <- split(object, object$Group)
@@ -34,7 +31,7 @@ summary.easycorrelation <- function(object, lower = TRUE){
 
 
 #' @export
-as.table.easycorrelation <- function(x) {
+as.table.easycorrelation <- function(x, ...) {
   summary(x, lower = FALSE)
 }
 
@@ -73,6 +70,12 @@ as.table.easycorrelation <- function(x) {
       attri <- attri[c("Group", names(attri)[names(attri) != "Group"])]
     }
     attr(out, i) <- attri
+  }
+
+  # Remove upper triangular
+  if(lower){
+    out[-1][lower.tri(out[-1])] <- NA
+    out <- out[c(1, ncol(out):2)]
   }
 
   out

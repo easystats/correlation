@@ -20,12 +20,14 @@ BugReports: https://github.com/easystats/correlation/issues
 Description: Offers functions for computing different kinds of correlations.
 Imports:
 	stats,
-	insight (> 0.5.0),
+	insight (>= 0.6.0),
 	bayestestR (>= 0.3.0),
 	parameters (>= 0.2.1),
+	effectsize (>= 0.1.0)
 Suggests:
 	BayesFactor,
 	dplyr,
+	Hmisc,
 	knitr,
 	lme4,
 	polycor,
@@ -36,9 +38,9 @@ Suggests:
 	rstanarm,
 	rmarkdown
 Remotes:
-	easystats/insight,
 	easystats/bayestestR@dev,
-	easystats/parameters@dev
+	easystats/parameters@dev,
+	easystats/parameters
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

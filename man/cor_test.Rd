@@ -27,9 +27,11 @@ cor_test(data, x, y, method = "pearson", ci = "default",
 
 \item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
 
-\item{...}{Arguments passed to or from other methods.}
+\item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
 
-\item{partial_include_factors, partial_random, partial_bayesian}{See arguments of \code{\link{partialize}}.}
+\item{partial_random, partial_bayesian}{See arguments of \code{\link{partialize}}.}
+
+\item{...}{Arguments passed to or from other methods.}
 }
 \description{
 This function perfoms a correlation test between two variables.
