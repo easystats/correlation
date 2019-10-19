@@ -1,51 +1,6 @@
 #' @export
 summary.easycorrelation <- function(object, redundant = FALSE, ...){
 
-  if ("Group" %in% names(object)) {
-    datalist <- split(object, object$Group)
-    m <- list()
-    for (group in names(datalist)) {
-      m[[group]] <- .summary_easycorrelation(datalist[[group]], redundant = redundant)
-    }
-    out <- do.call(rbind, m)
-    row.names(out) <- NULL
-    for(i in names(attributes(m[[group]]))){
-      if(!i %in% c("names", "row.names", "class")){
-        attri <- list()
-        for (group in names(datalist)) {
-          attri[[group]] <- attributes(m[[group]])[[i]]
-        }
-        attr(out, i) <- do.call(rbind, attri)
-        row.names(attr(out, i)) <- NULL
-      }
-    }
-
-  } else{
-    out <- .summary_easycorrelation(object, redundant = redundant)
-  }
-
-  class(out) <- c("easycormatrix", class(out))
-  out
-}
-
-
-
-#' @export
-as.table.easycorrelation <- function(x, ...) {
-  summary(x, redundant = TRUE)
-}
-
-
-
-
-
-
-# Internals ---------------------------------------------------------------
-
-
-#' @keywords internal
-.summary_easycorrelation <- function(object, redundant = FALSE){
-
   # If data2 is present
   if(!is.null(attributes(object)$data2)){
     redundant <- FALSE
@@ -68,9 +23,23 @@ as.table.easycorrelation <- function(x, ...) {
     attr(out, i) <- attri
   }
 
+  class(out) <- c("easycormatrix", class(out))
   out
 }
 
+
+
+#' @export
+as.table.easycorrelation <- function(x, ...) {
+  summary(x, redundant = TRUE)
+}
+
+
+
+
+
+
+# Internals ---------------------------------------------------------------
 
 
 

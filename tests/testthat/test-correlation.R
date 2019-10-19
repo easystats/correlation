@@ -91,6 +91,15 @@ test_that("comparison with other packages", {
   p <- bayestestR::pd_to_p(pd)
   testthat::expect_equal(mean(abs(p - as.matrix(ppcor$p.value))), 0, tol= 0.001)
 
+
+  # Bayesian (Full) - Partial
+  out <- correlation(iris, include_factors = FALSE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
+  rez <- as.data.frame(as.table(out))
+
+  r <- as.matrix(rez[2:5])
+  ppcor <- ppcor::pcor(iris[1:4])
+  testthat::expect_equal(max(r - as.matrix(ppcor$estimate)), 0, tol= 0.02)
+
 })
 
 
@@ -125,6 +134,11 @@ test_that("format checks", {
   testthat::expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(12, 6))
   testthat::expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(9, 5))
 
+  # Bayesian full partial
+  out <- correlation(iris, partial_random = TRUE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
+  testthat::expect_equal(c(nrow(out), ncol(out)), c(6, 11))
+  testthat::expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(4, 5))
+  testthat::expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
 })
 
 
