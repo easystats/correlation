@@ -22,7 +22,7 @@
 #'   correlation()
 #'
 #' correlation(mtcars[-2], method = "auto")
-#'
+#' @importFrom stats p.adjust
 #' @export
 correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
 
@@ -151,6 +151,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
                        bayesian_prior = bayesian_prior,
                        bayesian_ci_method = bayesian_ci_method,
                        bayesian_test = bayesian_test,
+                       partial = partial,
                        ...)
 
     # Merge
@@ -226,6 +227,14 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
   if ("pd" %in% names(params)) diagonal$pd <- 1
   if ("ROPE_Percentage" %in% names(params)) diagonal$ROPE_Percentage <- 0
   if ("BF" %in% names(params)) diagonal$BF <- Inf
+  if ("Prior_Distribution" %in% names(params)) diagonal$Prior_Distribution <- unique(params$Prior_Distribution)[1]
+  if ("Prior_Location" %in% names(params)) diagonal$Prior_Location <- unique(params$Prior_Location)[1]
+  if ("Prior_Scale" %in% names(params)) diagonal$Prior_Scale <- unique(params$Prior_Scale)[1]
+
+  for(var in names(diagonal)[!names(diagonal) %in% names(params)]){
+    diagonal[[var]] <- unique(params[[var]])[1]
+  }
+
   diagonal
 }
 

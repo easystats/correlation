@@ -46,7 +46,13 @@ as.table.easycorrelation <- function(x, ...) {
 #' @keywords internal
 .summary_easycorrelation <- function(object, redundant = FALSE){
 
+  # If data2 is present
+  if(!is.null(attributes(object)$data2)){
+    redundant <- FALSE
+  }
+
   frame <- .get_matrix(object, square = redundant)
+
 
   # Add redundant
   if(redundant){
@@ -54,28 +60,12 @@ as.table.easycorrelation <- function(x, ...) {
   }
 
   r_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median")][1]
-  out <- .fill_matrix(frame, object, column = r_col)
+  out <- .create_matrix(frame, object, column = r_col, redundant = redundant)
 
-  # If grouped
-  if("Group" %in% names(object)){
-    out$Group <- unique(object$Group)[1]
-    out <- out[c("Group", names(out)[names(out) != "Group"])]
-  }
-
-
+  # Fill attributes
   for(i in names(object)[!names(object) %in% c("Group", "Parameter1", "Parameter2", r_col)]){
-    attri <- .fill_matrix(frame, object, column = i)
-    if("Group" %in% names(object)){
-      attri$Group <- unique(object$Group)[1]
-      attri <- attri[c("Group", names(attri)[names(attri) != "Group"])]
-    }
+    attri <- .create_matrix(frame, object, column = i, redundant = redundant)
     attr(out, i) <- attri
-  }
-
-  # Remove upper triangular
-  if(redundant == FALSE){
-    out[-1][lower.tri(out[-1])] <- NA
-    out <- out[c(1, ncol(out):2)]
   }
 
   out
@@ -85,7 +75,38 @@ as.table.easycorrelation <- function(x, ...) {
 
 
 #' @keywords internal
-.fill_matrix <- function(frame, object, column = "r"){
+.create_matrix <- function(frame, object, column = "r", redundant = TRUE){
+
+  if("Group" %in% names(object)){
+    out <- data.frame()
+    for(g in unique(object$Group)){
+      data <- object[object$Group == g, ]
+      m <- .fill_matrix(frame, data, column = column, redundant = redundant)
+      m$Group <- g
+      out <- rbind(out, m)
+    }
+    out <- out[c("Group", names(out)[names(out) != "Group"])]
+  } else{
+    out <- .fill_matrix(frame, object, column = column, redundant = redundant)
+  }
+  out
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#' @keywords internal
+.fill_matrix <- function(frame, object, column = "r", redundant = TRUE){
   for(row in row.names(frame)){
     for(col in colnames(frame)){
       frame[row, col] <- object[(object$Parameter1 == row & object$Parameter2 == col) | (object$Parameter2 == row & object$Parameter1 == col), column][1]
@@ -98,6 +119,12 @@ as.table.easycorrelation <- function(x, ...) {
   frame <- frame[c("Parameter", names(frame)[names(frame) != "Parameter"])]
   row.names(frame) <- NULL
 
+  # Remove upper triangular
+  if(redundant == FALSE & is.null(attributes(object)$data2)){
+    frame[-1][lower.tri(frame[-1])] <- NA
+    frame <- frame[c(1, ncol(frame):2)]
+  }
+
   frame
 }
 
@@ -105,137 +132,3 @@ as.table.easycorrelation <- function(x, ...) {
 
 
 
-
-
-
-
-#' @rdname correlation
-#'
-#' @param object Object of class \link{correlation}.
-#' @param which_column Which column to use for the matrix.
-#' @param reorder Reorder the matrix based on correlation pattern (currently only works with square matrices)?
-#' @param reorder_method Reordering method. See \link{hclust}.
-#' @param reorder_distance The distance matrix used for reordering.
-#' @param lower Remove the upper triangular part of the matrix.
-#'
-#' @export
-# summary.easycorrelation <- function(object, which_column = NULL, reorder = TRUE, reorder_method = "complete", lower = TRUE, reorder_distance = NULL, ...) {
-#   x <- object
-#
-#   if (is.null(which_column)) {
-#     if ("r" %in% names(x)) {
-#       which_column <- "r"
-#     } else if ("Median" %in% names(x)) {
-#       which_column <- "Median"
-#     } else {
-#       stop("Please specify `which_column`.")
-#     }
-#   }
-# #
-#   if ("Group" %in% names(x)) {
-#     datalist <- split(x, x$Group)
-#     m <- data.frame()
-#     for (group in names(datalist)) {
-#       dat <- datalist[[group]]
-#       dat$Group <- NULL
-#       dat <- .create_matrix(dat, which_column, reorder = FALSE, reorder_method = reorder_method, lower = lower, reorder_distance = reorder_distance)
-#       dat$Group <- group
-#       dat[nrow(dat) + 1, ] <- NA
-#       m <- rbind(m, dat)
-#     }
-#     m <- m[-nrow(m), ]
-#   } else {
-#     m <- .create_matrix(x, which_column, reorder = reorder, reorder_method = reorder_method, lower = lower, reorder_distance = reorder_distance)
-#   }
-#
-#   # Reorder columns
-#   if ("Group" %in% names(m)) {
-#     m <- m[c("Group", "Parameter", names(m)[!names(m) %in% c("Group", "Parameter")])]
-#   } else {
-#     m <- m[c("Parameter", names(m)[!names(m) %in% c("Parameter")])]
-#   }
-#
-#   # Remove empty
-#   m <- m[, colSums(is.na(m)) < nrow(m)]
-#   m <- m[rowSums(is.na(m)) != ncol(m[!names(m) %in% c("Parameter", "Group")]), ]
-#
-#   # Reset row names
-#   row.names(m) <- NULL
-#
-#   m
-# }
-
-
-
-
-
-#'
-#' #' @keywords internal
-#' .create_matrix <- function(x, which_column, reorder = TRUE, reorder_method = "complete", lower = TRUE, reorder_distance = NULL) {
-#'   rows <- unique(as.character(x$Parameter1))
-#'   cols <- unique(as.character(x$Parameter2))
-#'   m <- data.frame(matrix(ncol = length(cols), nrow = length(rows)), row.names = rows)
-#'   colnames(m) <- cols
-#'
-#'   for (col in cols) {
-#'     for (row in rows) {
-#'       if (row == col) {
-#'         cell <- NA
-#'       } else {
-#'         if (is.null(x[x$Parameter1 == row & x$Parameter2 == col, which_column])) {
-#'           cell <- NA
-#'         } else {
-#'           cell <- x[x$Parameter1 == row & x$Parameter2 == col, which_column]
-#'           if (length(cell) == 0) {
-#'             cell <- x[x$Parameter1 == col & x$Parameter2 == row, which_column]
-#'           }
-#'         }
-#'       }
-#'       m[row, col] <- cell
-#'     }
-#'   }
-#'
-#'
-#'   if (reorder == TRUE & all(unique(rownames(m)) == unique(names(m)))) {
-#'     m <- .reorder_matrix(m, reorder_distance = reorder_distance, method = reorder_method)
-#'   }
-#'
-#'   # Remove upper
-#'   if (lower == TRUE & all(unique(rownames(m)) == unique(names(m)))) {
-#'     m[upper.tri(m, diag = TRUE)] <- NA
-#'   }
-#'
-#'   m$Parameter <- row.names(m)
-#'   row.names(m) <- NULL
-#'
-#'   m
-#' }
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#' #' @importFrom stats as.dist hclust
-#' #' @keywords internal
-#' .reorder_matrix <- function(x, reorder_distance = NULL, method = "complete") {
-#'   if (is.null(reorder_distance)) {
-#'     reorder_distance <- x
-#'     reorder_distance$Parameter <- NULL
-#'     reorder_distance$Group <- NULL
-#'   } else {
-#'     reorder_distance$Parameter <- NULL
-#'     reorder_distance$Group <- NULL
-#'   }
-#'
-#'   if (ncol(x) != nrow(x) | ncol(reorder_distance) != nrow(reorder_distance)) {
-#'     warning("Matrix must be squared to be re-arranged.")
-#'     return(x)
-#'   }
-#'
-#'   reorder_distance <- stats::as.dist((1 - reorder_distance) / 2, diag = TRUE, upper = TRUE)
-#'   hc <- stats::hclust(reorder_distance, method = method)
-#'   x <- x[hc$order, hc$order]
-#'   return(x)
-#' }

@@ -22,7 +22,7 @@ correlation(data, data2 = NULL, method = "pearson",
 
 \item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
-\item{bayesian}{If TRUE, will run a Bayesian correlation.}
+\item{bayesian}{If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
 \item{bayesian_prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
 
@@ -58,5 +58,4 @@ iris \%>\%
   correlation()
 
 correlation(mtcars[-2], method = "auto")
-
 }

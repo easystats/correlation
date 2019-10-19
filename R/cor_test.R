@@ -6,7 +6,7 @@
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
 #' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, and pearson otherwise).
-#' @param bayesian If TRUE, will run a Bayesian correlation.
+#' @param bayesian If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
 #' @inheritParams partialize
 #' @param partial_random,partial_bayesian See arguments of \code{\link{partialize}}.
