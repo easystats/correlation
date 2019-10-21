@@ -34,7 +34,7 @@ Click on the buttons above to access the package
 [**easystats blog**](https://easystats.github.io/blog/posts/), and
 check-out these vignettes:
 
-  - No vignettes yet :(
+  - **No vignettes yet :(**
 
 # Features
 
@@ -81,6 +81,16 @@ as.table(cor)
 ## Petal.Width  |      0.82*** |    -0.37*** |      0.96*** |     1.00***
 ```
 
+``` r
+library(ggcorrplot)
+
+cor %>% 
+  as.matrix() %>% 
+  ggcorrplot()
+```
+
+![](man/figures/unnamed-chunk-7-1.png)<!-- -->
+
 ## Grouped dataframes
 
 The function also supports **stratified correlations**, all within the
@@ -114,11 +124,11 @@ It is very easy to switch to a **Bayesian framework**.
 correlation(iris, bayesian=TRUE)
 ## Parameter1   |   Parameter2 |   rho |         89% CI |     pd | % in ROPE |    BF |              Prior
 ## ------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.23,  0.02] | 92.58% |    43.60% |  0.51 | Cauchy (0 +- 0.33)
-## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
-## Sepal.Width  | Petal.Length | -0.42 | [-0.52, -0.30] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] |   100% |     0.05% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.23,  0.02] | 92.65% |    42.75% |  0.51 | Cauchy (0 +- 0.33)
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Length |  Petal.Width |  0.80 | [ 0.76,  0.85] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Width  | Petal.Length | -0.42 | [-0.52, -0.31] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
 ```
 
@@ -154,6 +164,32 @@ correlation(iris, include_factors = TRUE, method = "auto")
 ## Species.versicolor |  Species.virginica | -0.88 | -22.35 | 148 | < .001 | [-0.91, -0.84] | Tetrachoric
 ```
 
+## Gaussian graphical models (GGMs)
+
+**Gaussian graphical models** are an increasingly popular technique in
+psychology, which relationships can be interpreted as partial
+correlation coefficients.
+
+``` r
+library(ggraph)
+library(tidygraph)
+
+mtcars %>% 
+  correlation(partial = TRUE) %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = 'kk') +
+  geom_edge_arc(aes(colour=r, edge_width = abs(r)), strength=0.1) +
+  geom_node_point(color="#607D8B", size=22) +
+  geom_node_text(aes(label = name), colour="white") +
+  scale_edge_color_gradient2(low = "#d50000", high = "#00C853") +
+  theme_graph() +   
+  guides(edge_width = FALSE) +
+  scale_x_continuous(expand = expand_scale(c(.10, .10))) +
+  scale_y_continuous(expand = expand_scale(c(.10, .10)))
+```
+
+![](man/figures/unnamed-chunk-11-1.png)<!-- -->
+
 ## Partial Correlations
 
 It also supports **partial correlations** (as well as Bayesian partial
@@ -180,11 +216,25 @@ can be see as (partial) correlations *adjusted* for some hierarchical
 
 ``` r
 iris %>% 
-  correlation(include_factors = TRUE, partial_random = TRUE) %>% 
+  correlation(include_factors = TRUE, partial = TRUE, partial_random = TRUE) %>% 
   summary()
 ## Parameter    | Petal.Width | Petal.Length | Sepal.Width
 ## -------------------------------------------------------
-## Sepal.Length |     0.82*** |      0.87*** |       -0.12
-## Sepal.Width  |    -0.37*** |     -0.43*** |            
-## Petal.Length |     0.96*** |              |
+## Sepal.Length |       -0.17 |      0.71*** |     0.43***
+## Sepal.Width  |     0.39*** |        -0.18 |            
+## Petal.Length |     0.38*** |              |
+```
+
+These can be **converted back** to full correlations:
+
+``` r
+iris %>% 
+  correlation(include_factors = TRUE, partial = TRUE, partial_random = TRUE) %>% 
+  pcor_to_cor() %>% 
+  summary()
+## Parameter    | Petal.Width | Petal.Length | Sepal.Width
+## -------------------------------------------------------
+## Sepal.Length |     0.36*** |      0.76*** |     0.53***
+## Sepal.Width  |     0.47*** |      0.38*** |            
+## Petal.Length |     0.48*** |              |
 ```

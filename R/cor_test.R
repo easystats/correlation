@@ -42,6 +42,18 @@
 #' @export
 cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), partial = FALSE, include_factors = TRUE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
 
+  # Sanity checks
+  if (partial == FALSE & (partial_random | partial_bayesian)) {
+    if(partial_random){
+      warning("`partial` must be set to TRUE in order for `partial_random` to be used. Setting it to FALSE.")
+      partial_random <- FALSE
+    }
+    if(partial_bayesian){
+      warning("`partial` must be set to TRUE in order for `partial_bayesian` to be used. Setting it to FALSE.")
+      partial_bayesian <- FALSE
+    }
+  }
+
   # Partial
   if (partial) {
     data <- partialize(data, x, y, include_factors = include_factors, random = partial_random, bayesian = partial_bayesian)

@@ -54,3 +54,9 @@ test_that("cor_to_pcor", {
   testthat::expect_equal(max(as.matrix(pcormat[2:5]) - as.matrix(ppcor$estimate)), 0, tol = 0.01)
   testthat::expect_equal(max(as.matrix(attributes(pcormat)$p[2:5]) - as.matrix(ppcor$p.value)), 0, tol = 0.01)
 })
+
+
+
+test_that("hierarhical correlations", {
+  set.seed(333)
+})

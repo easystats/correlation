@@ -40,6 +40,15 @@ as.table.easycorrelation <- function(x, ...) {
 
 
 
+#' @export
+as.matrix.easycorrelation <- function(x, ...) {
+  mat <- summary(x, redundant = TRUE)
+  row.names(mat) <- mat$Parameter
+  mat <- mat[-1]
+  as.matrix(mat)
+}
+
+
 
 # Internals ---------------------------------------------------------------
 

@@ -19,9 +19,12 @@ editor_options:
 library(ggplot2)
 library(dplyr)
 
+options(digits=2)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
-  fig.path = "README-"
+  dpi=450,
+  fig.path = "man/figures/"
 )
 ```
 
@@ -57,7 +60,7 @@ library("correlation")
 Click on the buttons above to access the package [**documentation**](https://easystats.github.io/correlation/) and the [**easystats blog**](https://easystats.github.io/blog/posts/), and check-out these vignettes:
 
 
-- No vignettes yet :(
+- **No vignettes yet :(**
 
 
 
@@ -82,6 +85,15 @@ Note that one can also obtain the full, **square** and redundant matrix using:
 
 ```{r message=FALSE, warning=FALSE}
 as.table(cor)
+```
+
+
+```{r message=FALSE, warning=FALSE}
+library(ggcorrplot)
+
+cor %>% 
+  as.matrix() %>% 
+  ggcorrplot()
 ```
 
 
@@ -117,6 +129,32 @@ correlation(iris, include_factors = TRUE, method = "auto")
 ```
 
 
+## Gaussian graphical models (GGMs)
+
+**Gaussian graphical models** are an increasingly popular technique in psychology, which relationships can be interpreted as partial correlation coefficients.
+
+
+```{r message=FALSE, warning=FALSE}
+library(ggraph)
+library(tidygraph)
+
+mtcars %>% 
+  correlation(partial = TRUE) %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = 'kk') +
+  geom_edge_arc(aes(colour=r, edge_width = abs(r)), strength=0.1) +
+  geom_node_point(color="#607D8B", size=22) +
+  geom_node_text(aes(label = name), colour="white") +
+  scale_edge_color_gradient2(low = "#d50000", high = "#00C853") +
+  theme_graph() +   
+  guides(edge_width = FALSE) +
+  scale_x_continuous(expand = expand_scale(c(.10, .10))) +
+  scale_y_continuous(expand = expand_scale(c(.10, .10)))
+```
+
+
+
+
 ## Partial Correlations
 
 It also supports **partial correlations** (as well as Bayesian partial correlations).
@@ -129,6 +167,7 @@ iris %>%
 
 
 
+
 ## Hierarchical (Partial) Correlations
 
 
@@ -137,9 +176,18 @@ It also provide some cutting, expolratory methods, such as Hierarchical partial 
 
 ```{r message=FALSE, warning=FALSE}
 iris %>% 
-  correlation(include_factors = TRUE, partial_random = TRUE) %>% 
+  correlation(include_factors = TRUE, partial = TRUE, partial_random = TRUE) %>% 
   summary()
 ```
 
+
+These can be **converted back** to full correlations:
+
+```{r message=FALSE, warning=FALSE}
+iris %>% 
+  correlation(include_factors = TRUE, partial = TRUE, partial_random = TRUE) %>% 
+  pcor_to_cor() %>% 
+  summary()
+```
 
 
