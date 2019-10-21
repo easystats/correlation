@@ -243,15 +243,4 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
 
 
-#' @keywords internal
-.invert_matrix <- function(m, tol = .Machine$double.eps^(2 / 3)) {
-  if (det(m) < tol) {
-    # The inverse of variance-covariance matrix is calculated using Moore-Penrose generalized matrix invers due to its determinant of zero.
-    out <- matrix_inverse(m, tol)
-    colnames(out) <- colnames(m)
-    row.names(out) <- row.names(m)
-  } else {
-    out <- solve(m)
-  }
-  out
-}
+

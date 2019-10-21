@@ -29,9 +29,10 @@ knitr::opts_chunk$set(
 ```
 
 
+[![CRAN](http://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
+[![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
 [![Build Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
 [![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/easystats/correlation)
-[![HitCount](http://hits.dwyl.io/easystats/correlation.svg)](http://hits.dwyl.io/easystats/correlation) [![Documentation](https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
 
 
 
@@ -129,7 +130,7 @@ correlation(iris, include_factors = TRUE, method = "auto")
 ```
 
 
-## Gaussian graphical models (GGMs)
+## Gaussian Graphical Models (GGMs)
 
 **Gaussian graphical models** are an increasingly popular technique in psychology, which relationships can be interpreted as partial correlation coefficients.
 
