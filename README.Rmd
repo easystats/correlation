@@ -19,9 +19,12 @@ editor_options:
 library(ggplot2)
 library(dplyr)
 
+options(digits=2)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
-  fig.path = "README-"
+  dpi=450,
+  fig.path = "man/figures/"
 )
 ```
 
@@ -50,73 +53,141 @@ library("correlation")
 
 ## Documentation
 
-The package documentation can be found [**here**](https://easystats.github.io/correlation/).
+[![Documentation](https://img.shields.io/badge/documentation-bayestestR-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
+[![Blog](https://img.shields.io/badge/blog-easystats-orange.svg?colorB=FF9800)](https://easystats.github.io/blog/posts/)
+[![Features](https://img.shields.io/badge/features-correlation-orange.svg?colorB=2196F3)](https://easystats.github.io/correlation/reference/index.html)
+
+Click on the buttons above to access the package [**documentation**](https://easystats.github.io/correlation/) and the [**easystats blog**](https://easystats.github.io/blog/posts/), and check-out these vignettes:
+
+
+- **No vignettes yet :(**
+
+
 
 # Features
 
-The main function is `correlation()`, which comes with a number of possible parameters.
+The main function is `correlation()`, which builds on top of `cor_test()` and comes with a number of possible options.
 
-## Correlations
+## Correlation details and matrix
 
 ```{r message=FALSE, warning=FALSE}
-correlation(iris)
+cor <- correlation(iris)
+cor
 ```
 
-The output is not a square matrix, but a long dataframe with all correlations tests per row. 
+The output is not a square matrix, but a **(tidy) dataframe with all correlations tests per row**. One can also obtain a **matrix** using:
+
+```{r message=FALSE, warning=FALSE}
+summary(cor)
+```
+
+Note that one can also obtain the full, **square** and redundant matrix using:
+
+```{r message=FALSE, warning=FALSE}
+as.table(cor)
+```
 
 
-## Grouped Dataframes
+```{r message=FALSE, warning=FALSE}
+library(ggcorrplot)
 
-This comes with the advantage of being compatible with the tidyverse workflow.
+cor %>% 
+  as.matrix() %>% 
+  ggcorrplot()
+```
+
+
+## Grouped dataframes
+
+The function also supports **stratified correlations**, all within the *tidyverse* workflow!
 
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
 
 iris %>% 
-  select(Species, starts_with("Sepal")) %>% 
+  select(Species, starts_with("Sepal"), Petal.Width) %>% 
   group_by(Species) %>% 
   correlation()
 ```
 
-## Partial and Semi-partial Correlations
-
-It also supports **partial** and **semi-partial** correlations.
-
-```{r message=FALSE, warning=FALSE}
-correlation(select(iris, Species, starts_with("Sepal")),
-            select(iris, Species, starts_with("Petal")),
-            partial=TRUE)
-```
 
 ## Bayesian Correlations
 
-It is very easy to switch to a Bayesian framework.
+It is very easy to switch to a **Bayesian framework**.
 
 ```{r message=FALSE, warning=FALSE}
 correlation(iris, bayesian=TRUE)
 ```
 
-## Reports and tables
 
-The correlations are also compatible with the [report](https://github.com/easystats/report) package to produce text...
+## Tetrachoric, Polychoric, Biserial, Biweight...
 
-```{r eval=FALSE, message=FALSE, warning=FALSE}
-library(report)
+The `correlation` package also supports different types of methods, which can deal with correlations **between factors**!
 
-iris %>% 
-  select(starts_with("Sepal")) %>% 
-  correlation(bayesian=TRUE) %>% 
-  report()
+```{r message=FALSE, warning=FALSE}
+correlation(iris, include_factors = TRUE, method = "auto")
 ```
 
 
-Or tables:
+## Gaussian graphical models (GGMs)
 
-```{r eval=FALSE, message=FALSE, warning=FALSE}
-iris %>% 
-  group_by(Species) %>% 
-  correlation() %>% 
-  report() %>% 
-  to_table()
+**Gaussian graphical models** are an increasingly popular technique in psychology, which relationships can be interpreted as partial correlation coefficients.
+
+
+```{r message=FALSE, warning=FALSE}
+library(ggraph)
+library(tidygraph)
+
+mtcars %>% 
+  correlation(partial = TRUE) %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = 'kk') +
+  geom_edge_arc(aes(colour=r, edge_width = abs(r)), strength=0.1) +
+  geom_node_point(color="#607D8B", size=22) +
+  geom_node_text(aes(label = name), colour="white") +
+  scale_edge_color_gradient2(low = "#d50000", high = "#00C853") +
+  theme_graph() +   
+  guides(edge_width = FALSE) +
+  scale_x_continuous(expand = expand_scale(c(.10, .10))) +
+  scale_y_continuous(expand = expand_scale(c(.10, .10)))
 ```
+
+
+
+
+## Partial Correlations
+
+It also supports **partial correlations** (as well as Bayesian partial correlations).
+
+```{r message=FALSE, warning=FALSE}
+iris %>% 
+  correlation(partial = TRUE) %>% 
+  summary()
+```
+
+
+
+
+## Hierarchical (Partial) Correlations
+
+
+It also provide some cutting, expolratory methods, such as Hierarchical partial correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. They can be see as (partial) correlations *adjusted* for some hierarchical (or multilevel) variability.
+
+
+```{r message=FALSE, warning=FALSE}
+iris %>% 
+  correlation(include_factors = TRUE, partial = TRUE, partial_random = TRUE) %>% 
+  summary()
+```
+
+
+These can be **converted back** to full correlations:
+
+```{r message=FALSE, warning=FALSE}
+iris %>% 
+  correlation(include_factors = TRUE, partial = TRUE, partial_random = TRUE) %>% 
+  pcor_to_cor() %>% 
+  summary()
+```
+
 

@@ -42,8 +42,20 @@
 #' @export
 cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), partial = FALSE, include_factors = TRUE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
 
+  # Sanity checks
+  if (partial == FALSE & (partial_random | partial_bayesian)) {
+    if(partial_random){
+      warning("`partial` must be set to TRUE in order for `partial_random` to be used. Setting it to FALSE.")
+      partial_random <- FALSE
+    }
+    if(partial_bayesian){
+      warning("`partial` must be set to TRUE in order for `partial_bayesian` to be used. Setting it to FALSE.")
+      partial_bayesian <- FALSE
+    }
+  }
+
   # Partial
-  if(partial){
+  if (partial) {
     data <- partialize(data, x, y, include_factors = include_factors, random = partial_random, bayesian = partial_bayesian)
   }
 
@@ -51,7 +63,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   if (bayesian == FALSE) {
     if (ci == "default") ci <- 0.95
 
-    if(method == "auto") method <- .cor_test_findtype(data, x, y)
+    if (method == "auto") method <- .cor_test_findtype(data, x, y)
 
     if (tolower(method) %in% c("tetra", "tetrachoric")) {
       out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
@@ -203,8 +215,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
     t = stats$statistic,
     df = length(var_x) - 2,
     p = stats$p,
-    CI_low = stats$ci_low,
-    CI_high = stats$ci_high,
+    CI_low = stats$CI_low,
+    CI_high = stats$CI_high,
     Method = method,
     stringsAsFactors = FALSE
   )
@@ -259,8 +271,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
     t = stats$statistic,
     df = length(var_x) - 2,
     p = stats$p,
-    CI_low = stats$ci_low,
-    CI_high = stats$ci_high,
+    CI_low = stats$CI_low,
+    CI_high = stats$CI_high,
     Method = method,
     stringsAsFactors = FALSE
   )
@@ -271,7 +283,6 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
 #' @keywords internal
 .cor_test_biweight <- function(data, x, y, ci = 0.95, ...) {
-
   var_x <- data[[x]]
   var_y <- data[[y]]
   var_x <- var_x[complete.cases(var_x, var_y)]
@@ -289,10 +300,10 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   w_y <- I_y * (1 - v^2)^2
 
 
-  denominator_x <- sqrt(sum(((var_x - median(var_x)) * w_x)^2 ))
+  denominator_x <- sqrt(sum(((var_x - median(var_x)) * w_x)^2))
   x_curly <- ((var_x - median(var_x)) * w_x) / denominator_x
 
-  denominator_y <- sqrt(sum(((var_y - median(var_y) ) * w_y)^2))
+  denominator_y <- sqrt(sum(((var_y - median(var_y)) * w_y)^2))
   y_curly <- ((var_y - median(var_y)) * w_y) / denominator_y
 
   r <- sum(x_curly * y_curly)
@@ -306,8 +317,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
     t = stats$statistic,
     df = length(var_x) - 2,
     p = stats$p,
-    CI_low = stats$ci_low,
-    CI_high = stats$ci_high,
+    CI_low = stats$CI_low,
+    CI_high = stats$CI_high,
     Method = "Biweight",
     stringsAsFactors = FALSE
   )
@@ -317,7 +328,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
 
 #' @keywords internal
-.cor_test_findtype <- function(data, x, y){
+.cor_test_findtype <- function(data, x, y) {
   if (length(unique(data[[x]])) == 2 | length(unique(data[[y]])) == 2) {
     current_method <- "tetrachoric"
   } else if (is.factor(data[x]) | is.factor(data[y])) {
@@ -327,4 +338,3 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   }
   current_method
 }
-

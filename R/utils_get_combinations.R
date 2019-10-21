@@ -1,6 +1,5 @@
 #' @keywords internal
-.get_combinations <- function(data, data2 = NULL, redundant = TRUE, include_factors = TRUE, random = FALSE){
-
+.get_combinations <- function(data, data2 = NULL, redundant = TRUE, include_factors = TRUE, random = FALSE) {
   data <- .clean_data(data, include_factors = include_factors, random = random)
   data_nums <- data[sapply(data, is.numeric)]
   vars <- names(data_nums)
@@ -20,14 +19,9 @@
   row.names(combinations) <- NULL
   names(combinations) <- c("Parameter1", "Parameter2")
 
-  if(redundant == FALSE){
+  if (redundant == FALSE) {
     combinations <- .remove_redundant(combinations)
   }
 
   combinations
 }
-
-
-
-
-

@@ -12,11 +12,3 @@ remove_triangular <- function(cor, which_column = NULL) {
   rows <- .get_rows_non_NA(summary(cor))
   cor[paste0(cor$Parameter1, "_", cor$Parameter2) %in% rows, ]
 }
-
-
-
-
-
-
-
-

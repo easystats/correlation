@@ -24,23 +24,24 @@ partialize(data, x, y, include_factors = TRUE, random = FALSE,
 This function can be used to (slowly) get the data of which a regular correlation is equivalent to the partial correlation between two variables (adjusted for the rest of the dataset). As it is based on underlying fitting of multiple regressions, it allows more flexibility, such as including factors as random effects and/or fitting the models under a Bayesian framework. The values returned by this function are the residuals of the regression models.
 }
 \examples{
-pcordata <- partialize(data = iris[1:4],
-                       x = "Sepal.Length",
-                       y = "Sepal.Width")
+pcordata <- partialize(
+  data = iris[1:4],
+  x = "Sepal.Length",
+  y = "Sepal.Width"
+)
 cor(pcordata)
 
 # Is equivalent to
 cor_to_pcor(cor(iris[1:4]))[1:2, 1:2]
-
 \donttest{
 # Which is close the the Bayesian alternative
-pcordata <- partialize(data = iris[1:4],
-                       x = "Sepal.Length",
-                       y = "Sepal.Width",
-                       bayesian = TRUE)
- cor(pcordata)
+pcordata <- partialize(
+  data = iris[1:4],
+  x = "Sepal.Length",
+  y = "Sepal.Width",
+  bayesian = TRUE
+)
+cor(pcordata)
 }
-
-
 
 }

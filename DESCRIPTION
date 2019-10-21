@@ -27,6 +27,7 @@ Imports:
 Suggests:
 	BayesFactor,
 	dplyr,
+	ggcorrplot,
 	Hmisc,
 	knitr,
 	lme4,
