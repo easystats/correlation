@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • correlation</title>
+<title>Convert a correlation to covariance — cor2cov • correlation</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,7 +41,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Convert a correlation to covariance — cor2cov" />
+
+<meta property="og:description" content="Convert a correlation to covariance" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -62,7 +64,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -110,96 +112,65 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Convert a correlation to covariance</h1>
+    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/cor2cov.R'><code>R/cor2cov.R</code></a></small>
+    <div class="hidden name"><code>cor2cov.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Convert a correlation to covariance</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="cor2cov.html">cor2cov()</a></code> </p>
-        </td>
-        <td><p>Convert a correlation to covariance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="correlation.html">correlation()</a></code> </p>
-        </td>
-        <td><p>Correlation Analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cor_test.html">cor_test()</a></code> </p>
-        </td>
-        <td><p>Correlation test</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cor_to_p.html">cor_to_p()</a></code> </p>
-        </td>
-        <td><p>Convert correlation coefficients to p-values</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cor_to_pcor.html">cor_to_pcor()</a></code> <code><a href="cor_to_pcor.html">pcor_to_cor()</a></code> <code><a href="cor_to_pcor.html">cor_to_spcor()</a></code> <code><a href="cor_to_pcor.html">spcor_to_cor()</a></code> </p>
-        </td>
-        <td><p>Correlation Matrix to (Semi) Partial Correlations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is.cor.html">is.cor()</a></code> </p>
-        </td>
-        <td><p>Check if matrix ressembles a correlation matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="isSquare.html">isSquare()</a></code> </p>
-        </td>
-        <td><p>Check if Square Matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="matrix_inverse.html">matrix_inverse()</a></code> </p>
-        </td>
-        <td><p>Matrix Inversion</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="partialize.html">partialize()</a></code> </p>
-        </td>
-        <td><p>Partialize Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="remove_triangular.html">remove_triangular()</a></code> </p>
-        </td>
-        <td><p>Remove redundant correlations</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>cor2cov</span>(<span class='no'>cor</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>variance</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tol</span> <span class='kw'>=</span> <span class='no'>.Machine</span>$<span class='no'>double.eps</span>^(<span class='fl'>2</span>/<span class='fl'>3</span>))</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>cor</th>
+      <td><p>A correlation matrix, or a partial or a semipartial correlation matrix.</p></td>
+    </tr>
+    <tr>
+      <th>sd, variance</th>
+      <td><p>A vector that contains the standard deviations, or the variance, of the variables in the correlation matrix.</p></td>
+    </tr>
+    <tr>
+      <th>tol</th>
+      <td><p>Relative tolerance to detect zero singular values.</p></td>
+    </tr>
     </table>
-  </div>
+    
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>cor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])
+<span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
+#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
+#&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
+#&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</div><div class='input'>
+<span class='fu'>cor2cov</span>(<span class='no'>cor</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='no'>sd</span>))</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
+#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
+#&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
+#&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</div><div class='input'><span class='fu'>cor2cov</span>(<span class='no'>cor</span>, <span class='kw'>variance</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='no'>var</span>))</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
+#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
+#&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
+#&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+            
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

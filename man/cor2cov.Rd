@@ -23,6 +23,4 @@ cov(iris[1:4])
 
 cor2cov(cor, sd = sapply(iris[1:4], sd))
 cor2cov(cor, variance = sapply(iris[1:4], var))
-
-
 }

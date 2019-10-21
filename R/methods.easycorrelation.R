@@ -1,8 +1,8 @@
 #' @export
-summary.easycorrelation <- function(object, redundant = FALSE, ...){
+summary.easycorrelation <- function(object, redundant = FALSE, ...) {
 
   # If data2 is present
-  if(!is.null(attributes(object)$data2)){
+  if (!is.null(attributes(object)$data2)) {
     redundant <- FALSE
   }
 
@@ -10,7 +10,7 @@ summary.easycorrelation <- function(object, redundant = FALSE, ...){
 
 
   # Add redundant
-  if(redundant){
+  if (redundant) {
     object <- .add_redundant(object)
   }
 
@@ -18,11 +18,13 @@ summary.easycorrelation <- function(object, redundant = FALSE, ...){
   out <- .create_matrix(frame, object, column = r_col, redundant = redundant)
 
   # Fill attributes
-  for(i in names(object)[!names(object) %in% c("Group", "Parameter1", "Parameter2", r_col)]){
+  for (i in names(object)[!names(object) %in% c("Group", "Parameter1", "Parameter2", r_col)]) {
     attri <- .create_matrix(frame, object, column = i, redundant = redundant)
     attr(out, i) <- attri
   }
 
+  # Transfer attributes
+  attributes(out) <- c(attributes(out), attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))])
   class(out) <- c("easycormatrix", class(out))
   out
 }
@@ -44,18 +46,17 @@ as.table.easycorrelation <- function(x, ...) {
 
 
 #' @keywords internal
-.create_matrix <- function(frame, object, column = "r", redundant = TRUE){
-
-  if("Group" %in% names(object)){
+.create_matrix <- function(frame, object, column = "r", redundant = TRUE) {
+  if ("Group" %in% names(object)) {
     out <- data.frame()
-    for(g in unique(object$Group)){
+    for (g in unique(object$Group)) {
       data <- object[object$Group == g, ]
       m <- .fill_matrix(frame, data, column = column, redundant = redundant)
       m$Group <- g
       out <- rbind(out, m)
     }
     out <- out[c("Group", names(out)[names(out) != "Group"])]
-  } else{
+  } else {
     out <- .fill_matrix(frame, object, column = column, redundant = redundant)
   }
   out
@@ -75,9 +76,9 @@ as.table.easycorrelation <- function(x, ...) {
 
 
 #' @keywords internal
-.fill_matrix <- function(frame, object, column = "r", redundant = TRUE){
-  for(row in row.names(frame)){
-    for(col in colnames(frame)){
+.fill_matrix <- function(frame, object, column = "r", redundant = TRUE) {
+  for (row in row.names(frame)) {
+    for (col in colnames(frame)) {
       frame[row, col] <- object[(object$Parameter1 == row & object$Parameter2 == col) | (object$Parameter2 == row & object$Parameter1 == col), column][1]
     }
   }
@@ -89,15 +90,10 @@ as.table.easycorrelation <- function(x, ...) {
   row.names(frame) <- NULL
 
   # Remove upper triangular
-  if(redundant == FALSE & is.null(attributes(object)$data2)){
+  if (redundant == FALSE & is.null(attributes(object)$data2)) {
     frame[-1][lower.tri(frame[-1])] <- NA
     frame <- frame[c(1, ncol(frame):2)]
   }
 
   frame
 }
-
-
-
-
-

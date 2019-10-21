@@ -14,7 +14,7 @@ matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {
 
   # Sanity checks
   # sanity checks
-  if(!isSquare(m)){
+  if (!isSquare(m)) {
     stop("The matrix should be a square matrix.")
   }
 

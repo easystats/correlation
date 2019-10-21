@@ -28,8 +28,154 @@
 #' round(pcor_to_cor(pcor) - cor, 2)
 #' # round(pcor_to_cor(spcor, semi = TRUE) - cor, 2)
 #' @export
-cor_to_pcor = function(cor = NULL, tol = .Machine$double.eps^(2 / 3)){
+cor_to_pcor <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
+  UseMethod("cor_to_pcor")
+}
 
+
+
+#' @export
+cor_to_pcor.matrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
+  cor <- .get_cor(cor, cov = NULL)
+  .cor_to_pcor(cor)
+}
+
+
+
+#' @export
+cor_to_pcor.easycormatrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
+  .cor_to_pcor_easycormatrix(cor = cor, tol = tol)
+}
+
+
+
+#' @export
+cor_to_pcor.easycorrelation <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
+  .cor_to_pcor_easycorrelation(cor = cor, tol = tol)
+}
+
+
+
+# pcor to cor -------------------------------------------------------------
+
+
+#' @rdname cor_to_pcor
+#' @export
+pcor_to_cor <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
+  UseMethod("pcor_to_cor")
+}
+
+
+
+#' @export
+pcor_to_cor.matrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
+  pcor <- .get_cor(pcor, cov = NULL)
+  .pcor_to_cor(pcor)
+}
+
+
+#' @export
+pcor_to_cor.easycormatrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
+  .cor_to_pcor_easycormatrix(pcor = pcor, tol = tol)
+}
+
+
+
+#' @export
+pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
+  .cor_to_pcor_easycorrelation(pcor = pcor, tol = tol)
+}
+
+
+
+
+
+
+
+
+
+
+# Convenience Functions --------------------------------------------------------
+
+
+
+
+
+#' @keywords internal
+.cor_to_pcor_easycorrelation <- function(pcor = NULL, cor = NULL, tol = .Machine$double.eps^(2 / 3)) {
+  if (is.null(cor)) {
+    r <- .pcor_to_cor(.get_cor(as.table(pcor), cov = NULL))
+    cor <- pcor
+  } else {
+    r <- .cor_to_pcor(.get_cor(as.table(cor), cov = NULL))
+  }
+
+  p <- cor_to_p(r, n = attributes(cor)$n, ci = attributes(cor)$ci, method = "pearson")
+
+  # Replace
+  newdata <- data.frame()
+  for (i in 1:nrow(cor)) {
+    row <- row.names(r) == cor[i, "Parameter1"]
+    col <- colnames(r) == cor[i, "Parameter2"]
+    newdata <- rbind(
+      newdata,
+      data.frame(
+        r = r[row, col],
+        t = p$statistic[row, col],
+        df = attributes(cor)$n - 2,
+        p = p$p[row, col],
+        CI_low = p$CI_low[row, col],
+        CI_high = p$CI_high[row, col],
+        Method = "Pearson"
+      )
+    )
+  }
+  newdata <- cbind(cor[1:2], newdata)
+  cor <- cor[, 1:ncol(newdata)]
+  cor[, ] <- newdata
+  names(cor) <- names(newdata)
+  attributes(cor)$p_adjust <- "none"
+  cor
+}
+
+
+
+#' @keywords internal
+.cor_to_pcor_easycormatrix <- function(pcor = NULL, cor = NULL, tol = .Machine$double.eps^(2 / 3)) {
+  if (is.null(cor)) {
+    r <- .pcor_to_cor(.get_cor(pcor, cov = NULL))
+    cor <- pcor
+  } else {
+    r <- .cor_to_pcor(.get_cor(cor, cov = NULL))
+  }
+
+  p <- cor_to_p(r, n = attributes(cor)$n, ci = attributes(cor)$ci, method = "pearson")
+  r <- cbind(data.frame(Parameter = row.names(r)), r)
+  row.names(r) <- NULL
+
+  # Statistic and p-value
+  attributes(cor)$pd <- attributes(cor)$BF <- NULL
+  attributes(cor)$p[-1] <- p$p
+  attributes(cor)$t[-1] <- p$statistic
+  attributes(cor)$CI_low[-1] <- p$CI_low
+  attributes(cor)$CI_high[-1] <- p$CI_high
+  attributes(cor)$p_adjust <- "none"
+
+
+  attributes(r) <- attributes(cor)
+  r
+}
+
+
+
+
+
+
+
+
+
+#' @keywords internal
+.cor_to_pcor <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
   # Get cor
   cor <- .get_cor(cor, cov = NULL)
 
@@ -44,16 +190,8 @@ cor_to_pcor = function(cor = NULL, tol = .Machine$double.eps^(2 / 3)){
 
 
 
-
-
-
-#' @rdname cor_to_pcor
-#' @export
-pcor_to_cor = function(pcor = NULL, tol = .Machine$double.eps^(2 / 3)) {
-
-  # Get cor
-  pcor <- .get_cor(pcor, cov = NULL)
-
+#' @keywords internal
+.pcor_to_cor <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
   # negate off-diagonal entries, then invert
   m <- -pcor
   diag(m) <- -diag(m)
@@ -76,88 +214,7 @@ pcor_to_cor = function(pcor = NULL, tol = .Machine$double.eps^(2 / 3)) {
 
 
 
-
-
-#' @rdname cor_to_pcor
-#' @export
-cor_to_spcor = function(cor = NULL, cov = NULL, tol = .Machine$double.eps^(2 / 3)){
-
-
-  # Get cor
-  cor <- .get_cor(cor, cov)
-
-  # Semi-partial
-  if(is.null(cov)){
-    stop("Covariance matrix (or vector of SD of variables) needs to be passed for semi-partial correlations.")
-  } else{
-    if(!is.matrix(cov)){
-      cov <- cor2cov(cor, sd = cov)
-    }
-    inverted <- .invert_matrix(cov, tol = tol)
-    out <- -cov2cor(inverted) / sqrt(diag(cov)) / sqrt(abs(diag(inverted)-t(t(inverted^2) / diag(inverted))))
-  }
-
-  diag(out) <- 1
-  out
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#' @rdname cor_to_pcor
-#' @export
-spcor_to_cor = function(spcor = NULL, cov = NULL, semi = FALSE, tol = .Machine$double.eps^(2 / 3)) {
-
-  # Get cor
-  spcor <- .get_cor(spcor, cov)
-
-  # negate off-diagonal entries, then invert
-  m <- -spcor
-  diag(m) <- -diag(m)
-
-  stop("Cannot convert semi-partial correlations to correlations yet. We need help for that.")
-  # if(is.null(cov)){
-  #   stop("Covariance matrix (or vector of SD of variables) needs to be passed for semi-partial correlations.")
-  # } else{
-  #   if(!is.matrix(cov)){
-  #     cov <- cor2cov(spcor, sd = cov)
-  #   }
-  #   inverted <- inverted * sqrt(diag(cov)) * sqrt(abs(diag(inverted) - t(t(inverted^2) / diag(inverted))))
-  # }
-
-  # out
-}
-
-
-
-
-
-
-
-
-
-
-
-
+# Internals ---------------------------------------------------------------
 
 
 
@@ -167,13 +224,18 @@ spcor_to_cor = function(spcor = NULL, cov = NULL, semi = FALSE, tol = .Machine$d
 
 
 #' @keywords internal
-.get_cor <- function(cor = NULL, cov = NULL){
+.get_cor <- function(cor = NULL, cov = NULL) {
   # Get Cormatrix
-  if(is.null(cor)){
-    if(is.null(cov)){
+  if (is.null(cor)) {
+    if (is.null(cov)) {
       stop("A correlation or covariance matrix is required.")
-    } else{
+    } else {
       cor <- cov2cor(cov)
+    }
+  } else {
+    if (inherits(cor, "easycormatrix")) {
+      row.names(cor) <- cor$Parameter
+      cor <- as.matrix(cor[-1])
     }
   }
   cor
@@ -182,13 +244,13 @@ spcor_to_cor = function(spcor = NULL, cov = NULL, semi = FALSE, tol = .Machine$d
 
 
 #' @keywords internal
-.invert_matrix <- function(m, tol = .Machine$double.eps^(2 / 3)){
+.invert_matrix <- function(m, tol = .Machine$double.eps^(2 / 3)) {
   if (det(m) < tol) {
     # The inverse of variance-covariance matrix is calculated using Moore-Penrose generalized matrix invers due to its determinant of zero.
     out <- matrix_inverse(m, tol)
     colnames(out) <- colnames(m)
     row.names(out) <- row.names(m)
-  } else{
+  } else {
     out <- solve(m)
   }
   out

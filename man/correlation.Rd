@@ -8,7 +8,7 @@ correlation(data, data2 = NULL, method = "pearson",
   p_adjust = "holm", ci = "default", bayesian = FALSE,
   bayesian_prior = "medium", bayesian_ci_method = "hdi",
   bayesian_test = c("pd", "rope", "bf"), redundant = FALSE,
-  include_factors = TRUE, partial = FALSE, partial_random = FALSE,
+  include_factors = FALSE, partial = FALSE, partial_random = FALSE,
   partial_bayesian = FALSE, ...)
 }
 \arguments{
