@@ -24,7 +24,7 @@
 #' correlation(mtcars[-2], method = "auto")
 #' @importFrom stats p.adjust
 #' @export
-correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
+correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
 
   # CI
   if (ci == "default") {
@@ -38,9 +38,9 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
   if (inherits(data, "grouped_df")) {
-    rez <- .correlation_grouped_df(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_random = partial_random, partial_bayesian = partial_bayesian)
+    rez <- .correlation_grouped_df(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
   } else {
-    rez <- .correlation(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_random = partial_random, partial_bayesian = partial_bayesian)
+    rez <- .correlation(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
   }
   out <- rez$params
 
@@ -56,7 +56,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
       "bayesian" = bayesian,
       "p_adjust" = p_adjust,
       "partial" = partial,
-      "partial_random" = partial_random,
+      "multilevel" = multilevel,
       "partial_bayesian" = partial_bayesian,
       "bayesian_prior" = bayesian_prior,
       "include_factors" = include_factors
@@ -71,7 +71,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 #' @keywords internal
-.correlation_grouped_df <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
+.correlation_grouped_df <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
   if (!requireNamespace("dplyr")) {
     stop("This function needs `dplyr` to be installed. Please install by running `install.packages('dplyr')`.")
   }
@@ -91,7 +91,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
       for (i in names(xlist)) {
         xlist[[i]][groups] <- NULL
         ylist[[i]][[i]][groups] <- NULL
-        rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_random = partial_random, partial_bayesian = partial_bayesian)
+        rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
         modelframe_current <- rez$data
         rez$Group <- modelframe_current$Group <- i
         out <- rbind(out, rez$params)
@@ -106,7 +106,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
     out <- data.frame()
     for (i in names(xlist)) {
       xlist[[i]][groups] <- NULL
-      rez <- .correlation(xlist[[i]], data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_random = partial_random, partial_bayesian = partial_bayesian)
+      rez <- .correlation(xlist[[i]], data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
       out <- rbind(out, rez$params)
@@ -126,14 +126,14 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 #' @keywords internal
-.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
+.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
   if (!is.null(data2)) {
     data <- cbind(data, data2)
   }
 
   # Clean data and get combinations
-  combinations <- .get_combinations(data, data2 = NULL, redundant = FALSE, include_factors = include_factors, random = partial_random)
-  data <- .clean_data(data, include_factors = include_factors, random = FALSE)
+  combinations <- .get_combinations(data, data2 = NULL, redundant = FALSE, include_factors = include_factors, multilevel = multilevel)
+  data <- .clean_data(data, include_factors = include_factors, multilevel = FALSE)
 
 
   for (i in 1:nrow(combinations)) {
@@ -196,45 +196,3 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 
-
-
-#' @keywords internal
-.create_diagonal <- function(params) {
-  diagonal <- data.frame(
-    "Parameter1" = unique(params$Parameter1),
-    "Parameter2" = unique(params$Parameter1)
-  )
-
-  if ("Group" %in% names(params)) diagonal$Group <- unique(params$Group)[1]
-  if ("r" %in% names(params)) diagonal$r <- 1
-  if ("rho" %in% names(params)) diagonal$rho <- 1
-  if ("tau" %in% names(params)) diagonal$tau <- 1
-  if ("p" %in% names(params)) diagonal$p <- 0
-  if ("t" %in% names(params)) diagonal$t <- Inf
-  if ("S" %in% names(params)) diagonal$S <- Inf
-  if ("z" %in% names(params)) diagonal$z <- Inf
-  if ("df" %in% names(params)) diagonal$df <- unique(params$df)[1]
-  if ("CI_low" %in% names(params)) diagonal$CI_low <- 1
-  if ("CI_high" %in% names(params)) diagonal$CI_high <- 1
-  if ("Method" %in% names(params)) diagonal$Method <- unique(params$Method)[1]
-
-  if ("Median" %in% names(params)) diagonal$Median <- 1
-  if ("Mean" %in% names(params)) diagonal$Mean <- 1
-  if ("MAP" %in% names(params)) diagonal$MAP <- 1
-  if ("SD" %in% names(params)) diagonal$SD <- 0
-  if ("MAD" %in% names(params)) diagonal$MAD <- 0
-  if ("CI_low" %in% names(params)) diagonal$CI_low <- 1
-  if ("CI_high" %in% names(params)) diagonal$CI_high <- 1
-  if ("pd" %in% names(params)) diagonal$pd <- 1
-  if ("ROPE_Percentage" %in% names(params)) diagonal$ROPE_Percentage <- 0
-  if ("BF" %in% names(params)) diagonal$BF <- Inf
-  if ("Prior_Distribution" %in% names(params)) diagonal$Prior_Distribution <- unique(params$Prior_Distribution)[1]
-  if ("Prior_Location" %in% names(params)) diagonal$Prior_Location <- unique(params$Prior_Location)[1]
-  if ("Prior_Scale" %in% names(params)) diagonal$Prior_Scale <- unique(params$Prior_Scale)[1]
-
-  for (var in names(diagonal)[!names(diagonal) %in% names(params)]) {
-    diagonal[[var]] <- unique(params[[var]])[1]
-  }
-
-  diagonal
-}

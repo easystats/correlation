@@ -7,8 +7,8 @@
 cor_test(data, x, y, method = "pearson", ci = "default",
   bayesian = FALSE, bayesian_prior = "medium",
   bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"),
-  partial = FALSE, include_factors = TRUE, partial_random = FALSE,
-  partial_bayesian = FALSE, ...)
+  include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE,
+  multilevel = FALSE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -25,11 +25,13 @@ cor_test(data, x, y, method = "pearson", ci = "default",
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
 
-\item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
-
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
 
-\item{partial_random, partial_bayesian}{See arguments of \code{\link{partialize}}.}
+\item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
+
+\item{partial_bayesian}{See argument of \code{\link{partialize}}.}
+
+\item{multilevel}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.}
 
 \item{...}{Arguments passed to or from other methods.}
 }

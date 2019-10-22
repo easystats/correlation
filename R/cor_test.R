@@ -9,7 +9,7 @@
 #' @param bayesian If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
 #' @inheritParams partialize
-#' @param partial_random,partial_bayesian See arguments of \code{\link{partialize}}.
+#' @param partial_bayesian See argument of \code{\link{partialize}}.
 #' @param bayesian_prior For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.
 #' @param bayesian_ci_method,bayesian_test See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
 #' @param ... Arguments passed to or from other methods.
@@ -40,14 +40,10 @@
 #' # When one variable is continuous, will run 'polyserial' correlation
 #' cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 #' @export
-cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), partial = FALSE, include_factors = TRUE, partial_random = FALSE, partial_bayesian = FALSE, ...) {
+cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
 
   # Sanity checks
-  if (partial == FALSE & (partial_random | partial_bayesian)) {
-    if(partial_random){
-      warning("`partial` must be set to TRUE in order for `partial_random` to be used. Setting it to FALSE.")
-      partial_random <- FALSE
-    }
+  if (partial == FALSE & partial_bayesian) {
     if(partial_bayesian){
       warning("`partial` must be set to TRUE in order for `partial_bayesian` to be used. Setting it to FALSE.")
       partial_bayesian <- FALSE
@@ -56,7 +52,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
   # Partial
   if (partial) {
-    data <- partialize(data, x, y, include_factors = include_factors, random = partial_random, bayesian = partial_bayesian)
+    data <- partialize(data, x, y, include_factors = include_factors, multilevel = multilevel, bayesian = partial_bayesian)
   }
 
   # Frequentist
@@ -81,6 +77,10 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
     if (method %in% c("tetra", "tetrachoric")) {
       stop("Tetrachoric Bayesian correlations are not supported yet.")
+    } else if (tolower(method) %in% c("poly", "polychoric")) {
+      stop("Polychoric Bayesian correlations are not supported yet.")
+    } else if (tolower(method) %in% c("biweight")) {
+      stop("Biweight Bayesian correlations are not supported yet.")
     } else {
       out <- .cor_test_bayes(data, x, y, ci = ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
     }

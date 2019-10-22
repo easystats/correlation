@@ -4,7 +4,7 @@
 \alias{partialize}
 \title{Partialize Data}
 \usage{
-partialize(data, x, y, include_factors = TRUE, random = FALSE,
+partialize(data, x, y, include_factors = TRUE, multilevel = FALSE,
   bayesian = FALSE)
 }
 \arguments{
@@ -16,7 +16,7 @@ partialize(data, x, y, include_factors = TRUE, random = FALSE,
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
 
-\item{random}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out the same as the other numeric variables.}
+\item{multilevel}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.}
 
 \item{bayesian}{If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 }

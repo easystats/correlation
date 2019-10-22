@@ -8,8 +8,8 @@ correlation(data, data2 = NULL, method = "pearson",
   p_adjust = "holm", ci = "default", bayesian = FALSE,
   bayesian_prior = "medium", bayesian_ci_method = "hdi",
   bayesian_test = c("pd", "rope", "bf"), redundant = FALSE,
-  include_factors = FALSE, partial = FALSE, partial_random = FALSE,
-  partial_bayesian = FALSE, ...)
+  include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE,
+  multilevel = FALSE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -36,9 +36,9 @@ correlation(data, data2 = NULL, method = "pearson",
 
 \item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
 
-\item{partial_random}{See arguments of \code{\link{partialize}}.}
+\item{partial_bayesian}{See argument of \code{\link{partialize}}.}
 
-\item{partial_bayesian}{See arguments of \code{\link{partialize}}.}
+\item{multilevel}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.}
 
 \item{...}{Arguments passed to or from other methods.}
 }
