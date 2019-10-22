@@ -23,7 +23,7 @@ Imports:
 	insight (>= 0.6.0),
 	bayestestR (>= 0.3.0),
 	parameters (>= 0.2.1),
-	effectsize (>= 0.1.0)
+	effectsize (>= 0.0.1)
 Suggests:
 	BayesFactor,
 	dplyr,
@@ -34,6 +34,7 @@ Suggests:
 	polycor,
 	ppcor,
 	psych,
+	rmcorr,
 	testthat,
 	covr,
 	rstanarm,

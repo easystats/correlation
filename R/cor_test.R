@@ -6,10 +6,10 @@
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
 #' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, and pearson otherwise).
-#' @param bayesian If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
+#' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
+#' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
 #' @inheritParams partialize
-#' @param partial_bayesian See argument of \code{\link{partialize}}.
 #' @param bayesian_prior For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.
 #' @param bayesian_ci_method,bayesian_test See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
 #' @param ... Arguments passed to or from other methods.
@@ -43,16 +43,20 @@
 cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
 
   # Sanity checks
-  if (partial == FALSE & partial_bayesian) {
+  if (partial == FALSE & (partial_bayesian | multilevel)) {
     if(partial_bayesian){
-      warning("`partial` must be set to TRUE in order for `partial_bayesian` to be used. Setting it to FALSE.")
-      partial_bayesian <- FALSE
+      warning("`partial` must be set to TRUE in order for `multilevel` to be used. Setting it to TRUE.")
+      partial <- TRUE
+    }
+    if(partial_bayesian){
+      warning("`partial` must be set to TRUE in order for `partial_bayesian` to be used. Setting it to TRUE.")
+      partial <- TRUE
     }
   }
 
   # Partial
   if (partial) {
-    data <- partialize(data, x, y, include_factors = include_factors, multilevel = multilevel, bayesian = partial_bayesian)
+    data <- partialize(data, x, y, multilevel = multilevel, bayesian = partial_bayesian)
   }
 
   # Frequentist

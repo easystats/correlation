@@ -26,6 +26,15 @@
 #' @export
 correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
 
+  # Sanity checks
+  if (partial == FALSE & multilevel) {
+    partial <- TRUE
+    convert_back_to_r <- TRUE
+  } else{
+    convert_back_to_r <- FALSE
+  }
+
+
   # CI
   if (ci == "default") {
     if (bayesian) {
@@ -34,7 +43,6 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
       ci <- 0.95
     }
   }
-
 
 
   if (inherits(data, "grouped_df")) {
@@ -64,6 +72,8 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
   )
 
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
+
+  if(convert_back_to_r) out <- pcor_to_cor(out)  # Revert back to r if needed.
   out
 }
 
@@ -126,7 +136,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 #' @keywords internal
-.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
+.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
   if (!is.null(data2)) {
     data <- cbind(data, data2)
   }
