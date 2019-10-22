@@ -29,9 +29,10 @@ knitr::opts_chunk$set(
 ```
 
 
+[![CRAN](http://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
+[![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
 [![Build Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
 [![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/easystats/correlation)
-[![HitCount](http://hits.dwyl.io/easystats/correlation.svg)](http://hits.dwyl.io/easystats/correlation) [![Documentation](https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
 
 
 
@@ -129,7 +130,7 @@ correlation(iris, include_factors = TRUE, method = "auto")
 ```
 
 
-## Gaussian graphical models (GGMs)
+## Gaussian Graphical Models (GGMs)
 
 **Gaussian graphical models** are an increasingly popular technique in psychology, which relationships can be interpreted as partial correlation coefficients.
 
@@ -168,24 +169,24 @@ iris %>%
 
 
 
-## Hierarchical (Partial) Correlations
+## Multilevel Correlations
 
 
-It also provide some cutting, expolratory methods, such as Hierarchical partial correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. They can be see as (partial) correlations *adjusted* for some hierarchical (or multilevel) variability.
+It also provide some cutting, exploratory methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. They can be see as correlations *adjusted* for some group (*hierarchical*) variability. This method can only be used in a partial correlations framework. 
 
 
 ```{r message=FALSE, warning=FALSE}
 iris %>% 
-  correlation(include_factors = TRUE, partial = TRUE, partial_random = TRUE) %>% 
+  correlation(include_factors = TRUE, partial = TRUE, multilevel = TRUE) %>% 
   summary()
 ```
 
 
-These can be **converted back** to full correlations:
+However, if the `partial` argument is set to FALSE, it will try to convert the partial coefficient into regular ones.These can be **converted back** to full correlations:
 
 ```{r message=FALSE, warning=FALSE}
 iris %>% 
-  correlation(include_factors = TRUE, partial = TRUE, partial_random = TRUE) %>% 
+  correlation(include_factors = TRUE, partial = FALSE, multilevel = TRUE) %>% 
   pcor_to_cor() %>% 
   summary()
 ```

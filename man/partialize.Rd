@@ -4,8 +4,7 @@
 \alias{partialize}
 \title{Partialize Data}
 \usage{
-partialize(data, x, y, include_factors = TRUE, random = FALSE,
-  bayesian = FALSE)
+partialize(data, x, y, multilevel = FALSE, bayesian = FALSE)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -14,11 +13,9 @@ partialize(data, x, y, include_factors = TRUE, random = FALSE,
 
 \item{y}{Names of two variables present in the data.}
 
-\item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
+\item{multilevel}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.}
 
-\item{random}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out the same as the other numeric variables.}
-
-\item{bayesian}{If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
+\item{bayesian}{If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 }
 \description{
 This function can be used to (slowly) get the data of which a regular correlation is equivalent to the partial correlation between two variables (adjusted for the rest of the dataset). As it is based on underlying fitting of multiple regressions, it allows more flexibility, such as including factors as random effects and/or fitting the models under a Bayesian framework. The values returned by this function are the residuals of the regression models.

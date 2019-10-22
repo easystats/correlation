@@ -60,3 +60,19 @@ test_that("cor_to_pcor", {
 test_that("hierarhical correlations", {
   set.seed(333)
 })
+
+
+
+
+test_that("spcor_to_cor", {
+  set.seed(333)
+
+  # easycormatrix
+  out <- correlation(iris)
+  cormat <- as.table(out)
+  spcormat <- cor_to_spcor(cormat, cov = cov(iris[1:4]))
+
+  spcor <- ppcor::spcor(iris[1:4])
+  testthat::expect_equal(max(spcormat - as.matrix(spcor$estimate)), 0, tol = 0.01)
+
+})

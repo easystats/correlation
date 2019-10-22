@@ -1,11 +1,11 @@
 
 # correlation <img src='man/figures/logo.png' align="right" height="139" />
 
+[![CRAN](http://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
+[![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
 [![Build
 Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
 [![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/easystats/correlation)
-[![HitCount](http://hits.dwyl.io/easystats/correlation.svg)](http://hits.dwyl.io/easystats/correlation)
-[![Documentation](https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
 
 `correlation` is a lightweight package helping with correlation
 analysis.
@@ -124,11 +124,11 @@ It is very easy to switch to a **Bayesian framework**.
 correlation(iris, bayesian=TRUE)
 ## Parameter1   |   Parameter2 |   rho |         89% CI |     pd | % in ROPE |    BF |              Prior
 ## ------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.23,  0.02] | 92.65% |    42.75% |  0.51 | Cauchy (0 +- 0.33)
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.23,  0.02] | 90.95% |    42.43% |  0.51 | Cauchy (0 +- 0.33)
 ## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
-## Sepal.Length |  Petal.Width |  0.80 | [ 0.76,  0.85] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
-## Sepal.Width  | Petal.Length | -0.42 | [-0.52, -0.31] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Width  | Petal.Length | -0.41 | [-0.52, -0.31] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] |   100% |     0.05% | > 999 | Cauchy (0 +- 0.33)
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
 ```
 
@@ -164,7 +164,7 @@ correlation(iris, include_factors = TRUE, method = "auto")
 ## Species.versicolor |  Species.virginica | -0.88 | -22.35 | 148 | < .001 | [-0.91, -0.84] | Tetrachoric
 ```
 
-## Gaussian graphical models (GGMs)
+## Gaussian Graphical Models (GGMs)
 
 **Gaussian graphical models** are an increasingly popular technique in
 psychology, which relationships can be interpreted as partial

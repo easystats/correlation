@@ -7,8 +7,8 @@
 cor_test(data, x, y, method = "pearson", ci = "default",
   bayesian = FALSE, bayesian_prior = "medium",
   bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"),
-  partial = FALSE, include_factors = TRUE, partial_random = FALSE,
-  partial_bayesian = FALSE, ...)
+  include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE,
+  multilevel = FALSE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -19,17 +19,17 @@ cor_test(data, x, y, method = "pearson", ci = "default",
 
 \item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
-\item{bayesian}{If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE}. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
+\item{bayesian, partial_bayesian}{If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
 \item{bayesian_prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
 
+\item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.}
+
 \item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
 
-\item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{random}). If \code{FALSE}, factors are removed upfront.}
-
-\item{partial_random, partial_bayesian}{See arguments of \code{\link{partialize}}.}
+\item{multilevel}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.}
 
 \item{...}{Arguments passed to or from other methods.}
 }
