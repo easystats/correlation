@@ -139,3 +139,20 @@ test_that("format checks", {
   testthat::expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(4, 5))
   testthat::expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
 })
+
+
+
+
+
+
+
+
+
+test_that("specific types", {
+  data <- data.frame(
+    x = as.ordered(sample(1:5, 20, TRUE)),
+    y = as.ordered(sample(letters[1:5], 20, TRUE))
+  )
+
+  correlation(data, method = "polychoric")
+})

@@ -1,8 +1,16 @@
 #' @keywords internal
-.get_combinations <- function(data, data2 = NULL, redundant = TRUE, include_factors = TRUE, multilevel = FALSE) {
+.get_combinations <- function(data, data2 = NULL, redundant = TRUE, include_factors = TRUE, multilevel = FALSE, method = "pearson") {
   data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
-  data_nums <- data[sapply(data, is.numeric)]
-  vars <- names(data_nums)
+
+  if (method == "polychoric") {
+    vars <- names(data)
+  } else if (multilevel) {
+    vars <- names(data[sapply(data, is.numeric)])
+  } else {
+    vars <- names(data)
+  }
+
+
 
   # Find pairs
   if (is.null(data2)) {

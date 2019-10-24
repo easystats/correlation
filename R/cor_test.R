@@ -5,7 +5,7 @@
 #' @param data A dataframe.
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, and pearson otherwise).
+#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
@@ -44,11 +44,11 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
   # Sanity checks
   if (partial == FALSE & (partial_bayesian | multilevel)) {
-    if(partial_bayesian){
+    if (partial_bayesian) {
       warning("`partial` must be set to TRUE in order for `multilevel` to be used. Setting it to TRUE.")
       partial <- TRUE
     }
-    if(partial_bayesian){
+    if (partial_bayesian) {
       warning("`partial` must be set to TRUE in order for `partial_bayesian` to be used. Setting it to TRUE.")
       partial <- TRUE
     }
@@ -65,7 +65,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
     if (method == "auto") method <- .cor_test_findtype(data, x, y)
 
-    if (tolower(method) %in% c("tetra", "tetrachoric")) {
+    if (tolower(method) %in% c("tetra", "tetrachoric", "biserial")) {
       out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
     } else if (tolower(method) %in% c("poly", "polychoric")) {
       out <- .cor_test_polychoric(data, x, y, ci = ci, ...)
@@ -245,7 +245,6 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   if (!is.factor(var_x) & !is.factor(var_y)) {
     stop("Polychoric correlations can only be ran on ordinal factors.")
   }
-
 
 
   if (!is.factor(var_x) | !is.factor(var_y)) {

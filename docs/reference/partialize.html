@@ -125,8 +125,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>partialize</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>include_factors</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>random</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>partialize</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>multilevel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,16 +143,12 @@
       <td><p>Names of two variables present in the data.</p></td>
     </tr>
     <tr>
-      <th>include_factors</th>
-      <td><p>If <code>TRUE</code>, the factors are kept and eventually converted to numeric or used as random effects (depending of <code>random</code>). If <code>FALSE</code>, factors are removed upfront.</p></td>
-    </tr>
-    <tr>
-      <th>random</th>
-      <td><p>If <code>TRUE</code>, the factors are included as random factors. If <code>FALSE</code> (default), factors are binarized (dummified) and partialized out the same as the other numeric variables.</p></td>
+      <th>multilevel</th>
+      <td><p>If <code>TRUE</code>, the factors are included as random factors. If <code>FALSE</code> (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.</p></td>
     </tr>
     <tr>
       <th>bayesian</th>
-      <td><p>If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code>. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
+      <td><p>If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
     </tr>
     </table>
     

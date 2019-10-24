@@ -30,7 +30,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
   if (partial == FALSE & multilevel) {
     partial <- TRUE
     convert_back_to_r <- TRUE
-  } else{
+  } else {
     convert_back_to_r <- FALSE
   }
 
@@ -73,7 +73,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
 
-  if(convert_back_to_r) out <- pcor_to_cor(out)  # Revert back to r if needed.
+  if (convert_back_to_r) out <- pcor_to_cor(out) # Revert back to r if needed.
   out
 }
 
@@ -135,17 +135,32 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 
+
+
+
+
+
+
 #' @keywords internal
 .correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
   if (!is.null(data2)) {
     data <- cbind(data, data2)
   }
 
-  # Clean data and get combinations
-  combinations <- .get_combinations(data, data2 = NULL, redundant = FALSE, include_factors = include_factors, multilevel = multilevel)
-  data <- .clean_data(data, include_factors = include_factors, multilevel = FALSE)
 
+  # Sanity checks ----------------
+  # What if only factors
+  if (sum(sapply(if (is.null(data2)) data else cbind(data, data2), is.numeric)) == 0) {
+    include_factors <- TRUE
+  }
 
+  if (method == "polychoric") multilevel <- TRUE
+
+  # Clean data and get combinations -------------
+  combinations <- .get_combinations(data, data2 = NULL, redundant = FALSE, include_factors = include_factors, multilevel = multilevel, method = method)
+  data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
+
+  # LOOP ----------------
   for (i in 1:nrow(combinations)) {
     x <- as.character(combinations[i, "Parameter1"])
     y <- as.character(combinations[i, "Parameter2"])
@@ -160,6 +175,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
       bayesian_ci_method = bayesian_ci_method,
       bayesian_test = bayesian_test,
       partial = partial,
+      multilevel = multilevel,
       ...
     )
 
@@ -186,7 +202,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
   if ("p" %in% names(params)) {
     params$p <- p.adjust(params$p,
       method = p_adjust,
-      n = nrow(.get_combinations(data, data2 = data2, redundant = FALSE))
+      n = nrow(params)
     )
   }
 
@@ -203,6 +219,3 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
   list(params = params, data = data)
 }
-
-
-
