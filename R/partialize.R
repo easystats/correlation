@@ -44,7 +44,7 @@ partialize <- function(data, x, y, multilevel = FALSE, bayesian = FALSE) {
   if (multilevel == FALSE | length(facs) == 0) {
     facs_formula <- ""
   } else {
-    facs_formula <- paste(" + ", paste0("(1|", facs, ")"), collapse = " + ")
+    facs_formula <- paste(" +", paste(paste0("(1|", facs, ")"), collapse = " + "))
   }
 
   .get_partialized(x, y, data, nums_formula, facs_formula, multilevel, bayesian)
