@@ -28,8 +28,8 @@ test_that("Reductio ad absurdum", {
   testthat::expect_equal(max(as.matrix(rez) - cormatrix), 0, tol = 0.000001)
 
   rez <- correlation(data, multilevel = TRUE)
-  testthat::expect_equal(max(as.matrix(rez) - cormatrix), 0, tol = 0.002)
+  testthat::expect_equal(max(as.matrix(rez) - cormatrix), 0, tol = 0.01)
 
   rez <- correlation(data, multilevel = TRUE, partial = TRUE)
-  testthat::expect_equal(max(as.matrix(pcor_to_cor(rez)) - cormatrix), 0, tol = 0.002)
+  testthat::expect_equal(max(as.matrix(pcor_to_cor(rez)) - cormatrix), 0, tol = 0.01)
 })
