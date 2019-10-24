@@ -74,5 +74,4 @@ test_that("spcor_to_cor", {
 
   spcor <- ppcor::spcor(iris[1:4])
   testthat::expect_equal(max(spcormat - as.matrix(spcor$estimate)), 0, tol = 0.01)
-
 })

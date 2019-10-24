@@ -31,7 +31,9 @@ matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {
     mp <- matrix(0, nrow = ncol(m), ncol = nrow(m))
   }
 
-  return(mp)
+  colnames(mp) <- colnames(m)
+  row.names(mp) <- row.names(m)
+  mp
 }
 
 
@@ -55,6 +57,3 @@ matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {
   }
   out
 }
-
-
-

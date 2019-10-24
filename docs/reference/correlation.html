@@ -129,8 +129,8 @@
   <span class='kw'>p_adjust</span> <span class='kw'>=</span> <span class='st'>"holm"</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='st'>"default"</span>, <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>bayesian_prior</span> <span class='kw'>=</span> <span class='st'>"medium"</span>, <span class='kw'>bayesian_ci_method</span> <span class='kw'>=</span> <span class='st'>"hdi"</span>,
   <span class='kw'>bayesian_test</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pd"</span>, <span class='st'>"rope"</span>, <span class='st'>"bf"</span>), <span class='kw'>redundant</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>include_factors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>partial_random</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>partial_bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>include_factors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>partial_bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>multilevel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,7 +145,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, and pearson otherwise).</p></td>
+      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
     </tr>
     <tr>
       <th>p_adjust</th>
@@ -157,7 +157,7 @@
     </tr>
     <tr>
       <th>bayesian</th>
-      <td><p>If TRUE, will run a Bayesian correlation. Note that for "full" Bayesian partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code>. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
+      <td><p>If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
     </tr>
     <tr>
       <th>bayesian_prior</th>
@@ -177,19 +177,19 @@
     </tr>
     <tr>
       <th>include_factors</th>
-      <td><p>If <code>TRUE</code>, the factors are kept and eventually converted to numeric or used as random effects (depending of <code>random</code>). If <code>FALSE</code>, factors are removed upfront.</p></td>
+      <td><p>If <code>TRUE</code>, the factors are kept and eventually converted to numeric or used as random effects (depending of <code>multilevel</code>). If <code>FALSE</code>, factors are removed upfront.</p></td>
     </tr>
     <tr>
       <th>partial</th>
       <td><p>Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.</p></td>
     </tr>
     <tr>
-      <th>partial_random</th>
-      <td><p>See arguments of <code><a href='partialize.html'>partialize</a></code>.</p></td>
+      <th>partial_bayesian</th>
+      <td><p>If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
     </tr>
     <tr>
-      <th>partial_bayesian</th>
-      <td><p>See arguments of <code><a href='partialize.html'>partialize</a></code>.</p></td>
+      <th>multilevel</th>
+      <td><p>If <code>TRUE</code>, the factors are included as random factors. If <code>FALSE</code> (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -208,7 +208,7 @@
 
 <span class='no'>cor</span></div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |     t |  df |      p |         95% CI |  Method
 #&gt; -------------------------------------------------------------------------------------
-#&gt; Sepal.Length |  Sepal.Width | -0.12 | -1.44 | 148 | &gt; .1   | [-0.27,  0.04] | Pearson
+#&gt; Sepal.Length |  Sepal.Width | -0.12 | -1.44 | 148 | 0.15   | [-0.27,  0.04] | Pearson
 #&gt; Sepal.Length | Petal.Length |  0.87 | 21.65 | 148 | &lt; .001 | [ 0.83,  0.91] | Pearson
 #&gt; Sepal.Length |  Petal.Width |  0.82 | 17.30 | 148 | &lt; .001 | [ 0.76,  0.86] | Pearson
 #&gt; Sepal.Width  | Petal.Length | -0.43 | -5.77 | 148 | &lt; .001 | [-0.55, -0.29] | Pearson
@@ -228,10 +228,10 @@
   <span class='fu'>correlation</span>()</div><div class='output co'>#&gt; Group      |   Parameter1 |   Parameter2 |    r |     t | df |      p |         95% CI |  Method
 #&gt; ------------------------------------------------------------------------------------------------
 #&gt; setosa     | Sepal.Length |  Sepal.Width | 0.74 |  7.68 | 48 | &lt; .001 | [ 0.59,  0.85] | Pearson
-#&gt; setosa     | Sepal.Length | Petal.Length | 0.27 |  1.92 | 48 | &gt; .1   | [-0.01,  0.51] | Pearson
-#&gt; setosa     | Sepal.Length |  Petal.Width | 0.28 |  2.01 | 48 | &gt; .1   | [ 0.00,  0.52] | Pearson
-#&gt; setosa     |  Sepal.Width | Petal.Length | 0.18 |  1.25 | 48 | &gt; .1   | [-0.11,  0.43] | Pearson
-#&gt; setosa     |  Sepal.Width |  Petal.Width | 0.23 |  1.66 | 48 | &gt; .1   | [-0.05,  0.48] | Pearson
+#&gt; setosa     | Sepal.Length | Petal.Length | 0.27 |  1.92 | 48 | 0.20   | [-0.01,  0.51] | Pearson
+#&gt; setosa     | Sepal.Length |  Petal.Width | 0.28 |  2.01 | 48 | 0.20   | [ 0.00,  0.52] | Pearson
+#&gt; setosa     |  Sepal.Width | Petal.Length | 0.18 |  1.25 | 48 | 0.22   | [-0.11,  0.43] | Pearson
+#&gt; setosa     |  Sepal.Width |  Petal.Width | 0.23 |  1.66 | 48 | 0.21   | [-0.05,  0.48] | Pearson
 #&gt; setosa     | Petal.Length |  Petal.Width | 0.33 |  2.44 | 48 | 0.09   | [ 0.06,  0.56] | Pearson
 #&gt; versicolor | Sepal.Length |  Sepal.Width | 0.53 |  4.28 | 48 | &lt; .001 | [ 0.29,  0.70] | Pearson
 #&gt; versicolor | Sepal.Length | Petal.Length | 0.75 |  7.95 | 48 | &lt; .001 | [ 0.60,  0.85] | Pearson
@@ -251,7 +251,7 @@
 #&gt; mpg        |         hp | -0.78 |  -6.74 | 30 | &lt; .001 | [-0.89, -0.59] |     Pearson
 #&gt; mpg        |       drat |  0.68 |   5.10 | 30 | &lt; .001 | [ 0.44,  0.83] |     Pearson
 #&gt; mpg        |         wt | -0.87 |  -9.56 | 30 | &lt; .001 | [-0.93, -0.74] |     Pearson
-#&gt; mpg        |       qsec |  0.42 |   2.53 | 30 | &gt; .1   | [ 0.08,  0.67] |     Pearson
+#&gt; mpg        |       qsec |  0.42 |   2.53 | 30 | 0.22   | [ 0.08,  0.67] |     Pearson
 #&gt; mpg        |         vs |  0.82 |   7.80 | 30 | &lt; .001 | [ 0.66,  0.91] |    Biserial
 #&gt; mpg        |         am |  0.75 |   6.06 | 30 | &lt; .001 | [ 0.54,  0.87] |    Biserial
 #&gt; mpg        |       gear |  0.48 |   3.00 | 30 | 0.09   | [ 0.16,  0.71] |     Pearson
@@ -259,39 +259,39 @@
 #&gt; disp       |         hp |  0.79 |   7.08 | 30 | &lt; .001 | [ 0.61,  0.89] |     Pearson
 #&gt; disp       |       drat | -0.71 |  -5.53 | 30 | &lt; .001 | [-0.85, -0.48] |     Pearson
 #&gt; disp       |         wt |  0.89 |  10.58 | 30 | &lt; .001 | [ 0.78,  0.94] |     Pearson
-#&gt; disp       |       qsec | -0.43 |  -2.64 | 30 | &gt; .1   | [-0.68, -0.10] |     Pearson
+#&gt; disp       |       qsec | -0.43 |  -2.64 | 30 | 0.20   | [-0.68, -0.10] |     Pearson
 #&gt; disp       |         vs | -0.88 |  -9.99 | 30 | &lt; .001 | [-0.94, -0.77] |    Biserial
 #&gt; disp       |         am | -0.74 |  -5.87 | 30 | &lt; .001 | [-0.86, -0.52] |    Biserial
 #&gt; disp       |       gear | -0.56 |  -3.66 | 30 | &lt; .05  | [-0.76, -0.26] |     Pearson
-#&gt; disp       |       carb |  0.39 |   2.35 | 30 | &gt; .1   | [ 0.05,  0.65] |     Pearson
-#&gt; hp         |       drat | -0.45 |  -2.75 | 30 | &gt; .1   | [-0.69, -0.12] |     Pearson
+#&gt; disp       |       carb |  0.39 |   2.35 | 30 | 0.30   | [ 0.05,  0.65] |     Pearson
+#&gt; hp         |       drat | -0.45 |  -2.75 | 30 | 0.16   | [-0.69, -0.12] |     Pearson
 #&gt; hp         |         wt |  0.66 |   4.80 | 30 | &lt; .001 | [ 0.40,  0.82] |     Pearson
 #&gt; hp         |       qsec | -0.71 |  -5.49 | 30 | &lt; .001 | [-0.85, -0.48] |     Pearson
 #&gt; hp         |         vs | -0.90 | -10.87 | 30 | &lt; .001 | [-0.95, -0.80] |    Biserial
-#&gt; hp         |         am | -0.30 |  -1.71 | 30 | &gt; .1   | [-0.59,  0.05] |    Biserial
-#&gt; hp         |       gear | -0.13 |  -0.69 | 30 | &gt; .1   | [-0.45,  0.23] |     Pearson
+#&gt; hp         |         am | -0.30 |  -1.71 | 30 | 1.00   | [-0.59,  0.05] |    Biserial
+#&gt; hp         |       gear | -0.13 |  -0.69 | 30 | 1.00   | [-0.45,  0.23] |     Pearson
 #&gt; hp         |       carb |  0.75 |   6.21 | 30 | &lt; .001 | [ 0.54,  0.87] |     Pearson
 #&gt; drat       |         wt | -0.71 |  -5.56 | 30 | &lt; .001 | [-0.85, -0.48] |     Pearson
-#&gt; drat       |       qsec |  0.09 |   0.50 | 30 | &gt; .1   | [-0.27,  0.43] |     Pearson
+#&gt; drat       |       qsec |  0.09 |   0.50 | 30 | 1.00   | [-0.27,  0.43] |     Pearson
 #&gt; drat       |         vs |  0.55 |   3.51 | 30 | &lt; .05  | [ 0.24,  0.75] |    Biserial
 #&gt; drat       |         am |  0.89 |  10.41 | 30 | &lt; .001 | [ 0.78,  0.94] |    Biserial
 #&gt; drat       |       gear |  0.70 |   5.36 | 30 | &lt; .001 | [ 0.46,  0.84] |     Pearson
-#&gt; drat       |       carb | -0.09 |  -0.50 | 30 | &gt; .1   | [-0.43,  0.27] |     Pearson
-#&gt; wt         |       qsec | -0.17 |  -0.97 | 30 | &gt; .1   | [-0.49,  0.19] |     Pearson
+#&gt; drat       |       carb | -0.09 |  -0.50 | 30 | 1.00   | [-0.43,  0.27] |     Pearson
+#&gt; wt         |       qsec | -0.17 |  -0.97 | 30 | 1.00   | [-0.49,  0.19] |     Pearson
 #&gt; wt         |         vs | -0.69 |  -5.10 | 30 | &lt; .001 | [-0.84, -0.45] |    Biserial
 #&gt; wt         |         am | -0.86 |  -9.20 | 30 | &lt; .001 | [-0.93, -0.74] |    Biserial
 #&gt; wt         |       gear | -0.58 |  -3.93 | 30 | &lt; .01  | [-0.77, -0.29] |     Pearson
-#&gt; wt         |       carb |  0.43 |   2.59 | 30 | &gt; .1   | [ 0.09,  0.68] |     Pearson
+#&gt; wt         |       carb |  0.43 |   2.59 | 30 | 0.20   | [ 0.09,  0.68] |     Pearson
 #&gt; qsec       |         vs |  0.92 |  12.88 | 30 | &lt; .001 | [ 0.85,  0.96] |    Biserial
-#&gt; qsec       |         am | -0.29 |  -1.61 | 30 | &gt; .1   | [-0.58,  0.07] |    Biserial
-#&gt; qsec       |       gear | -0.21 |  -1.19 | 30 | &gt; .1   | [-0.52,  0.15] |     Pearson
+#&gt; qsec       |         am | -0.29 |  -1.61 | 30 | 1.00   | [-0.58,  0.07] |    Biserial
+#&gt; qsec       |       gear | -0.21 |  -1.19 | 30 | 1.00   | [-0.52,  0.15] |     Pearson
 #&gt; qsec       |       carb | -0.66 |  -4.76 | 30 | &lt; .001 | [-0.82, -0.40] |     Pearson
-#&gt; vs         |         am |  0.26 |   1.47 | 30 | &gt; .1   | [-0.09,  0.56] | Tetrachoric
-#&gt; vs         |       gear |  0.26 |   1.42 | 30 | &gt; .1   | [-0.10,  0.55] |    Biserial
+#&gt; vs         |         am |  0.26 |   1.47 | 30 | 1.00   | [-0.09,  0.56] | Tetrachoric
+#&gt; vs         |       gear |  0.26 |   1.42 | 30 | 1.00   | [-0.10,  0.55] |    Biserial
 #&gt; vs         |       carb | -0.71 |  -5.37 | 30 | &lt; .001 | [-0.85, -0.47] |    Biserial
 #&gt; am         |       gear |  0.99 |  37.07 | 30 | &lt; .001 | [ 0.98,  0.99] |    Biserial
-#&gt; am         |       carb |  0.07 |   0.39 | 30 | &gt; .1   | [-0.28,  0.41] |    Biserial
-#&gt; gear       |       carb |  0.27 |   1.56 | 30 | &gt; .1   | [-0.08,  0.57] |     Pearson</div></pre>
+#&gt; am         |       carb |  0.07 |   0.39 | 30 | 1.00   | [-0.28,  0.41] |    Biserial
+#&gt; gear       |       carb |  0.27 |   1.56 | 30 | 1.00   | [-0.08,  0.57] |     Pearson</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

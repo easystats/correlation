@@ -14,9 +14,11 @@ test_that("comparison rmcorr", {
 
 
 test_that("Reductio ad absurdum", {
-  cormatrix <-  matrix(c(1.0, 0.3, 0.6,
-                         0.3, 1.0, 0.0,
-                         0.6, 0.0, 1.0), nrow = 3)
+  cormatrix <- matrix(c(
+    1.0, 0.3, 0.6,
+    0.3, 1.0, 0.0,
+    0.6, 0.0, 1.0
+  ), nrow = 3)
 
   data <- bayestestR::simulate_correlation(n = 500, r = cormatrix)
   # Add factor levels "at random", so the grouping structure should NOT change much
@@ -26,8 +28,8 @@ test_that("Reductio ad absurdum", {
   testthat::expect_equal(max(as.matrix(rez) - cormatrix), 0, tol = 0.000001)
 
   rez <- correlation(data, multilevel = TRUE)
-  testthat::expect_equal(max(as.matrix(rez) - cormatrix), 0, tol = 0.0001)
+  testthat::expect_equal(max(as.matrix(rez) - cormatrix), 0, tol = 0.01)
 
   rez <- correlation(data, multilevel = TRUE, partial = TRUE)
-  testthat::expect_equal(max(as.matrix(pcor_to_cor(rez)) - cormatrix), 0, tol = 0.0001)
+  testthat::expect_equal(max(as.matrix(pcor_to_cor(rez)) - cormatrix), 0, tol = 0.01)
 })
