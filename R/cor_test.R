@@ -97,6 +97,11 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
 
 
+
+# Utilities ---------------------------------------------------------------
+
+
+
 #' @keywords internal
 .complete_variable_x <- function(data, x, y) {
   data[[x]][complete.cases(data[[x]], data[[y]])]

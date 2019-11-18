@@ -1,0 +1,58 @@
+---
+title: "Different Correlation Types"
+output: 
+  github_document:
+    toc: true
+    fig_width: 10.08
+    fig_height: 6
+  rmarkdown::html_vignette:
+    toc: true
+    fig_width: 10.08
+    fig_height: 6
+tags: [r, correlation, types]
+vignette: >
+  %\VignetteIndexEntry{Different Correlation Types}
+  \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+bibliography: bibliography.bib
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(knitr)
+options(knitr.kable.NA = '')
+knitr::opts_chunk$set(comment=">",
+  dpi=450)
+options(digits=2)
+
+set.seed(333)
+```
+
+## Distance Correlation
+
+Non-linear relationship
+
+
+
+```{r message=FALSE, warning=FALSE}
+# Test
+# data <- data.frame("r" = c(), "n" = c(), "dCor" = c(), "Type" = c())
+# for(r in seq(0, 0.99, length.out = 30)){
+#   for(n in seq(10, 300, length.out = 30)){
+#     x <- bayestestR::simulate_correlation(round(n), r = r)
+#     data <- rbind(data,
+#                   data.frame("r" = c(r, r),
+#                              "n" = c(n, n),
+#                              "dCor" = c(.cor_test_distance(x$V1, x$V2)$estimate,
+#                                         .cor_test_distance_raw(x$V1, x$V2)$dCor),
+#                              "Type" = c("Raw", "Corrected")))
+#   }
+# }
+#
+# ggplot(data, aes(x = r, y = dCor, color = Type)) +
+#   geom_point(aes(size = n), alpha = 0.15) +
+#   theme_classic()
+```
+
+# References
