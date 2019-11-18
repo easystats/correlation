@@ -29,3 +29,11 @@ test_that("cor_test frequentist", {
   out <- cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
   testthat::expect_equal(out$rho, -0.144, tol = 0.01)
 })
+
+
+
+test_that("cor_test distance", {
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
+  comparison <- energy::dcor.ttest(iris$Petal.Length, iris$Petal.Width)
+  testthat::expect_equal(out$r, as.numeric(comparison$estimate), tol = 0.01)
+})

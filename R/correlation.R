@@ -4,10 +4,12 @@
 #'
 #' @param data A dataframe.
 #' @param data2 An optional dataframe.
-#' @param p_adjust Correction method for frequentist correlations. One of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".
+#' @param p_adjust Correction method for frequentist correlations. Can be one of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".
 #' @param redundant Shoud the data include redundant rows (where each given correlation is repeated two times).
 #' @inheritParams cor_test
 #' @inheritParams partialize
+#'
+#' @inherit cor_test details
 #'
 #' @examples
 #' library(dplyr)

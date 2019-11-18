@@ -1,5 +1,5 @@
 #' @keywords internal
-.cor_test_distance <- function(data, x, y, ci = 0.95, corrected = TRUE) {
+.cor_test_distance <- function(data, x, y, ci = 0.95, corrected = TRUE, ...) {
 
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)

@@ -26,7 +26,7 @@ cor_test(
 
 \item{x, y}{Names of two variables present in the data.}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", or "distance". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
 
 \item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
@@ -47,15 +47,24 @@ cor_test(
 \description{
 This function perfoms a correlation test between two variables.
 }
-\examples{
-data <- iris
+\details{
+\subsection{Correlation Types}{
+Some details.
+}
 
+\subsection{Multiple tests correction}{
+About multiple tests corrections.
+}
+}
+\examples{
 cor_test(iris, "Petal.Length", "Petal.Width")
 cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
 cor_test(iris, "Petal.Length", "Petal.Width", method = "kendall")
 cor_test(iris, "Petal.Length", "Petal.Width", method = "biweight")
+cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
 cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
 
+data <- iris
 # Tetrachoric
 data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)

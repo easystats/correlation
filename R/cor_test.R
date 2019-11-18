@@ -5,7 +5,7 @@
 #' @param data A dataframe.
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
+#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", or "distance". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
@@ -15,15 +15,26 @@
 #' @param ... Arguments passed to or from other methods.
 #'
 #'
-#' @examples
-#' data <- iris
+#' @details
+#' \subsection{Correlation Types}{
+#' Some details.
+#' }
 #'
+#' \subsection{Multiple tests correction}{
+#' About multiple tests corrections.
+#' }
+#'
+#'
+#'
+#' @examples
 #' cor_test(iris, "Petal.Length", "Petal.Width")
 #' cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
 #' cor_test(iris, "Petal.Length", "Petal.Width", method = "kendall")
 #' cor_test(iris, "Petal.Length", "Petal.Width", method = "biweight")
+#' cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
 #' cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
 #'
+#' data <- iris
 #' # Tetrachoric
 #' data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 #' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
@@ -71,6 +82,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
       out <- .cor_test_polychoric(data, x, y, ci = ci, ...)
     } else if (tolower(method) %in% c("biweight")) {
       out <- .cor_test_biweight(data, x, y, ci = ci, ...)
+    } else if (tolower(method) %in% c("distance")) {
+      out <- .cor_test_distance(data, x, y, ci = ci, corrected = TRUE, ...)
     } else {
       out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
     }
@@ -85,11 +98,14 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
       stop("Polychoric Bayesian correlations are not supported yet.")
     } else if (tolower(method) %in% c("biweight")) {
       stop("Biweight Bayesian correlations are not supported yet.")
+    } else if (tolower(method) %in% c("distance")) {
+      stop("Bayesian distance correlations are not supported yet.")
     } else {
       out <- .cor_test_bayes(data, x, y, ci = ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
     }
   }
 
+  attr(out, "ci") <- ci
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out
 }

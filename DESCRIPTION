@@ -37,9 +37,11 @@ Suggests:
 	psych,
 	rmcorr,
 	testthat,
+	tidyr,
 	covr,
 	rstanarm,
-	rmarkdown
+	rmarkdown,
+	see
 Remotes:
 	easystats/effectsize
 License: GPL-3

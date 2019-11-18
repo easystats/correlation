@@ -29,30 +29,81 @@ options(digits=2)
 set.seed(333)
 ```
 
+
+
+```{r message=FALSE, warning=FALSE}
+library(bayestestR)
+library(correlation)
+library(ggplot2)
+library(tidyr)
+library(see)
+```
+
 ## Distance Correlation
 
 Non-linear relationship
 
+## Comparison
 
+
+### Utility functions
 
 ```{r message=FALSE, warning=FALSE}
-# Test
-# data <- data.frame("r" = c(), "n" = c(), "dCor" = c(), "Type" = c())
-# for(r in seq(0, 0.99, length.out = 30)){
-#   for(n in seq(10, 300, length.out = 30)){
-#     x <- bayestestR::simulate_correlation(round(n), r = r)
-#     data <- rbind(data,
-#                   data.frame("r" = c(r, r),
-#                              "n" = c(n, n),
-#                              "dCor" = c(.cor_test_distance(x$V1, x$V2)$estimate,
-#                                         .cor_test_distance_raw(x$V1, x$V2)$dCor),
-#                              "Type" = c("Raw", "Corrected")))
-#   }
-# }
-#
-# ggplot(data, aes(x = r, y = dCor, color = Type)) +
-#   geom_point(aes(size = n), alpha = 0.15) +
-#   theme_classic()
+generate_results <- function(r, n = 100, noise = 0){
+  data <- bayestestR::simulate_correlation(round(n), r = r)
+  if(noise > 0){
+    data$V2 <- data$V2 + rnorm(nrow(data), 0, noise)
+  }
+  out <- data.frame(n = n, noise = noise, r = r)
+  
+  out$Pearson <- cor_test(data, "V1", "V2", method = "pearson")$r
+  out$Biweight <- cor_test(data, "V1", "V2", method = "biweight")$r
+  out$Distance <- cor_test(data, "V1", "V2", method = "distance")$r
+  out
+}
+```
+
+### Perfect linear link
+
+```{r message=FALSE, warning=FALSE}
+data <- data.frame()
+for(r in seq(0, 0.99, length.out = 30)){
+  for(n in seq(10, 300, length.out = 30)){
+    data <- rbind(data, generate_results(r, n))
+  }
+}
+
+data %>% 
+  tidyr::pivot_longer(-c(n, r, noise), names_to = "Type", values_to = "Estimation") %>% 
+  ggplot(aes(x = r, y = Estimation, color = Type)) +
+  geom_point(aes(size = n), alpha = 0.15) + 
+  geom_vline(aes(xintercept = 0.5), linetype = "dashed") +
+  geom_hline(aes(yintercept = 0.5), linetype = "dashed") +
+  guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  see::theme_modern()
+```
+
+### With noise
+
+```{r message=FALSE, warning=FALSE}
+data <- data.frame()
+for(r in seq(0, 0.99, length.out = 15)){
+  for(n in seq(10, 300, length.out = 15)){
+    for(noise in c(0.1, 0.5, 1, 1.5)){
+      data <- rbind(data, generate_results(r, n, noise = noise))
+    }
+  }
+}
+
+data %>% 
+  tidyr::pivot_longer(-c(n, r, noise), names_to = "Type", values_to = "Estimation") %>% 
+  ggplot(aes(x = r, y = Estimation, color = Type)) +
+  geom_point(aes(size = n), alpha = 0.15) + 
+  geom_vline(aes(xintercept = 0.5), linetype = "dashed") +
+  geom_hline(aes(yintercept = 0.5), linetype = "dashed") +
+  see::theme_modern() +
+  guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  facet_wrap(~noise, nrow = 2)
 ```
 
 # References
