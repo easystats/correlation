@@ -4,11 +4,22 @@
 \alias{cor_test}
 \title{Correlation test}
 \usage{
-cor_test(data, x, y, method = "pearson", ci = "default",
-  bayesian = FALSE, bayesian_prior = "medium",
-  bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"),
-  include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE,
-  multilevel = FALSE, ...)
+cor_test(
+  data,
+  x,
+  y,
+  method = "pearson",
+  ci = "default",
+  bayesian = FALSE,
+  bayesian_prior = "medium",
+  bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"),
+  include_factors = FALSE,
+  partial = FALSE,
+  partial_bayesian = FALSE,
+  multilevel = FALSE,
+  ...
+)
 }
 \arguments{
 \item{data}{A dataframe.}

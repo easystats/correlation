@@ -13,8 +13,12 @@ pcor_to_cor(pcor, tol = .Machine$double.eps^(2/3))
 
 cor_to_spcor(cor = NULL, cov = NULL, tol = .Machine$double.eps^(2/3))
 
-spcor_to_cor(spcor = NULL, cov = NULL, semi = FALSE,
-  tol = .Machine$double.eps^(2/3))
+spcor_to_cor(
+  spcor = NULL,
+  cov = NULL,
+  semi = FALSE,
+  tol = .Machine$double.eps^(2/3)
+)
 }
 \arguments{
 \item{cor, pcor, spcor}{A correlation matrix, or a partial or a semipartial correlation matrix.}

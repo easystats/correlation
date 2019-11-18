@@ -4,12 +4,23 @@
 \alias{correlation}
 \title{Correlation Analysis}
 \usage{
-correlation(data, data2 = NULL, method = "pearson",
-  p_adjust = "holm", ci = "default", bayesian = FALSE,
-  bayesian_prior = "medium", bayesian_ci_method = "hdi",
-  bayesian_test = c("pd", "rope", "bf"), redundant = FALSE,
-  include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE,
-  multilevel = FALSE, ...)
+correlation(
+  data,
+  data2 = NULL,
+  method = "pearson",
+  p_adjust = "holm",
+  ci = "default",
+  bayesian = FALSE,
+  bayesian_prior = "medium",
+  bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"),
+  redundant = FALSE,
+  include_factors = FALSE,
+  partial = FALSE,
+  partial_bayesian = FALSE,
+  multilevel = FALSE,
+  ...
+)
 }
 \arguments{
 \item{data}{A dataframe.}
