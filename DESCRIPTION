@@ -42,8 +42,6 @@ Suggests:
 	rstanarm,
 	rmarkdown,
 	see
-Remotes:
-	easystats/effectsize
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
