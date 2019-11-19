@@ -1,5 +1,6 @@
 pandoc: 2.7.1
-pkgdown: 1.4.0
+pkgdown: 1.4.1
 pkgdown_sha: ~
-articles: []
+articles:
+  correlation_types: correlation_types.html
 

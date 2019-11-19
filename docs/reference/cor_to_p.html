@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert correlation coefficients to p-values — cor_to_p • correlation</title>
+<title>Convert correlation to p-values and CIs — cor_to_ci • correlation</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,7 +41,7 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Convert correlation coefficients to p-values — cor_to_p" />
+<meta property="og:title" content="Convert correlation to p-values and CIs — cor_to_ci" />
 
 <meta property="og:description" content="Get statistics, p-values and confidence intervals (CI) from correlation coefficients." />
 
@@ -92,6 +92,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/correlation_types.html">Different Correlation Types</a>
+    </li>
+  </ul>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -114,8 +126,8 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert correlation coefficients to p-values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/cor_to_p.R'><code>R/cor_to_p.R</code></a></small>
+    <h1>Convert correlation to p-values and CIs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/cor_to_ci.R'><code>R/cor_to_ci.R</code></a>, <a href='https://github.com/easystats/correlation/blob/master/R/cor_to_p.R'><code>R/cor_to_p.R</code></a></small>
     <div class="hidden name"><code>cor_to_p.Rd</code></div>
     </div>
 
@@ -125,7 +137,9 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>cor_to_p</span>(<span class='no'>cor</span>, <span class='no'>n</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
+    <pre class="usage"><span class='fu'>cor_to_ci</span>(<span class='no'>cor</span>, <span class='no'>n</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)
+
+<span class='fu'>cor_to_p</span>(<span class='no'>cor</span>, <span class='no'>n</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,7 +158,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
+      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", or "distance". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
     </tr>
     </table>
     
@@ -161,17 +175,11 @@
 #&gt; sample estimates:
 #&gt;        cor 
 #&gt; -0.1175698 
-#&gt; </div><div class='input'><span class='fu'>cor_to_p</span>(-<span class='fl'>0.1175698</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</div><div class='output co'>#&gt; $p
+#&gt; </div><div class='input'><span class='fu'>cor_to_p</span>(-<span class='fl'>0.1175698</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>)</div><div class='output co'>#&gt; $p
 #&gt; [1] 0.1532794
 #&gt; 
 #&gt; $statistic
 #&gt; [1] -1.435413
-#&gt; 
-#&gt; $CI_low
-#&gt; [1] -0.2726933
-#&gt; 
-#&gt; $CI_high
-#&gt; [1] 0.04351157
 #&gt; </div><div class='input'><span class='fu'>cor_to_p</span>(<span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>]), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>)</div><div class='output co'>#&gt; $p
 #&gt;              Sepal.Length  Sepal.Width Petal.Length  Petal.Width
 #&gt; Sepal.Length 0.000000e+00 1.532795e-01 1.521500e-47 3.255380e-37
@@ -185,8 +193,12 @@
 #&gt; Sepal.Width     -1.435413         Inf    -5.748928   -4.770263
 #&gt; Petal.Length    21.572767   -5.748928          Inf   43.240410
 #&gt; Petal.Width     17.237921   -4.770263    43.240410         Inf
+#&gt; </div><div class='input'><span class='fu'>cor_to_ci</span>(-<span class='fl'>0.1175698</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>)</div><div class='output co'>#&gt; $CI_low
+#&gt; [1] -0.2726933
 #&gt; 
-#&gt; $CI_low
+#&gt; $CI_high
+#&gt; [1] 0.04351157
+#&gt; </div><div class='input'><span class='fu'>cor_to_ci</span>(<span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>]), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>)</div><div class='output co'>#&gt; $CI_low
 #&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt; Sepal.Length    1.0000000  -0.2726932    0.8270363   0.7568971
 #&gt; Sepal.Width    -0.2726932   1.0000000   -0.5508771  -0.4972130
@@ -209,13 +221,12 @@
 #&gt; sample estimates:
 #&gt;        rho 
 #&gt; -0.1667777 
-#&gt; </div><div class='input'><span class='fu'>cor_to_p</span>(-<span class='fl'>0.1667777</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>)</div><div class='output co'>#&gt; $p
+#&gt; </div><div class='input'><span class='fu'>cor_to_p</span>(-<span class='fl'>0.1667777</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>)</div><div class='output co'>#&gt; $p
 #&gt; [1] 0.0420509
 #&gt; 
 #&gt; $statistic
 #&gt; [1] -2.050795
-#&gt; 
-#&gt; $CI_low
+#&gt; </div><div class='input'><span class='fu'>cor_to_ci</span>(-<span class='fl'>0.1667777</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>)</div><div class='output co'>#&gt; $CI_low
 #&gt; [1] -0.3185257
 #&gt; 
 #&gt; $CI_high
@@ -230,17 +241,11 @@
 #&gt; sample estimates:
 #&gt;         tau 
 #&gt; -0.07699679 
-#&gt; </div><div class='input'><span class='fu'>cor_to_p</span>(-<span class='fl'>0.07699679</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kendall"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Estimation for Kendall's correlation is not perfectly correct. Help us to improve it.</span></div><div class='output co'>#&gt; $p
+#&gt; </div><div class='input'><span class='fu'>cor_to_p</span>(-<span class='fl'>0.07699679</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kendall"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Estimation for Kendall's correlation is not perfectly correct. Help us to improve it.</span></div><div class='output co'>#&gt; $p
 #&gt; [1] 0.1620545
 #&gt; 
 #&gt; $statistic
 #&gt; [1] -1.398195
-#&gt; 
-#&gt; $CI_low
-#&gt; [1] -0.2343663
-#&gt; 
-#&gt; $CI_high
-#&gt; [1] 0.08430503
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -261,7 +266,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

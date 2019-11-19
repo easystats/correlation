@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check if Square Matrix — isSquare • correlation</title>
+<title>Fisher z-transformation — z_fisher • correlation</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -41,9 +41,9 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Check if Square Matrix — isSquare" />
+<meta property="og:title" content="Fisher z-transformation — z_fisher" />
 
-<meta property="og:description" content="Check if Square Matrix" />
+<meta property="og:description" content="The Fisher z-transformation converts the standard Pearson's r to a normally distributed variable z'. It is used to compute confidence intervals to correlations. The z' variable is different from the z-statistic." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -126,35 +126,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check if Square Matrix</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>isSquare.Rd</code></div>
+    <h1>Fisher z-transformation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/z_fisher.R'><code>R/z_fisher.R</code></a></small>
+    <div class="hidden name"><code>z_fisher.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Check if Square Matrix</p>
+    <p>The Fisher z-transformation converts the standard Pearson's r to a normally distributed variable z'. It is used to compute confidence intervals to correlations. The z' variable is different from the z-statistic.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>isSquare</span>(<span class='no'>m</span>)</pre>
+    <pre class="usage"><span class='fu'>z_fisher</span>(<span class='kw'>r</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>z</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>m</th>
-      <td><p>A matrix.</p></td>
+      <th>r, z</th>
+      <td><p>The r or the z' value to be converted.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
+    <p>Zar, J.H., (2014). Spearman Rank Correlation: Overview. Wiley StatsRef: Statistics Reference Online. doi:10.1002/9781118445112.stat05964</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>z_fisher</span>(<span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)</div><div class='output co'>#&gt; [1] 0.8673005</div><div class='input'><span class='fu'>z_fisher</span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='fl'>0.867</span>)</div><div class='output co'>#&gt; [1] 0.6998467</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#references">References</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
