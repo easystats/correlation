@@ -12,10 +12,9 @@
 #' @export
 z_fisher <- function(r = NULL, z = NULL) {
   # TODO: add variants for Spearman and Kendall (Zar, 2014)
-  if(is.null(z)){
+  if (is.null(z)) {
     return(atanh(r))
-  } else{
+  } else {
     return(tanh(z))
   }
 }
-

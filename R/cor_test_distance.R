@@ -1,26 +1,29 @@
 #' @keywords internal
 .cor_test_distance <- function(data, x, y, ci = 0.95, corrected = TRUE, ...) {
-
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  if(corrected == FALSE){
+  if (corrected == FALSE) {
     rez <- .cor_test_distance_raw(var_x, var_y, index = 1)
-    rez <- data.frame(Parameter1 = x,
-                      Parameter2 = y,
-                      r = rez$dCor,
-                      Method = "Distance Correlation")
-  } else{
+    rez <- data.frame(
+      Parameter1 = x,
+      Parameter2 = y,
+      r = rez$dCor,
+      Method = "Distance Correlation"
+    )
+  } else {
     rez <- .cor_test_distance_corrected(var_x, var_y, ci = ci)
-    rez <- data.frame(Parameter1 = x,
-                      Parameter2 = y,
-                      r = rez$r,
-                      t = rez$t,
-                      df = rez$df,
-                      p = rez$p,
-                      CI_low = rez$CI_low,
-                      CI_high = rez$CI_high,
-                      Method = "Distance Correlation (Bias Corrected)")
+    rez <- data.frame(
+      Parameter1 = x,
+      Parameter2 = y,
+      r = rez$r,
+      t = rez$t,
+      df = rez$df,
+      p = rez$p,
+      CI_low = rez$CI_low,
+      CI_high = rez$CI_high,
+      Method = "Distance Correlation (Bias Corrected)"
+    )
   }
 }
 
@@ -54,12 +57,14 @@
 
   ci_vals <- cor_to_ci(r, n = n, ci = ci)
 
-  list(r = r,
-       t = t,
-       df = dof,
-       p = p,
-       CI_low = ci_vals$CI_low,
-       CI_high = ci_vals$CI_high)
+  list(
+    r = r,
+    t = t,
+    df = dof,
+    p = p,
+    CI_low = ci_vals$CI_low,
+    CI_high = ci_vals$CI_high
+  )
 }
 
 
@@ -67,7 +72,6 @@
 
 #' @keywords internal
 .cor_test_distance_raw <- function(x, y, index = 1) {
-
   if (index < 0 || index > 2) {
     stop("`index` must be between 0 and 2.")
     index <- 1.0
@@ -125,15 +129,9 @@
   M <- mean(d)
   a <- sweep(d, 1, m)
   b <- sweep(a, 2, m)
-  A <- b + M  #same as plain A
-  #correction to get A^*
-  A <- A - d/n
+  A <- b + M # same as plain A
+  # correction to get A^*
+  A <- A - d / n
   diag(A) <- m - M
-  (n / (n-1)) * A
+  (n / (n - 1)) * A
 }
-
-
-
-
-
-

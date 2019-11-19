@@ -2,7 +2,6 @@
 #' @importFrom stats qnorm
 #' @export
 cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson") {
-
   z <- atanh(cor)
   se <- 1 / sqrt(n - 3) # Sample standard error
 

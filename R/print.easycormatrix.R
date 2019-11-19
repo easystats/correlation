@@ -21,7 +21,7 @@ print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
     if (stars) {
       x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(p[, nums]))
     }
-  } else{
+  } else {
     x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value, digits = digits)
   }
 
