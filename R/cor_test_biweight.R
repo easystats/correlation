@@ -25,7 +25,7 @@
 
   p <- cor_to_p(r, n = nrow(data))
   ci_vals <- cor_to_ci(r, n = nrow(data), ci = ci)
-  
+
   data.frame(
     Parameter1 = x,
     Parameter2 = y,
