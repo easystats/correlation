@@ -20,9 +20,10 @@ BugReports: https://github.com/easystats/correlation/issues
 Description: Offers functions for computing different kinds of correlations.
 Imports:
 	stats,
-	insight (>= 0.7.0),
+	boot,
+	insight (>= 0.7.1),
 	bayestestR (>= 0.4.0),
-	parameters (>= 0.2.0),
+	parameters (>= 0.3.0),
 	effectsize (>= 0.0.1)
 Suggests:
 	BayesFactor,
@@ -45,4 +46,4 @@ Suggests:
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.1
