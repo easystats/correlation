@@ -110,7 +110,8 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
     r <- .cor_to_pcor(.get_cor(as.table(cor), cov = NULL))
   }
 
-  p <- cor_to_p(r, n = attributes(cor)$n, ci = attributes(cor)$ci, method = "pearson")
+  p <- cor_to_p(r, n = attributes(cor)$n, method = "pearson")
+  ci_vals <- cor_to_ci(r, n = attributes(cor)$n, ci = attributes(cor)$ci)
 
   # Replace
   newdata <- data.frame()
@@ -124,8 +125,8 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
         t = p$statistic[row, col],
         df = attributes(cor)$n - 2,
         p = p$p[row, col],
-        CI_low = p$CI_low[row, col],
-        CI_high = p$CI_high[row, col],
+        CI_low = ci_vals$CI_low[row, col],
+        CI_high = ci_vals$CI_high[row, col],
         Method = "Pearson"
       )
     )
@@ -149,7 +150,8 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
     r <- .cor_to_pcor(.get_cor(cor, cov = NULL))
   }
 
-  p <- cor_to_p(r, n = attributes(cor)$n, ci = attributes(cor)$ci, method = "pearson")
+  p <- cor_to_p(r, n = attributes(cor)$n, method = "pearson")
+  ci_vals <- cor_to_ci(r, n = attributes(cor)$n, ci = attributes(cor)$ci)
   r <- cbind(data.frame(Parameter = row.names(r)), r)
   row.names(r) <- NULL
 
@@ -157,8 +159,8 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   attributes(cor)$pd <- attributes(cor)$BF <- NULL
   attributes(cor)$p[-1] <- p$p
   attributes(cor)$t[-1] <- p$statistic
-  attributes(cor)$CI_low[-1] <- p$CI_low
-  attributes(cor)$CI_high[-1] <- p$CI_high
+  attributes(cor)$CI_low[-1] <- ci_vals$CI_low
+  attributes(cor)$CI_high[-1] <- ci_vals$CI_high
   attributes(cor)$p_adjust <- "none"
 
 

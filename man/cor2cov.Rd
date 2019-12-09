@@ -4,8 +4,7 @@
 \alias{cor2cov}
 \title{Convert a correlation to covariance}
 \usage{
-cor2cov(cor, sd = NULL, variance = NULL,
-  tol = .Machine$double.eps^(2/3))
+cor2cov(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2/3))
 }
 \arguments{
 \item{cor}{A correlation matrix, or a partial or a semipartial correlation matrix.}

@@ -1,0 +1,40 @@
+#' @importFrom stats complete.cases rnorm
+#' @importFrom utils install.packages
+#' @keywords internal
+.cor_test_bayes <- function(data, x, y, ci = 0.89, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), ...) {
+  if (!requireNamespace("BayesFactor")) {
+    stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
+  }
+
+  var_x <- .complete_variable_x(data, x, y)
+  var_y <- .complete_variable_y(data, x, y)
+
+  if (x == y) {
+    # Avoid error in the case of perfect correlation
+    rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale = bayesian_prior)
+    params <- parameters::model_parameters(rez, ci_method = bayesian_ci_method, test = bayesian_test, rope_range = c(-0.1, 0.1), rope_ci = 1, ...)
+    if ("Median" %in% names(params)) params$Median <- 1
+    if ("Mean" %in% names(params)) params$Mean <- 1
+    if ("MAP" %in% names(params)) params$MAP <- 1
+    if ("SD" %in% names(params)) params$SD <- 0
+    if ("MAD" %in% names(params)) params$MAD <- 0
+    if ("CI_low" %in% names(params)) params$CI_low <- 1
+    if ("CI_high" %in% names(params)) params$CI_high <- 1
+    if ("pd" %in% names(params)) params$pd <- 1
+    if ("ROPE_Percentage" %in% names(params)) params$ROPE_Percentage <- 0
+    if ("BF" %in% names(params)) params$BF <- Inf
+  } else {
+    rez <- BayesFactor::correlationBF(var_x, var_y, rscale = bayesian_prior)
+    params <- parameters::model_parameters(rez, ci_method = bayesian_ci_method, test = bayesian_test, rope_range = c(-0.1, 0.1), rope_ci = 1, ...)
+  }
+
+  # Rename coef
+  if (sum(names(params) %in% c("Median", "Mean", "MAP")) == 1) {
+    names(params)[names(params) %in% c("Median", "Mean", "MAP")] <- "rho"
+  }
+
+  params <- params[names(params) != "Parameter"]
+  params$Parameter1 <- x
+  params$Parameter2 <- y
+  params[unique(c("Parameter1", "Parameter2", names(params)))]
+}

@@ -1,4 +1,4 @@
-#' Convert correlation coefficients to p-values
+#' Convert correlation to p-values and CIs
 #'
 #' Get statistics, p-values and confidence intervals (CI) from correlation coefficients.
 #'
@@ -8,17 +8,20 @@
 #'
 #' @examples
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width)
-#' cor_to_p(-0.1175698, n = 150, ci = 0.95)
+#' cor_to_p(-0.1175698, n = 150)
 #' cor_to_p(cor(iris[1:4]), n = 150)
+#' cor_to_ci(-0.1175698, n = 150)
+#' cor_to_ci(cor(iris[1:4]), n = 150)
 #'
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
-#' cor_to_p(-0.1667777, n = 150, ci = 0.95, method = "spearman")
+#' cor_to_p(-0.1667777, n = 150, method = "spearman")
+#' cor_to_ci(-0.1667777, ci = 0.95, n = 150)
 #'
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall")
-#' cor_to_p(-0.07699679, n = 150, ci = 0.95, method = "kendall")
+#' cor_to_p(-0.07699679, n = 150, method = "kendall")
 #' @importFrom stats mad median qnorm cov2cor pnorm pt
 #' @export
-cor_to_p <- function(cor, n, ci = 0.95, method = "pearson") {
+cor_to_p <- function(cor, n, method = "pearson") {
 
   # Statistic
   if (method == "kendall") {
@@ -35,11 +38,5 @@ cor_to_p <- function(cor, n, ci = 0.95, method = "pearson") {
     p <- 2 * pt(-abs(statistic), df = n - 2)
   }
 
-  # CI
-  se <- 1 / sqrt(n - 3) # Sample standard error
-  ci_low <- tanh(atanh(cor) - 1 * qnorm(1 - (1 - ci) / 2) * se)
-  ci_high <- tanh(atanh(cor) + 1 * qnorm(1 - (1 - ci) / 2) * se)
-
-
-  list(p = p, statistic = statistic, CI_low = ci_low, CI_high = ci_high)
+  list(p = p, statistic = statistic)
 }

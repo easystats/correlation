@@ -92,6 +92,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/correlation_types.html">Different Correlation Types</a>
+    </li>
+  </ul>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -125,11 +137,22 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
-  <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bayesian_prior</span> <span class='kw'>=</span> <span class='st'>"medium"</span>,
-  <span class='kw'>bayesian_ci_method</span> <span class='kw'>=</span> <span class='st'>"hdi"</span>, <span class='kw'>bayesian_test</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pd"</span>, <span class='st'>"rope"</span>, <span class='st'>"bf"</span>),
-  <span class='kw'>include_factors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>partial_bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>multilevel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>cor_test</span>(
+  <span class='no'>data</span>,
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
+  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
+  <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>bayesian_prior</span> <span class='kw'>=</span> <span class='st'>"medium"</span>,
+  <span class='kw'>bayesian_ci_method</span> <span class='kw'>=</span> <span class='st'>"hdi"</span>,
+  <span class='kw'>bayesian_test</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pd"</span>, <span class='st'>"rope"</span>, <span class='st'>"bf"</span>),
+  <span class='kw'>include_factors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>partial_bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>multilevel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,7 +167,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", or "biweight". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
+      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", or "distance". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
     </tr>
     <tr>
       <th>ci</th>
@@ -180,47 +203,60 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+<h3>Correlation Types</h3>
+<p>Some details.</p>
+
+<h3>Multiple tests correction</h3>
+<p>About multiple tests corrections.</p>
+
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span>
-
-<span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |     t |  df |      p |       95% CI |  Method
+    <pre class="examples"><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |     t |  df |      p |       95% CI |  Method
 #&gt; ---------------------------------------------------------------------------------
 #&gt; Petal.Length | Petal.Width | 0.96 | 43.39 | 148 | &lt; .001 | [0.95, 0.97] | Pearson</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Cannot compute exact p-value with ties</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |  rho |        S |      p |   Method
 #&gt; ----------------------------------------------------------------
 #&gt; Petal.Length | Petal.Width | 0.94 | 35060.85 | &lt; .001 | Spearman</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kendall"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |  tau |     z |      p |  Method
 #&gt; ------------------------------------------------------------
-#&gt; Petal.Length | Petal.Width | 0.81 | 13.97 | &lt; .001 | Kendall</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"biweight"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |     t |  df |      p |           CI |   Method
+#&gt; Petal.Length | Petal.Width | 0.81 | 13.97 | &lt; .001 | Kendall</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"biweight"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |     t |  df |      p |       95% CI |   Method
 #&gt; ----------------------------------------------------------------------------------
-#&gt; Petal.Length | Petal.Width | 0.95 | 37.83 | 148 | &lt; .001 | [0.93, 0.97] | Biweight</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>, <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |  rho |           CI |   pd | % in ROPE |    BF |              Prior
+#&gt; Petal.Length | Petal.Width | 0.95 | 37.83 | 148 | &lt; .001 | [0.93, 0.97] | Biweight</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"distance"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |      t |    df |      p |       95% CI |                                Method
+#&gt; ------------------------------------------------------------------------------------------------------------------
+#&gt; Petal.Length | Petal.Width | 0.95 | 312.15 | 11024 | &lt; .001 | [0.93, 0.96] | Distance Correlation (Bias Corrected)</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>, <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |  rho |       89% CI |   pd | % in ROPE |    BF |              Prior
 #&gt; ------------------------------------------------------------------------------------------------
 #&gt; Petal.Length | Petal.Width | 0.96 | [0.95, 0.97] | 100% |        0% | &gt; 999 | Cauchy (0 +- 0.33)</div><div class='input'>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span>
 <span class='co'># Tetrachoric</span>
 <span class='no'>data</span>$<span class='no'>Sepal.Width_binary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>data</span>$<span class='no'>Sepal.Width</span> <span class='kw'>&gt;</span> <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
 <span class='no'>data</span>$<span class='no'>Petal.Width_binary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>data</span>$<span class='no'>Petal.Width</span> <span class='kw'>&gt;</span> <span class='fl'>1.2</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
-<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width_binary"</span>, <span class='st'>"Petal.Width_binary"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"tetrachoric"</span>)</div><div class='output co'>#&gt; Parameter1         |         Parameter2 |   rho |     t |  df |      p |             CI |      Method
+<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width_binary"</span>, <span class='st'>"Petal.Width_binary"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"tetrachoric"</span>)</div><div class='output co'>#&gt; Parameter1         |         Parameter2 |   rho |     t |  df |      p |         95% CI |      Method
 #&gt; -----------------------------------------------------------------------------------------------------
 #&gt; Sepal.Width_binary | Petal.Width_binary | -0.53 | -7.49 | 148 | &lt; .001 | [-0.63, -0.40] | Tetrachoric</div><div class='input'>
 <span class='co'># When one variable is continuous and the other binary, will run 'biserial' correlation</span>
-<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Petal.Width_binary"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"tetrachoric"</span>)</div><div class='output co'>#&gt; Parameter1  |         Parameter2 |   rho |     t |  df |      p |             CI |   Method
+<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Petal.Width_binary"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"tetrachoric"</span>)</div><div class='output co'>#&gt; Parameter1  |         Parameter2 |   rho |     t |  df |      p |         95% CI |   Method
 #&gt; -------------------------------------------------------------------------------------------
 #&gt; Sepal.Width | Petal.Width_binary | -0.40 | -5.34 | 148 | &lt; .001 | [-0.53, -0.26] | Biserial</div><div class='input'>
 <span class='co'># Polychoric</span>
 <span class='no'>data</span>$<span class='no'>Petal.Width_ordinal</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>data</span>$<span class='no'>Petal.Width</span>))
 <span class='no'>data</span>$<span class='no'>Sepal.Length_ordinal</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>data</span>$<span class='no'>Sepal.Length</span>))
-<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Petal.Width_ordinal"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 1 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.</span></div><div class='output co'>#&gt; Parameter1          |           Parameter2 |  rho |     t |  df |      p |           CI |     Method
+<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Petal.Width_ordinal"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 1 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.</span></div><div class='output co'>#&gt; Parameter1          |           Parameter2 |  rho |     t |  df |      p |       95% CI |     Method
 #&gt; ----------------------------------------------------------------------------------------------------
 #&gt; Petal.Width_ordinal | Sepal.Length_ordinal | 0.75 | 13.78 | 148 | &lt; .001 | [0.67, 0.81] | Polychoric</div><div class='input'>
 <span class='co'># When one variable is continuous, will run 'polyserial' correlation</span>
-<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; Parameter1  |           Parameter2 |   rho |     t |  df |    p |            CI |     Method
-#&gt; --------------------------------------------------------------------------------------------
-#&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | -1.76 | 148 | 0.08 | [-0.30, 0.02] | Polyserial</div></pre>
+<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; Parameter1  |           Parameter2 |   rho |     t |  df |     p |        95% CI |     Method
+#&gt; ---------------------------------------------------------------------------------------------
+#&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | -1.76 | 148 | 0.080 | [-0.30, 0.02] | Polyserial</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -234,7 +270,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>
