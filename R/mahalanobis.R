@@ -10,15 +10,13 @@
 #'   \item Schwarzkopf, D. S., De Haas, B., & Rees, G. (2012). Better ways to improve standards in brain-behavior correlation analysis. Frontiers in human neuroscience, 6, 200.
 #' }
 #'
-#' @importFrom boot boot
 #' @export
 distance_mahalanobis <- function(data, ci = 0.95, iterations=1000, robust=FALSE, ...) {
-
-  if(robust){
+  if (robust) {
     # rez <- boot::boot(data = data, statistic = .distance_mahalanobis, R = iterations, sim="permutation")
     # bayestestR::point_estimate(as.data.frame(rez$t), centrality="all")
     stop("not available yet.")
-  } else{
+  } else {
     d <- .distance_mahalanobis(data)
     # TODO: get ci
     # stats::pchisq(p = 1 - ci, df = ncol(data))
