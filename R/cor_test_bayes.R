@@ -33,6 +33,10 @@
     names(params)[names(params) %in% c("Median", "Mean", "MAP")] <- "rho"
   }
 
+  # Remove useless columns
+  params[names(params) %in% c("Effects", "Component")] <- NULL
+
+  # Prepare output
   params <- params[names(params) != "Parameter"]
   params$Parameter1 <- x
   params$Parameter2 <- y

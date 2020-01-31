@@ -67,7 +67,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
   # Partial
   if (partial) {
-    data <- partialize(data, x, y, multilevel = multilevel, bayesian = partial_bayesian)
+    data[[x]] <- effectsize::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
+    data[[y]] <- effectsize::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
   }
 
   # Frequentist
