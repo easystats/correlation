@@ -1,6 +1,14 @@
 context("Miscellaenous")
 
 
+test_that("Mahalanobis", {
+  d <- distance_mahalanobis(data=iris[,1:4], robust=FALSE)
+  testthat::expect_equal(ncol(d), 1)
+  d <- distance_mahalanobis(data=iris[,1:4], robust=TRUE)
+  testthat::expect_equal(ncol(d), 3)
+})
+
+
 
 test_that("cor2cov", {
   cor <- cor(iris[1:4])

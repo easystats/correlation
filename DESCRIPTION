@@ -12,7 +12,17 @@ Authors@R: c(
 		"Lüdecke", 
 		role = c("aut"), 
 		email = "d.luedecke@uke.de", 
-		comment = c(ORCID = "0000-0002-8895-3206"))
+		comment = c(ORCID = "0000-0002-8895-3206")),
+	person("Mattan S.", 
+		"Ben-Shachar", 
+		role = c("ctb"), 
+		email = "matanshm@post.bgu.ac.il", 
+		comment = c(ORCID = "0000-0002-4287-4801")),
+	person("Indrajeet", 
+		"Patil", 
+		role = c("ctb"), 
+		email = "patilindrajeet.science@gmail.com", 
+		comment = c(ORCID = "0000-0003-1995-6531"))
 	)
 Maintainer: Dominique Makowski <dom.makowski@gmail.com>
 URL: https://github.com/easystats/correlation
@@ -44,7 +54,7 @@ Suggests:
 	rmarkdown,
 	see
 Remotes:
-    easystats/effectsize
+	easystats/effectsize
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
