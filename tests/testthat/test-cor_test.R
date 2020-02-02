@@ -28,13 +28,12 @@ test_that("cor_test frequentist", {
 
   out <- cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
   testthat::expect_equal(out$rho, -0.144, tol = 0.01)
-
 })
 
 
 test_that("cor_test robust", {
-  out1 <- cor_test(iris, "Petal.Length", "Petal.Width", method="pearson", robust=TRUE)
-  out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method="spearman", robust=FALSE)
+  out1 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "pearson", robust = TRUE)
+  out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman", robust = FALSE)
   testthat::expect_equal(out1$r, out2$rho, tol = 0.01)
 })
 

@@ -48,10 +48,10 @@
 #' cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 #'
 #' # Robust (these two are equivalent)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust=TRUE)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust=FALSE)
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALSE)
 #' @export
-cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust=FALSE, ...) {
+cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
 
   # Sanity checks
   if (partial == FALSE & (partial_bayesian | multilevel)) {
@@ -72,7 +72,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   }
 
   # Robust
-  if(robust) {
+  if (robust) {
     data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = TRUE, method = "average")
   }
 

@@ -11,26 +11,24 @@
 #' }
 #'
 #' @examples
-#' distance_mahalanobis(data=iris[,1:4])
-#'
+#' distance_mahalanobis(data = iris[, 1:4])
 #' @export
-distance_mahalanobis <- function(data, ci = 0.95, iterations=1000, robust=TRUE, ...) {
+distance_mahalanobis <- function(data, ci = 0.95, iterations = 1000, robust = TRUE, ...) {
   if (robust) {
-    Ms <- matrix(data=NA, nrow=iterations, ncol=nrow(data))
-    for(i in 1:iterations){
+    Ms <- matrix(data = NA, nrow = iterations, ncol = nrow(data))
+    for (i in 1:iterations) {
       # Draw random numbers from 1:n with replacement
       x <- sample(1:nrow(data), nrow(data), replace = TRUE)
       # Resample data
-      dat <- data[x,]
+      dat <- data[x, ]
       # Calculating the Mahalanobis distance for each actual observation using resampled data
       m <- stats::mahalanobis(data, center = colMeans(dat), cov = stats::cov(dat))
-      Ms[i,] <- m
+      Ms[i, ] <- m
     }
     # Get summary
-    d <- bayestestR::describe_posterior(as.data.frame(Ms), centrality="median", ci=ci, test="pd")
+    d <- bayestestR::describe_posterior(as.data.frame(Ms), centrality = "median", ci = ci, test = "pd")
     d <- d[c("Median", "CI_low", "CI_high")]
     names(d) <- c("Distance", "CI_low", "CI_high")
-
   } else {
     d <- stats::mahalanobis(data, center = colMeans(data), cov = stats::cov(data))
     d <- data.frame(Distance = d)

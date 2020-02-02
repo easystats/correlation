@@ -1,7 +1,7 @@
 #' @importFrom stats complete.cases rnorm
 #' @importFrom utils install.packages
 #' @keywords internal
-.cor_test_bayes <- function(data, x, y, ci = 0.89, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), method="pearson", ...) {
+.cor_test_bayes <- function(data, x, y, ci = 0.89, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), method = "pearson", ...) {
   if (!requireNamespace("BayesFactor")) {
     stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
   }
@@ -9,7 +9,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  if (tolower(method) %in% c("spearman", "spear", "s")){
+  if (tolower(method) %in% c("spearman", "spear", "s")) {
     var_x <- effectsize::ranktransform(var_x, sign = TRUE, method = "average")
     var_y <- effectsize::ranktransform(var_y, sign = TRUE, method = "average")
   }

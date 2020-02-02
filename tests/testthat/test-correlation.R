@@ -66,7 +66,7 @@ test_that("comparison with other packages", {
 
   # Bayesian
   out <- correlation(iris, include_factors = FALSE, bayesian = TRUE)
-    rez <- as.data.frame(as.table(out))
+  rez <- as.data.frame(as.table(out))
 
   r <- as.matrix(rez[2:5])
   testthat::expect_equal(mean(r - cor(iris[1:4])), 0, tol = 0.01)
