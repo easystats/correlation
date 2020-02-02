@@ -5,7 +5,7 @@
 #' @param data A dataframe.
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance" or "percentage" (for percentage bend correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
+#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
@@ -26,6 +26,7 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "shepherd")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
 #'
 #' data <- iris
@@ -81,6 +82,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
       out <- .cor_test_distance(data, x, y, ci = ci, corrected = TRUE, ...)
     } else if (tolower(method) %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       out <- .cor_test_percentage(data, x, y, ci = ci, ...)
+    } else if (tolower(method) %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+      out <- .cor_test_shepherd(data, x, y, ci = ci, ...)
     } else {
       out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
     }
