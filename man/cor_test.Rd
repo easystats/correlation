@@ -26,7 +26,7 @@ cor_test(
 
 \item{x, y}{Names of two variables present in the data.}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", or "distance". Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance" or "percentage" (for percentage bend correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
 
 \item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
@@ -57,12 +57,13 @@ About multiple tests corrections.
 }
 }
 \examples{
-cor_test(iris, "Petal.Length", "Petal.Width")
-cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman")
-cor_test(iris, "Petal.Length", "Petal.Width", method = "kendall")
-cor_test(iris, "Petal.Length", "Petal.Width", method = "biweight")
-cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
-cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
+cor_test(iris, "Sepal.Length", "Sepal.Width")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
+cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
 
 data <- iris
 # Tetrachoric

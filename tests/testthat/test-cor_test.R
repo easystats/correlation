@@ -37,3 +37,9 @@ test_that("cor_test distance", {
   comparison <- energy::dcor.ttest(iris$Petal.Length, iris$Petal.Width)
   testthat::expect_equal(out$r, as.numeric(comparison$estimate), tol = 0.01)
 })
+
+test_that("cor_test percentage", {
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "percentage")
+  comparison <- WRS2::pbcor(iris$Petal.Length, iris$Petal.Width)
+  testthat::expect_equal(out$r, as.numeric(comparison$cor), tol = 0.01)
+})

@@ -52,7 +52,8 @@ Suggests:
 	covr,
 	rstanarm,
 	rmarkdown,
-	see
+	see,
+	WRS2
 Remotes:
 	easystats/effectsize
 License: GPL-3
