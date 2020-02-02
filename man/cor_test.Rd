@@ -99,5 +99,5 @@ cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 
 # Robust (these two are equivalent)
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust=TRUE)
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust=FALSE)
 }

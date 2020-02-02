@@ -49,7 +49,7 @@
 #'
 #' # Robust (these two are equivalent)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust=TRUE)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust=FALSE)
 #' @export
 cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust=FALSE, ...) {
 

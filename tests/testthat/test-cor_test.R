@@ -28,8 +28,15 @@ test_that("cor_test frequentist", {
 
   out <- cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
   testthat::expect_equal(out$rho, -0.144, tol = 0.01)
+
 })
 
+
+test_that("cor_test robust", {
+  out1 <- cor_test(data, "Petal.Length", "Petal.Width", method="pearson", robust=TRUE)
+  out2 <- cor_test(data, "Petal.Length", "Petal.Width", method="spearman", robust=FALSE)
+  testthat::expect_equal(out1$r, out2$rho, tol = 0.01)
+})
 
 
 test_that("cor_test distance", {
@@ -38,8 +45,16 @@ test_that("cor_test distance", {
   testthat::expect_equal(out$r, as.numeric(comparison$estimate), tol = 0.01)
 })
 
+
 test_that("cor_test percentage", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "percentage")
   comparison <- WRS2::pbcor(iris$Petal.Length, iris$Petal.Width)
   testthat::expect_equal(out$r, as.numeric(comparison$cor), tol = 0.01)
+})
+
+
+test_that("cor_test shepherd", {
+  set.seed(333)
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd")
+  testthat::expect_equal(out$r, as.numeric(0.94762), tol = 0.01)
 })
