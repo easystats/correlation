@@ -33,8 +33,8 @@ test_that("cor_test frequentist", {
 
 
 test_that("cor_test robust", {
-  out1 <- cor_test(data, "Petal.Length", "Petal.Width", method="pearson", robust=TRUE)
-  out2 <- cor_test(data, "Petal.Length", "Petal.Width", method="spearman", robust=FALSE)
+  out1 <- cor_test(iris, "Petal.Length", "Petal.Width", method="pearson", robust=TRUE)
+  out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method="spearman", robust=FALSE)
   testthat::expect_equal(out1$r, out2$rho, tol = 0.01)
 })
 

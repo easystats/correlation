@@ -93,7 +93,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
     } else if (tolower(method) %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       out <- .cor_test_percentage(data, x, y, ci = ci, ...)
     } else if (tolower(method) %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
-      out <- .cor_test_shepherd(data, x, y, ci = ci, ...)
+      out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
     } else {
       out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
     }
@@ -102,7 +102,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   } else {
     if (ci == "default") ci <- 0.89
 
-    if (method %in% c("tetra", "tetrachoric")) {
+    if (tolower(method) %in% c("tetra", "tetrachoric")) {
       stop("Tetrachoric Bayesian correlations are not supported yet.")
     } else if (tolower(method) %in% c("poly", "polychoric")) {
       stop("Polychoric Bayesian correlations are not supported yet.")
@@ -110,6 +110,10 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
       stop("Biweight Bayesian correlations are not supported yet.")
     } else if (tolower(method) %in% c("distance")) {
       stop("Bayesian distance correlations are not supported yet.")
+    } else if (tolower(method) %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
+      stop("Bayesian Percentage Bend correlations are not supported yet.")
+    } else if (tolower(method) %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+      out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
     } else {
       out <- .cor_test_bayes(data, x, y, ci = ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
     }
