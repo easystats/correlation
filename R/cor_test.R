@@ -12,6 +12,7 @@
 #' @inheritParams partialize
 #' @param bayesian_prior For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.
 #' @param bayesian_ci_method,bayesian_test See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
+#' @param robust If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).
 #' @param ... Arguments passed to or from other methods.
 #'
 #'
@@ -45,8 +46,12 @@
 #'
 #' # When one variable is continuous, will run 'polyserial' correlation
 #' cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
+#'
+#' # Robust (these two are equivalent)
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust=TRUE)
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 #' @export
-cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
+cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust=FALSE, ...) {
 
   # Sanity checks
   if (partial == FALSE & (partial_bayesian | multilevel)) {
@@ -64,6 +69,11 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   if (partial) {
     data[[x]] <- effectsize::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
     data[[y]] <- effectsize::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
+  }
+
+  # Robust
+  if(robust) {
+    data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = TRUE, method = "average")
   }
 
   # Frequentist

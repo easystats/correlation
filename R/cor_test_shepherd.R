@@ -6,5 +6,7 @@
   d <- distance_mahalanobis(cbind(var_x, var_y))
   not_outliers <- d$Distance < 6
 
-  .cor_test_freq(data[not_outliers,], x, y, ci=ci, method="spearman")
+  out <- .cor_test_freq(data[not_outliers,], x, y, ci=ci, method="spearman")
+  out$Method <- "Shepherd's Pi"
+  out
 }

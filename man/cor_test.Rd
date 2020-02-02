@@ -18,6 +18,7 @@ cor_test(
   partial = FALSE,
   partial_bayesian = FALSE,
   multilevel = FALSE,
+  robust = FALSE,
   ...
 )
 }
@@ -41,6 +42,8 @@ cor_test(
 \item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
 
 \item{multilevel}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.}
+
+\item{robust}{If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).}
 
 \item{...}{Arguments passed to or from other methods.}
 }
@@ -93,4 +96,8 @@ cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychor
 
 # When one variable is continuous, will run 'polyserial' correlation
 cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
+
+# Robust (these two are equivalent)
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust=TRUE)
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 }
