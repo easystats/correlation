@@ -2,9 +2,9 @@
 % Please edit documentation in R/mahalanobis.R
 \name{distance_mahalanobis}
 \alias{distance_mahalanobis}
-\title{Mahalanobis distance}
+\title{Mahalanobis distance and confidence interval (CI)}
 \usage{
-distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = FALSE, ...)
+distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = TRUE, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -19,6 +19,10 @@ distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = FALSE, ...)
 }
 \description{
 The Mahalanobis distance (in squared units) measures the distance in multivariate space taking into account the covariance structure of the data. Because a few extreme outliers can skew the covariance estimate, the bootstrapped version is considered as more robust.
+}
+\examples{
+distance_mahalanobis(data=iris[,1:4])
+
 }
 \references{
 \itemize{

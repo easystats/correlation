@@ -9,7 +9,14 @@
 #' @inheritParams cor_test
 #' @inheritParams partialize
 #'
-#' @inherit cor_test details
+#' @details
+#' \subsection{Correlation Types}{
+#' Some details.
+#' }
+#'
+#' \subsection{Multiple tests correction}{
+#' About multiple tests corrections.
+#' }
 #'
 #' @examples
 #' library(dplyr)

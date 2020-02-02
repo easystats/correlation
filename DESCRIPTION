@@ -12,7 +12,17 @@ Authors@R: c(
 		"Lüdecke", 
 		role = c("aut"), 
 		email = "d.luedecke@uke.de", 
-		comment = c(ORCID = "0000-0002-8895-3206"))
+		comment = c(ORCID = "0000-0002-8895-3206")),
+	person("Mattan S.", 
+		"Ben-Shachar", 
+		role = c("ctb"), 
+		email = "matanshm@post.bgu.ac.il", 
+		comment = c(ORCID = "0000-0002-4287-4801")),
+	person("Indrajeet", 
+		"Patil", 
+		role = c("ctb"), 
+		email = "patilindrajeet.science@gmail.com", 
+		comment = c(ORCID = "0000-0003-1995-6531"))
 	)
 Maintainer: Dominique Makowski <dom.makowski@gmail.com>
 URL: https://github.com/easystats/correlation
@@ -20,10 +30,11 @@ BugReports: https://github.com/easystats/correlation/issues
 Description: Offers functions for computing different kinds of correlations.
 Imports:
 	stats,
-	insight (>= 0.7.1),
-	bayestestR (>= 0.4.0),
-	parameters (>= 0.3.0),
-	effectsize (>= 0.0.1)
+	boot,
+	insight (>= 0.8.0),
+	bayestestR (>= 0.5.0),
+	parameters (>= 0.4.0),
+	effectsize (>= 0.1.2)
 Suggests:
 	BayesFactor,
 	dplyr,
@@ -41,7 +52,10 @@ Suggests:
 	covr,
 	rstanarm,
 	rmarkdown,
-	see
+	see,
+	WRS2
+Remotes:
+	easystats/effectsize
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
