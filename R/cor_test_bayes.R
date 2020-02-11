@@ -1,5 +1,7 @@
 #' @importFrom stats complete.cases rnorm
 #' @importFrom utils install.packages
+#' @importFrom effectsize ranktransform
+#' @importFrom parameters model_parameters
 #' @keywords internal
 .cor_test_bayes <- function(data, x, y, ci = 0.89, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), method = "pearson", ...) {
   if (!requireNamespace("BayesFactor")) {
