@@ -28,7 +28,7 @@
     # Reconstruct dataframe
     dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
     names(dat) <- c(x, y)
-    junk <- capture.output(r <- psych::polychoric(dat)$rho[2, 1])
+    junk <- utils::capture.output(r <- psych::polychoric(dat)$rho[2, 1])
     method <- "Polychoric"
   }
 
