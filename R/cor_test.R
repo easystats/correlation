@@ -1,8 +1,8 @@
 #' Correlation test
 #'
-#' This function perfoms a correlation test between two variables.
+#' This function performs a correlation test between two variables.
 #'
-#' @param data A dataframe.
+#' @param data A data frame.
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
 #' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
@@ -50,6 +50,8 @@
 #' # Robust (these two are equivalent)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALSE)
+#' @importFrom effectsize adjust ranktransform
+#' @importFrom stats complete.cases
 #' @export
 cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
 
@@ -120,7 +122,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   }
 
   # Number of observations
-  out$n_Obs <- sum(complete.cases(data[[x]], data[[y]]))
+  out$n_Obs <- sum(stats::complete.cases(data[[x]], data[[y]]))
 
   attr(out, "ci") <- ci
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
@@ -137,12 +139,12 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
 #' @keywords internal
 .complete_variable_x <- function(data, x, y) {
-  data[[x]][complete.cases(data[[x]], data[[y]])]
+  data[[x]][stats::complete.cases(data[[x]], data[[y]])]
 }
 
 #' @keywords internal
 .complete_variable_y <- function(data, x, y) {
-  data[[y]][complete.cases(data[[x]], data[[y]])]
+  data[[y]][stats::complete.cases(data[[x]], data[[y]])]
 }
 
 

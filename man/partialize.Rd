@@ -7,7 +7,7 @@
 partialize(data, x, y, multilevel = FALSE, bayesian = FALSE)
 }
 \arguments{
-\item{data}{A dataframe.}
+\item{data}{A data frame.}
 
 \item{x}{Names of two variables present in the data.}
 

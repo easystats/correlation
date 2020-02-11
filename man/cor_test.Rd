@@ -23,7 +23,7 @@ cor_test(
 )
 }
 \arguments{
-\item{data}{A dataframe.}
+\item{data}{A data frame.}
 
 \item{x, y}{Names of two variables present in the data.}
 
@@ -48,7 +48,7 @@ cor_test(
 \item{...}{Arguments passed to or from other methods.}
 }
 \description{
-This function perfoms a correlation test between two variables.
+This function performs a correlation test between two variables.
 }
 \details{
 \subsection{Correlation Types}{
