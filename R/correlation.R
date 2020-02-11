@@ -11,7 +11,18 @@
 #'
 #' @details
 #' \subsection{Correlation Types}{
-#' Some details.
+#' \itemize{
+#' \item \strong{Pearson's correlation}: The covariance of the two variables divided by the product of their standard deviations.
+#' \item \strong{Spearman's rank correlation}: A nonparametric measure of rank correlation (statistical dependence between the rankings of two variables). The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson's correlation assesses linear relationships, Spearman's correlation assesses monotonic relationships (whether linear or not).
+#' \item \strong{Kendall's rank correlation}: In the normal case, the Kendall correlation is preferred than the Spearman correlation because of a smaller gross error sensitivity (GES) and a smaller asymptotic variance (AV), making it more robust and more efficient. However, the interpretation of Kendall's tau is less direct than that of Spearman's rho, in the sense that it quantifies the difference between the \% of concordant and discordant pairs among all possible pairwise events.
+#' \item \strong{Biweight midcorrelation}: A measure of similarity between samples that is median-based, rather than mean-based, thus is less sensitive to outliers, and can be a robust alternative to other similarity metrics, such as Pearson correlation.
+#' \item \strong{Distance correlation}: Distance correlation measures both linear and nonlinear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.
+#' \item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20\%).
+#' \item \strong{Shepherd's Pi correlation}: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped mahalanobis distance).
+#' \item \strong{Point-Biserial correlation}: Correlation coefficient used when one variable is dichotomous.
+#' \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
+#' \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
+#' }
 #' }
 #'
 #' \subsection{Multiple tests correction}{
@@ -33,7 +44,7 @@
 #' correlation(mtcars[-2], method = "auto")
 #' @importFrom stats p.adjust
 #' @export
-correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
+correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
 
   # Sanity checks
   if (partial == FALSE & multilevel) {

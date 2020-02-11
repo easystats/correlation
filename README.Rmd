@@ -65,7 +65,7 @@ Click on the buttons above to access the package [**documentation**](https://eas
 
 
 
-# Features
+# Examples
 
 The main function is `correlation()`, which builds on top of `cor_test()` and comes with a number of possible options.
 

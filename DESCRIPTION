@@ -40,6 +40,7 @@ Suggests:
 	dplyr,
 	energy,
 	ggcorrplot,
+	ggplot2,
 	Hmisc,
 	knitr,
 	lme4,

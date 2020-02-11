@@ -17,6 +17,7 @@
   if ("CI_low" %in% names(params)) diagonal$CI_low <- 1
   if ("CI_high" %in% names(params)) diagonal$CI_high <- 1
   if ("Method" %in% names(params)) diagonal$Method <- unique(params$Method)[1]
+  if ("n_Obs" %in% names(params)) diagonal$n_Obs <- unique(params$n_Obs)[1]
 
   if ("Median" %in% names(params)) diagonal$Median <- 1
   if ("Mean" %in% names(params)) diagonal$Mean <- 1

@@ -18,6 +18,7 @@ cor_test(
   partial = FALSE,
   partial_bayesian = FALSE,
   multilevel = FALSE,
+  robust = FALSE,
   ...
 )
 }
@@ -26,7 +27,7 @@ cor_test(
 
 \item{x, y}{Names of two variables present in the data.}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance" or "percentage" (for percentage bend correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
 
 \item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
 
@@ -42,6 +43,8 @@ cor_test(
 
 \item{multilevel}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.}
 
+\item{robust}{If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).}
+
 \item{...}{Arguments passed to or from other methods.}
 }
 \description{
@@ -49,7 +52,18 @@ This function perfoms a correlation test between two variables.
 }
 \details{
 \subsection{Correlation Types}{
-Some details.
+\itemize{
+\item \strong{Pearson's correlation}: The covariance of the two variables divided by the product of their standard deviations.
+\item \strong{Spearman's rank correlation}: A nonparametric measure of rank correlation (statistical dependence between the rankings of two variables). The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson's correlation assesses linear relationships, Spearman's correlation assesses monotonic relationships (whether linear or not).
+\item \strong{Kendall's rank correlation}: In the normal case, the Kendall correlation is preferred than the Spearman correlation because of a smaller gross error sensitivity (GES) and a smaller asymptotic variance (AV), making it more robust and more efficient. However, the interpretation of Kendall's tau is less direct than that of Spearman's rho, in the sense that it quantifies the difference between the \% of concordant and discordant pairs among all possible pairwise events.
+\item \strong{Biweight midcorrelation}: A measure of similarity between samples that is median-based, rather than mean-based, thus is less sensitive to outliers, and can be a robust alternative to other similarity metrics, such as Pearson correlation.
+\item \strong{Distance correlation}: Distance correlation measures both linear and nonlinear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.
+\item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20\%).
+\item \strong{Shepherd's Pi correlation}: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped mahalanobis distance).
+\item \strong{Point-Biserial correlation}: Correlation coefficient used when one variable is dichotomous.
+\item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
+\item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
+}
 }
 
 \subsection{Multiple tests correction}{
@@ -63,6 +77,7 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "shepherd")
 cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
 
 data <- iris
@@ -81,4 +96,8 @@ cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychor
 
 # When one variable is continuous, will run 'polyserial' correlation
 cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
+
+# Robust (these two are equivalent)
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALSE)
 }

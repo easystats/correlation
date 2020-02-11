@@ -4,7 +4,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  rez <- cor.test(var_x, var_y, conf.level = ci, method = match.arg(method, c("pearson", "kendall", "spearman"), several.ok = FALSE), alternative = "two.sided")
+  rez <- cor.test(var_x, var_y, conf.level = ci, method = match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE), alternative = "two.sided")
 
   params <- parameters::model_parameters(rez)
   params$Parameter1 <- x

@@ -29,7 +29,7 @@
     p = sig,
     CI_low = ci_vals$CI_low,
     CI_high = ci_vals$CI_high,
-    Method = "Percentage_Bend",
+    Method = "Percentage Bend",
     stringsAsFactors = FALSE
   )
 }

@@ -21,8 +21,7 @@ distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = TRUE, ...)
 The Mahalanobis distance (in squared units) measures the distance in multivariate space taking into account the covariance structure of the data. Because a few extreme outliers can skew the covariance estimate, the bootstrapped version is considered as more robust.
 }
 \examples{
-distance_mahalanobis(data=iris[,1:4])
-
+distance_mahalanobis(data = iris[, 1:4])
 }
 \references{
 \itemize{

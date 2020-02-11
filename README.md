@@ -36,7 +36,7 @@ check-out these vignettes:
 
   - **No vignettes yet :(**
 
-# Features
+# Examples
 
 The main function is `correlation()`, which builds on top of
 `cor_test()` and comes with a number of possible options.
@@ -48,7 +48,7 @@ cor <- correlation(iris)
 cor
 ## Parameter1   |   Parameter2 |     r |     t |  df |      p |         95% CI |  Method
 ## -------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.12 | -1.44 | 148 | 0.15   | [-0.27,  0.04] | Pearson
+## Sepal.Length |  Sepal.Width | -0.12 | -1.44 | 148 | 0.152  | [-0.27,  0.04] | Pearson
 ## Sepal.Length | Petal.Length |  0.87 | 21.65 | 148 | < .001 | [ 0.83,  0.91] | Pearson
 ## Sepal.Length |  Petal.Width |  0.82 | 17.30 | 148 | < .001 | [ 0.76,  0.86] | Pearson
 ## Sepal.Width  | Petal.Length | -0.43 | -5.77 | 148 | < .001 | [-0.55, -0.29] | Pearson
@@ -102,17 +102,17 @@ iris %>%
   select(Species, starts_with("Sepal"), Petal.Width) %>% 
   group_by(Species) %>% 
   correlation()
-## Group      |   Parameter1 |  Parameter2 |    r |    t | df |      p |         95% CI |  Method
-## ----------------------------------------------------------------------------------------------
-## setosa     | Sepal.Length | Sepal.Width | 0.74 | 7.68 | 48 | < .001 | [ 0.59,  0.85] | Pearson
-## setosa     | Sepal.Length | Petal.Width | 0.28 | 2.01 | 48 | 0.10   | [ 0.00,  0.52] | Pearson
-## setosa     |  Sepal.Width | Petal.Width | 0.23 | 1.66 | 48 | 0.10   | [-0.05,  0.48] | Pearson
-## versicolor | Sepal.Length | Sepal.Width | 0.53 | 4.28 | 48 | < .001 | [ 0.29,  0.70] | Pearson
-## versicolor | Sepal.Length | Petal.Width | 0.55 | 4.52 | 48 | < .001 | [ 0.32,  0.72] | Pearson
-## versicolor |  Sepal.Width | Petal.Width | 0.66 | 6.15 | 48 | < .001 | [ 0.47,  0.80] | Pearson
-## virginica  | Sepal.Length | Sepal.Width | 0.46 | 3.56 | 48 | < .01  | [ 0.20,  0.65] | Pearson
-## virginica  | Sepal.Length | Petal.Width | 0.28 | 2.03 | 48 | < .05  | [ 0.00,  0.52] | Pearson
-## virginica  |  Sepal.Width | Petal.Width | 0.54 | 4.42 | 48 | < .001 | [ 0.31,  0.71] | Pearson
+## Group      |   Parameter1 |  Parameter2 |    r |    t | df |      p |        95% CI |  Method
+## ---------------------------------------------------------------------------------------------
+## setosa     | Sepal.Length | Sepal.Width | 0.74 | 7.68 | 48 | < .001 | [ 0.59, 0.85] | Pearson
+## setosa     | Sepal.Length | Petal.Width | 0.28 | 2.01 | 48 | 0.101  | [ 0.00, 0.52] | Pearson
+## setosa     |  Sepal.Width | Petal.Width | 0.23 | 1.66 | 48 | 0.104  | [-0.05, 0.48] | Pearson
+## versicolor | Sepal.Length | Sepal.Width | 0.53 | 4.28 | 48 | < .001 | [ 0.29, 0.70] | Pearson
+## versicolor | Sepal.Length | Petal.Width | 0.55 | 4.52 | 48 | < .001 | [ 0.32, 0.72] | Pearson
+## versicolor |  Sepal.Width | Petal.Width | 0.66 | 6.15 | 48 | < .001 | [ 0.47, 0.80] | Pearson
+## virginica  | Sepal.Length | Sepal.Width | 0.46 | 3.56 | 48 | 0.002  | [ 0.20, 0.65] | Pearson
+## virginica  | Sepal.Length | Petal.Width | 0.28 | 2.03 | 48 | 0.048  | [ 0.00, 0.52] | Pearson
+## virginica  |  Sepal.Width | Petal.Width | 0.54 | 4.42 | 48 | < .001 | [ 0.31, 0.71] | Pearson
 ```
 
 ## Bayesian Correlations
@@ -123,11 +123,11 @@ It is very easy to switch to a **Bayesian framework**.
 correlation(iris, bayesian=TRUE)
 ## Parameter1   |   Parameter2 |   rho |         89% CI |     pd | % in ROPE |    BF |              Prior
 ## ------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.02] | 91.67% |    43.20% |  0.51 | Cauchy (0 +- 0.33)
-## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.89] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.17% |    42.45% |  0.51 | Cauchy (0 +- 0.33)
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
 ## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
 ## Sepal.Width  | Petal.Length | -0.42 | [-0.52, -0.31] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] |   100% |     0.07% | > 999 | Cauchy (0 +- 0.33)
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | > 999 | Cauchy (0 +- 0.33)
 ```
 
@@ -140,23 +140,23 @@ which can deal with correlations **between factors**\!
 correlation(iris, include_factors = TRUE, method = "auto")
 ## Parameter1         |         Parameter2 |     r |      t |  df |      p |         95% CI |      Method
 ## ------------------------------------------------------------------------------------------------------
-## Sepal.Length       |        Sepal.Width | -0.12 |  -1.44 | 148 | 0.30   | [-0.27,  0.04] |     Pearson
+## Sepal.Length       |        Sepal.Width | -0.12 |  -1.44 | 148 | 0.304  | [-0.27,  0.04] |     Pearson
 ## Sepal.Length       |       Petal.Length |  0.87 |  21.65 | 148 | < .001 | [ 0.83,  0.91] |     Pearson
 ## Sepal.Length       |        Petal.Width |  0.82 |  17.30 | 148 | < .001 | [ 0.76,  0.86] |     Pearson
 ## Sepal.Length       |     Species.setosa | -0.93 | -29.97 | 148 | < .001 | [-0.95, -0.90] |    Biserial
-## Sepal.Length       | Species.versicolor |  0.10 |   1.25 | 148 | 0.30   | [-0.06,  0.26] |    Biserial
+## Sepal.Length       | Species.versicolor |  0.10 |   1.25 | 148 | 0.304  | [-0.06,  0.26] |    Biserial
 ## Sepal.Length       |  Species.virginica |  0.82 |  17.66 | 148 | < .001 | [ 0.77,  0.87] |    Biserial
 ## Sepal.Width        |       Petal.Length | -0.43 |  -5.77 | 148 | < .001 | [-0.55, -0.29] |     Pearson
 ## Sepal.Width        |        Petal.Width | -0.37 |  -4.79 | 148 | < .001 | [-0.50, -0.22] |     Pearson
 ## Sepal.Width        |     Species.setosa |  0.78 |  15.09 | 148 | < .001 | [ 0.71,  0.84] |    Biserial
 ## Sepal.Width        | Species.versicolor | -0.60 |  -9.20 | 148 | < .001 | [-0.70, -0.49] |    Biserial
-## Sepal.Width        |  Species.virginica | -0.18 |  -2.16 | 148 | 0.13   | [-0.33, -0.02] |    Biserial
+## Sepal.Width        |  Species.virginica | -0.18 |  -2.16 | 148 | 0.130  | [-0.33, -0.02] |    Biserial
 ## Petal.Length       |        Petal.Width |  0.96 |  43.39 | 148 | < .001 | [ 0.95,  0.97] |     Pearson
 ## Petal.Length       |     Species.setosa | -1.00 |   -Inf | 148 | < .001 | [-1.00, -1.00] |    Biserial
-## Petal.Length       | Species.versicolor |  0.26 |   3.27 | 148 | < .01  | [ 0.10,  0.40] |    Biserial
+## Petal.Length       | Species.versicolor |  0.26 |   3.27 | 148 | 0.007  | [ 0.10,  0.40] |    Biserial
 ## Petal.Length       |  Species.virginica |  0.93 |  31.09 | 148 | < .001 | [ 0.91,  0.95] |    Biserial
 ## Petal.Width        |     Species.setosa | -1.00 |   -Inf | 148 | < .001 | [-1.00, -1.00] |    Biserial
-## Petal.Width        | Species.versicolor |  0.15 |   1.87 | 148 | 0.19   | [-0.01,  0.31] |    Biserial
+## Petal.Width        | Species.versicolor |  0.15 |   1.87 | 148 | 0.191  | [-0.01,  0.31] |    Biserial
 ## Petal.Width        |  Species.virginica |  0.99 | 112.56 | 148 | < .001 | [ 0.99,  1.00] |    Biserial
 ## Species.setosa     | Species.versicolor | -0.88 | -22.35 | 148 | < .001 | [-0.91, -0.84] | Tetrachoric
 ## Species.setosa     |  Species.virginica | -0.88 | -22.35 | 148 | < .001 | [-0.91, -0.84] | Tetrachoric
