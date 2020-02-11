@@ -119,6 +119,9 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
     }
   }
 
+  # Number of observations
+  out$n_Obs <- sum(complete.cases(data[[x]], data[[y]]))
+
   attr(out, "ci") <- ci
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out
