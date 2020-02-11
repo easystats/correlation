@@ -26,7 +26,7 @@
 
 
 
-#' @importFrom stats qt sd quantile
+#' @importFrom stats qt sd quantile na.omit
 #' @keywords internal
 .bootstrapped_ci <- function(data, select = NULL, method = c("normal", "quantile"), ci.lvl = .95) {
   # match arguments
@@ -44,7 +44,7 @@
     # bootstrap values or quantiles
     if (method == "normal") {
       # get bootstrap standard error
-      bootse <- stats::qt((1 + ci.lvl) / 2, df = length(x) - 1) * stats::sd(x, na.rm = T)
+      bootse <- stats::qt((1 + ci.lvl) / 2, df = length(stats::na.omit(x)) - 1) * stats::sd(x, na.rm = T)
       # lower and upper confidence interval
       ci <- mean(x, na.rm = T) + c(-bootse, bootse)
     } else {
