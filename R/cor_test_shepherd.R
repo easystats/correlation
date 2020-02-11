@@ -1,3 +1,4 @@
+#' @importFrom effectsize ranktransform
 #' @keywords internal
 .cor_test_shepherd <- function(data, x, y, ci = 0.95, bayesian = FALSE, ...) {
   var_x <- .complete_variable_x(data, x, y)

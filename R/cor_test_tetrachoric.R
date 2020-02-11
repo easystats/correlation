@@ -19,13 +19,13 @@
   names(dat) <- c(x, y)
 
   if (length(unique(var_x)) > 2 | length(unique(var_y)) > 2) {
-    junk <- capture.output(r <- psych::biserial(
+    junk <- utils::capture.output(r <- psych::biserial(
       x = dat[sapply(dat, function(x) length(unique(x)) > 2)],
       y = dat[sapply(dat, function(x) !length(unique(x)) > 2)]
     )[1])
     method <- "Biserial"
   } else {
-    junk <- capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
+    junk <- utils::capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
     method <- "Tetrachoric"
   }
 
