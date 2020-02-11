@@ -19,7 +19,7 @@
 #'
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall")
 #' cor_to_p(-0.07699679, n = 150, method = "kendall")
-#' @importFrom stats mad median qnorm cov2cor pnorm pt
+#' @importFrom stats qnorm pt
 #' @export
 cor_to_p <- function(cor, n, method = "pearson") {
 
@@ -33,9 +33,9 @@ cor_to_p <- function(cor, n, method = "pearson") {
 
   # p-value
   if (method == "kendall") {
-    p <- 2 * pnorm(-abs(statistic))
+    p <- 2 * stats::pnorm(-abs(statistic))
   } else {
-    p <- 2 * pt(-abs(statistic), df = n - 2)
+    p <- 2 * stats::pt(-abs(statistic), df = n - 2)
   }
 
   list(p = p, statistic = statistic)

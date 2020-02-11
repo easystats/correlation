@@ -27,6 +27,7 @@
 #' # Inverse
 #' round(pcor_to_cor(pcor) - cor, 2)
 #' # round(pcor_to_cor(spcor, semi = TRUE) - cor, 2)
+#' @importFrom stats cov2cor
 #' @export
 cor_to_pcor <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
   UseMethod("cor_to_pcor")
@@ -183,7 +184,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
   # Partial
   inverted <- .invert_matrix(cor, tol = tol)
-  out <- -cov2cor(inverted)
+  out <- -stats::cov2cor(inverted)
 
   diag(out) <- 1
   out
@@ -199,7 +200,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   diag(m) <- -diag(m)
 
   inverted <- .invert_matrix(m, tol = tol)
-  out <- cov2cor(inverted)
+  out <- stats::cov2cor(inverted)
 
   out
 }
@@ -232,7 +233,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
     if (is.null(cov)) {
       stop("A correlation or covariance matrix is required.")
     } else {
-      cor <- cov2cor(cov)
+      cor <- stats::cov2cor(cov)
     }
   } else {
     if (inherits(cor, "easycormatrix")) {

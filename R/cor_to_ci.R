@@ -7,8 +7,8 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson") {
 
   # CI
   alpha <- 1 - (1 - ci) / 2
-  ci_low <- z - se * qnorm(alpha)
-  ci_high <- z + se * qnorm(alpha)
+  ci_low <- z - se * stats::qnorm(alpha)
+  ci_high <- z + se * stats::qnorm(alpha)
 
   # Convert back to r
   ci_low <- tanh(ci_low)
