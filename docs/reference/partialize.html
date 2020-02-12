@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -41,12 +43,12 @@
 
   <link href="../extra.css" rel="stylesheet">
   
+
 <meta property="og:title" content="Partialize Data — partialize" />
-
 <meta property="og:description" content="This function can be used to (slowly) get the data of which a regular correlation is equivalent to the partial correlation between two variables (adjusted for the rest of the dataset). As it is based on underlying fitting of multiple regressions, it allows more flexibility, such as including factors as random effects and/or fitting the models under a Bayesian framework. The values returned by this function are the residuals of the regression models." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -105,7 +107,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/easystats/correlation">
@@ -132,19 +133,17 @@
     </div>
 
     <div class="ref-description">
-    
     <p>This function can be used to (slowly) get the data of which a regular correlation is equivalent to the partial correlation between two variables (adjusted for the rest of the dataset). As it is based on underlying fitting of multiple regressions, it allows more flexibility, such as including factors as random effects and/or fitting the models under a Bayesian framework. The values returned by this function are the residuals of the regression models.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>partialize</span>(<span class='no'>data</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>multilevel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>A dataframe.</p></td>
+      <td><p>A data frame.</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -163,7 +162,7 @@
       <td><p>If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
     </tr>
     </table>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>pcordata</span> <span class='kw'>&lt;-</span> <span class='fu'>partialize</span>(
@@ -184,11 +183,9 @@
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>,
   <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Sepal.Width"</span>,
   <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: rstanarm</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'xts':</span>
-#&gt; <span class='message'>  method     from</span>
-#&gt; <span class='message'>  as.zoo.xts zoo </span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>pcordata</span>)</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width
-#&gt; Sepal.Length    1.0000000   0.6285323
-#&gt; Sepal.Width     0.6285323   1.0000000</div><div class='input'># }
+)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: rstanarm</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>pcordata</span>)</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width
+#&gt; Sepal.Length     1.000000    0.628521
+#&gt; Sepal.Width      0.628521    1.000000</div><div class='input'># }
 
 </div></pre>
   </div>
@@ -196,7 +193,6 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

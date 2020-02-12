@@ -220,7 +220,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
   # P-values adjustments
   if ("p" %in% names(params)) {
-    params$p <- p.adjust(params$p,
+    params$p <- stats::p.adjust(params$p,
       method = p_adjust,
       n = nrow(params)
     )

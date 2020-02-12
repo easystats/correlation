@@ -30,7 +30,6 @@ BugReports: https://github.com/easystats/correlation/issues
 Description: Offers functions for computing different kinds of correlations.
 Imports:
 	stats,
-	boot,
 	insight (>= 0.8.0),
 	bayestestR (>= 0.5.0),
 	parameters (>= 0.4.0),
