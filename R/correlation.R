@@ -91,7 +91,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
     )
   )
 
-  class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
+  class(out) <- unique(c("easycorrelation", "see_easycorrelation", "parameters_model", class(out)))
 
   if (convert_back_to_r) out <- pcor_to_cor(out) # Revert back to r if needed.
   out
@@ -238,4 +238,20 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
   list(params = params, data = data)
+}
+
+
+
+
+
+
+
+# plot ----------------------------
+
+#' @export
+plot.easycorrelation <- function(x, ...) {
+  if (!requireNamespace("see", quietly = TRUE)) {
+    stop("Package 'see' needed to plot correlation graphs. Please install it by running `install.packages('see')`.")
+  }
+  NextMethod()
 }
