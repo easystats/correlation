@@ -1,6 +1,6 @@
 Package: correlation
 Type: Package
-Title: Easy peasy correlations
+Title: Easy Peasy Correlations
 Version: 0.1.0
 Authors@R: c(
 	person("Dominique", 
