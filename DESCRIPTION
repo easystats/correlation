@@ -1,6 +1,6 @@
 Package: correlation
 Type: Package
-Title: Easy peasy correlations
+Title: Easy Peasy Correlations
 Version: 0.1.0
 Authors@R: c(
 	person("Dominique", 
@@ -27,13 +27,14 @@ Authors@R: c(
 Maintainer: Dominique Makowski <dom.makowski@gmail.com>
 URL: https://github.com/easystats/correlation
 BugReports: https://github.com/easystats/correlation/issues
-Description: Offers functions for computing different kinds of correlations.
+Description: Lightweight package for computing different kinds of correlations, such as partial correlations, Bayesian correlations, multilevel correlations, polychoric correlations, biweight correlations, distance correlations and more. Relies on the easystats ecosystem (Lüdecke, Waggoner & Makowski, 2019) <doi:10.21105/joss.01412>.
 Imports:
 	stats,
+	boot,
 	insight (>= 0.8.0),
 	bayestestR (>= 0.5.0),
-	parameters (>= 0.4.0),
-	effectsize (>= 0.1.2)
+	parameters (>= 0.5.0),
+	effectsize (>= 0.2.0)
 Suggests:
 	BayesFactor,
 	dplyr,
@@ -54,8 +55,6 @@ Suggests:
 	rmarkdown,
 	see,
 	WRS2
-Remotes:
-	easystats/effectsize
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

@@ -10,10 +10,10 @@ test_that("Mahalanobis", {
 
 
 
-test_that("cor2cov", {
+test_that("cor_to_cov", {
   cor <- cor(iris[1:4])
   cov <- cov(iris[1:4])
-  cov2 <- cor2cov(cor, var = sapply(iris[1:4], var))
+  cov2 <- cor_to_cov(cor, var = sapply(iris[1:4], var))
   testthat::expect_equal(max(cov - cov2), 0, tol = 0.0001)
 })
 

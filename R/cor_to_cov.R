@@ -7,10 +7,10 @@
 #' cor <- cor(iris[1:4])
 #' cov(iris[1:4])
 #'
-#' cor2cov(cor, sd = sapply(iris[1:4], sd))
-#' cor2cov(cor, variance = sapply(iris[1:4], var))
+#' cor_to_cov(cor, sd = sapply(iris[1:4], sd))
+#' cor_to_cov(cor, variance = sapply(iris[1:4], var))
 #' @export
-cor2cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2 / 3)) {
+cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2 / 3)) {
 
   # sanity checks
   if (!isSquare(cor)) {
