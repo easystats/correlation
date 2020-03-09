@@ -15,9 +15,6 @@ cor_to_cov(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2/3))
 }
 \value{
 A covariance matrix.
-
-cor_to_cov(cor, sd = sapply(iris[1:4], sd))
-cor_to_cov(cor, variance = sapply(iris[1:4], var))
 }
 \description{
 Convert a correlation to covariance
@@ -26,4 +23,6 @@ Convert a correlation to covariance
 cor <- cor(iris[1:4])
 cov(iris[1:4])
 
+cor_to_cov(cor, sd = sapply(iris[1:4], sd))
+cor_to_cov(cor, variance = sapply(iris[1:4], var))
 }

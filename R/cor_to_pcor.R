@@ -14,21 +14,14 @@
 #' @return The (semi) partial correlation matrix.
 #'
 #' @examples
-#' library(ppcor)
-#'
 #' cor <- cor(iris[1:4])
-#' pcor <- cor_to_pcor(cor)
 #'
-#' # Comparison
-#' round(pcor - ppcor::pcor(iris[1:4])$estimate, 2)
-#'
-#' # Semi-partial
-#' spcor <- cor_to_spcor(cor, cov = sapply(iris[1:4], sd))
-#' round(spcor - ppcor::spcor(iris[1:4])$estimate, 2)
+#' # Partialize
+#' cor_to_pcor(cor)
+#' cor_to_spcor(cor, cov = sapply(iris[1:4], sd))
 #'
 #' # Inverse
-#' round(pcor_to_cor(pcor) - cor, 2)
-#' # round(pcor_to_cor(spcor, semi = TRUE) - cor, 2)
+#' round(pcor_to_cor(cor_to_pcor(cor)) - cor, 2) # Should be 0
 #' @importFrom stats cov2cor
 #' @export
 cor_to_pcor <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
