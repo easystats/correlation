@@ -9,6 +9,9 @@ z_fisher(r = NULL, z = NULL)
 \arguments{
 \item{r, z}{The r or the z' value to be converted.}
 }
+\value{
+The transformed value.
+}
 \description{
 The Fisher z-transformation converts the standard Pearson's r to a normally distributed variable z'. It is used to compute confidence intervals to correlations. The z' variable is different from the z-statistic.
 }

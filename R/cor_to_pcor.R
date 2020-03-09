@@ -11,6 +11,8 @@
 #' @param semi Semi-partial correlations.
 #' @param tol Relative tolerance to detect zero singular values.
 #'
+#' @return The (semi) partial correlation matrix.
+#'
 #' @examples
 #' library(ppcor)
 #'

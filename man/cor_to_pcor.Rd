@@ -29,6 +29,9 @@ spcor_to_cor(
 
 \item{semi}{Semi-partial correlations.}
 }
+\value{
+The (semi) partial correlation matrix.
+}
 \description{
 Convert a correlation matrix to a (semi)partial correlation matrix. Partial correlations are a measure of the correlation between two variables that remains after controlling for (i.e., "partialling" out) all the other relationships. They can be used for graphical Gaussian models, as they represent the direct interactions between two variables, conditioned on all remaining variables. This means that the squared partial correlation between a predictor X1 and a response variable Y can be interpreted as the proportion of (unique) variance accounted for by X1 relative to the residual or unexplained variance of Y that cannot be accounted by the other variables.
 }

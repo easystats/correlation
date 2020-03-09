@@ -11,6 +11,9 @@ matrix_inverse(m, tol = .Machine$double.eps^(2/3))
 
 \item{tol}{Relative tolerance to detect zero singular values.}
 }
+\value{
+An inversed matrix.
+}
 \description{
 Performs a Moore-Penrose generalized inverse (also called the Pseudoinverse).
 }

@@ -8,6 +8,7 @@
 #' matrix_inverse(m)
 #' @param m Matrix for which the inverse is required.
 #'
+#' @return An inversed matrix.
 #' @seealso pinv from the pracma package
 #' @export
 matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {

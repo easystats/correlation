@@ -17,6 +17,9 @@ distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = TRUE, ...)
 
 \item{...}{Arguments passed to or from other methods.}
 }
+\value{
+Description of the Mahalanobis distance.
+}
 \description{
 The Mahalanobis distance (in squared units) measures the distance in multivariate space taking into account the covariance structure of the data. Because a few extreme outliers can skew the covariance estimate, the bootstrapped version is considered as more robust.
 }

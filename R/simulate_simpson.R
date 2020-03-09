@@ -6,6 +6,8 @@
 #' @param groups Number of groups.
 #' @param difference Difference between groups.
 #'
+#' @return A dataset.
+#'
 #' @examples
 #' data <- simulate_simpson(n = 100, groups = 5, r = 0.5)
 #'

@@ -7,6 +7,8 @@
 #' cor <- cor(iris[1:4])
 #' cov(iris[1:4])
 #'
+#' @return A covariance matrix.
+#'
 #' cor_to_cov(cor, sd = sapply(iris[1:4], sd))
 #' cor_to_cov(cor, variance = sapply(iris[1:4], var))
 #' @export

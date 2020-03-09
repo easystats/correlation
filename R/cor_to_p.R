@@ -6,6 +6,8 @@
 #' @param n The sample size (number of observations).
 #' @inheritParams cor_test
 #'
+#' @return A list containing a p-value and the statistic or the CI bounds.
+#'
 #' @examples
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width)
 #' cor_to_p(-0.1175698, n = 150)
