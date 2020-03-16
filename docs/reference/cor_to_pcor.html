@@ -170,43 +170,38 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The (semi) partial correlation matrix.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The semi-partial correlation is similar to the partial correlation statistic. However, it represents (when squared) the proportion of (unique) variance accounted for by the predictor X1, relative to the total variance of Y. Thus, it might be seen as a better indicator of the "practical relevance" of a predictor, because it is scaled to (i.e., relative to) the total variability in the response variable.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ppcor</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: MASS</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'MASS'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:dplyr':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    select</span></div><div class='input'>
-<span class='no'>cor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])
-<span class='no'>pcor</span> <span class='kw'>&lt;-</span> <span class='fu'>cor_to_pcor</span>(<span class='no'>cor</span>)
+    <pre class="examples"><div class='input'><span class='no'>cor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])
 
-<span class='co'># Comparison</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>pcor</span> - <span class='kw pkg'>ppcor</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ppcor/man/pcor.html'>pcor</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])$<span class='no'>estimate</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length            0           0            0           0
-#&gt; Sepal.Width             0           0            0           0
-#&gt; Petal.Length            0           0            0           0
-#&gt; Petal.Width             0           0            0           0</div><div class='input'>
-<span class='co'># Semi-partial</span>
-<span class='no'>spcor</span> <span class='kw'>&lt;-</span> <span class='fu'>cor_to_spcor</span>(<span class='no'>cor</span>, <span class='kw'>cov</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='no'>sd</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>spcor</span> - <span class='kw pkg'>ppcor</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ppcor/man/spcor.html'>spcor</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>])$<span class='no'>estimate</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length            0           0            0           0
-#&gt; Sepal.Width             0           0            0           0
-#&gt; Petal.Length            0           0            0           0
-#&gt; Petal.Width             0           0            0           0</div><div class='input'>
+<span class='co'># Partialize</span>
+<span class='fu'>cor_to_pcor</span>(<span class='no'>cor</span>)</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+#&gt; Sepal.Length    1.0000000   0.6285707    0.7190656  -0.3396174
+#&gt; Sepal.Width     0.6285707   1.0000000   -0.6152919   0.3526260
+#&gt; Petal.Length    0.7190656  -0.6152919    1.0000000   0.8707698
+#&gt; Petal.Width    -0.3396174   0.3526260    0.8707698   1.0000000</div><div class='input'><span class='fu'>cor_to_spcor</span>(<span class='no'>cor</span>, <span class='kw'>cov</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='no'>iris</span>[<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='no'>sd</span>))</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+#&gt; Sepal.Length   1.00000000  0.30389212    0.3890689  -0.1357714
+#&gt; Sepal.Width    0.55758743  1.00000000   -0.5385056   0.2599849
+#&gt; Petal.Length   0.18506103 -0.13959991    1.0000000   0.3167424
+#&gt; Petal.Width   -0.09001634  0.09394365    0.4415000   1.0000000</div><div class='input'>
 <span class='co'># Inverse</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'>pcor_to_cor</span>(<span class='no'>pcor</span>) - <span class='no'>cor</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'>pcor_to_cor</span>(<span class='fu'>cor_to_pcor</span>(<span class='no'>cor</span>)) - <span class='no'>cor</span>, <span class='fl'>2</span>) <span class='co'># Should be 0</span></div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt; Sepal.Length            0           0            0           0
 #&gt; Sepal.Width             0           0            0           0
 #&gt; Petal.Length            0           0            0           0
-#&gt; Petal.Width             0           0            0           0</div><div class='input'># round(pcor_to_cor(spcor, semi = TRUE) - cor, 2)
-</div></pre>
+#&gt; Petal.Width             0           0            0           0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
