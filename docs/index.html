@@ -178,11 +178,11 @@
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris, <span class="dt">bayesian=</span><span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="co">## Parameter1   |   Parameter2 |   rho |         89% CI |     pd | % in ROPE |    BF |              Prior | n_Obs</span></a>
 <a class="sourceLine" id="cb8-3" title="3"><span class="co">## --------------------------------------------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.65% |    42.85% |  0.51 | Cauchy (0 +- 0.33) |   150</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.89] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.01] | 91.83% |    42.33% |  0.51 | Cauchy (0 +- 0.33) |   150</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
 <a class="sourceLine" id="cb8-6" title="6"><span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
-<a class="sourceLine" id="cb8-7" title="7"><span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.52, -0.31] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
-<a class="sourceLine" id="cb8-8" title="8"><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.23] |   100% |     0.12% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
 <a class="sourceLine" id="cb8-9" title="9"><span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a></code></pre></div>
 </div>
 <div id="tetrachoric-polychoric-biserial-biweight" class="section level2">
@@ -218,21 +218,12 @@
 <h2 class="hasAnchor">
 <a href="#gaussian-graphical-models-ggms" class="anchor"></a>Gaussian Graphical Models (GGMs)</h2>
 <p><strong>Gaussian graphical models</strong> are an increasingly popular technique in psychology, which relationships can be interpreted as partial correlation coefficients.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggraph)</a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidygraph)</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(see) <span class="co"># for plotting</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggraph) <span class="co"># needs to be loaded</span></a>
 <a class="sourceLine" id="cb10-3" title="3"></a>
 <a class="sourceLine" id="cb10-4" title="4">mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb10-5" title="5"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="dt">partial =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="st">  </span><span class="kw">as_tbl_graph</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-7" title="7"><span class="st">  </span><span class="kw">ggraph</span>(<span class="dt">layout =</span> <span class="st">'kk'</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-8" title="8"><span class="st">  </span><span class="kw">geom_edge_arc</span>(<span class="kw">aes</span>(<span class="dt">colour=</span>r, <span class="dt">edge_width =</span> <span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(r)), <span class="dt">strength=</span><span class="fl">0.1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-9" title="9"><span class="st">  </span><span class="kw">geom_node_point</span>(<span class="dt">color=</span><span class="st">"#607D8B"</span>, <span class="dt">size=</span><span class="dv">22</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-10" title="10"><span class="st">  </span><span class="kw">geom_node_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> name), <span class="dt">colour=</span><span class="st">"white"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-11" title="11"><span class="st">  </span><span class="kw">scale_edge_color_gradient2</span>(<span class="dt">low =</span> <span class="st">"#d50000"</span>, <span class="dt">high =</span> <span class="st">"#00C853"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-12" title="12"><span class="st">  </span><span class="kw">theme_graph</span>() <span class="op">+</span><span class="st">   </span></a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">edge_width =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-14" title="14"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">expand =</span> <span class="kw">expand_scale</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">10</span>, <span class="fl">.10</span>))) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-15" title="15"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">expand =</span> <span class="kw">expand_scale</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">10</span>, <span class="fl">.10</span>)))</a></code></pre></div>
+<a class="sourceLine" id="cb10-6" title="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>()</a></code></pre></div>
 <p><img src="reference/figures/unnamed-chunk-11-1.png"><!-- --></p>
 </div>
 <div id="partial-correlations" class="section level2">

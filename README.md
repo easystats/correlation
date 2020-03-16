@@ -123,11 +123,11 @@ It is very easy to switch to a **Bayesian framework**.
 correlation(iris, bayesian=TRUE)
 ## Parameter1   |   Parameter2 |   rho |         89% CI |     pd | % in ROPE |    BF |              Prior | n_Obs
 ## --------------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.65% |    42.85% |  0.51 | Cauchy (0 +- 0.33) |   150
-## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.89] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.01] | 91.83% |    42.33% |  0.51 | Cauchy (0 +- 0.33) |   150
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
 ## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
-## Sepal.Width  | Petal.Length | -0.41 | [-0.52, -0.31] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
+## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.23] |   100% |     0.12% | > 999 | Cauchy (0 +- 0.33) |   150
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
 ```
 
@@ -170,21 +170,12 @@ psychology, which relationships can be interpreted as partial
 correlation coefficients.
 
 ``` r
-library(ggraph)
-library(tidygraph)
+library(see) # for plotting
+library(ggraph) # needs to be loaded
 
 mtcars %>% 
   correlation(partial = TRUE) %>% 
-  as_tbl_graph() %>% 
-  ggraph(layout = 'kk') +
-  geom_edge_arc(aes(colour=r, edge_width = abs(r)), strength=0.1) +
-  geom_node_point(color="#607D8B", size=22) +
-  geom_node_text(aes(label = name), colour="white") +
-  scale_edge_color_gradient2(low = "#d50000", high = "#00C853") +
-  theme_graph() +   
-  guides(edge_width = FALSE) +
-  scale_x_continuous(expand = expand_scale(c(.10, .10))) +
-  scale_y_continuous(expand = expand_scale(c(.10, .10)))
+  plot()
 ```
 
 ![](man/figures/unnamed-chunk-11-1.png)<!-- -->

@@ -135,21 +135,12 @@ correlation(iris, include_factors = TRUE, method = "auto")
 
 
 ```{r message=FALSE, warning=FALSE}
-library(ggraph)
-library(tidygraph)
+library(see) # for plotting
+library(ggraph) # needs to be loaded
 
 mtcars %>% 
   correlation(partial = TRUE) %>% 
-  as_tbl_graph() %>% 
-  ggraph(layout = 'kk') +
-  geom_edge_arc(aes(colour=r, edge_width = abs(r)), strength=0.1) +
-  geom_node_point(color="#607D8B", size=22) +
-  geom_node_text(aes(label = name), colour="white") +
-  scale_edge_color_gradient2(low = "#d50000", high = "#00C853") +
-  theme_graph() +   
-  guides(edge_width = FALSE) +
-  scale_x_continuous(expand = expand_scale(c(.10, .10))) +
-  scale_y_continuous(expand = expand_scale(c(.10, .10)))
+  plot()
 ```
 
 
