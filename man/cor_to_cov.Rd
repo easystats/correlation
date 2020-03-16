@@ -13,6 +13,9 @@ cor_to_cov(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2/3))
 
 \item{tol}{Relative tolerance to detect zero singular values.}
 }
+\value{
+A covariance matrix.
+}
 \description{
 Convert a correlation to covariance
 }

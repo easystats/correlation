@@ -9,6 +9,9 @@ is.cor(x)
 \arguments{
 \item{x}{A matrix.}
 }
+\value{
+\code{TRUE} of the matrix is a correlation matrix or \code{FALSE} otherwise.
+}
 \description{
 Check if matrix ressembles a correlation matrix
 }

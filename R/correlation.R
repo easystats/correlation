@@ -7,7 +7,6 @@
 #' @param p_adjust Correction method for frequentist correlations. Can be one of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".
 #' @param redundant Shoud the data include redundant rows (where each given correlation is repeated two times).
 #' @inheritParams cor_test
-#' @inheritParams partialize
 #'
 #' @details
 #' \subsection{Correlation Types}{
@@ -24,6 +23,8 @@
 #' \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 #' }
 #' }
+#'
+#' @return A correlation object that can be displayed using the \code{print}, \code{summary} or \code{table} methods.
 #'
 #' \subsection{Multiple tests correction}{
 #' About multiple tests corrections.

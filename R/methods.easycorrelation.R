@@ -14,11 +14,14 @@ summary.easycorrelation <- function(object, redundant = FALSE, ...) {
     object <- .add_redundant(object)
   }
 
-  r_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median")][1]
-  out <- .create_matrix(frame, object, column = r_col, redundant = redundant)
+  target_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median")][1]
+  if (is.na(target_col)) {
+    target_col <- names(object)[!names(object) %in% c("Parameter1", "Parameter2")][1]
+  }
+  out <- .create_matrix(frame, object, column = target_col, redundant = redundant)
 
   # Fill attributes
-  for (i in names(object)[!names(object) %in% c("Group", "Parameter1", "Parameter2", r_col)]) {
+  for (i in names(object)[!names(object) %in% c("Group", "Parameter1", "Parameter2", target_col)]) {
     attri <- .create_matrix(frame, object, column = i, redundant = redundant)
     attr(out, i) <- attri
   }

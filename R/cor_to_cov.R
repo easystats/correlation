@@ -3,6 +3,8 @@
 #' @inheritParams cor_to_pcor
 #' @param sd,variance A vector that contains the standard deviations, or the variance, of the variables in the correlation matrix.
 #'
+#' @return A covariance matrix.
+#'
 #' @examples
 #' cor <- cor(iris[1:4])
 #' cov(iris[1:4])

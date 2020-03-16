@@ -15,6 +15,9 @@ simulate_simpson(n = 100, r = 0.5, groups = 3, difference = 1)
 
 \item{difference}{Difference between groups.}
 }
+\value{
+A dataset.
+}
 \description{
 Simpson's paradox, or the Yule–Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined.
 }

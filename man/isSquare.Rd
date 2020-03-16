@@ -9,6 +9,9 @@ isSquare(m)
 \arguments{
 \item{m}{A matrix.}
 }
+\value{
+\code{TRUE} of the matrix is square or \code{FALSE} otherwise.
+}
 \description{
 Check if Square Matrix
 }

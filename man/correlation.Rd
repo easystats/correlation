@@ -50,11 +50,18 @@ correlation(
 
 \item{partial_bayesian}{If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
-\item{multilevel}{If \code{TRUE}, the factors are included as random factors. If \code{FALSE} (default), factors are binarized (dummified) and partialized out in the same than the other numeric variables.}
+\item{multilevel}{If \code{TRUE}, the factors are included as random factors. Else, if \code{FALSE} (default), they are included as fixed effects in the simple regression model.}
 
 \item{robust}{If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).}
 
 \item{...}{Arguments passed to or from other methods.}
+}
+\value{
+A correlation object that can be displayed using the \code{print}, \code{summary} or \code{table} methods.
+
+\subsection{Multiple tests correction}{
+About multiple tests corrections.
+}
 }
 \description{
 Performs a correlation analysis.
@@ -73,10 +80,6 @@ Performs a correlation analysis.
 \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 }
-}
-
-\subsection{Multiple tests correction}{
-About multiple tests corrections.
 }
 }
 \examples{
