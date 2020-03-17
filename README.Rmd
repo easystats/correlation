@@ -67,7 +67,7 @@ Click on the buttons above to access the package [**documentation**](https://eas
 
 # Examples
 
-The main function is `correlation()`, which builds on top of `cor_test()` and comes with a number of possible options.
+The main function is [`correlation()`](https://easystats.github.io/correlation/reference/correlation.html), which builds on top of [`cor_test()`](https://easystats.github.io/correlation/reference/cor_test.html) and comes with a number of possible options.
 
 ## Correlation details and matrix
 
@@ -105,7 +105,7 @@ The function also supports **stratified correlations**, all within the *tidyvers
 
 ```{r message=FALSE, warning=FALSE}
 iris %>% 
-  select(Species, starts_with("Sepal"), Petal.Width) %>% 
+  select(Species, Sepal.Length, Sepal.Width, Petal.Width) %>% 
   group_by(Species) %>% 
   correlation()
 ```
