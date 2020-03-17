@@ -208,6 +208,9 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
         if ("r" %in% names(params) & !"r" %in% names(result)) {
           names(result)[names(result) %in% c("rho", "tau")] <- "r"
         }
+        if ("r" %in% names(result) & !"r" %in% names(params)) {
+          names(params)[names(params) %in% c("rho", "tau")] <- "r"
+        }
         if (!"r" %in% names(params) & any(c("rho", "tau") %in% names(result))) {
           names(params)[names(params) %in% c("rho", "tau")] <- "r"
           names(result)[names(result) %in% c("rho", "tau")] <- "r"
