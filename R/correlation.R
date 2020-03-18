@@ -121,10 +121,10 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
       out <- data.frame()
       for (i in names(xlist)) {
         xlist[[i]][groups] <- NULL
-        ylist[[i]][[i]][groups] <- NULL
+        ylist[[i]][groups] <- NULL
         rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
         modelframe_current <- rez$data
-        rez$Group <- modelframe_current$Group <- i
+        rez$params$Group <- modelframe_current$Group <- i
         out <- rbind(out, rez$params)
         modelframe <- rbind(modelframe, modelframe_current)
       }
