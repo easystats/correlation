@@ -17,5 +17,9 @@
     if ("S" %in% names(params)) params$S <- Inf
   }
 
+  # see ?cor.test: CI only in case of at least 4 complete pairs of observations
+  if (!("CI_low" %in% names(params))) params$CI_low <- NA
+  if (!("CI_high" %in% names(params))) params$CI_high <- NA
+
   params
 }
