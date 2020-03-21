@@ -4,7 +4,7 @@
 #'
 #' @param data A data frame.
 #' @param x,y Names of two variables present in the data.
-#' @param ci Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).
+#' @param ci Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).
 #' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
@@ -21,6 +21,8 @@
 #'
 #'
 #' @examples
+#' library(correlation)
+#'
 #' cor_test(iris, "Sepal.Length", "Sepal.Width")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
@@ -53,9 +55,11 @@
 #' @importFrom effectsize adjust ranktransform
 #' @importFrom stats complete.cases
 #' @export
-cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
+cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
 
   # Sanity checks
+  if (ci == "default") ci <- 0.95
+
   if (partial == FALSE & (partial_bayesian | multilevel)) {
     if (partial_bayesian) {
       warning("`partial` must be set to TRUE in order for `multilevel` to be used. Setting it to TRUE.")
@@ -80,7 +84,6 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
   # Frequentist
   if (bayesian == FALSE) {
-    if (ci == "default") ci <- 0.95
 
     if (method == "auto") method <- .cor_test_findtype(data, x, y)
 
@@ -102,7 +105,6 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
 
     # Bayesian
   } else {
-    if (ci == "default") ci <- 0.89
 
     if (tolower(method) %in% c("tetra", "tetrachoric")) {
       stop("Tetrachoric Bayesian correlations are not supported yet.")
@@ -124,6 +126,13 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   # Number of observations
   out$n_Obs <- sum(stats::complete.cases(data[[x]], data[[y]]))
 
+  # Reorder columns
+  if("CI_low" %in% names(out)){
+    order <- c("Parameter1", "Parameter2", "r", "rho", "CI_low", "CI_high")
+    out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
+  }
+
+  # Output
   attr(out, "ci") <- ci
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out

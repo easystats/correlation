@@ -5,7 +5,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE), alternative = "two.sided")
+  rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE), alternative = "two.sided", exact=FALSE)
 
   params <- parameters::model_parameters(rez)
   params$Parameter1 <- x

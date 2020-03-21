@@ -9,7 +9,7 @@ cor_test(
   x,
   y,
   method = "pearson",
-  ci = "default",
+  ci = 0.95,
   bayesian = FALSE,
   bayesian_prior = "medium",
   bayesian_ci_method = "hdi",
@@ -29,7 +29,7 @@ cor_test(
 
 \item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
 
-\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
+\item{ci}{Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).}
 
 \item{bayesian, partial_bayesian}{If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
@@ -67,6 +67,8 @@ This function performs a correlation test between two variables.
 }
 }
 \examples{
+library(correlation)
+
 cor_test(iris, "Sepal.Length", "Sepal.Width")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
