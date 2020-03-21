@@ -21,6 +21,8 @@
 #'
 #'
 #' @examples
+#' library(correlation)
+#'
 #' cor_test(iris, "Sepal.Length", "Sepal.Width")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
@@ -124,6 +126,13 @@ cor_test <- function(data, x, y, method = "pearson", ci = "default", bayesian = 
   # Number of observations
   out$n_Obs <- sum(stats::complete.cases(data[[x]], data[[y]]))
 
+  # Reorder columns
+  if("CI_low" %in% names(out)){
+    order <- c("Parameter1", "Parameter2", "r", "rho", "CI_low", "CI_high")
+    out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
+  }
+
+  # Output
   attr(out, "ci") <- ci
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out

@@ -67,6 +67,8 @@ This function performs a correlation test between two variables.
 }
 }
 \examples{
+library(correlation)
+
 cor_test(iris, "Sepal.Length", "Sepal.Width")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
