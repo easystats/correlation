@@ -3,7 +3,7 @@
 #' @importFrom effectsize ranktransform
 #' @importFrom parameters model_parameters
 #' @keywords internal
-.cor_test_bayes <- function(data, x, y, ci = 0.89, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), method = "pearson", ...) {
+.cor_test_bayes <- function(data, x, y, ci = 0.95, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), method = "pearson", ...) {
   if (!requireNamespace("BayesFactor")) {
     stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
   }

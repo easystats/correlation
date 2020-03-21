@@ -9,7 +9,7 @@ correlation(
   data2 = NULL,
   method = "pearson",
   p_adjust = "holm",
-  ci = "default",
+  ci = 0.95,
   bayesian = FALSE,
   bayesian_prior = "medium",
   bayesian_ci_method = "hdi",
@@ -32,7 +32,7 @@ correlation(
 
 \item{p_adjust}{Correction method for frequentist correlations. Can be one of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".}
 
-\item{ci}{Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the \pkg{bayestestR} package).}
+\item{ci}{Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).}
 
 \item{bayesian}{If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
