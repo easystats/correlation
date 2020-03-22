@@ -36,7 +36,11 @@ knitr::opts_chunk$set(
 
 
 
-`correlation` is a lightweight package helping with correlation analysis.
+`correlation` is an [**easystats**](https://github.com/easystats/easystats) package focused on correlation analysis. It's lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as **partial** correlations, **Bayesian** correlations, **multilevel** correlations, **polychoric** correlations, **biweight**, **percentage bend** or **Sheperd's Pi** correlations (types of robust correlation), **distance** correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, *Bayesian partial multilevel correlation*).
+
+You can reference the package and its documentation as follows:
+
+- Makowski, D., Ben-Shachar, M. S., Patil, I. \& Lüdecke, D. (2020). *Methods for Correlation Analysis*. CRAN.
 
 
 ## Installation
@@ -91,11 +95,11 @@ as.table(cor)
 
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
-library(ggcorrplot)
+library(see)
 
 cor %>% 
-  as.matrix() %>% 
-  ggcorrplot()
+  as.table() %>% 
+  plot()
 ```
 
 
@@ -116,7 +120,7 @@ iris %>%
 It is very easy to switch to a **Bayesian framework**.
 
 ```{r message=FALSE, warning=FALSE}
-correlation(iris, bayesian=TRUE)
+correlation(iris, bayesian = TRUE)
 ```
 
 
@@ -162,7 +166,7 @@ mtcars %>%
 ## Multilevel Correlations
 
 
-It also provide some cutting, exploratory methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. They can be see as correlations *adjusted* for some group (*hierarchical*) variability.
+It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. They can be see as correlations *adjusted* for some group (*hierarchical*) variability.
 
 
 ```{r message=FALSE, warning=FALSE}
@@ -172,7 +176,7 @@ iris %>%
 ```
 
 
-However, if the `partial` argument is set to FALSE, it will try to convert the partial coefficient into regular ones.These can be **converted back** to full correlations:
+However, if the `partial` argument is set to `FALSE`, it will try to convert the partial coefficient into regular ones.These can be **converted back** to full correlations:
 
 ```{r message=FALSE, warning=FALSE}
 iris %>% 
