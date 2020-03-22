@@ -1,8 +1,9 @@
 #' Simpson's paradox dataset simulation
 #'
-#' Simpson's paradox, or the Yule–Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined.
+#' Simpson's paradox, or the Yule-Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined.
 #'
 #' @inheritParams bayestestR::simulate_correlation
+#' @param n The number of observations for each group to be generated.
 #' @param groups Number of groups.
 #' @param difference Difference between groups.
 #'

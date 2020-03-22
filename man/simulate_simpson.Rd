@@ -7,7 +7,7 @@
 simulate_simpson(n = 100, r = 0.5, groups = 3, difference = 1)
 }
 \arguments{
-\item{n}{The number of observations to be generated.}
+\item{n}{The number of observations for each group to be generated.}
 
 \item{r}{A value or vector corresponding to the desired correlation coefficients.}
 
@@ -19,7 +19,7 @@ simulate_simpson(n = 100, r = 0.5, groups = 3, difference = 1)
 A dataset.
 }
 \description{
-Simpson's paradox, or the Yule–Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined.
+Simpson's paradox, or the Yule-Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined.
 }
 \examples{
 data <- simulate_simpson(n = 100, groups = 5, r = 0.5)
