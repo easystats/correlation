@@ -6,7 +6,7 @@
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).
 #' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
-#' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
+#' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.
 #' @inheritParams effectsize::adjust
@@ -32,8 +32,8 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "shepherd")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
 #'
-#' data <- iris
 #' # Tetrachoric
+#' data <- iris
 #' data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 #' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 #' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
@@ -52,6 +52,15 @@
 #' # Robust (these two are equivalent)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALSE)
+#'
+#' # Partial
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
+#' \donttest{
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
+#' }
+#'
+#'
 #' @importFrom effectsize adjust ranktransform
 #' @importFrom stats complete.cases
 #' @export
@@ -59,17 +68,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 
   # Sanity checks
   if (ci == "default") ci <- 0.95
-
-  if (partial == FALSE & (partial_bayesian | multilevel)) {
-    if (partial_bayesian) {
-      warning("`partial` must be set to TRUE in order for `multilevel` to be used. Setting it to TRUE.")
-      partial <- TRUE
-    }
-    if (partial_bayesian) {
-      warning("`partial` must be set to TRUE in order for `partial_bayesian` to be used. Setting it to TRUE.")
-      partial <- TRUE
-    }
-  }
+  if (partial == FALSE & (partial_bayesian | multilevel)) partial <- TRUE
 
   # Partial
   if (partial) {
