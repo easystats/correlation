@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Easy Peasy Correlations • correlation</title>
+<title>Methods for Correlation Analysis • correlation</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Easy Peasy Correlations">
+<meta property="og:title" content="Methods for Correlation Analysis">
 <meta property="og:description" content="Lightweight package for computing different kinds of correlations, such as partial correlations, Bayesian correlations, multilevel correlations, polychoric correlations, biweight correlations, distance correlations and more. Relies on the easystats ecosystem (Lüdecke, Waggoner &amp; Makowski (2019) &lt;doi:10.21105/joss.01412&gt;).">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -62,19 +62,18 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/correlation_types.html">Different Correlation Types</a>
+      <a href="articles/multilevel.html">Multilevel Correlations</a>
+    </li>
+    <li>
+      <a href="articles/types.html">Correlation Types</a>
     </li>
   </ul>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/easystats/correlation">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -92,13 +91,17 @@
 <a href="#correlation-" class="anchor"></a>correlation <img src="reference/figures/logo.png" align="right" height="139">
 </h1></div>
 
-<p><code>correlation</code> is a lightweight package helping with correlation analysis.</p>
+<p><code>correlation</code> is an <a href="https://github.com/easystats/easystats"><strong>easystats</strong></a> package focused on correlation analysis. It’s lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as <strong>partial</strong> correlations, <strong>Bayesian</strong> correlations, <strong>multilevel</strong> correlations, <strong>polychoric</strong> correlations, <strong>biweight</strong>, <strong>percentage bend</strong> or <strong>Sheperd’s Pi</strong> correlations (types of robust correlation), <strong>distance</strong> correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, <em>Bayesian partial multilevel correlation</em>).</p>
+<p>You can reference the package and its documentation as follows:</p>
+<ul>
+<li>Makowski, D., Ben-Shachar, M. S., Patil, I. &amp; Lüdecke, D. (2020). <em>Methods for Correlation Analysis</em>. CRAN.</li>
+</ul>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Run the following:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
-<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"easystats/correlation"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"easystats/correlation"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"correlation"</span>)</a></code></pre></div>
 </div>
 <div id="documentation" class="section level2">
@@ -114,20 +117,20 @@
 <div id="examples" class="section level1">
 <h1 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h1>
-<p>The main function is <code><a href="reference/correlation.html">correlation()</a></code>, which builds on top of <code><a href="reference/cor_test.html">cor_test()</a></code> and comes with a number of possible options.</p>
+<p>The main function is <a href="https://easystats.github.io/correlation/reference/correlation.html"><code><a href="reference/correlation.html">correlation()</a></code></a>, which builds on top of <a href="https://easystats.github.io/correlation/reference/cor_test.html"><code><a href="reference/cor_test.html">cor_test()</a></code></a> and comes with a number of possible options.</p>
 <div id="correlation-details-and-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#correlation-details-and-matrix" class="anchor"></a>Correlation details and matrix</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">cor &lt;-<span class="st"> </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris)</a>
 <a class="sourceLine" id="cb3-2" title="2">cor</a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="co">## Parameter1   |   Parameter2 |     r |     t |  df |      p |         95% CI |  Method | n_Obs</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">## Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs</span></a>
 <a class="sourceLine" id="cb3-4" title="4"><span class="co">## ---------------------------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="co">## Sepal.Length |  Sepal.Width | -0.12 | -1.44 | 148 | 0.152  | [-0.27,  0.04] | Pearson |   150</span></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="co">## Sepal.Length | Petal.Length |  0.87 | 21.65 | 148 | &lt; .001 | [ 0.83,  0.91] | Pearson |   150</span></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="co">## Sepal.Length |  Petal.Width |  0.82 | 17.30 | 148 | &lt; .001 | [ 0.76,  0.86] | Pearson |   150</span></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="co">## Sepal.Width  | Petal.Length | -0.43 | -5.77 | 148 | &lt; .001 | [-0.55, -0.29] | Pearson |   150</span></a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="co">## Sepal.Width  |  Petal.Width | -0.37 | -4.79 | 148 | &lt; .001 | [-0.50, -0.22] | Pearson |   150</span></a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="co">## Petal.Length |  Petal.Width |  0.96 | 43.39 | 148 | &lt; .001 | [ 0.95,  0.97] | Pearson |   150</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">## Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] | -1.44 | 148 | 0.152  | Pearson |   150</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">## Sepal.Length | Petal.Length |  0.87 | [ 0.83,  0.91] | 21.65 | 148 | &lt; .001 | Pearson |   150</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">## Sepal.Length |  Petal.Width |  0.82 | [ 0.76,  0.86] | 17.30 | 148 | &lt; .001 | Pearson |   150</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">## Sepal.Width  | Petal.Length | -0.43 | [-0.55, -0.29] | -5.77 | 148 | &lt; .001 | Pearson |   150</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">## Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] | -4.79 | 148 | &lt; .001 | Pearson |   150</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | &lt; .001 | Pearson |   150</span></a></code></pre></div>
 <p>The output is not a square matrix, but a <strong>(tidy) dataframe with all correlations tests per row</strong>. One can also obtain a <strong>matrix</strong> using:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(cor)</a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="co">## Parameter    | Petal.Width | Petal.Length | Sepal.Width</span></a>
@@ -144,11 +147,11 @@
 <a class="sourceLine" id="cb5-6" title="6"><span class="co">## Petal.Length |      0.87*** |    -0.43*** |      1.00*** |     0.96***</span></a>
 <a class="sourceLine" id="cb5-7" title="7"><span class="co">## Petal.Width  |      0.82*** |    -0.37*** |      0.96*** |     1.00***</span></a></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggcorrplot)</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(see)</a>
 <a class="sourceLine" id="cb6-3" title="3"></a>
 <a class="sourceLine" id="cb6-4" title="4">cor <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-5" title="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="st">  </span><span class="kw">ggcorrplot</span>()</a></code></pre></div>
+<a class="sourceLine" id="cb6-6" title="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>()</a></code></pre></div>
 <p><img src="reference/figures/unnamed-chunk-7-1.png"><!-- --></p>
 </div>
 <div id="grouped-dataframes" class="section level2">
@@ -156,33 +159,33 @@
 <a href="#grouped-dataframes" class="anchor"></a>Grouped dataframes</h2>
 <p>The function also supports <strong>stratified correlations</strong>, all within the <em>tidyverse</em> workflow!</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="st">  </span><span class="kw">select</span>(Species, <span class="kw">starts_with</span>(<span class="st">"Sepal"</span>), Petal.Width) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="st">  </span><span class="kw">select</span>(Species, Sepal.Length, Sepal.Width, Petal.Width) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-4" title="4"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>()</a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="co">## Group      |   Parameter1 |  Parameter2 |    r |    t | df |      p |        95% CI |  Method | n_Obs</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">## Group      |   Parameter1 |  Parameter2 |    r |        95% CI |    t | df |      p |  Method | n_Obs</span></a>
 <a class="sourceLine" id="cb7-6" title="6"><span class="co">## -----------------------------------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="co">## setosa     | Sepal.Length | Sepal.Width | 0.74 | 7.68 | 48 | &lt; .001 | [ 0.59, 0.85] | Pearson |    50</span></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co">## setosa     | Sepal.Length | Petal.Width | 0.28 | 2.01 | 48 | 0.101  | [ 0.00, 0.52] | Pearson |    50</span></a>
-<a class="sourceLine" id="cb7-9" title="9"><span class="co">## setosa     |  Sepal.Width | Petal.Width | 0.23 | 1.66 | 48 | 0.104  | [-0.05, 0.48] | Pearson |    50</span></a>
-<a class="sourceLine" id="cb7-10" title="10"><span class="co">## versicolor | Sepal.Length | Sepal.Width | 0.53 | 4.28 | 48 | &lt; .001 | [ 0.29, 0.70] | Pearson |    50</span></a>
-<a class="sourceLine" id="cb7-11" title="11"><span class="co">## versicolor | Sepal.Length | Petal.Width | 0.55 | 4.52 | 48 | &lt; .001 | [ 0.32, 0.72] | Pearson |    50</span></a>
-<a class="sourceLine" id="cb7-12" title="12"><span class="co">## versicolor |  Sepal.Width | Petal.Width | 0.66 | 6.15 | 48 | &lt; .001 | [ 0.47, 0.80] | Pearson |    50</span></a>
-<a class="sourceLine" id="cb7-13" title="13"><span class="co">## virginica  | Sepal.Length | Sepal.Width | 0.46 | 3.56 | 48 | 0.002  | [ 0.20, 0.65] | Pearson |    50</span></a>
-<a class="sourceLine" id="cb7-14" title="14"><span class="co">## virginica  | Sepal.Length | Petal.Width | 0.28 | 2.03 | 48 | 0.048  | [ 0.00, 0.52] | Pearson |    50</span></a>
-<a class="sourceLine" id="cb7-15" title="15"><span class="co">## virginica  |  Sepal.Width | Petal.Width | 0.54 | 4.42 | 48 | &lt; .001 | [ 0.31, 0.71] | Pearson |    50</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">## setosa     | Sepal.Length | Sepal.Width | 0.74 | [ 0.59, 0.85] | 7.68 | 48 | &lt; .001 | Pearson |    50</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">## setosa     | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] | 2.01 | 48 | 0.101  | Pearson |    50</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="co">## setosa     |  Sepal.Width | Petal.Width | 0.23 | [-0.05, 0.48] | 1.66 | 48 | 0.104  | Pearson |    50</span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co">## versicolor | Sepal.Length | Sepal.Width | 0.53 | [ 0.29, 0.70] | 4.28 | 48 | &lt; .001 | Pearson |    50</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="co">## versicolor | Sepal.Length | Petal.Width | 0.55 | [ 0.32, 0.72] | 4.52 | 48 | &lt; .001 | Pearson |    50</span></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co">## versicolor |  Sepal.Width | Petal.Width | 0.66 | [ 0.47, 0.80] | 6.15 | 48 | &lt; .001 | Pearson |    50</span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co">## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] | 3.56 | 48 | 0.002  | Pearson |    50</span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="co">## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] | 2.03 | 48 | 0.048  | Pearson |    50</span></a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="co">## virginica  |  Sepal.Width | Petal.Width | 0.54 | [ 0.31, 0.71] | 4.42 | 48 | &lt; .001 | Pearson |    50</span></a></code></pre></div>
 </div>
 <div id="bayesian-correlations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayesian-correlations" class="anchor"></a>Bayesian Correlations</h2>
 <p>It is very easy to switch to a <strong>Bayesian framework</strong>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris, <span class="dt">bayesian=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="co">## Parameter1   |   Parameter2 |   rho |         89% CI |     pd | % in ROPE |    BF |              Prior | n_Obs</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |     pd | % in ROPE |    BF |              Prior | n_Obs</span></a>
 <a class="sourceLine" id="cb8-3" title="3"><span class="co">## --------------------------------------------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.01] | 91.83% |    42.33% |  0.51 | Cauchy (0 +- 0.33) |   150</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.22% |    43.10% |  0.51 | Cauchy (0 +- 0.33) |   150</span></a>
 <a class="sourceLine" id="cb8-5" title="5"><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
-<a class="sourceLine" id="cb8-7" title="7"><span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
-<a class="sourceLine" id="cb8-8" title="8"><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.23] |   100% |     0.12% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">## Sepal.Length |  Petal.Width |  0.80 | [ 0.76,  0.85] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">## Sepal.Width  | Petal.Length | -0.42 | [-0.53, -0.31] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.23] |   100% |     0.02% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a>
 <a class="sourceLine" id="cb8-9" title="9"><span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span></a></code></pre></div>
 </div>
 <div id="tetrachoric-polychoric-biserial-biweight" class="section level2">
@@ -190,59 +193,59 @@
 <a href="#tetrachoric-polychoric-biserial-biweight" class="anchor"></a>Tetrachoric, Polychoric, Biserial, Biweight…</h2>
 <p>The <code>correlation</code> package also supports different types of methods, which can deal with correlations <strong>between factors</strong>!</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="reference/correlation.html">correlation</a></span>(iris, <span class="dt">include_factors =</span> <span class="ot">TRUE</span>, <span class="dt">method =</span> <span class="st">"auto"</span>)</a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="co">## Parameter1         |         Parameter2 |     r |      t |  df |      p |         95% CI |      Method | n_Obs</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="co">## Parameter1         |         Parameter2 |     r |         95% CI |      t |  df |      p |      Method | n_Obs</span></a>
 <a class="sourceLine" id="cb9-3" title="3"><span class="co">## --------------------------------------------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="co">## Sepal.Length       |        Sepal.Width | -0.12 |  -1.44 | 148 | 0.304  | [-0.27,  0.04] |     Pearson |   150</span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="co">## Sepal.Length       |       Petal.Length |  0.87 |  21.65 | 148 | &lt; .001 | [ 0.83,  0.91] |     Pearson |   150</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="co">## Sepal.Length       |        Petal.Width |  0.82 |  17.30 | 148 | &lt; .001 | [ 0.76,  0.86] |     Pearson |   150</span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="co">## Sepal.Length       |     Species.setosa | -0.93 | -29.97 | 148 | &lt; .001 | [-0.95, -0.90] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-8" title="8"><span class="co">## Sepal.Length       | Species.versicolor |  0.10 |   1.25 | 148 | 0.304  | [-0.06,  0.26] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-9" title="9"><span class="co">## Sepal.Length       |  Species.virginica |  0.82 |  17.66 | 148 | &lt; .001 | [ 0.77,  0.87] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="co">## Sepal.Width        |       Petal.Length | -0.43 |  -5.77 | 148 | &lt; .001 | [-0.55, -0.29] |     Pearson |   150</span></a>
-<a class="sourceLine" id="cb9-11" title="11"><span class="co">## Sepal.Width        |        Petal.Width | -0.37 |  -4.79 | 148 | &lt; .001 | [-0.50, -0.22] |     Pearson |   150</span></a>
-<a class="sourceLine" id="cb9-12" title="12"><span class="co">## Sepal.Width        |     Species.setosa |  0.78 |  15.09 | 148 | &lt; .001 | [ 0.71,  0.84] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-13" title="13"><span class="co">## Sepal.Width        | Species.versicolor | -0.60 |  -9.20 | 148 | &lt; .001 | [-0.70, -0.49] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-14" title="14"><span class="co">## Sepal.Width        |  Species.virginica | -0.18 |  -2.16 | 148 | 0.130  | [-0.33, -0.02] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-15" title="15"><span class="co">## Petal.Length       |        Petal.Width |  0.96 |  43.39 | 148 | &lt; .001 | [ 0.95,  0.97] |     Pearson |   150</span></a>
-<a class="sourceLine" id="cb9-16" title="16"><span class="co">## Petal.Length       |     Species.setosa | -1.00 |   -Inf | 148 | &lt; .001 | [-1.00, -1.00] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-17" title="17"><span class="co">## Petal.Length       | Species.versicolor |  0.26 |   3.27 | 148 | 0.007  | [ 0.10,  0.40] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-18" title="18"><span class="co">## Petal.Length       |  Species.virginica |  0.93 |  31.09 | 148 | &lt; .001 | [ 0.91,  0.95] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-19" title="19"><span class="co">## Petal.Width        |     Species.setosa | -1.00 |   -Inf | 148 | &lt; .001 | [-1.00, -1.00] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-20" title="20"><span class="co">## Petal.Width        | Species.versicolor |  0.15 |   1.87 | 148 | 0.191  | [-0.01,  0.31] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-21" title="21"><span class="co">## Petal.Width        |  Species.virginica |  0.99 | 112.56 | 148 | &lt; .001 | [ 0.99,  1.00] |    Biserial |   150</span></a>
-<a class="sourceLine" id="cb9-22" title="22"><span class="co">## Species.setosa     | Species.versicolor | -0.88 | -22.35 | 148 | &lt; .001 | [-0.91, -0.84] | Tetrachoric |   150</span></a>
-<a class="sourceLine" id="cb9-23" title="23"><span class="co">## Species.setosa     |  Species.virginica | -0.88 | -22.35 | 148 | &lt; .001 | [-0.91, -0.84] | Tetrachoric |   150</span></a>
-<a class="sourceLine" id="cb9-24" title="24"><span class="co">## Species.versicolor |  Species.virginica | -0.88 | -22.35 | 148 | &lt; .001 | [-0.91, -0.84] | Tetrachoric |   150</span></a></code></pre></div>
-</div>
-<div id="gaussian-graphical-models-ggms" class="section level2">
-<h2 class="hasAnchor">
-<a href="#gaussian-graphical-models-ggms" class="anchor"></a>Gaussian Graphical Models (GGMs)</h2>
-<p><strong>Gaussian graphical models</strong> are an increasingly popular technique in psychology, which relationships can be interpreted as partial correlation coefficients.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(see) <span class="co"># for plotting</span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggraph) <span class="co"># needs to be loaded</span></a>
-<a class="sourceLine" id="cb10-3" title="3"></a>
-<a class="sourceLine" id="cb10-4" title="4">mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-5" title="5"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="dt">partial =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>()</a></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-11-1.png"><!-- --></p>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">## Sepal.Length       |        Sepal.Width | -0.12 | [-0.27,  0.04] |  -1.44 | 148 | 0.304  |     Pearson |   150</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">## Sepal.Length       |       Petal.Length |  0.87 | [ 0.83,  0.91] |  21.65 | 148 | &lt; .001 |     Pearson |   150</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">## Sepal.Length       |        Petal.Width |  0.82 | [ 0.76,  0.86] |  17.30 | 148 | &lt; .001 |     Pearson |   150</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="co">## Sepal.Length       |     Species.setosa | -0.93 | [-0.95, -0.90] | -29.97 | 148 | &lt; .001 |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">## Sepal.Length       | Species.versicolor |  0.10 | [-0.06,  0.26] |   1.25 | 148 | 0.304  |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="co">## Sepal.Length       |  Species.virginica |  0.82 | [ 0.77,  0.87] |  17.66 | 148 | &lt; .001 |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="co">## Sepal.Width        |       Petal.Length | -0.43 | [-0.55, -0.29] |  -5.77 | 148 | &lt; .001 |     Pearson |   150</span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="co">## Sepal.Width        |        Petal.Width | -0.37 | [-0.50, -0.22] |  -4.79 | 148 | &lt; .001 |     Pearson |   150</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="co">## Sepal.Width        |     Species.setosa |  0.78 | [ 0.71,  0.84] |  15.09 | 148 | &lt; .001 |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="co">## Sepal.Width        | Species.versicolor | -0.60 | [-0.70, -0.49] |  -9.20 | 148 | &lt; .001 |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="co">## Sepal.Width        |  Species.virginica | -0.18 | [-0.33, -0.02] |  -2.16 | 148 | 0.130  |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="co">## Petal.Length       |        Petal.Width |  0.96 | [ 0.95,  0.97] |  43.39 | 148 | &lt; .001 |     Pearson |   150</span></a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="co">## Petal.Length       |     Species.setosa | -1.00 | [-1.00, -1.00] |   -Inf | 148 | &lt; .001 |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-17" title="17"><span class="co">## Petal.Length       | Species.versicolor |  0.26 | [ 0.10,  0.40] |   3.27 | 148 | 0.007  |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-18" title="18"><span class="co">## Petal.Length       |  Species.virginica |  0.93 | [ 0.91,  0.95] |  31.09 | 148 | &lt; .001 |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-19" title="19"><span class="co">## Petal.Width        |     Species.setosa | -1.00 | [-1.00, -1.00] |   -Inf | 148 | &lt; .001 |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-20" title="20"><span class="co">## Petal.Width        | Species.versicolor |  0.15 | [-0.01,  0.31] |   1.87 | 148 | 0.191  |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-21" title="21"><span class="co">## Petal.Width        |  Species.virginica |  0.99 | [ 0.99,  1.00] | 112.56 | 148 | &lt; .001 |    Biserial |   150</span></a>
+<a class="sourceLine" id="cb9-22" title="22"><span class="co">## Species.setosa     | Species.versicolor | -0.88 | [-0.91, -0.84] | -22.35 | 148 | &lt; .001 | Tetrachoric |   150</span></a>
+<a class="sourceLine" id="cb9-23" title="23"><span class="co">## Species.setosa     |  Species.virginica | -0.88 | [-0.91, -0.84] | -22.35 | 148 | &lt; .001 | Tetrachoric |   150</span></a>
+<a class="sourceLine" id="cb9-24" title="24"><span class="co">## Species.versicolor |  Species.virginica | -0.88 | [-0.91, -0.84] | -22.35 | 148 | &lt; .001 | Tetrachoric |   150</span></a></code></pre></div>
 </div>
 <div id="partial-correlations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#partial-correlations" class="anchor"></a>Partial Correlations</h2>
 <p>It also supports <strong>partial correlations</strong> (as well as Bayesian partial correlations).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="dt">partial =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()</a>
-<a class="sourceLine" id="cb11-4" title="4"><span class="co">## Parameter    | Petal.Width | Petal.Length | Sepal.Width</span></a>
-<a class="sourceLine" id="cb11-5" title="5"><span class="co">## -------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb11-6" title="6"><span class="co">## Sepal.Length |    -0.34*** |      0.72*** |     0.63***</span></a>
-<a class="sourceLine" id="cb11-7" title="7"><span class="co">## Sepal.Width  |     0.35*** |     -0.62*** |            </span></a>
-<a class="sourceLine" id="cb11-8" title="8"><span class="co">## Petal.Length |     0.87*** |              |</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="dt">partial =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()</a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="co">## Parameter    | Petal.Width | Petal.Length | Sepal.Width</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">## -------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">## Sepal.Length |    -0.34*** |      0.72*** |     0.63***</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">## Sepal.Width  |     0.35*** |     -0.62*** |            </span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="co">## Petal.Length |     0.87*** |              |</span></a></code></pre></div>
+</div>
+<div id="gaussian-graphical-models-ggms" class="section level2">
+<h2 class="hasAnchor">
+<a href="#gaussian-graphical-models-ggms" class="anchor"></a>Gaussian Graphical Models (GGMs)</h2>
+<p>Such partial correlations can also be represented as <strong>Gaussian graphical models</strong>, an increasingly popular tool in psychology:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(see) <span class="co"># for plotting</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggraph) <span class="co"># needs to be loaded</span></a>
+<a class="sourceLine" id="cb11-3" title="3"></a>
+<a class="sourceLine" id="cb11-4" title="4">mtcars <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="dt">partial =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>()</a></code></pre></div>
+<p><img src="reference/figures/unnamed-chunk-12-1.png"><!-- --></p>
 </div>
 <div id="multilevel-correlations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multilevel-correlations" class="anchor"></a>Multilevel Correlations</h2>
-<p>It also provide some cutting, exploratory methods, such as Multilevel (partial) correlations. These are are partial correlations based on <strong>linear mixed models</strong> that include the factors as random effects. They can be see as correlations <em>adjusted</em> for some group (<em>hierarchical</em>) variability.</p>
+<p>It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on <strong>linear mixed models</strong> that include the factors as random effects. They can be see as correlations <em>adjusted</em> for some group (<em>hierarchical</em>) variability.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-2" title="2"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="dt">partial =</span> <span class="ot">TRUE</span>, <span class="dt">multilevel =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-3" title="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()</a>
@@ -251,7 +254,7 @@
 <a class="sourceLine" id="cb12-6" title="6"><span class="co">## Sepal.Length |      -0.17* |      0.71*** |     0.43***</span></a>
 <a class="sourceLine" id="cb12-7" title="7"><span class="co">## Sepal.Width  |     0.39*** |       -0.18* |            </span></a>
 <a class="sourceLine" id="cb12-8" title="8"><span class="co">## Petal.Length |     0.38*** |              |</span></a></code></pre></div>
-<p>However, if the <code>partial</code> argument is set to FALSE, it will try to convert the partial coefficient into regular ones.These can be <strong>converted back</strong> to full correlations:</p>
+<p>However, if the <code>partial</code> argument is set to <code>FALSE</code>, it will try to convert the partial coefficient into regular ones.These can be <strong>converted back</strong> to full correlations:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="st">  </span><span class="kw"><a href="reference/correlation.html">correlation</a></span>(<span class="dt">partial =</span> <span class="ot">FALSE</span>, <span class="dt">multilevel =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-3" title="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>()</a>
@@ -271,8 +274,6 @@
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=correlation">https://​cloud.r-project.org/​package=correlation</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/easystats/correlation">https://​github.com/​easystats/​correlation</a>
-</li>
 <li>Report a bug at <br><a href="https://github.com/easystats/correlation/issues">https://​github.com/​easystats/​correlation/​issues</a>
 </li>
 </ul>
@@ -281,6 +282,12 @@
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+</ul>
+</div>
+<div class="citation">
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing correlation</a></li>
 </ul>
 </div>
 <div class="developers">

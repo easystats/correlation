@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -102,18 +102,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/correlation_types.html">Different Correlation Types</a>
+      <a href="../articles/multilevel.html">Multilevel Correlations</a>
+    </li>
+    <li>
+      <a href="../articles/types.html">Correlation Types</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/easystats/correlation">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -128,7 +129,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Correlation Analysis</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/correlation.R'><code>R/correlation.R</code></a></small>
+    
     <div class="hidden name"><code>correlation.Rd</code></div>
     </div>
 
@@ -141,7 +142,7 @@
   <span class='kw'>data2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
   <span class='kw'>p_adjust</span> <span class='kw'>=</span> <span class='st'>"holm"</span>,
-  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
+  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
   <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>bayesian_prior</span> <span class='kw'>=</span> <span class='st'>"medium"</span>,
   <span class='kw'>bayesian_ci_method</span> <span class='kw'>=</span> <span class='st'>"hdi"</span>,
@@ -176,11 +177,11 @@
     </tr>
     <tr>
       <th>ci</th>
-      <td><p>Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the <span class="pkg">bayestestR</span> package).</p></td>
+      <td><p>Confidence/Credible Interval level. If "default", then it is set to 0.95 (95% CI).</p></td>
     </tr>
     <tr>
       <th>bayesian</th>
-      <td><p>If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
+      <td><p>If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
     </tr>
     <tr>
       <th>bayesian_prior</th>
@@ -208,7 +209,7 @@
     </tr>
     <tr>
       <th>partial_bayesian</th>
-      <td><p>If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
+      <td><p>If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
     </tr>
     <tr>
       <th>multilevel</th>
@@ -258,14 +259,14 @@
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='no'>cor</span> <span class='kw'>&lt;-</span> <span class='fu'>correlation</span>(<span class='no'>iris</span>)
 
-<span class='no'>cor</span></div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |     t |  df |      p |         95% CI |  Method | n_Obs
+<span class='no'>cor</span></div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------
-#&gt; Sepal.Length |  Sepal.Width | -0.12 | -1.44 | 148 | 0.152  | [-0.27,  0.04] | Pearson |   150
-#&gt; Sepal.Length | Petal.Length |  0.87 | 21.65 | 148 | &lt; .001 | [ 0.83,  0.91] | Pearson |   150
-#&gt; Sepal.Length |  Petal.Width |  0.82 | 17.30 | 148 | &lt; .001 | [ 0.76,  0.86] | Pearson |   150
-#&gt; Sepal.Width  | Petal.Length | -0.43 | -5.77 | 148 | &lt; .001 | [-0.55, -0.29] | Pearson |   150
-#&gt; Sepal.Width  |  Petal.Width | -0.37 | -4.79 | 148 | &lt; .001 | [-0.50, -0.22] | Pearson |   150
-#&gt; Petal.Length |  Petal.Width |  0.96 | 43.39 | 148 | &lt; .001 | [ 0.95,  0.97] | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>cor</span>)</div><div class='output co'>#&gt; Parameter    | Petal.Width | Petal.Length | Sepal.Width
+#&gt; Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] | -1.44 | 148 | 0.152  | Pearson |   150
+#&gt; Sepal.Length | Petal.Length |  0.87 | [ 0.83,  0.91] | 21.65 | 148 | &lt; .001 | Pearson |   150
+#&gt; Sepal.Length |  Petal.Width |  0.82 | [ 0.76,  0.86] | 17.30 | 148 | &lt; .001 | Pearson |   150
+#&gt; Sepal.Width  | Petal.Length | -0.43 | [-0.55, -0.29] | -5.77 | 148 | &lt; .001 | Pearson |   150
+#&gt; Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] | -4.79 | 148 | &lt; .001 | Pearson |   150
+#&gt; Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>cor</span>)</div><div class='output co'>#&gt; Parameter    | Petal.Width | Petal.Length | Sepal.Width
 #&gt; -------------------------------------------------------
 #&gt; Sepal.Length |     0.82*** |      0.87*** |       -0.12
 #&gt; Sepal.Width  |    -0.37*** |     -0.43*** |            
@@ -277,73 +278,73 @@
 #&gt; Petal.Width  |      0.82*** |    -0.37*** |      0.96*** |     1.00***</div><div class='input'>
 <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>Species</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>correlation</span>()</div><div class='output co'>#&gt; Group      |   Parameter1 |   Parameter2 |    r |     t | df |      p |        95% CI |  Method | n_Obs
+  <span class='fu'>correlation</span>()</div><div class='output co'>#&gt; Group      |   Parameter1 |   Parameter2 |    r |        95% CI |     t | df |      p |  Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------------------
-#&gt; setosa     | Sepal.Length |  Sepal.Width | 0.74 |  7.68 | 48 | &lt; .001 | [ 0.59, 0.85] | Pearson |    50
-#&gt; setosa     | Sepal.Length | Petal.Length | 0.27 |  1.92 | 48 | 0.202  | [-0.01, 0.51] | Pearson |    50
-#&gt; setosa     | Sepal.Length |  Petal.Width | 0.28 |  2.01 | 48 | 0.202  | [ 0.00, 0.52] | Pearson |    50
-#&gt; setosa     |  Sepal.Width | Petal.Length | 0.18 |  1.25 | 48 | 0.217  | [-0.11, 0.43] | Pearson |    50
-#&gt; setosa     |  Sepal.Width |  Petal.Width | 0.23 |  1.66 | 48 | 0.208  | [-0.05, 0.48] | Pearson |    50
-#&gt; setosa     | Petal.Length |  Petal.Width | 0.33 |  2.44 | 48 | 0.093  | [ 0.06, 0.56] | Pearson |    50
-#&gt; versicolor | Sepal.Length |  Sepal.Width | 0.53 |  4.28 | 48 | &lt; .001 | [ 0.29, 0.70] | Pearson |    50
-#&gt; versicolor | Sepal.Length | Petal.Length | 0.75 |  7.95 | 48 | &lt; .001 | [ 0.60, 0.85] | Pearson |    50
-#&gt; versicolor | Sepal.Length |  Petal.Width | 0.55 |  4.52 | 48 | &lt; .001 | [ 0.32, 0.72] | Pearson |    50
-#&gt; versicolor |  Sepal.Width | Petal.Length | 0.56 |  4.69 | 48 | &lt; .001 | [ 0.33, 0.73] | Pearson |    50
-#&gt; versicolor |  Sepal.Width |  Petal.Width | 0.66 |  6.15 | 48 | &lt; .001 | [ 0.47, 0.80] | Pearson |    50
-#&gt; versicolor | Petal.Length |  Petal.Width | 0.79 |  8.83 | 48 | &lt; .001 | [ 0.65, 0.87] | Pearson |    50
-#&gt; virginica  | Sepal.Length |  Sepal.Width | 0.46 |  3.56 | 48 | 0.003  | [ 0.20, 0.65] | Pearson |    50
-#&gt; virginica  | Sepal.Length | Petal.Length | 0.86 | 11.90 | 48 | &lt; .001 | [ 0.77, 0.92] | Pearson |    50
-#&gt; virginica  | Sepal.Length |  Petal.Width | 0.28 |  2.03 | 48 | 0.048  | [ 0.00, 0.52] | Pearson |    50
-#&gt; virginica  |  Sepal.Width | Petal.Length | 0.40 |  3.03 | 48 | 0.012  | [ 0.14, 0.61] | Pearson |    50
-#&gt; virginica  |  Sepal.Width |  Petal.Width | 0.54 |  4.42 | 48 | &lt; .001 | [ 0.31, 0.71] | Pearson |    50
-#&gt; virginica  | Petal.Length |  Petal.Width | 0.32 |  2.36 | 48 | 0.045  | [ 0.05, 0.55] | Pearson |    50</div><div class='input'>
-<span class='fu'>correlation</span>(<span class='no'>mtcars</span>[-<span class='fl'>2</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)</div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |      t | df |      p |         95% CI |      Method | n_Obs
+#&gt; setosa     | Sepal.Length |  Sepal.Width | 0.74 | [ 0.59, 0.85] |  7.68 | 48 | &lt; .001 | Pearson |    50
+#&gt; setosa     | Sepal.Length | Petal.Length | 0.27 | [-0.01, 0.51] |  1.92 | 48 | 0.202  | Pearson |    50
+#&gt; setosa     | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.01 | 48 | 0.202  | Pearson |    50
+#&gt; setosa     |  Sepal.Width | Petal.Length | 0.18 | [-0.11, 0.43] |  1.25 | 48 | 0.217  | Pearson |    50
+#&gt; setosa     |  Sepal.Width |  Petal.Width | 0.23 | [-0.05, 0.48] |  1.66 | 48 | 0.208  | Pearson |    50
+#&gt; setosa     | Petal.Length |  Petal.Width | 0.33 | [ 0.06, 0.56] |  2.44 | 48 | 0.093  | Pearson |    50
+#&gt; versicolor | Sepal.Length |  Sepal.Width | 0.53 | [ 0.29, 0.70] |  4.28 | 48 | &lt; .001 | Pearson |    50
+#&gt; versicolor | Sepal.Length | Petal.Length | 0.75 | [ 0.60, 0.85] |  7.95 | 48 | &lt; .001 | Pearson |    50
+#&gt; versicolor | Sepal.Length |  Petal.Width | 0.55 | [ 0.32, 0.72] |  4.52 | 48 | &lt; .001 | Pearson |    50
+#&gt; versicolor |  Sepal.Width | Petal.Length | 0.56 | [ 0.33, 0.73] |  4.69 | 48 | &lt; .001 | Pearson |    50
+#&gt; versicolor |  Sepal.Width |  Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | 48 | &lt; .001 | Pearson |    50
+#&gt; versicolor | Petal.Length |  Petal.Width | 0.79 | [ 0.65, 0.87] |  8.83 | 48 | &lt; .001 | Pearson |    50
+#&gt; virginica  | Sepal.Length |  Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 48 | 0.003  | Pearson |    50
+#&gt; virginica  | Sepal.Length | Petal.Length | 0.86 | [ 0.77, 0.92] | 11.90 | 48 | &lt; .001 | Pearson |    50
+#&gt; virginica  | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 48 | 0.048  | Pearson |    50
+#&gt; virginica  |  Sepal.Width | Petal.Length | 0.40 | [ 0.14, 0.61] |  3.03 | 48 | 0.012  | Pearson |    50
+#&gt; virginica  |  Sepal.Width |  Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | 48 | &lt; .001 | Pearson |    50
+#&gt; virginica  | Petal.Length |  Petal.Width | 0.32 | [ 0.05, 0.55] |  2.36 | 48 | 0.045  | Pearson |    50</div><div class='input'>
+<span class='fu'>correlation</span>(<span class='no'>mtcars</span>[-<span class='fl'>2</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)</div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |         95% CI |      t | df |      p |      Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------
-#&gt; mpg        |       disp | -0.85 |  -8.75 | 30 | &lt; .001 | [-0.92, -0.71] |     Pearson |    32
-#&gt; mpg        |         hp | -0.78 |  -6.74 | 30 | &lt; .001 | [-0.89, -0.59] |     Pearson |    32
-#&gt; mpg        |       drat |  0.68 |   5.10 | 30 | &lt; .001 | [ 0.44,  0.83] |     Pearson |    32
-#&gt; mpg        |         wt | -0.87 |  -9.56 | 30 | &lt; .001 | [-0.93, -0.74] |     Pearson |    32
-#&gt; mpg        |       qsec |  0.42 |   2.53 | 30 | 0.222  | [ 0.08,  0.67] |     Pearson |    32
-#&gt; mpg        |         vs |  0.82 |   7.80 | 30 | &lt; .001 | [ 0.66,  0.91] |    Biserial |    32
-#&gt; mpg        |         am |  0.75 |   6.06 | 30 | &lt; .001 | [ 0.54,  0.87] |    Biserial |    32
-#&gt; mpg        |       gear |  0.48 |   3.00 | 30 | 0.092  | [ 0.16,  0.71] |     Pearson |    32
-#&gt; mpg        |       carb | -0.55 |  -3.62 | 30 | 0.021  | [-0.75, -0.25] |     Pearson |    32
-#&gt; disp       |         hp |  0.79 |   7.08 | 30 | &lt; .001 | [ 0.61,  0.89] |     Pearson |    32
-#&gt; disp       |       drat | -0.71 |  -5.53 | 30 | &lt; .001 | [-0.85, -0.48] |     Pearson |    32
-#&gt; disp       |         wt |  0.89 |  10.58 | 30 | &lt; .001 | [ 0.78,  0.94] |     Pearson |    32
-#&gt; disp       |       qsec | -0.43 |  -2.64 | 30 | 0.197  | [-0.68, -0.10] |     Pearson |    32
-#&gt; disp       |         vs | -0.88 |  -9.99 | 30 | &lt; .001 | [-0.94, -0.77] |    Biserial |    32
-#&gt; disp       |         am | -0.74 |  -5.87 | 30 | &lt; .001 | [-0.86, -0.52] |    Biserial |    32
-#&gt; disp       |       gear | -0.56 |  -3.66 | 30 | 0.019  | [-0.76, -0.26] |     Pearson |    32
-#&gt; disp       |       carb |  0.39 |   2.35 | 30 | 0.303  | [ 0.05,  0.65] |     Pearson |    32
-#&gt; hp         |       drat | -0.45 |  -2.75 | 30 | 0.160  | [-0.69, -0.12] |     Pearson |    32
-#&gt; hp         |         wt |  0.66 |   4.80 | 30 | &lt; .001 | [ 0.40,  0.82] |     Pearson |    32
-#&gt; hp         |       qsec | -0.71 |  -5.49 | 30 | &lt; .001 | [-0.85, -0.48] |     Pearson |    32
-#&gt; hp         |         vs | -0.90 | -10.87 | 30 | &lt; .001 | [-0.95, -0.80] |    Biserial |    32
-#&gt; hp         |         am | -0.30 |  -1.71 | 30 | 1.000  | [-0.59,  0.05] |    Biserial |    32
-#&gt; hp         |       gear | -0.13 |  -0.69 | 30 | 1.000  | [-0.45,  0.23] |     Pearson |    32
-#&gt; hp         |       carb |  0.75 |   6.21 | 30 | &lt; .001 | [ 0.54,  0.87] |     Pearson |    32
-#&gt; drat       |         wt | -0.71 |  -5.56 | 30 | &lt; .001 | [-0.85, -0.48] |     Pearson |    32
-#&gt; drat       |       qsec |  0.09 |   0.50 | 30 | 1.000  | [-0.27,  0.43] |     Pearson |    32
-#&gt; drat       |         vs |  0.55 |   3.51 | 30 | 0.026  | [ 0.24,  0.75] |    Biserial |    32
-#&gt; drat       |         am |  0.89 |  10.41 | 30 | &lt; .001 | [ 0.78,  0.94] |    Biserial |    32
-#&gt; drat       |       gear |  0.70 |   5.36 | 30 | &lt; .001 | [ 0.46,  0.84] |     Pearson |    32
-#&gt; drat       |       carb | -0.09 |  -0.50 | 30 | 1.000  | [-0.43,  0.27] |     Pearson |    32
-#&gt; wt         |       qsec | -0.17 |  -0.97 | 30 | 1.000  | [-0.49,  0.19] |     Pearson |    32
-#&gt; wt         |         vs | -0.69 |  -5.10 | 30 | &lt; .001 | [-0.84, -0.45] |    Biserial |    32
-#&gt; wt         |         am | -0.86 |  -9.20 | 30 | &lt; .001 | [-0.93, -0.74] |    Biserial |    32
-#&gt; wt         |       gear | -0.58 |  -3.93 | 30 | 0.010  | [-0.77, -0.29] |     Pearson |    32
-#&gt; wt         |       carb |  0.43 |   2.59 | 30 | 0.205  | [ 0.09,  0.68] |     Pearson |    32
-#&gt; qsec       |         vs |  0.92 |  12.88 | 30 | &lt; .001 | [ 0.85,  0.96] |    Biserial |    32
-#&gt; qsec       |         am | -0.29 |  -1.61 | 30 | 1.000  | [-0.58,  0.07] |    Biserial |    32
-#&gt; qsec       |       gear | -0.21 |  -1.19 | 30 | 1.000  | [-0.52,  0.15] |     Pearson |    32
-#&gt; qsec       |       carb | -0.66 |  -4.76 | 30 | &lt; .001 | [-0.82, -0.40] |     Pearson |    32
-#&gt; vs         |         am |  0.26 |   1.47 | 30 | 1.000  | [-0.09,  0.56] | Tetrachoric |    32
-#&gt; vs         |       gear |  0.26 |   1.42 | 30 | 1.000  | [-0.10,  0.55] |    Biserial |    32
-#&gt; vs         |       carb | -0.71 |  -5.37 | 30 | &lt; .001 | [-0.85, -0.47] |    Biserial |    32
-#&gt; am         |       gear |  0.99 |  37.07 | 30 | &lt; .001 | [ 0.98,  0.99] |    Biserial |    32
-#&gt; am         |       carb |  0.07 |   0.39 | 30 | 1.000  | [-0.28,  0.41] |    Biserial |    32
-#&gt; gear       |       carb |  0.27 |   1.56 | 30 | 1.000  | [-0.08,  0.57] |     Pearson |    32</div></pre>
+#&gt; mpg        |       disp | -0.85 | [-0.92, -0.71] |  -8.75 | 30 | &lt; .001 |     Pearson |    32
+#&gt; mpg        |         hp | -0.78 | [-0.89, -0.59] |  -6.74 | 30 | &lt; .001 |     Pearson |    32
+#&gt; mpg        |       drat |  0.68 | [ 0.44,  0.83] |   5.10 | 30 | &lt; .001 |     Pearson |    32
+#&gt; mpg        |         wt | -0.87 | [-0.93, -0.74] |  -9.56 | 30 | &lt; .001 |     Pearson |    32
+#&gt; mpg        |       qsec |  0.42 | [ 0.08,  0.67] |   2.53 | 30 | 0.222  |     Pearson |    32
+#&gt; mpg        |         vs |  0.82 | [ 0.66,  0.91] |   7.80 | 30 | &lt; .001 |    Biserial |    32
+#&gt; mpg        |         am |  0.75 | [ 0.54,  0.87] |   6.06 | 30 | &lt; .001 |    Biserial |    32
+#&gt; mpg        |       gear |  0.48 | [ 0.16,  0.71] |   3.00 | 30 | 0.092  |     Pearson |    32
+#&gt; mpg        |       carb | -0.55 | [-0.75, -0.25] |  -3.62 | 30 | 0.021  |     Pearson |    32
+#&gt; disp       |         hp |  0.79 | [ 0.61,  0.89] |   7.08 | 30 | &lt; .001 |     Pearson |    32
+#&gt; disp       |       drat | -0.71 | [-0.85, -0.48] |  -5.53 | 30 | &lt; .001 |     Pearson |    32
+#&gt; disp       |         wt |  0.89 | [ 0.78,  0.94] |  10.58 | 30 | &lt; .001 |     Pearson |    32
+#&gt; disp       |       qsec | -0.43 | [-0.68, -0.10] |  -2.64 | 30 | 0.197  |     Pearson |    32
+#&gt; disp       |         vs | -0.88 | [-0.94, -0.77] |  -9.99 | 30 | &lt; .001 |    Biserial |    32
+#&gt; disp       |         am | -0.74 | [-0.86, -0.52] |  -5.87 | 30 | &lt; .001 |    Biserial |    32
+#&gt; disp       |       gear | -0.56 | [-0.76, -0.26] |  -3.66 | 30 | 0.019  |     Pearson |    32
+#&gt; disp       |       carb |  0.39 | [ 0.05,  0.65] |   2.35 | 30 | 0.303  |     Pearson |    32
+#&gt; hp         |       drat | -0.45 | [-0.69, -0.12] |  -2.75 | 30 | 0.160  |     Pearson |    32
+#&gt; hp         |         wt |  0.66 | [ 0.40,  0.82] |   4.80 | 30 | &lt; .001 |     Pearson |    32
+#&gt; hp         |       qsec | -0.71 | [-0.85, -0.48] |  -5.49 | 30 | &lt; .001 |     Pearson |    32
+#&gt; hp         |         vs | -0.90 | [-0.95, -0.80] | -10.87 | 30 | &lt; .001 |    Biserial |    32
+#&gt; hp         |         am | -0.30 | [-0.59,  0.05] |  -1.71 | 30 | 1.000  |    Biserial |    32
+#&gt; hp         |       gear | -0.13 | [-0.45,  0.23] |  -0.69 | 30 | 1.000  |     Pearson |    32
+#&gt; hp         |       carb |  0.75 | [ 0.54,  0.87] |   6.21 | 30 | &lt; .001 |     Pearson |    32
+#&gt; drat       |         wt | -0.71 | [-0.85, -0.48] |  -5.56 | 30 | &lt; .001 |     Pearson |    32
+#&gt; drat       |       qsec |  0.09 | [-0.27,  0.43] |   0.50 | 30 | 1.000  |     Pearson |    32
+#&gt; drat       |         vs |  0.55 | [ 0.24,  0.75] |   3.51 | 30 | 0.026  |    Biserial |    32
+#&gt; drat       |         am |  0.89 | [ 0.78,  0.94] |  10.41 | 30 | &lt; .001 |    Biserial |    32
+#&gt; drat       |       gear |  0.70 | [ 0.46,  0.84] |   5.36 | 30 | &lt; .001 |     Pearson |    32
+#&gt; drat       |       carb | -0.09 | [-0.43,  0.27] |  -0.50 | 30 | 1.000  |     Pearson |    32
+#&gt; wt         |       qsec | -0.17 | [-0.49,  0.19] |  -0.97 | 30 | 1.000  |     Pearson |    32
+#&gt; wt         |         vs | -0.69 | [-0.84, -0.45] |  -5.10 | 30 | &lt; .001 |    Biserial |    32
+#&gt; wt         |         am | -0.86 | [-0.93, -0.74] |  -9.20 | 30 | &lt; .001 |    Biserial |    32
+#&gt; wt         |       gear | -0.58 | [-0.77, -0.29] |  -3.93 | 30 | 0.010  |     Pearson |    32
+#&gt; wt         |       carb |  0.43 | [ 0.09,  0.68] |   2.59 | 30 | 0.205  |     Pearson |    32
+#&gt; qsec       |         vs |  0.92 | [ 0.85,  0.96] |  12.88 | 30 | &lt; .001 |    Biserial |    32
+#&gt; qsec       |         am | -0.29 | [-0.58,  0.07] |  -1.61 | 30 | 1.000  |    Biserial |    32
+#&gt; qsec       |       gear | -0.21 | [-0.52,  0.15] |  -1.19 | 30 | 1.000  |     Pearson |    32
+#&gt; qsec       |       carb | -0.66 | [-0.82, -0.40] |  -4.76 | 30 | &lt; .001 |     Pearson |    32
+#&gt; vs         |         am |  0.26 | [-0.09,  0.56] |   1.47 | 30 | 1.000  | Tetrachoric |    32
+#&gt; vs         |       gear |  0.26 | [-0.10,  0.55] |   1.42 | 30 | 1.000  |    Biserial |    32
+#&gt; vs         |       carb | -0.71 | [-0.85, -0.47] |  -5.37 | 30 | &lt; .001 |    Biserial |    32
+#&gt; am         |       gear |  0.99 | [ 0.98,  0.99] |  37.07 | 30 | &lt; .001 |    Biserial |    32
+#&gt; am         |       carb |  0.07 | [-0.28,  0.41] |   0.39 | 30 | 1.000  |    Biserial |    32
+#&gt; gear       |       carb |  0.27 | [-0.08,  0.57] |   1.56 | 30 | 1.000  |     Pearson |    32</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
