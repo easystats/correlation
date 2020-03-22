@@ -12,6 +12,9 @@ authors:
   name: Mattan S. Ben-Shachar
   orcid: 0000-0002-4287-4801
 - affiliation: 3
+  name: Indrajeet Patil
+  orcid: 0000-0003-1995-6531
+- affiliation: 4
   name: Daniel Lüdecke
   orcid: 0000-0002-8895-3206
 affiliations:
@@ -20,6 +23,8 @@ affiliations:
 - index: 2
   name: Ben-Gurion University of the Negev, Israel
 - index: 3
+  name: Max Planck Institute for Human Development, Germany
+- index: 4
   name: University Medical Center Hamburg-Eppendorf, Germany
 date: "22 March 2020"
 bibliography: paper.bib
