@@ -95,7 +95,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
     } else if (tolower(method) %in% c("biweight")) {
       out <- .cor_test_biweight(data, x, y, ci = ci, ...)
     } else if (tolower(method) %in% c("distance")) {
-      out <- .cor_test_distance(data, x, y, ci = ci, corrected = TRUE, ...)
+      out <- .cor_test_distance(data, x, y, ci = ci, ...)
     } else if (tolower(method) %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       out <- .cor_test_percentage(data, x, y, ci = ci, ...)
     } else if (tolower(method) %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
