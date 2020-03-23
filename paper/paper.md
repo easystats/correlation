@@ -34,15 +34,7 @@ output: pdf_document
 
 # Introduction
 
-Correlations tests are arguably one of the most commonly used statistical procedures, and are used as a basis in many applications such as exploratory data analysis, structural modeling, data engineering etc.
-
-**correlation** is a an R package [@Rteam] package, from the [**easystats**](https://github.com/easystats/easystats) collection, focused on correlation analysis. It's lightweight, easy to use, and allows for the computation of many different kinds of correlations.
-
-
-
-# Features
-
-![figure1](figure1.PNG)
+Correlations tests are arguably one of the most commonly used statistical procedures, and are used as a basis in many applications such as exploratory data analysis, structural modeling, data engineering etc. **correlation** is an R package [@Rteam] package, from the [**easystats**](https://github.com/easystats/easystats) collection, focused on correlation analysis. It's lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as:
 
 - **Pearson's correlation**: The covariance of the two variables divided by the product of their standard deviations.
 
@@ -66,10 +58,9 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 - **Partial correlation**: something
 
-- **Partial correlation**: something
-
 - **Multilevel correlation**: something
 
+![figure1](figure1.PNG)
 
 # Design
 
