@@ -60,7 +60,7 @@ This function performs a correlation test between two variables.
 \item \strong{Distance correlation}: Distance correlation measures both linear and nonlinear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.
 \item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20\%).
 \item \strong{Shepherd's Pi correlation}: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped mahalanobis distance).
-\item \strong{Point-Biserial correlation}: Correlation coefficient used when one variable is dichotomous.
+\item \strong{Point-Biserial and biserial correlation}: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-serial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
 \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 }
@@ -84,8 +84,8 @@ data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 
-# When one variable is continuous and the other binary, will run 'biserial' correlation
-cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
+# Biserial
+cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
 
 # Polychoric
 data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))

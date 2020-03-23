@@ -58,7 +58,7 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 - **Shepherd's Pi correlation**: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped mahalanobis distance).
 
-- **Point-Biserial correlation**: Correlation coefficient used when one variable is dichotomous.
+- **Point-Biserial and biserial correlation**: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-serial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, depression level can be measured on a continuous scale, but can be classified dichotomously as high/low.
 
 - **Polychoric correlation**: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 

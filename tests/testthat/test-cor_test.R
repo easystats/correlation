@@ -18,7 +18,7 @@ test_that("cor_test frequentist", {
   out <- cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
   testthat::expect_equal(out$rho, -0.526, tol = 0.01)
 
-  out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
+  out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
   testthat::expect_equal(out$rho, -0.403, tol = 0.01)
 
   data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))

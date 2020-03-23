@@ -38,8 +38,8 @@
 #' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 #' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 #'
-#' # When one variable is continuous and the other binary, will run 'biserial' correlation
-#' cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
+#' # Biserial
+#' cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
 #'
 #' # Polychoric
 #' data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
@@ -84,12 +84,14 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   # Frequentist
   if (bayesian == FALSE) {
 
-    if (method == "auto") method <- .cor_test_findtype(data, x, y)
+    if (method == "auto") method <- .find_correlationtype(data, x, y)
 
-    if (tolower(method) %in% c("tetra", "tetrachoric", "biserial")) {
+    if (tolower(method) %in% c("tetra", "tetrachoric")) {
       out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
     } else if (tolower(method) %in% c("poly", "polychoric")) {
       out <- .cor_test_polychoric(data, x, y, ci = ci, ...)
+    } else if (tolower(method) %in% c("biserial", "pointbiserial", "point-biserial")) {
+      out <- .cor_test_biserial(data, x, y, ci = ci, method = method, ...)
     } else if (tolower(method) %in% c("biweight")) {
       out <- .cor_test_biweight(data, x, y, ci = ci, ...)
     } else if (tolower(method) %in% c("distance")) {
@@ -155,16 +157,3 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   data[[y]][stats::complete.cases(data[[x]], data[[y]])]
 }
 
-
-
-#' @keywords internal
-.cor_test_findtype <- function(data, x, y) {
-  if (length(unique(data[[x]])) == 2 | length(unique(data[[y]])) == 2) {
-    current_method <- "tetrachoric"
-  } else if (is.factor(data[x]) | is.factor(data[y])) {
-    current_method <- "polychoric"
-  } else {
-    current_method <- "pearson"
-  }
-  current_method
-}

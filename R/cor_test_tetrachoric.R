@@ -18,16 +18,7 @@
   dat <- data.frame(var_x, var_y)
   names(dat) <- c(x, y)
 
-  if (length(unique(var_x)) > 2 | length(unique(var_y)) > 2) {
-    junk <- utils::capture.output(r <- psych::biserial(
-      x = dat[sapply(dat, function(x) length(unique(x)) > 2)],
-      y = dat[sapply(dat, function(x) !length(unique(x)) > 2)]
-    )[1])
-    method <- "Biserial"
-  } else {
-    junk <- utils::capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
-    method <- "Tetrachoric"
-  }
+  junk <- utils::capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
 
   p <- cor_to_p(r, n = nrow(data))
   ci_vals <- cor_to_ci(r, n = nrow(data), ci = ci)
@@ -41,7 +32,7 @@
     p = p$p,
     CI_low = ci_vals$CI_low,
     CI_high = ci_vals$CI_high,
-    Method = method,
+    Method = "Tetrachoric",
     stringsAsFactors = FALSE
   )
 }
