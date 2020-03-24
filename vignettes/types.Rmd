@@ -56,7 +56,9 @@ set.seed(333)
 
 - **Tetrachoric correlation**: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 
+- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. 
 
+- **Multilevel correlation**: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
 
 ## Comparison

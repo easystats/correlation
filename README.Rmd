@@ -65,8 +65,8 @@ library("correlation")
 Click on the buttons above to access the package [**documentation**](https://easystats.github.io/correlation/) and the [**easystats blog**](https://easystats.github.io/blog/posts/), and check-out these vignettes:
 
 
-- **No vignettes yet :(**
-
+- [**Types of Correlation**](https://easystats.github.io/correlation/articles/types.html)
+- [**Multilevel Correlations**](https://easystats.github.io/correlation/articles/multilevel.html)
 
 
 # Examples
