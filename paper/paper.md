@@ -60,7 +60,7 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 - **Multilevel correlation**: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
-![figure1](figure1.PNG)
+![**Figure 1.** Illustration of the different correlation estimates obtained via different methods for the same data.](figure1.PNG)
 
 # Design
 
@@ -116,7 +116,7 @@ cor %>%
   plot()
 ```
 
-![](figure2.png)<!-- -->
+![**Figure 2.** Correlation matrix plot that can be automatically obtained via the **see** package.](figure2.png)<!-- -->
 
 ## Grouped dataframes
 
@@ -215,7 +215,7 @@ mtcars %>%
   plot()
 ```
 
-![](figure3.png)
+![**Figure 3.** Gaussian graphical model (GGM), - or network graph, that can be automatically obtained via the **see** package.](figure3.png)
 
 ## Multilevel Correlations
 
