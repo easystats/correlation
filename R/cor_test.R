@@ -69,6 +69,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   if (ci == "default") ci <- 0.95
   if (partial == FALSE & (partial_bayesian | multilevel)) partial <- TRUE
 
+
   # Partial
   if (partial) {
     data[[x]] <- effectsize::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
@@ -80,23 +81,27 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
     data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = TRUE, method = "average")
   }
 
+
+  # Find method
+  method <- tolower(method)
+  if (method == "auto" & bayesian == FALSE) method <- .find_correlationtype(data, x, y)
+  if (method == "auto" & bayesian == TRUE) method <- "pearson"
+
   # Frequentist
   if (bayesian == FALSE) {
-    if (method == "auto") method <- .find_correlationtype(data, x, y)
-
-    if (tolower(method) %in% c("tetra", "tetrachoric")) {
+    if (method %in% c("tetra", "tetrachoric")) {
       out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("poly", "polychoric")) {
+    } else if (method %in% c("poly", "polychoric")) {
       out <- .cor_test_polychoric(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("biserial", "pointbiserial", "point-biserial")) {
+    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
       out <- .cor_test_biserial(data, x, y, ci = ci, method = method, ...)
-    } else if (tolower(method) %in% c("biweight")) {
+    } else if (method %in% c("biweight")) {
       out <- .cor_test_biweight(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("distance")) {
+    } else if (method %in% c("distance")) {
       out <- .cor_test_distance(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
+    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       out <- .cor_test_percentage(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
     } else {
       out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
@@ -104,17 +109,19 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 
     # Bayesian
   } else {
-    if (tolower(method) %in% c("tetra", "tetrachoric")) {
+    if (method %in% c("tetra", "tetrachoric")) {
       stop("Tetrachoric Bayesian correlations are not supported yet.")
-    } else if (tolower(method) %in% c("poly", "polychoric")) {
+    } else if (method %in% c("poly", "polychoric")) {
       stop("Polychoric Bayesian correlations are not supported yet.")
-    } else if (tolower(method) %in% c("biweight")) {
+    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
+      stop("Biserial Bayesian correlations are not supported yet.")
+    } else if (method %in% c("biweight")) {
       stop("Biweight Bayesian correlations are not supported yet.")
-    } else if (tolower(method) %in% c("distance")) {
+    } else if (method %in% c("distance")) {
       stop("Bayesian distance correlations are not supported yet.")
-    } else if (tolower(method) %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
+    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       stop("Bayesian Percentage Bend correlations are not supported yet.")
-    } else if (tolower(method) %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
     } else {
       out <- .cor_test_bayes(data, x, y, ci = ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
