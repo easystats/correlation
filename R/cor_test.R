@@ -69,6 +69,10 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   if (ci == "default") ci <- 0.95
   if (partial == FALSE & (partial_bayesian | multilevel)) partial <- TRUE
 
+  # Make sure factor is no factor
+  if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
+    data[c(x, y)] <- parameters::data_to_numeric(data[c(x, y)], dummy_factors=FALSE)
+  }
 
   # Partial
   if (partial) {
