@@ -4,15 +4,15 @@
   type_y <- .vartype(data[[y]])
 
   if (type_x$is_binary & type_y$is_continuous) {
-    if(type_x$is_factor){
+    if (type_x$is_factor) {
       method <- "biserial"
-    } else{
+    } else {
       method <- "pointbiserial"
     }
   } else if (type_x$is_continuous & type_y$is_binary) {
-    if(type_y$is_factor){
+    if (type_y$is_factor) {
       method <- "biserial"
-    } else{
+    } else {
       method <- "pointbiserial"
     }
   } else if (type_x$is_binary & type_y$is_binary) {
@@ -37,35 +37,37 @@
 
 
 #' @keywords internal
-.vartype <- function(x){
-  out <- list(is_factor = FALSE,
-              is_numeric = FALSE,
-              is_character = FALSE,
-              is_binary = FALSE,
-              is_continuous = FALSE,
-              is_count = FALSE)
+.vartype <- function(x) {
+  out <- list(
+    is_factor = FALSE,
+    is_numeric = FALSE,
+    is_character = FALSE,
+    is_binary = FALSE,
+    is_continuous = FALSE,
+    is_count = FALSE
+  )
 
-  if(is.factor(x)){
+  if (is.factor(x)) {
     out$is_factor <- TRUE
   }
 
-  if(is.character(x)){
+  if (is.character(x)) {
     out$is_character <- TRUE
   }
 
-  if(is.numeric(x)){
+  if (is.numeric(x)) {
     out$is_numeric <- TRUE
   }
 
-  if(length(unique(x)) == 2){
+  if (length(unique(x)) == 2) {
     out$is_binary <- TRUE
   }
 
-  if(out$is_numeric & out$is_binary == FALSE){
+  if (out$is_numeric & out$is_binary == FALSE) {
     out$is_continuous <- TRUE
   }
 
-  if(all(x%%1==0)){
+  if (all(x %% 1 == 0)) {
     out$is_count <- TRUE
   }
 

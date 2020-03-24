@@ -2,28 +2,28 @@
 .cor_test_biserial <- function(data, x, y, ci = 0.95, method = "biserial", ...) {
 
   # Sanity
-  if (.vartype(data[[x]])$is_binary & .vartype(data[[y]])$is_binary == FALSE){
+  if (.vartype(data[[x]])$is_binary & .vartype(data[[y]])$is_binary == FALSE) {
     binary <- x
     continuous <- y
-  } else if (.vartype(data[[y]])$is_binary & .vartype(data[[x]])$is_binary == FALSE){
+  } else if (.vartype(data[[y]])$is_binary & .vartype(data[[x]])$is_binary == FALSE) {
     binary <- y
     continuous <- x
-  } else{
+  } else {
     stop("Biserial and point-biserial correlations can only be applied for one dichotomous and one continuous variables.")
   }
 
   # Rescale to 0-1
-  if(.vartype(data[[binary]])$is_factor | .vartype(data[[binary]])$is_character){
+  if (.vartype(data[[binary]])$is_factor | .vartype(data[[binary]])$is_character) {
     data[[binary]] <- as.numeric(as.factor(data[[binary]]))
   }
   data[[binary]] <- as.vector((data[[binary]] - min(data[[binary]], na.rm = TRUE)) / diff(range(data[[binary]], na.rm = TRUE), na.rm = TRUE))
 
   # Get biserial correlation
-  if(method == "biserial"){
+  if (method == "biserial") {
     out <- .cor_test_biserial_biserial(data, x, y, continuous, binary, ci)
 
-  # Get point-biserial correlation
-  } else{
+    # Get point-biserial correlation
+  } else {
     out <- .cor_test_freq(data, continuous, binary, ci = ci, method = "pearson", ...)
     names(out)[names(out) == "r"] <- "rho"
     out$Parameter1 <- x
@@ -48,8 +48,7 @@
 
 
 #' @keywords internal
-.cor_test_biserial_biserial <- function(data, x, y, continuous, binary, ci){
-
+.cor_test_biserial_biserial <- function(data, x, y, continuous, binary, ci) {
   if (!requireNamespace("psych", quietly = TRUE)) {
     stop("Package `psych` required for biserial correlations. Please install it by running `install.packages('psych').", call. = FALSE)
   }
@@ -87,6 +86,3 @@
     stringsAsFactors = FALSE
   )
 }
-
-
-

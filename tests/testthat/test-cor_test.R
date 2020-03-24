@@ -65,4 +65,3 @@ test_that("cor_test shepherd", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd")
   testthat::expect_equal(out$r, as.numeric(0.94762), tol = 0.01)
 })
-

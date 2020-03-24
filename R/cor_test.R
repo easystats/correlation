@@ -60,7 +60,6 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
 #'
-#'
 #' @importFrom effectsize adjust ranktransform
 #' @importFrom stats complete.cases
 #' @export
@@ -83,7 +82,6 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 
   # Frequentist
   if (bayesian == FALSE) {
-
     if (method == "auto") method <- .find_correlationtype(data, x, y)
 
     if (tolower(method) %in% c("tetra", "tetrachoric")) {
@@ -106,7 +104,6 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 
     # Bayesian
   } else {
-
     if (tolower(method) %in% c("tetra", "tetrachoric")) {
       stop("Tetrachoric Bayesian correlations are not supported yet.")
     } else if (tolower(method) %in% c("poly", "polychoric")) {
@@ -128,7 +125,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   out$n_Obs <- sum(stats::complete.cases(data[[x]], data[[y]]))
 
   # Reorder columns
-  if("CI_low" %in% names(out)){
+  if ("CI_low" %in% names(out)) {
     order <- c("Parameter1", "Parameter2", "r", "rho", "CI_low", "CI_high")
     out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
   }
@@ -156,4 +153,3 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 .complete_variable_y <- function(data, x, y) {
   data[[y]][stats::complete.cases(data[[x]], data[[y]])]
 }
-
