@@ -142,7 +142,7 @@ iris %>%
 
 ## Bayesian Correlations
 
-It is very easy to switch to a **Bayesian framework**.
+It is very easy to switch to a **Bayesian framework** (for which it relies on the **bayestestR** [@makowski2019bayestestr] and the **BayesFactor** [@BayesFactor] packages.
 
 ``` r
 correlation(iris, bayesian = TRUE)
