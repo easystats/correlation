@@ -111,5 +111,4 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
 cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 }
 
-
 }

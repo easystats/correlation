@@ -25,9 +25,8 @@ Simpson's paradox, or the Yule-Simpson effect, is a phenomenon in probability an
 data <- simulate_simpson(n = 100, groups = 5, r = 0.5)
 
 library(ggplot2)
-ggplot(data, aes(x=V1, y=V2)) +
-  geom_point(aes(color=Group)) +
-  geom_smooth(aes(color=Group), method="lm") +
-  geom_smooth(method="lm")
-
+ggplot(data, aes(x = V1, y = V2)) +
+  geom_point(aes(color = Group)) +
+  geom_smooth(aes(color = Group), method = "lm") +
+  geom_smooth(method = "lm")
 }
