@@ -59,7 +59,6 @@
 
   m1 <- mean(var_x[var_y == 1])
   m0 <- mean(var_x[var_y == 0])
-  sn <- stats::sd(var_x)
   q <- mean(var_y)
   p <- 1 - q
   zp <- stats::dnorm(stats::qnorm(q))
