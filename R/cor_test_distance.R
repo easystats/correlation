@@ -8,8 +8,10 @@
     rez <- data.frame(
       Parameter1 = x,
       Parameter2 = y,
-      r = rez$dCor,
-      Method = "Distance Correlation"
+      r = rez$r,
+      CI_low = NA,
+      CI_high = NA,
+      Method = "Distance"
     )
   } else {
     rez <- .cor_test_distance_corrected(var_x, var_y, ci = ci)
@@ -17,12 +19,12 @@
       Parameter1 = x,
       Parameter2 = y,
       r = rez$r,
+      CI_low = rez$CI_low,
+      CI_high = rez$CI_high,
       t = rez$t,
       df = rez$df,
       p = rez$p,
-      CI_low = rez$CI_low,
-      CI_high = rez$CI_high,
-      Method = "Distance Correlation (Bias Corrected)"
+      Method = "Distance (Bias Corrected)"
     )
   }
 }

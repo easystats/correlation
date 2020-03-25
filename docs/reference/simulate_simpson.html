@@ -45,7 +45,7 @@
   
 
 <meta property="og:title" content="Simpson's paradox dataset simulation — simulate_simpson" />
-<meta property="og:description" content="Simpson's paradox, or the Yule–Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined." />
+<meta property="og:description" content="Simpson's paradox, or the Yule-Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -102,18 +102,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/correlation_types.html">Different Correlation Types</a>
+      <a href="../articles/multilevel.html">Multilevel Correlations</a>
+    </li>
+    <li>
+      <a href="../articles/types.html">Correlation Types</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/easystats/correlation">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -128,12 +129,12 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Simpson's paradox dataset simulation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/simulate_simpson.R'><code>R/simulate_simpson.R</code></a></small>
+    
     <div class="hidden name"><code>simulate_simpson.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Simpson's paradox, or the Yule–Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined.</p>
+    <p>Simpson's paradox, or the Yule-Simpson effect, is a phenomenon in probability and statistics, in which a trend appears in several different groups of data but disappears or reverses when these groups are combined.</p>
     </div>
 
     <pre class="usage"><span class='fu'>simulate_simpson</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>difference</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
@@ -143,7 +144,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>n</th>
-      <td><p>The number of observations to be generated.</p></td>
+      <td><p>The number of observations for each group to be generated.</p></td>
     </tr>
     <tr>
       <th>r</th>
@@ -170,7 +171,7 @@
 <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>data</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>V1</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>V2</span>)) +
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>color</span><span class='kw'>=</span><span class='no'>Group</span>)) +
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>color</span><span class='kw'>=</span><span class='no'>Group</span>), <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"lm"</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span>(<span class='kw'>method</span><span class='kw'>=</span><span class='st'>"lm"</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='simulate_simpson-1.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span>(<span class='kw'>method</span><span class='kw'>=</span><span class='st'>"lm"</span>)</div><div class='img'><img src='simulate_simpson-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

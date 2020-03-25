@@ -20,7 +20,8 @@
     list(
       data = data,
       id = sample(nrow(data), size = nrow(data), replace = TRUE)
-    ))
+    )
+  )
 }
 
 

@@ -3,7 +3,7 @@
 #' The Fisher z-transformation converts the standard Pearson's r to a normally distributed variable z'. It is used to compute confidence intervals to correlations. The z' variable is different from the z-statistic.
 #'
 #' @param r,z The r or the z' value to be converted.
-#' 
+#'
 #' @return The transformed value.
 #'
 #' @examples

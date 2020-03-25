@@ -117,7 +117,7 @@ test_that("format checks", {
   testthat::expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(7, 8))
   testthat::expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(6, 7))
 
-  testthat::expect_true(all(c("Pearson", "Biserial", "Tetrachoric") %in% out$Method))
+  testthat::expect_true(all(c("Pearson", "Point-biserial", "Tetrachoric") %in% out$Method))
 
   # X and Y
   out <- correlation(iris[1:2], iris[3:4])

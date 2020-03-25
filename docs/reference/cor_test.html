@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -102,18 +102,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/correlation_types.html">Different Correlation Types</a>
+      <a href="../articles/multilevel.html">Multilevel Correlations</a>
+    </li>
+    <li>
+      <a href="../articles/types.html">Correlation Types</a>
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/easystats/correlation">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -128,7 +129,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Correlation test</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/cor_test.R'><code>R/cor_test.R</code></a></small>
+    
     <div class="hidden name"><code>cor_test.Rd</code></div>
     </div>
 
@@ -141,7 +142,7 @@
   <span class='no'>x</span>,
   <span class='no'>y</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
-  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
+  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
   <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>bayesian_prior</span> <span class='kw'>=</span> <span class='st'>"medium"</span>,
   <span class='kw'>bayesian_ci_method</span> <span class='kw'>=</span> <span class='st'>"hdi"</span>,
@@ -171,11 +172,11 @@
     </tr>
     <tr>
       <th>ci</th>
-      <td><p>Confidence/Credible Interval level. If "default", then 0.95 for Frequentist and 0.89 for Bayesian (see documentation in the <span class="pkg">bayestestR</span> package).</p></td>
+      <td><p>Confidence/Credible Interval level. If "default", then it is set to 0.95 (95% CI).</p></td>
     </tr>
     <tr>
       <th>bayesian, partial_bayesian</th>
-      <td><p>If TRUE, will run the correlations under a Bayesian framework Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
+      <td><p>If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
     </tr>
     <tr>
       <th>bayesian_prior</th>
@@ -220,58 +221,76 @@
 <li><p><strong>Distance correlation</strong>: Distance correlation measures both linear and nonlinear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.</p></li>
 <li><p><strong>Percentage bend correlation</strong>: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20%).</p></li>
 <li><p><strong>Shepherd's Pi correlation</strong>: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped mahalanobis distance).</p></li>
-<li><p><strong>Point-Biserial correlation</strong>: Correlation coefficient used when one variable is dichotomous.</p></li>
+<li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-serial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.</p></li>
 <li><p><strong>Polychoric correlation</strong>: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.</p></li>
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
+<li><p><strong>Partial correlation</strong>: orrelation between two variables after adjusting for the (linear) the effect of one or more variable.</p></li>
+<li><p><strong>Multilevel correlation</strong>: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</p></li>
 </ul>
 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |     t |  df |     p |        95% CI |  Method | n_Obs
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>correlation</span>)
+
+<span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p |  Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.12 | -1.44 | 148 | 0.152 | [-0.27, 0.04] | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Cannot compute exact p-value with ties</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |           S |     p |   Method | n_Obs
-#&gt; ---------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | 6.56283e+05 | 0.041 | Spearman |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kendall"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   tau |     z |     p |  Method | n_Obs
-#&gt; --------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.08 | -1.33 | 0.183 | Kendall |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"biweight"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |     t |  df |     p |        95% CI |   Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.27, 0.04] | -1.44 | 148 | 0.152 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho | 95% CI |           S |     p |   Method | n_Obs
+#&gt; ------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | -0.17 |        | 6.56283e+05 | 0.041 | Spearman |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"kendall"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 | 95% CI |   tau |     z |     p |  Method | n_Obs
+#&gt; -----------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width |        | -0.08 | -1.33 | 0.183 | Kendall |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"biweight"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p |   Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.13 | -1.65 | 148 | 0.101 | [-0.29, 0.03] | Biweight |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"distance"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |    t |    df |      p |        95% CI |                                Method | n_Obs
-#&gt; -------------------------------------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.08 | 8.43 | 11024 | &lt; .001 | [-0.08, 0.24] | Distance Correlation (Bias Corrected) |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"percentage"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |     t |  df |     p |         95% CI |          Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.13 | [-0.29, 0.03] | -1.65 | 148 | 0.101 | Biweight |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"distance"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |        95% CI |    t |    df |      p |                    Method | n_Obs
+#&gt; -------------------------------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | 0.08 | [-0.08, 0.24] | 8.43 | 11024 | &lt; .001 | Distance (Bias Corrected) |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"percentage"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |          Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.19 | -2.40 | 148 | 0.018 | [-0.34, -0.03] | Percentage Bend |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"shepherd"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Cannot compute exact p-value with ties</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |           S |     p |        Method | n_Obs
-#&gt; --------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.23 | 6.01785e+05 | 0.005 | Shepherd's Pi |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        89% CI |     pd | % in ROPE |   BF |              Prior | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.19 | [-0.34, -0.03] | -2.40 | 148 | 0.018 | Percentage Bend |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"shepherd"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho | 95% CI |           S |     p |        Method | n_Obs
+#&gt; -----------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | -0.23 |        | 6.01785e+05 | 0.005 | Shepherd's Pi |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>bayesian</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |   BF |              Prior | n_Obs
 #&gt; -----------------------------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.11 | [-0.24, 0.01] | 91.15% |    42.33% | 0.51 | Cauchy (0 +- 0.33) |   150</div><div class='input'>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span>
 <span class='co'># Tetrachoric</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span>
 <span class='no'>data</span>$<span class='no'>Sepal.Width_binary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>data</span>$<span class='no'>Sepal.Width</span> <span class='kw'>&gt;</span> <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
 <span class='no'>data</span>$<span class='no'>Petal.Width_binary</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>data</span>$<span class='no'>Petal.Width</span> <span class='kw'>&gt;</span> <span class='fl'>1.2</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
-<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width_binary"</span>, <span class='st'>"Petal.Width_binary"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"tetrachoric"</span>)</div><div class='output co'>#&gt; Parameter1         |         Parameter2 |   rho |     t |  df |      p |         95% CI |      Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width_binary"</span>, <span class='st'>"Petal.Width_binary"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"tetrachoric"</span>)</div><div class='output co'>#&gt; Parameter1         |         Parameter2 |   rho |         95% CI |     t |  df |      p |      Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------------------------
-#&gt; Sepal.Width_binary | Petal.Width_binary | -0.53 | -7.49 | 148 | &lt; .001 | [-0.63, -0.40] | Tetrachoric |   150</div><div class='input'>
-<span class='co'># When one variable is continuous and the other binary, will run 'biserial' correlation</span>
-<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Petal.Width_binary"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"tetrachoric"</span>)</div><div class='output co'>#&gt; Parameter1  |         Parameter2 |   rho |     t |  df |      p |         95% CI |   Method | n_Obs
+#&gt; Sepal.Width_binary | Petal.Width_binary | -0.53 | [-0.63, -0.40] | -7.49 | 148 | &lt; .001 | Tetrachoric |   150</div><div class='input'>
+<span class='co'># Biserial</span>
+<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Petal.Width_binary"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"biserial"</span>)</div><div class='output co'>#&gt; Parameter1  |         Parameter2 |   rho |         95% CI |     t |  df |      p |   Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------------
-#&gt; Sepal.Width | Petal.Width_binary | -0.40 | -5.34 | 148 | &lt; .001 | [-0.53, -0.26] | Biserial |   150</div><div class='input'>
+#&gt; Sepal.Width | Petal.Width_binary | -0.40 | [-0.53, -0.26] | -5.34 | 148 | &lt; .001 | Biserial |   150</div><div class='input'>
 <span class='co'># Polychoric</span>
 <span class='no'>data</span>$<span class='no'>Petal.Width_ordinal</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>data</span>$<span class='no'>Petal.Width</span>))
 <span class='no'>data</span>$<span class='no'>Sepal.Length_ordinal</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='no'>data</span>$<span class='no'>Sepal.Length</span>))
-<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Petal.Width_ordinal"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 1 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.</span></div><div class='output co'>#&gt; Parameter1          |           Parameter2 |  rho |     t |  df |      p |       95% CI |     Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Petal.Width_ordinal"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 1 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.</span></div><div class='output co'>#&gt; Parameter1          |           Parameter2 |  rho |       95% CI |     t |  df |      p |     Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------------------------------
-#&gt; Petal.Width_ordinal | Sepal.Length_ordinal | 0.75 | 13.78 | 148 | &lt; .001 | [0.67, 0.81] | Polychoric |   150</div><div class='input'>
+#&gt; Petal.Width_ordinal | Sepal.Length_ordinal | 0.75 | [0.67, 0.81] | 13.78 | 148 | &lt; .001 | Polychoric |   150</div><div class='input'>
 <span class='co'># When one variable is continuous, will run 'polyserial' correlation</span>
-<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; Parameter1  |           Parameter2 |   rho |     t |  df |     p |        95% CI |     Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='no'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; Parameter1  |           Parameter2 |   rho |        95% CI |     t |  df |     p |     Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------------------
-#&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | -1.76 | 148 | 0.080 | [-0.30, 0.02] | Polyserial |   150</div><div class='input'>
+#&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | [-0.30, 0.02] | -1.76 | 148 | 0.080 | Polyserial |   150</div><div class='input'>
 <span class='co'># Robust (these two are equivalent)</span>
-<span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |     t |  df |     p |         95% CI |  Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |  Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | -2.06 | 148 | 0.041 | [-0.32, -0.01] | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Cannot compute exact p-value with ties</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |           S |     p |   Method | n_Obs
-#&gt; ---------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | 6.56283e+05 | 0.041 | Spearman |   150</div></pre>
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | -2.06 | 148 | 0.041 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho | 95% CI |           S |     p |   Method | n_Obs
+#&gt; ------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | -0.17 |        | 6.56283e+05 | 0.041 | Spearman |   150</div><div class='input'>
+<span class='co'># Partial</span>
+<span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
+#&gt; ----------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.84 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>multilevel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: lme4</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
+#&gt; ----------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.85 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'>cor_test</span>(<span class='no'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, <span class='kw'>partial_bayesian</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: rstanarm</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'xts':</span>
+#&gt; <span class='message'>  method     from</span>
+#&gt; <span class='message'>  as.zoo.xts zoo </span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
+#&gt; ----------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.85 | 148 | &lt; .001 | Pearson |   150</div><div class='input'># }
+
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

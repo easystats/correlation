@@ -38,8 +38,8 @@
 #' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 #' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 #'
-#' # When one variable is continuous and the other binary, will run 'biserial' correlation
-#' cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "tetrachoric")
+#' # Biserial
+#' cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
 #'
 #' # Polychoric
 #' data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
@@ -60,7 +60,6 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
 #'
-#'
 #' @importFrom effectsize adjust ranktransform
 #' @importFrom stats complete.cases
 #' @export
@@ -69,6 +68,11 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   # Sanity checks
   if (ci == "default") ci <- 0.95
   if (partial == FALSE & (partial_bayesian | multilevel)) partial <- TRUE
+
+  # Make sure factor is no factor
+  if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
+    data[c(x, y)] <- parameters::data_to_numeric(data[c(x, y)], dummy_factors=FALSE)
+  }
 
   # Partial
   if (partial) {
@@ -81,22 +85,27 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
     data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = TRUE, method = "average")
   }
 
+
+  # Find method
+  method <- tolower(method)
+  if (method == "auto" & bayesian == FALSE) method <- .find_correlationtype(data, x, y)
+  if (method == "auto" & bayesian == TRUE) method <- "pearson"
+
   # Frequentist
   if (bayesian == FALSE) {
-
-    if (method == "auto") method <- .cor_test_findtype(data, x, y)
-
-    if (tolower(method) %in% c("tetra", "tetrachoric", "biserial")) {
+    if (method %in% c("tetra", "tetrachoric")) {
       out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("poly", "polychoric")) {
+    } else if (method %in% c("poly", "polychoric")) {
       out <- .cor_test_polychoric(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("biweight")) {
+    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
+      out <- .cor_test_biserial(data, x, y, ci = ci, method = method, ...)
+    } else if (method %in% c("biweight")) {
       out <- .cor_test_biweight(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("distance")) {
-      out <- .cor_test_distance(data, x, y, ci = ci, corrected = TRUE, ...)
-    } else if (tolower(method) %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
+    } else if (method %in% c("distance")) {
+      out <- .cor_test_distance(data, x, y, ci = ci, ...)
+    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       out <- .cor_test_percentage(data, x, y, ci = ci, ...)
-    } else if (tolower(method) %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
     } else {
       out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
@@ -104,18 +113,19 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 
     # Bayesian
   } else {
-
-    if (tolower(method) %in% c("tetra", "tetrachoric")) {
+    if (method %in% c("tetra", "tetrachoric")) {
       stop("Tetrachoric Bayesian correlations are not supported yet.")
-    } else if (tolower(method) %in% c("poly", "polychoric")) {
+    } else if (method %in% c("poly", "polychoric")) {
       stop("Polychoric Bayesian correlations are not supported yet.")
-    } else if (tolower(method) %in% c("biweight")) {
+    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
+      stop("Biserial Bayesian correlations are not supported yet.")
+    } else if (method %in% c("biweight")) {
       stop("Biweight Bayesian correlations are not supported yet.")
-    } else if (tolower(method) %in% c("distance")) {
+    } else if (method %in% c("distance")) {
       stop("Bayesian distance correlations are not supported yet.")
-    } else if (tolower(method) %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
+    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       stop("Bayesian Percentage Bend correlations are not supported yet.")
-    } else if (tolower(method) %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
     } else {
       out <- .cor_test_bayes(data, x, y, ci = ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
@@ -126,7 +136,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   out$n_Obs <- sum(stats::complete.cases(data[[x]], data[[y]]))
 
   # Reorder columns
-  if("CI_low" %in% names(out)){
+  if ("CI_low" %in% names(out)) {
     order <- c("Parameter1", "Parameter2", "r", "rho", "CI_low", "CI_high")
     out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
   }
@@ -153,18 +163,4 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 #' @keywords internal
 .complete_variable_y <- function(data, x, y) {
   data[[y]][stats::complete.cases(data[[x]], data[[y]])]
-}
-
-
-
-#' @keywords internal
-.cor_test_findtype <- function(data, x, y) {
-  if (length(unique(data[[x]])) == 2 | length(unique(data[[y]])) == 2) {
-    current_method <- "tetrachoric"
-  } else if (is.factor(data[x]) | is.factor(data[y])) {
-    current_method <- "polychoric"
-  } else {
-    current_method <- "pearson"
-  }
-  current_method
 }
