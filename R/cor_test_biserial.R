@@ -57,8 +57,8 @@
   var_y <- .complete_variable_y(data, continuous, binary)
 
 
-  m1 <- mean(var_x[var_y == 0])
-  m0 <- mean(var_x[var_y == 1])
+  m1 <- mean(var_x[var_y == 1])
+  m0 <- mean(var_x[var_y == 0])
   sn <- stats::sd(var_x)
   q <- mean(var_y)
   p <- 1 - q
