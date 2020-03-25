@@ -36,12 +36,16 @@
 #' }
 #'
 #' @examples
-#' library(dplyr)
+#' library(correlation
+#' )
 #' cor <- correlation(iris)
 #'
 #' cor
 #' summary(cor)
 #' as.table(cor)
+#'
+#' # Grouped dataframe
+#' library(dplyr)
 #'
 #' iris %>%
 #'   group_by(Species) %>%
