@@ -26,6 +26,11 @@ library(knitr)
 options(knitr.kable.NA = '',
         digits=2,
         dpi=450)
+
+
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  knitr::opts_chunk$set(eval = FALSE)
+}
 ```
 
 
