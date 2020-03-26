@@ -36,8 +36,8 @@
 #' }
 #'
 #' @examples
-#' library(correlation
-#' )
+#' library(correlation)
+#'
 #' cor <- correlation(iris)
 #'
 #' cor
@@ -45,6 +45,7 @@
 #' as.table(cor)
 #'
 #' # Grouped dataframe
+#' if (require("dplyr")) {
 #' library(dplyr)
 #'
 #' iris %>%
@@ -52,6 +53,7 @@
 #'   correlation()
 #'
 #' correlation(mtcars[-2], method = "auto")
+#' }
 #' @importFrom stats p.adjust
 #' @export
 correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {

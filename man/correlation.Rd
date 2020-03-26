@@ -88,8 +88,8 @@ Performs a correlation analysis.
 }
 }
 \examples{
-library(correlation
-)
+library(correlation)
+
 cor <- correlation(iris)
 
 cor
@@ -97,6 +97,7 @@ summary(cor)
 as.table(cor)
 
 # Grouped dataframe
+if (require("dplyr")) {
 library(dplyr)
 
 iris \%>\%
@@ -104,4 +105,5 @@ iris \%>\%
   correlation()
 
 correlation(mtcars[-2], method = "auto")
+}
 }
