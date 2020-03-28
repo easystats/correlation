@@ -10,7 +10,7 @@ test_that("pcor_to_cor", {
     set.seed(333)
 
     # easycormatrix
-    out <- correlation(iris, partial = TRUE)
+    out <- correlation(iris, partial = TRUE, p_adjust="none")
     pcormat <- as.table(out)
 
     ppcor <- ppcor::pcor(iris[1:4])
