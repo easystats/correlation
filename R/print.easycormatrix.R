@@ -1,9 +1,16 @@
 #' @export
 print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
+
   nums <- sapply(as.data.frame(x), is.numeric)
 
-  # Significance
+  # Find attributes
   p <- attributes(x)
+
+  if("stars" %in% names(p)){
+    stars <- p$stars
+  }
+
+  # Significance
   type <- names(p)[names(p) %in% c("BF", "pd", "p")][1]
   p <- p[[type]]
 
