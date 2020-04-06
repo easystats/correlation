@@ -74,10 +74,12 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
     data[c(x, y)] <- parameters::data_to_numeric(data[c(x, y)], dummy_factors=FALSE)
   }
 
+  n_param <- 0  # number additional parameters for degrees of freedom
   # Partial
   if (partial) {
     data[[x]] <- effectsize::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
     data[[y]] <- effectsize::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
+    n_param <- ncol(data) - 1
   }
 
   # Robust
