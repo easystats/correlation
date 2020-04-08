@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -192,7 +192,7 @@
     </tr>
     <tr>
       <th>partial</th>
-      <td><p>Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.</p></td>
+      <td><p>Can be TRUE or "semi" for partial and semi-partial correlations, respectively.</p></td>
     </tr>
     <tr>
       <th>multilevel</th>
@@ -224,7 +224,7 @@
 <li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-serial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.</p></li>
 <li><p><strong>Polychoric correlation</strong>: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.</p></li>
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
-<li><p><strong>Partial correlation</strong>: orrelation between two variables after adjusting for the (linear) the effect of one or more variable.</p></li>
+<li><p><strong>Partial correlation</strong>: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. Alongside the correlation coefficient, the statistics are re-computed after having partialized the dataset. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as <code>ppcor</code>.</p></li>
 <li><p><strong>Multilevel correlation</strong>: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</p></li>
 </ul>
 
@@ -288,7 +288,6 @@
 #&gt; <span class='message'>  as.zoo.xts zoo </span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
 #&gt; ----------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.85 | 148 | &lt; .001 | Pearson |   150</div><div class='input'># }
-
 
 </div></pre>
   </div>

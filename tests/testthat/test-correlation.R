@@ -3,12 +3,9 @@ context("correlation")
 
 
 test_that("comparison with other packages", {
-
   if (requireNamespace("ppcor") &
-      requireNamespace("Hmisc") &
-      requireNamespace("dplyr")) {
-
-
+    requireNamespace("Hmisc") &
+    requireNamespace("dplyr")) {
     library(dplyr)
     set.seed(333)
 
@@ -105,7 +102,6 @@ test_that("comparison with other packages", {
     r <- as.matrix(rez[2:5])
     ppcor <- ppcor::pcor(iris[1:4])
     testthat::expect_equal(max(r - as.matrix(ppcor$estimate)), 0, tol = 0.02)
-
   }
 })
 
@@ -117,7 +113,6 @@ test_that("comparison with other packages", {
 
 # Size
 test_that("format checks", {
-
   out <- correlation(iris, include_factors = TRUE)
   testthat::expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(7, 8))
   testthat::expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(6, 7))

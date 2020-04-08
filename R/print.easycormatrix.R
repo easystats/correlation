@@ -1,12 +1,11 @@
 #' @export
 print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
-
   nums <- sapply(as.data.frame(x), is.numeric)
 
   # Find attributes
   p <- attributes(x)
 
-  if("stars" %in% names(p)){
+  if ("stars" %in% names(p)) {
     stars <- p$stars
   }
 

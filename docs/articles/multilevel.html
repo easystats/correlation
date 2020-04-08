@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -140,9 +140,9 @@
 <p><strong>Multilevel <em>(as in multi-group)</em> correlations allow us to account for differences between groups</strong>. It is based on a partialization of the group, entered as a random effect in a mixed linear regression.</p>
 <p>You can compute them with the <a href="https://github.com/easystats/correlation"><strong>correlations</strong></a> package by setting the <code>multilevel</code> arguent to <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="../reference/correlation.html">correlation</a></span>(data, <span class="dt">multilevel =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>## Parameter1 | Parameter2 |    r |     t |  df |      p |           CI |  Method
-## ------------------------------------------------------------------------------
-## V1         |         V2 | 0.50 | 18.23 | 998 | &lt; .001 | [0.45, 0.55] | Pearson</code></pre>
+<pre><code>## Parameter1 | Parameter2 |    r |           CI |     t |  df |      p |  Method | n_Obs
+## --------------------------------------------------------------------------------------
+## V1         |         V2 | 0.50 | [0.45, 0.55] | 18.23 | 998 | &lt; .001 | Pearson |  1000</code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking the group into account seems to be super important.</p>
 <p>Note: In this simple case where only two variables are of interest, it would be best to proceed using a mixed regression model instead of correlations. That being said, the latter can be useful for exploratory analysis, when multiple variables are of interest, or in combination with a network or structural approach.</p>
 </div>

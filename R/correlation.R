@@ -46,13 +46,13 @@
 #'
 #' # Grouped dataframe
 #' if (require("dplyr")) {
-#' library(dplyr)
+#'   library(dplyr)
 #'
-#' iris %>%
-#'   group_by(Species) %>%
-#'   correlation()
+#'   iris %>%
+#'     group_by(Species) %>%
+#'     correlation()
 #'
-#' correlation(mtcars[-2], method = "auto")
+#'   correlation(mtcars[-2], method = "auto")
 #' }
 #' @importFrom stats p.adjust
 #' @export
@@ -101,7 +101,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
   class(out) <- unique(c("easycorrelation", "see_easycorrelation", "parameters_model", class(out)))
 
-  if (convert_back_to_r) out <- pcor_to_cor(pcor=out) # Revert back to r if needed.
+  if (convert_back_to_r) out <- pcor_to_cor(pcor = out) # Revert back to r if needed.
   out
 }
 

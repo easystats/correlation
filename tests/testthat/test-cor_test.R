@@ -3,9 +3,7 @@ context("cor_test")
 
 
 test_that("cor_test frequentist", {
-
   if (requireNamespace("psych")) {
-
     data <- iris
     data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
     data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
@@ -39,7 +37,6 @@ test_that("cor_test frequentist", {
     out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
     testthat::expect_equal(out$rho, -0.403, tol = 0.01)
     out_psych <- psych::biserial(data[["Sepal.Width"]], data[["Petal.Width_binary"]])[1]
-
   }
 })
 
@@ -53,22 +50,18 @@ test_that("cor_test robust", {
 
 test_that("cor_test distance", {
   if (requireNamespace("energy")) {
-
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
     comparison <- energy::dcor.ttest(iris$Petal.Length, iris$Petal.Width)
     testthat::expect_equal(out$r, as.numeric(comparison$estimate), tol = 0.01)
-
   }
 })
 
 
 test_that("cor_test percentage", {
   if (requireNamespace("WRS2")) {
-
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "percentage")
     comparison <- WRS2::pbcor(iris$Petal.Length, iris$Petal.Width)
     testthat::expect_equal(out$r, as.numeric(comparison$cor), tol = 0.01)
-
   }
 })
 

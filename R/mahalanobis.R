@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' distance_mahalanobis(iris[, 1:4])
-#' distance_mahalanobis(iris[, 1:4], robust=FALSE)
+#' distance_mahalanobis(iris[, 1:4], robust = FALSE)
 #' @export
 distance_mahalanobis <- function(data, ci = 0.95, iterations = 1000, robust = TRUE, ...) {
   if (robust) {

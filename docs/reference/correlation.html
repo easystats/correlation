@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -205,7 +205,7 @@
     </tr>
     <tr>
       <th>partial</th>
-      <td><p>Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.</p></td>
+      <td><p>Can be TRUE or "semi" for partial and semi-partial correlations, respectively.</p></td>
     </tr>
     <tr>
       <th>partial_bayesian</th>
@@ -247,19 +247,16 @@
 <li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-serial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.</p></li>
 <li><p><strong>Polychoric correlation</strong>: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.</p></li>
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
-<li><p><strong>Partial correlation</strong>: orrelation between two variables after adjusting for the (linear) the effect of one or more variable.</p></li>
+<li><p><strong>Partial correlation</strong>: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. Alongside the correlation coefficient, the statistics are re-computed after having partialized the dataset. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as <code>ppcor</code>.</p></li>
 <li><p><strong>Multilevel correlation</strong>: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</p></li>
 </ul>
 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='no'>cor</span> <span class='kw'>&lt;-</span> <span class='fu'>correlation</span>(<span class='no'>iris</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>correlation</span>)
+
+<span class='no'>cor</span> <span class='kw'>&lt;-</span> <span class='fu'>correlation</span>(<span class='no'>iris</span>)
 
 <span class='no'>cor</span></div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------
@@ -278,29 +275,21 @@
 #&gt; Sepal.Width  |        -0.12 |     1.00*** |     -0.43*** |    -0.37***
 #&gt; Petal.Length |      0.87*** |    -0.43*** |      1.00*** |     0.96***
 #&gt; Petal.Width  |      0.82*** |    -0.37*** |      0.96*** |     1.00***</div><div class='input'>
+<span class='co'># Grouped dataframe</span>
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"dplyr"</span>)) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+
 <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>Species</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>correlation</span>()</div><div class='output co'>#&gt; Group      |   Parameter1 |   Parameter2 |    r |        95% CI |     t | df |      p |  Method | n_Obs
-#&gt; -------------------------------------------------------------------------------------------------------
-#&gt; setosa     | Sepal.Length |  Sepal.Width | 0.74 | [ 0.59, 0.85] |  7.68 | 48 | &lt; .001 | Pearson |    50
-#&gt; setosa     | Sepal.Length | Petal.Length | 0.27 | [-0.01, 0.51] |  1.92 | 48 | 0.202  | Pearson |    50
-#&gt; setosa     | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.01 | 48 | 0.202  | Pearson |    50
-#&gt; setosa     |  Sepal.Width | Petal.Length | 0.18 | [-0.11, 0.43] |  1.25 | 48 | 0.217  | Pearson |    50
-#&gt; setosa     |  Sepal.Width |  Petal.Width | 0.23 | [-0.05, 0.48] |  1.66 | 48 | 0.208  | Pearson |    50
-#&gt; setosa     | Petal.Length |  Petal.Width | 0.33 | [ 0.06, 0.56] |  2.44 | 48 | 0.093  | Pearson |    50
-#&gt; versicolor | Sepal.Length |  Sepal.Width | 0.53 | [ 0.29, 0.70] |  4.28 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor | Sepal.Length | Petal.Length | 0.75 | [ 0.60, 0.85] |  7.95 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor | Sepal.Length |  Petal.Width | 0.55 | [ 0.32, 0.72] |  4.52 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor |  Sepal.Width | Petal.Length | 0.56 | [ 0.33, 0.73] |  4.69 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor |  Sepal.Width |  Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor | Petal.Length |  Petal.Width | 0.79 | [ 0.65, 0.87] |  8.83 | 48 | &lt; .001 | Pearson |    50
-#&gt; virginica  | Sepal.Length |  Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 48 | 0.003  | Pearson |    50
-#&gt; virginica  | Sepal.Length | Petal.Length | 0.86 | [ 0.77, 0.92] | 11.90 | 48 | &lt; .001 | Pearson |    50
-#&gt; virginica  | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 48 | 0.048  | Pearson |    50
-#&gt; virginica  |  Sepal.Width | Petal.Length | 0.40 | [ 0.14, 0.61] |  3.03 | 48 | 0.012  | Pearson |    50
-#&gt; virginica  |  Sepal.Width |  Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | 48 | &lt; .001 | Pearson |    50
-#&gt; virginica  | Petal.Length |  Petal.Width | 0.32 | [ 0.05, 0.55] |  2.36 | 48 | 0.045  | Pearson |    50</div><div class='input'>
-<span class='fu'>correlation</span>(<span class='no'>mtcars</span>[-<span class='fl'>2</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)</div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |         95% CI |     t | df |      p |         Method | n_Obs
+  <span class='fu'>correlation</span>()
+
+<span class='fu'>correlation</span>(<span class='no'>mtcars</span>[-<span class='fl'>2</span>], <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)
+}</div><div class='output co'>#&gt; <span class='message'>Loading required package: dplyr</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |         95% CI |     t | df |      p |         Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------------
 #&gt; mpg        |       disp | -0.85 | [-0.92, -0.71] | -8.75 | 30 | &lt; .001 |        Pearson |    32
 #&gt; mpg        |         hp | -0.78 | [-0.89, -0.59] | -6.74 | 30 | &lt; .001 |        Pearson |    32

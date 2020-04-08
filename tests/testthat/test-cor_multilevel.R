@@ -3,15 +3,12 @@ context("multilevel correlations")
 
 
 test_that("comparison rmcorr", {
-
   if (requireNamespace("rmcorr")) {
-
     rez_rmcorr <- rmcorr::rmcorr(Species, Sepal.Length, Sepal.Width, dataset = iris)
     rez <- cor_test(iris[c(1, 2, 5)], "Sepal.Length", "Sepal.Width", partial = TRUE, multilevel = TRUE)
 
     testthat::expect_equal(rez$r, rez_rmcorr$r, tol = 0.001)
     testthat::expect_equal(rez$p, rez_rmcorr$p, tol = 0.001)
-
   }
 })
 
@@ -19,9 +16,7 @@ test_that("comparison rmcorr", {
 
 
 test_that("Reductio ad absurdum", {
-
   if (requireNamespace("bayestestR")) {
-
     cormatrix <- matrix(c(
       1.0, 0.3, 0.6,
       0.3, 1.0, 0.0,
@@ -40,6 +35,5 @@ test_that("Reductio ad absurdum", {
 
     rez <- correlation(data, multilevel = TRUE, partial = TRUE)
     testthat::expect_equal(max(as.matrix(pcor_to_cor(rez)) - cormatrix), 0, tol = 0.01)
-
   }
 })

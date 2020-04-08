@@ -3,14 +3,12 @@ context("cor_to_pcor")
 
 
 test_that("pcor_to_cor", {
-
   if (requireNamespace("ppcor") &
-      requireNamespace("Hmisc")) {
-
+    requireNamespace("Hmisc")) {
     set.seed(333)
 
     # easycormatrix
-    out <- correlation(iris, partial = TRUE, p_adjust="none")
+    out <- correlation(iris, partial = TRUE, p_adjust = "none")
     pcormat <- as.table(out)
 
     ppcor <- ppcor::pcor(iris[1:4])
@@ -35,16 +33,13 @@ test_that("pcor_to_cor", {
 
     p <- as.matrix(attributes(cormat)$p[2:5])
     testthat::expect_equal(mean(p - hmisc$P, na.rm = TRUE), 0, tol = 0.001)
-
   }
 })
 
 
 
 test_that("cor_to_pcor", {
-
   if (requireNamespace("ppcor")) {
-
     set.seed(333)
 
     # easycormatrix
@@ -62,7 +57,6 @@ test_that("cor_to_pcor", {
     ppcor <- ppcor::pcor(iris[1:4])
     testthat::expect_equal(max(as.matrix(pcormat[2:5]) - as.matrix(ppcor$estimate)), 0, tol = 0.01)
     testthat::expect_equal(max(as.matrix(attributes(pcormat)$p[2:5]) - as.matrix(ppcor$p.value)), 0, tol = 0.01)
-
   }
 })
 
@@ -77,9 +71,7 @@ test_that("multilevel correlations", {
 
 
 test_that("spcor_to_cor", {
-
   if (requireNamespace("ppcor")) {
-
     set.seed(333)
 
     # easycormatrix
@@ -89,6 +81,5 @@ test_that("spcor_to_cor", {
 
     spcor <- ppcor::spcor(iris[1:4])
     testthat::expect_equal(max(spcormat - as.matrix(spcor$estimate)), 0, tol = 0.01)
-
   }
 })
