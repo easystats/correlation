@@ -80,7 +80,7 @@ Performs a correlation analysis.
 \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 
-\item \strong{Partial correlation}: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. Alongside the correlation coefficient, the statistics are re-computed after having partialized the dataset. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as \code{ppcor}.
+\item \strong{Partial correlation}: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as \code{ppcor}.
 
 \item \strong{Multilevel correlation}: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
@@ -98,12 +98,12 @@ as.table(cor)
 
 # Grouped dataframe
 if (require("dplyr")) {
-library(dplyr)
+  library(dplyr)
 
-iris \%>\%
-  group_by(Species) \%>\%
-  correlation()
+  iris \%>\%
+    group_by(Species) \%>\%
+    correlation()
 
-correlation(mtcars[-2], method = "auto")
+  correlation(mtcars[-2], method = "auto")
 }
 }

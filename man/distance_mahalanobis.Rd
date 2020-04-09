@@ -25,7 +25,7 @@ The Mahalanobis distance (in squared units) measures the distance in multivariat
 }
 \examples{
 distance_mahalanobis(iris[, 1:4])
-distance_mahalanobis(iris[, 1:4], robust=FALSE)
+distance_mahalanobis(iris[, 1:4], robust = FALSE)
 }
 \references{
 \itemize{
