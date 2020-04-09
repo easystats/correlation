@@ -27,6 +27,14 @@ knitr::opts_chunk$set(comment=">",
 options(digits=2)
 
 set.seed(333)
+
+
+if (!requireNamespace("see", quietly = TRUE) ||
+    !requireNamespace("tidyr", quietly = TRUE) ||
+    !requireNamespace("dplyr", quietly = TRUE) ||
+    !requireNamespace("ggplot2", quietly = TRUE)) {
+  knitr::opts_chunk$set(eval = FALSE)
+}
 ```
 
 
@@ -56,7 +64,7 @@ set.seed(333)
 
 - **Tetrachoric correlation**: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 
-- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. 
+- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as `ppcor`.
 
 - **Multilevel correlation**: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
@@ -65,11 +73,13 @@ set.seed(333)
 
 
 ```{r message=FALSE, warning=FALSE}
-library(bayestestR)
 library(correlation)
+library(bayestestR)
+library(see)
+
 library(ggplot2)
 library(tidyr)
-library(see)
+library(dplyr)
 ```
 
 We will fit different types of correlations of generated data with different link strengths and link types.

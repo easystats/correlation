@@ -106,8 +106,13 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
     r <- .cor_to_pcor(.get_cor(as.table(cor), cov = NULL))
   }
 
-  p <- cor_to_p(r, n = attributes(cor)$n, method = "pearson")
-  ci_vals <- cor_to_ci(r, n = attributes(cor)$n, ci = attributes(cor)$ci)
+  # Extract info
+  p_adjust <- attributes(cor)$p_adjust
+  nobs <- as.matrix(attributes(as.table(cor))$n_Obs[-1])
+
+  # Get Statistics
+  p <- cor_to_p(r, n = nobs, method = "pearson")
+  ci_vals <- cor_to_ci(r, n = nobs, ci = attributes(cor)$ci)
 
   # Replace
   newdata <- data.frame()
@@ -118,20 +123,27 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
       newdata,
       data.frame(
         r = r[row, col],
-        t = p$statistic[row, col],
-        df = attributes(cor)$n - 2,
-        p = p$p[row, col],
         CI_low = ci_vals$CI_low[row, col],
         CI_high = ci_vals$CI_high[row, col],
-        Method = "Pearson"
+        t = p$statistic[row, col],
+        df = nobs[row, col] - 2,
+        p = p$p[row, col],
+        Method = "Pearson",
+        n_Obs = nobs[row, col]
       )
     )
   }
+
+  # Format
   newdata <- cbind(cor[1:2], newdata)
   cor <- cor[, 1:ncol(newdata)]
   cor[, ] <- newdata
   names(cor) <- names(newdata)
-  attributes(cor)$p_adjust <- "none"
+
+  # P-values adjustments
+  cor$p <- stats::p.adjust(cor$p, method = p_adjust, n = nrow(cor))
+  attributes(cor)$p_adjust <- p_adjust
+
   cor
 }
 
@@ -146,10 +158,18 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
     r <- .cor_to_pcor(.get_cor(cor, cov = NULL))
   }
 
-  p <- cor_to_p(r, n = attributes(cor)$n, method = "pearson")
-  ci_vals <- cor_to_ci(r, n = attributes(cor)$n, ci = attributes(cor)$ci)
+  # Extract info
+  p_adjust <- attributes(cor)$p_adjust
+  nobs <- as.matrix(attributes(cor)$n_Obs[-1])
+
+  p <- cor_to_p(r, n = nobs, method = "pearson")
+  ci_vals <- cor_to_ci(r, n = nobs, ci = attributes(cor)$ci)
   r <- cbind(data.frame(Parameter = row.names(r)), r)
   row.names(r) <- NULL
+
+  # P-values adjustments
+  p$p <- stats::p.adjust(p$p, method = p_adjust, n = nrow(cor) * (ncol(cor) - 1))
+  attributes(cor)$p_adjust <- p_adjust
 
   # Statistic and p-value
   attributes(cor)$pd <- attributes(cor)$BF <- NULL
@@ -157,8 +177,6 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   attributes(cor)$t[-1] <- p$statistic
   attributes(cor)$CI_low[-1] <- ci_vals$CI_low
   attributes(cor)$CI_high[-1] <- ci_vals$CI_high
-  attributes(cor)$p_adjust <- "none"
-
 
   attributes(r) <- attributes(cor)
   r

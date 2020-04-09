@@ -46,7 +46,7 @@ correlation(
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.}
 
-\item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively. This only works for Frequentist correlations.}
+\item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively.}
 
 \item{partial_bayesian}{If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
@@ -80,7 +80,7 @@ Performs a correlation analysis.
 \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 
-\item \strong{Partial correlation}: orrelation between two variables after adjusting for the (linear) the effect of one or more variable.
+\item \strong{Partial correlation}: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as \code{ppcor}.
 
 \item \strong{Multilevel correlation}: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
@@ -88,16 +88,22 @@ Performs a correlation analysis.
 }
 }
 \examples{
-library(dplyr)
+library(correlation)
+
 cor <- correlation(iris)
 
 cor
 summary(cor)
 as.table(cor)
 
-iris \%>\%
-  group_by(Species) \%>\%
-  correlation()
+# Grouped dataframe
+if (require("dplyr")) {
+  library(dplyr)
 
-correlation(mtcars[-2], method = "auto")
+  iris \%>\%
+    group_by(Species) \%>\%
+    correlation()
+
+  correlation(mtcars[-2], method = "auto")
+}
 }
