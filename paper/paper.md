@@ -60,7 +60,7 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 - **Multilevel correlation**: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
-![**Figure 1.** Illustration of the different correlation estimates obtained via different methods for the same data.](figure1.PNG)
+![**Figure 1.** Illustration of the different correlation estimates obtained via different methods for the same data.](figure1.png)
 
 # Design
 
