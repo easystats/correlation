@@ -56,7 +56,7 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 - **Tetrachoric correlation**: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 
-- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as `ppcor`.
+- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why some discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as `ppcor`.
 
 - **Multilevel correlation**: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
