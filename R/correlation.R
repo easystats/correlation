@@ -26,8 +26,12 @@
 #'
 #' \item \strong{Multilevel correlation}: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 #'
-#' }
-#' }
+#' }}
+#' \subsection{Notes}{
+#' \itemize{
+#'   \item Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technically Pearson Bayesian correlations of rank transformed data, rather than pure Bayesian rank correlations (which have different priors).
+#'
+#' }}
 #'
 #' @return A correlation object that can be displayed using the \code{print}, \code{summary} or \code{table} methods.
 #'

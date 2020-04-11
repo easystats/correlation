@@ -1,20 +1,27 @@
+# correlation 0.3.0
+
+## Changes
+
+- Improved documentation (#45, #63)
+
+## Bug fixes
+
+
 # correlation 0.2.0
 
-Don't show up, don't come out
-Don't start caring about me now
-Walk away, you know how
-Don't start caring about me now
+## Changes
 
-# correlation 0.1.xy
+- Some changes were made.
+
+## Bug fixes
+
+- Some bugs were fixed.
+
+# correlation 0.1.0
 
 ## Changes
 
-- I sense something; a presence I have not felt since... correlation 0.1.0!
-
-# correlation 0.1.x
-
-## Changes
-
+- Initial CRAN release.
 - Add `plot()`-method for `summary()`.
 
 ## Bug fixes
