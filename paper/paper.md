@@ -73,7 +73,7 @@ $$ r_{XY.Z} = r_{e_{X.Z},e_{Y.Z}}  $$
 # Design
 
 
-It relies on one main function, `correlation()`, which outputs a dataframe containing each pairwise correlation per row. This long format is convenient for further data analysis, but not as much to get a summary, which is usually obtained via a correlation matrix. To address this, we added standard methods, such as `summary()` and `as.table()`, to automatically transform the long output to a matrix. Moreover, **correlation** also include plotting capabilities via the [**see** package](https://easystats.github.io/see/) [@ludecke2019see].
+It relies on one main function, `correlation()`, which outputs a dataframe containing each pairwise correlation per row. This long format is convenient for further data analysis, but not as much to get a summary, which is usually obtained via a correlation matrix. To address this, we added standard methods, such as `summary()` and `as.matrix()`, to automatically transform the long output to a matrix. Moreover, **correlation** also include plotting capabilities via the [**see** package](https://easystats.github.io/see/) [@ludecke2019see].
 
 # Examples
 
@@ -106,7 +106,7 @@ summary(cor)
 Note that one can also obtain the full, **square** and redundant matrix using:
 
 ``` r
-as.table(cor)
+summary(cor, redundant=TRUE)
 ## Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
 ## ----------------------------------------------------------------------
 ## Sepal.Length |      1.00*** |       -0.12 |      0.87*** |     0.82***
@@ -120,7 +120,7 @@ library(dplyr)
 library(see)
 
 cor %>% 
-  as.table() %>% 
+  summary(redundant=TRUE) %>% 
   plot()
 ```
 

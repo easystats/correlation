@@ -46,7 +46,7 @@
 #'
 #' cor
 #' summary(cor)
-#' as.table(cor)
+#' summary(cor, redundant = TRUE)
 #'
 #' # Grouped dataframe
 #' if (require("dplyr")) {

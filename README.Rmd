@@ -89,7 +89,7 @@ summary(cor)
 Note that one can also obtain the full, **square** and redundant matrix using:
 
 ```{r message=FALSE, warning=FALSE}
-as.table(cor)
+summary(cor, redundant=TRUE)
 ```
 
 
@@ -98,7 +98,7 @@ library(dplyr)
 library(see)
 
 cor %>% 
-  as.table() %>% 
+  summary(redundant=TRUE) %>% 
   plot()
 ```
 

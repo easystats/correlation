@@ -101,4 +101,4 @@ correlation(data, multilevel = TRUE)
 **Dayum!** We were too hasty in our conclusions! Taking the group into account seems to be super important.
 
 
-Note: In this simple case where only two variables are of interest, it would be best to proceed using a mixed regression model instead of correlations. That being said, the latter can be useful for exploratory analysis, when multiple variables are of interest, or in combination with a network or structural approach.
+Note: In this simple case where only two variables are of interest, it would be of course best to directly proceed using a mixed regression model instead of correlations. That being said, the latter can be useful for exploratory analysis, when multiple variables are of interest, or in combination with a network or structural approach.

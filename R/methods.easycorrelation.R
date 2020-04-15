@@ -37,6 +37,7 @@ summary.easycorrelation <- function(object, redundant = FALSE, stars = TRUE, ...
 
 #' @export
 as.table.easycorrelation <- function(x, ...) {
+  .Deprecated("summary(..., redundant = TRUE)")
   summary(x, redundant = TRUE)
 }
 
