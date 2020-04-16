@@ -1,5 +1,6 @@
 #' @export
 print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
+  orig_x <- x
   nums <- sapply(as.data.frame(x), is.numeric)
 
   # Find attributes
@@ -34,5 +35,5 @@ print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
 
 
   cat(insight::format_table(x))
-  invisible(x)
+  invisible(orig_x)
 }
