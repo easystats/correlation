@@ -22,10 +22,10 @@
 #' \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 #' \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 #' }}
-#' 
+#'
 #' \subsection{Partial Correlation}{
-#' \strong{Partial correlations| are estimated as the correlation between two variables after adjusting for the (linear) effect of one or more other variable. 
-#' The correlation test is then run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. 
+#' \strong{Partial correlations} are estimated as the correlation between two variables after adjusting for the (linear) effect of one or more other variable.
+#' The correlation test is then run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model.
 #' This is why some discrepancies are to be expected for the t- and p-values, CIs, BFs etc (but \emph{not} the correlation coefficient) compared to other implementations (e.g., \code{ppcor}).
 #' (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
 #' \cr\cr
