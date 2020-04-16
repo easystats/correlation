@@ -21,12 +21,17 @@
 #' \item \strong{Point-Biserial and biserial correlation}: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-serial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
 #' \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 #' \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
-#'
-#' \item \strong{Partial correlation}: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as \code{ppcor}.
-#'
-#' \item \strong{Multilevel correlation}: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
-#'
 #' }}
+#' 
+#' \subsection{Partial Correlation}{
+#' \strong{Partial correlations| are estimated as the correlation between two variables after adjusting for the (linear) effect of one or more other variable. 
+#' The correlation test is then run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. 
+#' This is why some discrepancies are to be expected for the t- and p-values, CIs, BFs etc (but \emph{not} the correlation coefficient) compared to other implementations (e.g., \code{ppcor}).
+#' (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
+#' \cr\cr
+#' \strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
+#' }
+#'
 #' \subsection{Notes}{
 #' \itemize{
 #'   \item Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technically Pearson Bayesian correlations of rank transformed data, rather than pure Bayesian rank correlations (which have different priors).
@@ -46,7 +51,7 @@
 #'
 #' cor
 #' summary(cor)
-#' as.table(cor)
+#' summary(cor, redundant = TRUE)
 #'
 #' # Grouped dataframe
 #' if (require("dplyr")) {

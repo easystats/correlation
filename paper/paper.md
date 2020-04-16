@@ -38,7 +38,11 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 - **Pearson's correlation**: The covariance of the two variables divided by the product of their standard deviations.
 
+$$r_{X,Y} = \frac{cov(X,Y)}{s_X \times s_Y}$$
+
 - **Spearman's rank correlation**: A nonparametric measure of rank correlation (statistical dependence between the rankings of two variables). The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson's correlation assesses linear relationships, Spearman's correlation assesses monotonic relationships (whether linear or not).
+
+$$r_{\text{s } X,Y} = r_{rank(X),rank(Y)}$$
 
 - **Kendall's rank correlation**: In the normal case, the Kendall correlation is preferred than the Spearman correlation because of a smaller gross error sensitivity (GES) and a smaller asymptotic variance (AV), making it more robust and more efficient. However, the interpretation of Kendall's tau is less direct than that of Spearman's rho, in the sense that it quantifies the difference between the % of concordant and discordant pairs among all possible pairwise events.
 
@@ -56,7 +60,11 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 - **Tetrachoric correlation**: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 
-- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why small discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as `ppcor`.
+- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why some discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as `ppcor`.
+
+$$ r_{XY.Z} = r_{e_{X.Z},e_{Y.Z}}  $$
+
+*Where $e_{X.Z}$ are the residuals from the linear prediction of $X$ by $Z$. This can be expanded to a multivariate $Z$.*
 
 - **Multilevel correlation**: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
@@ -65,7 +73,7 @@ Correlations tests are arguably one of the most commonly used statistical proced
 # Design
 
 
-It relies on one main function, `correlation()`, which outputs a dataframe containing each pairwise correlation per row. This long format is convenient for further data analysis, but not as much to get a summary, which is usually obtained via a correlation matrix. To address this, we added standard methods, such as `summary()` and `as.table()`, to automatically transform the long output to a matrix. Moreover, **correlation** also include plotting capabilities via the [**see** package](https://easystats.github.io/see/) [@ludecke2019see].
+It relies on one main function, `correlation()`, which outputs a dataframe containing each pairwise correlation per row. This long format is convenient for further data analysis, but not as much to get a summary, which is usually obtained via a correlation matrix. To address this, we added standard methods, such as `summary()` and `as.matrix()`, to automatically transform the long output to a matrix. Moreover, **correlation** also include plotting capabilities via the [**see** package](https://easystats.github.io/see/) [@ludecke2019see].
 
 # Examples
 
@@ -98,7 +106,7 @@ summary(cor)
 Note that one can also obtain the full, **square** and redundant matrix using:
 
 ``` r
-as.table(cor)
+summary(cor, redundant=TRUE)
 ## Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
 ## ----------------------------------------------------------------------
 ## Sepal.Length |      1.00*** |       -0.12 |      0.87*** |     0.82***
@@ -112,7 +120,7 @@ library(dplyr)
 library(see)
 
 cor %>% 
-  as.table() %>% 
+  summary(redundant=TRUE) %>% 
   plot()
 ```
 
