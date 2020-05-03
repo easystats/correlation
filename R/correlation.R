@@ -121,33 +121,31 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 #' @keywords internal
 .correlation_grouped_df <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
-  if (!requireNamespace("dplyr")) {
-    stop("This function needs `dplyr` to be installed. Please install by running `install.packages('dplyr')`.")
-  }
-
-  groups <- dplyr::group_vars(data)
-  ungrouped_x <- dplyr::ungroup(data)
+  groups <- setdiff(colnames(attributes(data)$groups), ".rows")
+  ungrouped_x <- as.data.frame(data)
   xlist <- split(ungrouped_x, ungrouped_x[groups], sep = " - ")
 
   # If data 2 is provided
   if (!is.null(data2)) {
-    if (inherits(data2, "grouped_df") & dplyr::group_vars(data2) == groups) {
-      ungrouped_y <- dplyr::ungroup(data2)
-      ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
-
-      modelframe <- data.frame()
-      out <- data.frame()
-      for (i in names(xlist)) {
-        xlist[[i]][groups] <- NULL
-        ylist[[i]][groups] <- NULL
-        rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
-        modelframe_current <- rez$data
-        rez$params$Group <- modelframe_current$Group <- i
-        out <- rbind(out, rez$params)
-        modelframe <- rbind(modelframe, modelframe_current)
+    if (inherits(data2, "grouped_df")) {
+      groups2 <- setdiff(colnames(attributes(data2)$groups), ".rows")
+      if (all.equal(groups, groups2)) {
+        ungrouped_y <- as.data.frame(data2)
+        ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
+        modelframe <- data.frame()
+        out <- data.frame()
+        for (i in names(xlist)) {
+          xlist[[i]][groups] <- NULL
+          ylist[[i]][groups] <- NULL
+          rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
+          modelframe_current <- rez$data
+          rez$params$Group <- modelframe_current$Group <- i
+          out <- rbind(out, rez$params)
+          modelframe <- rbind(modelframe, modelframe_current)
+        }
+      } else {
+        stop("'data2' should have the same grouping characteristics as data.")
       }
-    } else {
-      stop("data2 should present the same grouping characteristics than data.")
     }
     # else
   } else {
