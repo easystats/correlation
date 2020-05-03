@@ -4,10 +4,10 @@ matrix:
   include:
     #- os: linux
     #  dist: oldrel
-    #- os: linux
-    #  dist: release
-    #- os: linux
-    #  dist: devel
+    - os: linux
+      dist: release
+    - os: linux
+      dist: devel
     - os: osx
       dist: oldrel
     - os: osx
@@ -17,7 +17,7 @@ matrix:
 
 # Copied from broom
 sudo: required
-cache: packages  
+cache: packages
 bioc_required: true
 warnings_are_errors: false
 
@@ -28,12 +28,12 @@ env:
 
 r_build_args: "--no-build-vignettes"
 r_check_args: "--no-build-vignettes --as-cran"
-    
+
 
 r_binary_packages:
   - rstanarm
   - rstan
-  
+
 r_packages:
   - rlang
   - bindrcpp
