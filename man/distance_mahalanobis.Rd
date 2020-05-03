@@ -7,7 +7,7 @@
 distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = TRUE, ...)
 }
 \arguments{
-\item{data}{A dataframe.}
+\item{data}{A data frame.}
 
 \item{ci}{Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).}
 
