@@ -98,7 +98,6 @@ This is why some discrepancies are to be expected for the t- and p-values, CIs, 
 }
 \examples{
 library(correlation)
-
 cor <- correlation(iris)
 
 cor
@@ -107,12 +106,11 @@ summary(cor, redundant = TRUE)
 
 # Grouped dataframe
 if (require("dplyr")) {
-  library(dplyr)
-
   iris \%>\%
     group_by(Species) \%>\%
     correlation()
-
-  correlation(mtcars[-2], method = "auto")
 }
+
+# automatic selection of correlation method
+correlation(mtcars[-2], method = "auto")
 }
