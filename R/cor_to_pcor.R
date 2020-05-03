@@ -100,15 +100,15 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 #' @keywords internal
 .cor_to_pcor_easycorrelation <- function(pcor = NULL, cor = NULL, tol = .Machine$double.eps^(2 / 3)) {
   if (is.null(cor)) {
-    r <- .pcor_to_cor(.get_cor(as.table(pcor), cov = NULL))
+    r <- .pcor_to_cor(.get_cor(summary(pcor, redundant = TRUE), cov = NULL))
     cor <- pcor
   } else {
-    r <- .cor_to_pcor(.get_cor(as.table(cor), cov = NULL))
+    r <- .cor_to_pcor(.get_cor(summary(cor, redundant = TRUE), cov = NULL))
   }
 
   # Extract info
   p_adjust <- attributes(cor)$p_adjust
-  nobs <- as.matrix(attributes(as.table(cor))$n_Obs[-1])
+  nobs <- as.matrix(attributes(summary(cor, redundant = TRUE))$n_Obs[-1])
 
   # Get Statistics
   p <- cor_to_p(r, n = nobs, method = "pearson")
@@ -132,6 +132,13 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
         n_Obs = nobs[row, col]
       )
     )
+  }
+
+  # Fix for spearman
+  if(cor$Method == "Spearman"){
+    newdata$df <- NULL
+    names(newdata)[names(newdata) == 't'] <- 'S'
+    newdata$Method <- "Spearman"
   }
 
   # Format
