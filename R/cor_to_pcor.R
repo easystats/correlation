@@ -135,7 +135,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   }
 
   # Fix for spearman
-  if(cor$Method == "Spearman"){
+  if (any(cor$Method == "Spearman")) {
     newdata$df <- NULL
     names(newdata)[names(newdata) == 't'] <- 'S'
     newdata$Method <- "Spearman"
