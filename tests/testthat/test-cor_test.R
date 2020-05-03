@@ -26,7 +26,7 @@ test_that("cor_test frequentist", {
     data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
     out <- cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
     # Curently CRAN checks show two possible results for this:
-    if(all.equal(out$rho, 0.7507764, tol = 0.01)){
+    if (isTRUE(all.equal(out$rho, 0.7507764, tol = 0.01))) {
       testthat::expect_equal(out$rho, 0.7507764, tol = 0.01)
     } else{
       testthat::expect_equal(out$rho, 0.528, tol = 0.01)
