@@ -1,4 +1,4 @@
-# correlation 0.3.0
+# correlation 0.2.1
 
 ## Changes
 
@@ -6,6 +6,7 @@
 
 ## Bug fixes
 
+- Fixed bug (#76)
 
 # correlation 0.2.0
 
