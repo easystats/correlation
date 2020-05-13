@@ -15,6 +15,8 @@
 #' @examples
 #' distance_mahalanobis(iris[, 1:4])
 #' distance_mahalanobis(iris[, 1:4], robust = FALSE)
+#' @importFrom stats mahalanobis cov
+#' @importFrom bayestestR describe_posterior
 #' @export
 distance_mahalanobis <- function(data, ci = 0.95, iterations = 1000, robust = TRUE, ...) {
   if (robust) {
