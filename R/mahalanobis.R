@@ -32,9 +32,9 @@ distance_mahalanobis <- function(data, ci = 0.95, iterations = 1000, robust = TR
     }
     # Get summary
     d <- bayestestR::describe_posterior(as.data.frame(Ms), centrality = "median", ci = ci, test = "pd")
-    d <- d[c("Median", "CI_low", "CI_high")]
+    d <- d[c("Median", "CI", "CI_low", "CI_high")]
     rownames(d) <- NULL
-    names(d) <- c("Distance", "CI_low", "CI_high")
+    names(d) <- c("Distance", "CI", "CI_low", "CI_high")
   } else {
     d <- stats::mahalanobis(data, center = colMeans(data), cov = stats::cov(data))
     d <- data.frame(Distance = d)
