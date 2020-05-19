@@ -28,7 +28,7 @@ test_that("cor_test frequentist", {
     # Curently CRAN checks show two possible results for this:
     if (isTRUE(all.equal(out$rho, 0.7507764, tol = 0.1))) {
       testthat::expect_equal(out$rho, 0.7507764, tol = 0.1)
-    } else{
+    } else {
       testthat::expect_equal(out$rho, 0.528, tol = 0.01)
     }
 
