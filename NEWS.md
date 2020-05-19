@@ -2,10 +2,12 @@
 
 ## Changes
 
+- Added confidence intervals CI support for Spearman and Kendall (#80)
 - Improved documentation (#45, #63)
 
 ## Bug fixes
 
+- Removed CI threshold column from `distance_mahalanobis()`
 - Fixed bug (#76)
 
 # correlation 0.2.0

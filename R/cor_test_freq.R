@@ -5,7 +5,8 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE), alternative = "two.sided", exact = FALSE)
+  method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
+  rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = method, alternative = "two.sided", exact = FALSE)
 
   params <- parameters::model_parameters(rez)
   params$Parameter1 <- x
@@ -15,6 +16,13 @@
     if ("t" %in% names(params)) params$t <- Inf
     if ("z" %in% names(params)) params$z <- Inf
     if ("S" %in% names(params)) params$S <- Inf
+  }
+
+  # Add CI for non-pearson correlations
+  if (method %in% c( "kendall", "spearman")){
+    rez_ci <- cor_to_ci(rez$estimate, n=length(var_x), ci=ci, ...)
+    params$CI_low <- rez_ci$CI_low
+    params$CI_high <- rez_ci$CI_high
   }
 
   # see ?cor.test: CI only in case of at least 4 complete pairs of observations
