@@ -1,5 +1,5 @@
 #' @rdname cor_to_p
-#' @param correction Only used if method is 'spearman' or 'kendall'. Can be 'fieller', 'bw' or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.
+#' @param correction Only used if method is 'spearman' or 'kendall'. Can be 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.
 #' @importFrom stats qnorm
 #' @export
 cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fieller") {
