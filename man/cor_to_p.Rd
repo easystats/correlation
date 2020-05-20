@@ -18,7 +18,7 @@ cor_to_p(cor, n, method = "pearson")
 
 \item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
 
-\item{correction}{Only used if method is 'spearman' or 'kendall'. Can be 'fieller', 'bw' or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.}
+\item{correction}{Only used if method is 'spearman' or 'kendall'. Can be 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.}
 }
 \value{
 A list containing a p-value and the statistic or the CI bounds.
@@ -39,4 +39,7 @@ cor_to_ci(-0.1667777, ci = 0.95, n = 150)
 
 cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall")
 cor_to_p(-0.07699679, n = 150, method = "kendall")
+}
+\references{
+Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for correlations when data are not normal. Behavior research methods, 49(1), 294-309.
 }
