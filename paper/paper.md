@@ -1,5 +1,5 @@
 ---
-title: 'Methods and Algorithms of Correlation Analysis'
+title: 'Methods and Algorithms for Correlation Analysis in R'
 tags:
 - R
 - Correlation
