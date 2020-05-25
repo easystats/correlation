@@ -2,15 +2,15 @@
 #' @param correction Only used if method is 'spearman' or 'kendall'. Can be 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.
 #' @importFrom stats qnorm
 #' @export
-cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fieller") {
+cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fieller", ...) {
   method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
 
   if (method == "kendall") {
-    out <- .cor_to_ci_kendall(cor, n, ci = ci, correction=correction)
+    out <- .cor_to_ci_kendall(cor, n, ci = ci, correction=correction, ...)
   } else if (method == "spearman") {
-    out <- .cor_to_ci_spearman(cor, n, ci = ci, correction=correction)
+    out <- .cor_to_ci_spearman(cor, n, ci = ci, correction=correction, ...)
   } else {
-    out <- .cor_to_ci_pearson(cor, n, ci = ci)
+    out <- .cor_to_ci_pearson(cor, n, ci = ci, ...)
   }
 
   out

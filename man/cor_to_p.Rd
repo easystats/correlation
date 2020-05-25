@@ -5,7 +5,7 @@
 \alias{cor_to_p}
 \title{Convert correlation to p-values and CIs}
 \usage{
-cor_to_ci(cor, n, ci = 0.95, method = "pearson", correction = "fieller")
+cor_to_ci(cor, n, ci = 0.95, method = "pearson", correction = "fieller", ...)
 
 cor_to_p(cor, n, method = "pearson")
 }
@@ -19,6 +19,8 @@ cor_to_p(cor, n, method = "pearson")
 \item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
 
 \item{correction}{Only used if method is 'spearman' or 'kendall'. Can be 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.}
+
+\item{...}{Arguments passed to or from other methods.}
 }
 \value{
 A list containing a p-value and the statistic or the CI bounds.
