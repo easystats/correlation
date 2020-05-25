@@ -38,21 +38,23 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 - **Pearson's correlation**: This is the most common correlation method. It corresponds to the covariance of the two variables normalized (i.e., divided) by the product of their standard deviations.
 
-$$r_{X,Y} = \frac{cov(X,Y)}{s_X \times s_Y}$$
+$$r_{x,y} = \frac{cov(x,y)}{SD_x \times SD_y}$$
 
 - **Spearman's rank correlation**: A nonparametric measure of rank correlation (statistical dependence between the rankings of two variables). The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson's correlation assesses linear relationships, Spearman's correlation assesses monotonic relationships (whether linear or not). Confidence Intervals (CI) for Spearman's correlations are computed using the @fieller1957tests correction [see @bishara2017confidence].
 
-$$r_{\text{s } X,Y} = r_{rank(X),rank(Y)}$$
+$$\rho_{x,y} = \frac{cov(rank_x, rank_y)}{SD(rank_x) \times SD(rank_y)}$$
 
 - **Kendall's rank correlation**: In the normal case, the Kendall correlation is preferred than the Spearman correlation because of a smaller gross error sensitivity (GES) and a smaller asymptotic variance (AV), making it more robust and more efficient. However, the interpretation of Kendall's tau is less direct than that of Spearman's rho, in the sense that it quantifies the difference between the % of concordant and discordant pairs among all possible pairwise events. Confidence Intervals (CI) for Kendall's correlations are computed using the @fieller1957tests correction [see @bishara2017confidence].
 
-- **Biweight midcorrelation**: A measure of similarity between samples that is median-based, rather than mean-based, thus is less sensitive to outliers, and can be a robust alternative to other similarity metrics, such as Pearson correlation.
+$$\tau_{x,y} =  \frac{2}{n(n-1)}\sum_{i<j}^{}sign(x_i - x_j) \times sign(y_i - y_j)$$
+
+- **Biweight midcorrelation**: A measure of similarity that is median-based, instead of the traditional mean-based, thus being less sensitive to outliers. It can be used as a robust alternative to other similarity metrics, such as Pearson correlation.
 
 - **Distance correlation**: Distance correlation measures both linear and nonlinear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.
 
 - **Percentage bend correlation**: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20%).
 
-- **Shepherd's Pi correlation**: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped mahalanobis distance).
+- **Shepherd's Pi correlation**: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped Mahalanobis distance).
 
 - **Point-Biserial and biserial correlation**: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
 
@@ -62,9 +64,9 @@ $$r_{\text{s } X,Y} = r_{rank(X),rank(Y)}$$
 
 - **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why some discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as `ppcor`.
 
-$$ r_{XY.Z} = r_{e_{X.Z},e_{Y.Z}}  $$
+$$r_{xy.z} = r_{e_{x.z},e_{y.z}}$$
 
-*Where $e_{X.Z}$ are the residuals from the linear prediction of $X$ by $Z$. This can be expanded to a multivariate $Z$.*
+*Where $e_{x.z}$ are the residuals from the linear prediction of $x$ by $z$. This can be expanded to a multivariate $z$.*
 
 - **Multilevel correlation**: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
