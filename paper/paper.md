@@ -81,7 +81,7 @@ It relies on one main function, `correlation()`, which outputs a dataframe conta
 
 ## Correlation details and matrix
 
-\tiny
+\small
 
 ``` r
 cor <- correlation(iris)
@@ -100,6 +100,8 @@ cor
 
 The output is not a square matrix, but a **(tidy) dataframe with all correlations tests per row**. One can also obtain a **matrix** using:
 
+\small
+
 ``` r
 summary(cor)
 ## Parameter    | Petal.Width | Petal.Length | Sepal.Width
@@ -109,7 +111,11 @@ summary(cor)
 ## Petal.Length |     0.96*** |              |
 ```
 
+\normalsize
+
 Note that one can also obtain the full, **square** and redundant matrix using:
+
+\small
 
 ``` r
 summary(cor, redundant=TRUE)
@@ -130,11 +136,15 @@ cor %>%
   plot()
 ```
 
+\normalsize
+
 ![**Figure 2.** Correlation matrix plot that can be automatically obtained via the **see** package.](figure2.png)<!-- -->
 
 ## Grouped dataframes
 
 The function also supports **stratified correlations**, all within the *tidyverse* [@Wickham_2019] workflow\!
+
+\small
 
 ``` r
 iris %>% 
@@ -154,9 +164,13 @@ iris %>%
 ## virginica  |  Sepal.Width | Petal.Width | 0.54 | [ 0.31, 0.71] | 4.42 | 48 | < .001 | Pearson |    50
 ```
 
+\normalsize
+
 ## Bayesian Correlations
 
 It is very easy to switch to a **Bayesian framework** (for which it relies on the **bayestestR** [@makowski2019bayestestr] and the **BayesFactor** [@BayesFactor] packages.
+
+\small
 
 ``` r
 correlation(iris, bayesian = TRUE)
@@ -170,9 +184,13 @@ correlation(iris, bayesian = TRUE)
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
 ```
 
+\normalsize
+
 ## Tetrachoric, Polychoric, Biserial, Biweight…
 
 The `correlation` package also supports different types of methods, which can deal with correlations **between factors**\!
+
+\small
 
 ``` r
 correlation(iris, include_factors = TRUE, method = "auto")
@@ -201,9 +219,13 @@ correlation(iris, include_factors = TRUE, method = "auto")
 ## Species.versicolor |  Species.virginica | -0.88 | [-0.91, -0.84] | -22.35 | 148 | < .001 |    Tetrachoric |   150
 ```
 
+\normalsize
+
 ## Partial Correlations
 
 It also supports **partial correlations** (as well as Bayesian partial correlations).
+
+\small
 
 ``` r
 iris %>% 
@@ -216,9 +238,13 @@ iris %>%
 ## Petal.Length |     0.87*** |              |
 ```
 
+\normalsize
+
 ## Gaussian Graphical Models (GGMs)
 
 Such partial correlations can also be represented as **Gaussian graphical models**, an increasingly popular tool in psychology:
+
+\small
 
 ``` r
 library(see) # for plotting
@@ -229,11 +255,15 @@ mtcars %>%
   plot()
 ```
 
+\normalsize
+
 ![**Figure 3.** Gaussian graphical model (GGM), - or network graph, that can be automatically obtained via the **see** package.](figure3.png)
 
 ## Multilevel Correlations
 
 It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. They can be see as correlations *adjusted* for some group (*hierarchical*) variability.
+
+\small
 
 ``` r
 iris %>% 
@@ -246,7 +276,11 @@ iris %>%
 ## Petal.Length |     0.38*** |              |
 ```
 
+\normalsize
+
 However, if the `partial` argument is set to `FALSE`, it will try to convert the partial coefficient into regular ones.These can be **converted back** to full correlations:
+
+\small
 
 ``` r
 iris %>% 
@@ -259,6 +293,7 @@ iris %>%
 ## Petal.Length |     0.48*** |              |
 ```
 
+\normalsize
 
 
 # Licensing and Availability
