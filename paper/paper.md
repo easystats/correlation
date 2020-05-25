@@ -40,7 +40,7 @@ Correlations tests are arguably one of the most commonly used statistical proced
 
 $$r_{x,y} = \frac{cov(x,y)}{SD_x \times SD_y}$$
 
-- **Spearman's rank correlation**: A nonparametric measure of rank correlation (statistical dependence between the rankings of two variables). The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson's correlation assesses linear relationships, Spearman's correlation assesses monotonic relationships (whether linear or not). Confidence Intervals (CI) for Spearman's correlations are computed using the @fieller1957tests correction [see @bishara2017confidence].
+- **Spearman's rank correlation**: A non-parametric measure of rank correlation (statistical dependence between the rankings of two variables). The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson's correlation assesses linear relationships, Spearman's correlation assesses monotonic relationships (whether linear or not). Confidence Intervals (CI) for Spearman's correlations are computed using the @fieller1957tests correction [see @bishara2017confidence].
 
 $$\rho_{x,y} = \frac{cov(rank_x, rank_y)}{SD(rank_x) \times SD(rank_y)}$$
 
@@ -48,9 +48,9 @@ $$\rho_{x,y} = \frac{cov(rank_x, rank_y)}{SD(rank_x) \times SD(rank_y)}$$
 
 $$\tau_{x,y} =  \frac{2}{n(n-1)}\sum_{i<j}^{}sign(x_i - x_j) \times sign(y_i - y_j)$$
 
-- **Biweight midcorrelation**: A measure of similarity that is median-based, instead of the traditional mean-based, thus being less sensitive to outliers. It can be used as a robust alternative to other similarity metrics, such as Pearson correlation.
+- **Biweight midcorrelation**: A measure of similarity that is median-based, instead of the traditional mean-based, thus being less sensitive to outliers. It can be used as a robust alternative to other similarity metrics, such as Pearson correlation [@langfelder2012fast].
 
-- **Distance correlation**: Distance correlation measures both linear and nonlinear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.
+- **Distance correlation**: Distance correlation measures both linear and non-linear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.
 
 - **Percentage bend correlation**: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20%).
 
@@ -62,7 +62,7 @@ $$\tau_{x,y} =  \frac{2}{n(n-1)}\sum_{i<j}^{}sign(x_i - x_j) \times sign(y_i - y
 
 - **Tetrachoric correlation**: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 
-- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why some discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as `ppcor`.
+- **Partial correlation**: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why some discrepancies are to be expected for the *t*- and the *p*-values (but not the correlation coefficient) compared to other implementations such as **ppcor**.
 
 $$r_{xy.z} = r_{e_{x.z},e_{y.z}}$$
 
@@ -81,6 +81,8 @@ It relies on one main function, `correlation()`, which outputs a dataframe conta
 
 ## Correlation details and matrix
 
+\tiny
+
 ``` r
 cor <- correlation(iris)
 cor
@@ -93,6 +95,8 @@ cor
 ## Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] | -4.79 | 148 | < .001 | Pearson |   150
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | < .001 | Pearson |   150
 ```
+
+\normalsize
 
 The output is not a square matrix, but a **(tidy) dataframe with all correlations tests per row**. One can also obtain a **matrix** using:
 
