@@ -1,7 +1,7 @@
 Package: correlation
 Type: Package
 Title: Methods for Correlation Analysis
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: c(
 	person("Dominique", 
 		"Makowski", 
