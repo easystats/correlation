@@ -264,7 +264,7 @@ mtcars %>%
 
 ## Multilevel Correlations
 
-It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. In other words, in traditional partial correlations, the covariates are "adjusted for" by setting them as fixed factors in a linear regression model, whereas in multilevel correlations they are entered as random indercepts. Multilevel correlations can be see as correlations *adjusted* for some group (*hierarchical*) variability.
+It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. In other words, in traditional partial correlations, the covariates are "adjusted for" by setting them as fixed factors in a linear regression model, whereas in multilevel correlations they are entered as random intercepts. Multilevel correlations can be see as correlations *adjusted* for some group (*hierarchical*) variability, for instance in the case of repeated measures [see also @shan2020correlation; @bakdash2017repeated].
 
 \small
 
