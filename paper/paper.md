@@ -83,7 +83,7 @@ It relies on one main function, `correlation()`, which outputs a dataframe conta
 
 ## Correlation details and matrix
 
-\small
+\footnotesize
 
 ``` r
 cor <- correlation(iris)
@@ -147,7 +147,7 @@ cor %>%
 
 The function also supports **stratified correlations**, all within the *tidyverse* [@Wickham_2019] workflow\!
 
-\small
+\footnotesize
 
 ``` r
 iris %>% 
@@ -173,7 +173,7 @@ iris %>%
 
 It is very easy to switch to a **Bayesian framework** (for which it relies on the **bayestestR** [@makowski2019bayestestr] and the **BayesFactor** [@BayesFactor] packages.
 
-\small
+\footnotesize
 
 ``` r
 correlation(iris, bayesian = TRUE)
@@ -193,7 +193,7 @@ correlation(iris, bayesian = TRUE)
 
 The `correlation` package also supports different types of methods, which can deal with correlations **between factors**\!
 
-\small
+\footnotesize
 
 ``` r
 correlation(iris, include_factors = TRUE, method = "auto")
