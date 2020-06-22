@@ -245,7 +245,7 @@ iris %>%
 
 ## Gaussian Graphical Models (GGMs)
 
-Such partial correlations can also be represented as **Gaussian graphical models**, an increasingly popular tool in psychology:
+Such partial correlations can also be represented as **Gaussian graphical models** (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association [@epskamp2018estimating; @Bhushan_2019].
 
 \small
 
@@ -260,7 +260,7 @@ mtcars %>%
 
 \normalsize
 
-![Gaussian graphical model (GGM), - or network graph, that can be automatically obtained via the **see** package.](figure3.png)
+![Gaussian Graphical Model (GGM), - or network graph, that can be automatically obtained via the **see** package.](figure3.png)
 
 ## Multilevel Correlations
 
