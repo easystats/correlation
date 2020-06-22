@@ -70,7 +70,9 @@ $$r_{xy.z} = r_{e_{x.z},e_{y.z}}$$
 
 - **Multilevel correlation**: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 
-![**Figure 1.** Illustration of the different correlation estimates obtained via different methods for the same data.](figure1.png)
+These methods allow for different ways of quantifying the link between two variables (see **Figure 1**).
+
+![Illustration of the different correlation estimates (a measure of association, represent by the height of the bars) obtained via different methods for the same data (the scatter plot).](figure1.png)
 
 # Design
 
@@ -138,7 +140,8 @@ cor %>%
 
 \normalsize
 
-![**Figure 2.** Correlation matrix plot that can be automatically obtained via the **see** package.](figure2.png)<!-- -->
+![Correlation matrix plot that can be automatically obtained via the **see** package.](figure2.png)
+
 
 ## Grouped dataframes
 
@@ -257,7 +260,7 @@ mtcars %>%
 
 \normalsize
 
-![**Figure 3.** Gaussian graphical model (GGM), - or network graph, that can be automatically obtained via the **see** package.](figure3.png)
+![Gaussian graphical model (GGM), - or network graph, that can be automatically obtained via the **see** package.](figure3.png)
 
 ## Multilevel Correlations
 
