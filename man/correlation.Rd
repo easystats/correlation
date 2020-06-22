@@ -86,6 +86,7 @@ Performs a correlation analysis.
 The correlation test is then run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model.
 This is why some discrepancies are to be expected for the t- and p-values, CIs, BFs etc (but \emph{not} the correlation coefficient) compared to other implementations (e.g., \code{ppcor}).
 (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
+Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
 \cr\cr
 \strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
 }
@@ -116,6 +117,7 @@ correlation(mtcars[-2], method = "auto")
 }
 \references{
 \itemize{
+  \item Bhushan, N., Mohnert, F., Sloot, D., Jans, L., Albers, C., & Steg, L. (2019). Using a Gaussian graphical model to explore relationships between items and variables in environmental psychology research. Frontiers in psychology, 10, 1050.
   \item Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for correlations when data are not normal. Behavior research methods, 49(1), 294-309.
   \item Fieller, E. C., Hartley, H. O., & Pearson, E. S. (1957). Tests for rank correlation coefficients. I. Biometrika, 44(3/4), 470-481.
   \item Langfelder, P., & Horvath, S. (2012). Fast R functions for robust correlations and hierarchical clustering. Journal of statistical software, 46(11).
