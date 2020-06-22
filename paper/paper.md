@@ -245,7 +245,7 @@ iris %>%
 
 ## Gaussian Graphical Models (GGMs)
 
-Such partial correlations can also be represented as **Gaussian graphical models** (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association [@epskamp2018estimating; @Bhushan_2019].
+Such partial correlations can also be represented as **Gaussian Graphical Models** (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association [@epskamp2018estimating; @Bhushan_2019].
 
 \small
 
@@ -264,7 +264,7 @@ mtcars %>%
 
 ## Multilevel Correlations
 
-It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. They can be see as correlations *adjusted* for some group (*hierarchical*) variability.
+It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. In other words, in traditional partial correlations, the covariates are "adjusted for" by setting them as fixed factors in a linear regression model, whereas in multilevel correlations they are entered as random indercepts. Multilevel correlations can be see as correlations *adjusted* for some group (*hierarchical*) variability.
 
 \small
 
