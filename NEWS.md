@@ -1,3 +1,17 @@
+# correlation 0.x.x
+
+## Changes
+
+## Bug fixes
+
+- Fix bug when `robust=TRUE` (https://github.com/easystats/effectsize/issues/87)
+
+# correlation 0.3.0
+
+## Changes
+
+## Bug fixes
+
 # correlation 0.2.1
 
 ## Changes
