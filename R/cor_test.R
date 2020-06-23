@@ -82,7 +82,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 
   # Robust
   if (robust) {
-    data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = TRUE, method = "average")
+    data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = FALSE, method = "average")
   }
 
 
