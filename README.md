@@ -64,8 +64,8 @@ and comes with a number of possible options.
 ## Correlation details and matrix
 
 ``` r
-cor <- correlation(iris)
-cor
+results <- correlation(iris)
+results
 ## Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs
 ## ---------------------------------------------------------------------------------------------
 ## Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] | -1.44 | 148 | 0.152  | Pearson |   150
@@ -80,7 +80,7 @@ The output is not a square matrix, but a **(tidy) dataframe with all
 correlations tests per row**. One can also obtain a **matrix** using:
 
 ``` r
-summary(cor)
+summary(results)
 ## Parameter    | Petal.Width | Petal.Length | Sepal.Width
 ## -------------------------------------------------------
 ## Sepal.Length |     0.82*** |      0.87*** |       -0.12
@@ -92,7 +92,7 @@ Note that one can also obtain the full, **square** and redundant matrix
 using:
 
 ``` r
-summary(cor, redundant=TRUE)
+summary(results, redundant=TRUE)
 ## Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
 ## ----------------------------------------------------------------------
 ## Sepal.Length |      1.00*** |       -0.12 |      0.87*** |     0.82***
@@ -105,7 +105,7 @@ summary(cor, redundant=TRUE)
 library(dplyr)
 library(see)
 
-cor %>% 
+results %>% 
   summary(redundant=TRUE) %>% 
   plot()
 ```
@@ -143,11 +143,11 @@ It is very easy to switch to a **Bayesian framework**.
 correlation(iris, bayesian = TRUE)
 ## Parameter1   |   Parameter2 |   rho |         95% CI |     pd | % in ROPE |    BF |              Prior | n_Obs
 ## --------------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.23,  0.02] | 92.10% |    43.90% |  0.51 | Cauchy (0 +- 0.33) |   150
-## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.38% |    42.25% |  0.51 | Cauchy (0 +- 0.33) |   150
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
 ## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
 ## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |     0.02% | > 999 | Cauchy (0 +- 0.33) |   150
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |     0.07% | > 999 | Cauchy (0 +- 0.33) |   150
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
 ```
 
@@ -202,7 +202,12 @@ iris %>%
 ## Gaussian Graphical Models (GGMs)
 
 Such partial correlations can also be represented as **Gaussian
-graphical models**, an increasingly popular tool in psychology:
+Graphical Models** (GGM), an increasingly popular tool in psychology. A
+GGM traditionally include a set of variables depicted as circles
+(“nodes”), and a set of lines that visualize relationships between
+them, which thickness represents the strength of association (see
+[Bhushan et
+al., 2019](https://www.frontiersin.org/articles/10.3389/fpsyg.2019.01050/full)).
 
 ``` r
 library(see) # for plotting

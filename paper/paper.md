@@ -86,8 +86,8 @@ It relies on one main function, `correlation()`, which outputs a dataframe conta
 \footnotesize
 
 ``` r
-cor <- correlation(iris)
-cor
+results <- correlation(iris)
+results
 # Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs
 # ---------------------------------------------------------------------------------------------
 # Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] | -1.44 | 148 | 0.152  | Pearson |   150
@@ -105,7 +105,7 @@ The output is not a square matrix, but a **(tidy) dataframe with all correlation
 \small
 
 ``` r
-summary(cor)
+summary(results)
 # Parameter    | Petal.Width | Petal.Length | Sepal.Width
 # -------------------------------------------------------
 # Sepal.Length |     0.82*** |      0.87*** |       -0.12
@@ -120,7 +120,7 @@ Note that one can also obtain the full, **square** and redundant matrix using:
 \small
 
 ``` r
-summary(cor, redundant=TRUE)
+summary(results, redundant=TRUE)
 # Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
 # ----------------------------------------------------------------------
 # Sepal.Length |      1.00*** |       -0.12 |      0.87*** |     0.82***
@@ -133,7 +133,7 @@ summary(cor, redundant=TRUE)
 library(dplyr)
 library(see)
 
-cor %>% 
+results %>% 
   summary(redundant=TRUE) %>% 
   plot()
 ```

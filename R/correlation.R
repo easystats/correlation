@@ -47,11 +47,11 @@
 #'
 #' @examples
 #' library(correlation)
-#' cor <- correlation(iris)
+#' results <- correlation(iris)
 #'
-#' cor
-#' summary(cor)
-#' summary(cor, redundant = TRUE)
+#' results
+#' summary(results)
+#' summary(results, redundant = TRUE)
 #'
 #' # Grouped dataframe
 #' if (require("dplyr")) {

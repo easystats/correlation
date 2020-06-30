@@ -77,20 +77,20 @@ The main function is [`correlation()`](https://easystats.github.io/correlation/r
 ## Correlation details and matrix
 
 ```{r message=FALSE, warning=FALSE}
-cor <- correlation(iris)
-cor
+results <- correlation(iris)
+results
 ```
 
 The output is not a square matrix, but a **(tidy) dataframe with all correlations tests per row**. One can also obtain a **matrix** using:
 
 ```{r message=FALSE, warning=FALSE}
-summary(cor)
+summary(results)
 ```
 
 Note that one can also obtain the full, **square** and redundant matrix using:
 
 ```{r message=FALSE, warning=FALSE}
-summary(cor, redundant=TRUE)
+summary(results, redundant=TRUE)
 ```
 
 
@@ -98,7 +98,7 @@ summary(cor, redundant=TRUE)
 library(dplyr)
 library(see)
 
-cor %>% 
+results %>% 
   summary(redundant=TRUE) %>% 
   plot()
 ```
