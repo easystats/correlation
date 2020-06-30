@@ -77,7 +77,7 @@ These methods allow for different ways of quantifying the link between two varia
 # Design
 
 
-It relies on one main function, `correlation()`, which outputs a dataframe containing each pairwise correlation per row. This long format is convenient for further data analysis, but not as much to get a summary, which is usually obtained via a correlation matrix. To address this, we added standard methods, such as `summary()` and `as.matrix()`, to automatically transform the long output to a matrix. Moreover, **correlation** also include plotting capabilities via the [**see** package](https://easystats.github.io/see/) [@ludecke2019see].
+It relies on one main function, `correlation()`, which outputs a dataframe containing each pairwise correlation per row. This long format is convenient for further data analysis, but not as much to get a summary, which is usually obtained via a correlation matrix. To address this, we added standard methods, such as `summary()` and `as.matrix()`, to automatically transform the long output to a matrix. Moreover, **correlation** also includes plotting capabilities via the [**see** package](https://easystats.github.io/see/) [@ludecke2019see].
 
 # Examples
 
