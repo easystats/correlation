@@ -145,7 +145,7 @@ cor %>%
 
 ## Grouped dataframes
 
-The function also supports **stratified correlations**, all within the *tidyverse* [@Wickham_2019] workflow\!
+The function also supports **stratified correlations**, all within the *tidyverse* [@Wickham_2019] workflow.
 
 \scriptsize
 
