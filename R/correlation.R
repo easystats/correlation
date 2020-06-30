@@ -189,6 +189,10 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
     data <- cbind(data, data2)
   }
 
+  if(ncol(data) <= 2 & any(sapply(data, is.factor)) & include_factors == FALSE){
+    warning("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you.")
+    include_factors <- TRUE
+  }
 
   # Sanity checks ----------------
   # What if only factors
