@@ -9,7 +9,7 @@
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively.
-#' @inheritParams effectsize::adjust
+#' @inheritParams adjust
 #' @param bayesian_prior For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.
 #' @param bayesian_ci_method,bayesian_test See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
 #' @param robust If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).
@@ -60,7 +60,7 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
 #'
-#' @importFrom effectsize adjust ranktransform
+#' @importFrom effectsize ranktransform
 #' @importFrom stats complete.cases
 #' @export
 cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
@@ -76,8 +76,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 
   # Partial
   if (partial) {
-    data[[x]] <- effectsize::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
-    data[[y]] <- effectsize::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
+    data[[x]] <- adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
+    data[[y]] <- adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
   }
 
   # Robust
