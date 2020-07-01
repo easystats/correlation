@@ -1,7 +1,6 @@
 # correlation 0.x.x
 
 ## Changes
-- `adjust()` has been moved over from `effectsize` 
 
 ## Bug fixes
 
