@@ -191,7 +191,7 @@ correlation(iris, bayesian = TRUE)
 
 ## Tetrachoric, Polychoric, Biserial, Biweight…
 
-The `correlation` package also supports different types of methods, which can deal with correlations **between factors**\!
+The `correlation` package also supports different types of methods, which can deal with correlations **between factors**.
 
 \scriptsize
 
