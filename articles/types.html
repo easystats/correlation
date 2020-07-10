@@ -107,19 +107,37 @@
 <h2 class="hasAnchor">
 <a href="#different-methods-for-correlations" class="anchor"></a>Different Methods for Correlations</h2>
 <!-- This is copied from the details section of the documentation of the correlation function, any changes here or there should be SYNCED -->
+<p>Correlations tests are arguably one of the most commonly used statistical procedures, and are used as a basis in many applications such as exploratory data analysis, structural modelling, data engineering etc. In this context, we present <strong>correlation</strong>, a toolbox for the R language <span class="citation">(R Core Team 2019)</span> and part of the <a href="https://github.com/easystats/easystats"><strong>easystats</strong></a> collection, focused on correlation analysis. Its goal is to be lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as:</p>
 <ul>
-<li><p><strong>Pearson’s correlation</strong>: The covariance of the two variables divided by the product of their standard deviations.</p></li>
-<li><p><strong>Spearman’s rank correlation</strong>: A nonparametric measure of rank correlation (statistical dependence between the rankings of two variables). The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson’s correlation assesses linear relationships, Spearman’s correlation assesses monotonic relationships (whether linear or not).</p></li>
-<li><p><strong>Kendall’s rank correlation</strong>: In the normal case, the Kendall correlation is preferred than the Spearman correlation because of a smaller gross error sensitivity (GES) and a smaller asymptotic variance (AV), making it more robust and more efficient. However, the interpretation of Kendall’s tau is less direct than that of Spearman’s rho, in the sense that it quantifies the difference between the % of concordant and discordant pairs among all possible pairwise events.</p></li>
-<li><p><strong>Biweight midcorrelation</strong>: A measure of similarity between samples that is median-based, rather than mean-based, thus is less sensitive to outliers, and can be a robust alternative to other similarity metrics, such as Pearson correlation.</p></li>
-<li><p><strong>Distance correlation</strong>: Distance correlation measures both linear and nonlinear association between two random variables or random vectors. This is in contrast to Pearson’s correlation, which can only detect linear association between two random variables.</p></li>
-<li><p><strong>Percentage bend correlation</strong>: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20%).</p></li>
-<li><p><strong>Shepherd’s Pi correlation</strong>: Equivalent to a Spearman’s rank correlation after outliers removal (by means of bootstrapped mahalanobis distance).</p></li>
-<li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-serial is equivalent to a Pearson’s correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.</p></li>
+<li>
+<strong>Pearson’s correlation</strong>: This is the most common correlation method. It corresponds to the covariance of the two variables normalized (i.e., divided) by the product of their standard deviations.</li>
+</ul>
+<p><span class="math display">\[r_{xy} = \frac{cov(x,y)}{SD_x \times SD_y}\]</span></p>
+<ul>
+<li>
+<strong>Spearman’s rank correlation</strong>: A non-parametric measure of correlation, the Spearman correlation between two variables is equal to the Pearson correlation between the rank scores of those two variables; while Pearson’s correlation assesses linear relationships, Spearman’s correlation assesses monotonic relationships (whether linear or not). Confidence Intervals (CI) for Spearman’s correlations are computed using the <span class="citation">Fieller, Hartley, and Pearson (1957)</span> correction <span class="citation">(see Bishara and Hittner 2017)</span>.</li>
+</ul>
+<p><span class="math display">\[r_{s_{xy}} = \frac{cov(rank_x, rank_y)}{SD(rank_x) \times SD(rank_y)}\]</span></p>
+<ul>
+<li>
+<strong>Kendall’s rank correlation</strong>: In the normal case, the Kendall correlation is preferred to the Spearman correlation because of a smaller gross error sensitivity (GES) and a smaller asymptotic variance (AV), making it more robust and more efficient. However, the interpretation of Kendall’s tau is less direct compared to that of the Spearman’s rho, in the sense that it quantifies the difference between the % of concordant and discordant pairs among all possible pairwise events. Confidence Intervals (CI) for Kendall’s correlations are computed using the <span class="citation">Fieller, Hartley, and Pearson (1957)</span> correction <span class="citation">(see Bishara and Hittner 2017)</span>. For each pair of observations (i ,j) of two variables (x, y), it is defined as follows:</li>
+</ul>
+<p><span class="math display">\[\tau_{xy} = \frac{2}{n(n-1)}\sum_{i&lt;j}^{}sign(x_i - x_j) \times sign(y_i - y_j)\]</span></p>
+<ul>
+<li><p><strong>Biweight midcorrelation</strong>: A measure of similarity that is median-based, instead of the traditional mean-based, thus being less sensitive to outliers. It can be used as a robust alternative to other similarity metrics, such as Pearson correlation <span class="citation">(Langfelder and Horvath 2012)</span>.</p></li>
+<li><p><strong>Distance correlation</strong>: Distance correlation measures both linear and non-linear association between two random variables or random vectors. This is in contrast to Pearson’s correlation, which can only detect linear association between two random variables.</p></li>
+<li><p><strong>Percentage bend correlation</strong>: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20 percent).</p></li>
+<li><p><strong>Shepherd’s Pi correlation</strong>: Equivalent to a Spearman’s rank correlation after outliers removal (by means of bootstrapped Mahalanobis distance).</p></li>
+<li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson’s correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.</p></li>
 <li><p><strong>Polychoric correlation</strong>: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.</p></li>
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
-<li><p><strong>Partial correlation</strong>: Correlation between two variables after adjusting for the (linear) the effect of one or more variable. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why some discrepancies are to be expected for the t- and the p-values (but not the correlation coefficient) compared to other implementations such as <code>ppcor</code>.</p></li>
-<li><p><strong>Multilevel correlation</strong>: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</p></li>
+<li><p><strong>Partial correlation</strong>: Correlation between two variables after adjusting for the (linear) the effect of one or more variables. The correlation test is here run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model. This is why some discrepancies are to be expected for the <em>t</em>- and the <em>p</em>-values (but not the correlation coefficient) compared to other implementations such as <code>ppcor</code>.</p></li>
+</ul>
+<p><span class="math display">\[r_{xy.z} = r_{e_{x.z},e_{y.z}}\]</span></p>
+<p><em>Where <span class="math inline">\(e_{x.z}\)</span> are the residuals from the linear prediction of <span class="math inline">\(x\)</span> by <span class="math inline">\(z\)</span>. This can be expanded to a multivariate <span class="math inline">\(z\)</span>.</em></p>
+<ul>
+<li>
+<strong>Multilevel correlation</strong>: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</li>
 </ul>
 </div>
 <div id="comparison" class="section level2">
@@ -204,9 +222,23 @@
 <p>As we can see, <strong>distance</strong> correlation is able to capture the strength even for severly non-linear relationships.</p>
 </div>
 </div>
-<div id="references" class="section level1">
+<div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
+<div id="refs" class="references">
+<div id="ref-bishara2017confidence">
+<p>Bishara, Anthony J, and James B Hittner. 2017. “Confidence Intervals for Correlations When Data Are Not Normal.” <em>Behavior Research Methods</em> 49 (1): 294–309. <a href="https://doi.org/10.3758/s13428-016-0702-8">https://doi.org/10.3758/s13428-016-0702-8</a>.</p>
+</div>
+<div id="ref-fieller1957tests">
+<p>Fieller, Edgar C, Herman O Hartley, and Egon S Pearson. 1957. “Tests for Rank Correlation Coefficients. I.” <em>Biometrika</em> 44 (3/4): 470–81. <a href="https://doi.org/10.1093/biomet/48.1-2.29">https://doi.org/10.1093/biomet/48.1-2.29</a>.</p>
+</div>
+<div id="ref-langfelder2012fast">
+<p>Langfelder, Peter, and Steve Horvath. 2012. “Fast R Functions for Robust Correlations and Hierarchical Clustering.” <em>Journal of Statistical Software</em> 46 (11). <a href="http://www.jstatsoft.org/v46/i11/">http://www.jstatsoft.org/v46/i11/</a>.</p>
+</div>
+<div id="ref-Rteam">
+<p>R Core Team. 2019. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.</p>
+</div>
+</div>
 </div>
   </div>
 
