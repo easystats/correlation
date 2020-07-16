@@ -6,7 +6,7 @@
 [![Build
 Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
 [![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/easystats/correlation)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3837171.svg)](https://doi.org/10.5281/zenodo.3837171)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02306/status.svg)](https://doi.org/10.21105/joss.02306)
 
 `correlation` is an
 [**easystats**](https://github.com/easystats/easystats) package focused
@@ -21,8 +21,10 @@ partial multilevel correlation*).
 
 You can reference the package and its documentation as follows:
 
-  - Makowski, D., Ben-Shachar, M. S., Patil, I. & Lüdecke, D. (2020).
-    *Methods and Algorithms for Correlation Analysis in R*. CRAN.
+  - Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019).
+    *Methods and Algorithms for Correlation Analysis in R*. Journal of
+    Open Source Software, 5(51), 2306.
+    [10.21105/joss.02306](https://doi.org/10.21105/joss.02306)
 
 ## Installation
 
@@ -143,11 +145,11 @@ It is very easy to switch to a **Bayesian framework**.
 correlation(iris, bayesian = TRUE)
 ## Parameter1   |   Parameter2 |   rho |         95% CI |     pd | % in ROPE |    BF |              Prior | n_Obs
 ## --------------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.38% |    42.25% |  0.51 | Cauchy (0 +- 0.33) |   150
-## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.00% |    43.18% |  0.51 | Cauchy (0 +- 0.33) |   150
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
 ## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
-## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |     0.07% | > 999 | Cauchy (0 +- 0.33) |   150
+## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.31] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |     0.05% | > 999 | Cauchy (0 +- 0.33) |   150
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | > 999 | Cauchy (0 +- 0.33) |   150
 ```
 
