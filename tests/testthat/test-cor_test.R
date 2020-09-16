@@ -83,3 +83,9 @@ test_that("cor_test blomqvist", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "blomqvist")
   testthat::expect_equal(out$r, as.numeric(0.9066667), tol = 0.01)
 })
+
+test_that("cor_test hoeffding", {
+  set.seed(333)
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "hoeffding")
+  testthat::expect_equal(out$r, as.numeric(0.5629277), tol = 0.01)
+})

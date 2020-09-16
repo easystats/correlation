@@ -2,6 +2,7 @@
 
 ## Changes
 
+- Add "hoeffding" method.
 - Add "blomqvist" method.
 
 ## Bug fixes

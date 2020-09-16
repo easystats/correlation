@@ -1,7 +1,7 @@
 #' @keywords internal
 .cor_test_blomqvist <- function(data, x, y, ci = 0.95, ...) {
   if (!requireNamespace("wdm", quietly = TRUE)) {
-    stop("Package `wdm` required for 'blomqvist' and 'hoeffding' correlations. Please install it by running `install.packages('wdm').", call. = FALSE)
+    stop("Package `wdm` required for 'blomqvist' correlations. Please install it by running `install.packages('wdm').", call. = FALSE)
   }
 
   var_x <- .complete_variable_x(data, x, y)
