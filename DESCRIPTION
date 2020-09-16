@@ -1,7 +1,7 @@
 Package: correlation
 Type: Package
 Title: Methods for Correlation Analysis
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(
 	person("Dominique", 
 		"Makowski", 
@@ -54,6 +54,7 @@ Suggests:
 	rstanarm,
 	rmarkdown,
 	see,
+	wdm,
 	WRS2
 License: GPL-3
 Encoding: UTF-8
