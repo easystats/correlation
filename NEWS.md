@@ -1,6 +1,8 @@
-# correlation 0.x.x
+# correlation 0.4.0
 
 ## Changes
+
+- Add "blomqvist" method.
 
 ## Bug fixes
 

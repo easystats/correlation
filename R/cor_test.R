@@ -5,7 +5,7 @@
 #' @param data A data frame.
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
+#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation), "blombqvist" (for Blomqvist's coefficient) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively.
@@ -66,6 +66,7 @@
 cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
 
   # Sanity checks
+  if (!x %in% names(data) | !y %in% names(data)) stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
   if (ci == "default") ci <- 0.95
   if (partial == FALSE & (partial_bayesian | multilevel)) partial <- TRUE
 
@@ -105,6 +106,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
       out <- .cor_test_distance(data, x, y, ci = ci, ...)
     } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       out <- .cor_test_percentage(data, x, y, ci = ci, ...)
+    } else if (method %in% c("blomqvist", "median", "medial")) {
+      out <- .cor_test_blomqvist(data, x, y, ci = ci, ...)
     } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
     } else {
@@ -125,6 +128,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
       stop("Bayesian distance correlations are not supported yet.")
     } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       stop("Bayesian Percentage Bend correlations are not supported yet.")
+    } else if (method %in% c("blomqvist", "median")) {
+      stop("Bayesian Blomvquist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
     } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
     } else {
