@@ -45,8 +45,6 @@
 
 
 
-  <link href="../extra.css" rel="stylesheet">
-  
 
 <meta property="og:title" content="Correlation Analysis — correlation" />
 <meta property="og:description" content="Performs a correlation analysis." />
@@ -82,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -145,7 +143,7 @@
     <p>Performs a correlation analysis.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/correlation.html'>correlation</a></span>(
+    <pre class="usage"><span class='fu'>correlation</span>(
   <span class='kw'>data</span>,
   data2 = <span class='kw'>NULL</span>,
   method = <span class='st'>"pearson"</span>,
@@ -236,13 +234,13 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A correlation object that can be displayed using the <code>print</code>, <code>summary</code> or <code>table</code> methods.</p>
-<h3>Multiple tests correction</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Multiple tests correction</h3>
 <p>About multiple tests corrections.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-<h3>Correlation Types</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Correlation Types</h3>
 
 <ul>
 <li><p><strong>Pearson's correlation</strong>: This is the most common correlation method. It corresponds to the covariance of the two variables normalized (i.e., divided) by the product of their standard deviations.</p></li>
@@ -257,7 +255,7 @@
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
 </ul>
 
-<h3>Partial Correlation</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Partial Correlation</h3>
 <p><strong>Partial correlations</strong> are estimated as the correlation between two variables after adjusting for the (linear) effect of one or more other variable.
 The correlation test is then run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model.
 This is why some discrepancies are to be expected for the t- and p-values, CIs, BFs etc (but <em>not</em> the correlation coefficient) compared to other implementations (e.g., <code>ppcor</code>).
@@ -266,7 +264,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 <br /><br />
 <strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</p>
 
-<h3>Notes</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Notes</h3>
 
 <ul>
 <li><p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These are technically Pearson Bayesian correlations of rank transformed data, rather than pure Bayesian rank correlations (which have different priors).</p></li>
@@ -285,20 +283,23 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://easystats.github.io/correlation'>correlation</a></span>)
-<span class='kw'>results</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/correlation/man/correlation.html'>correlation</a></span>(<span class='kw'>iris</span>)
+<span class='kw'>results</span> <span class='op'>&lt;-</span> <span class='fu'>correlation</span>(<span class='kw'>iris</span>)
 
-<span class='kw'>results</span></div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs
+<span class='kw'>results</span>
+</div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------
 #&gt; Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] | -1.44 | 148 | 0.152  | Pearson |   150
 #&gt; Sepal.Length | Petal.Length |  0.87 | [ 0.83,  0.91] | 21.65 | 148 | &lt; .001 | Pearson |   150
 #&gt; Sepal.Length |  Petal.Width |  0.82 | [ 0.76,  0.86] | 17.30 | 148 | &lt; .001 | Pearson |   150
 #&gt; Sepal.Width  | Petal.Length | -0.43 | [-0.55, -0.29] | -5.77 | 148 | &lt; .001 | Pearson |   150
 #&gt; Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] | -4.79 | 148 | &lt; .001 | Pearson |   150
-#&gt; Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>results</span>)</div><div class='output co'>#&gt; Parameter    | Petal.Width | Petal.Length | Sepal.Width
+#&gt; Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>results</span>)
+</div><div class='output co'>#&gt; Parameter    | Petal.Width | Petal.Length | Sepal.Width
 #&gt; -------------------------------------------------------
 #&gt; Sepal.Length |     0.82*** |      0.87*** |       -0.12
 #&gt; Sepal.Width  |    -0.37*** |     -0.43*** |            
-#&gt; Petal.Length |     0.96*** |              |            </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>results</span>, redundant = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
+#&gt; Petal.Length |     0.96*** |              |            </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>results</span>, redundant = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
 #&gt; ----------------------------------------------------------------------
 #&gt; Sepal.Length |      1.00*** |       -0.12 |      0.87*** |     0.82***
 #&gt; Sepal.Width  |        -0.12 |     1.00*** |     -0.43*** |    -0.37***
@@ -308,8 +309,9 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 <span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'><a href='https://dplyr.tidyverse.org'>"dplyr"</a></span>)) {
   <span class='kw'>iris</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>Species</span>) <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/correlation/man/correlation.html'>correlation</a></span>()
-}</div><div class='output co'>#&gt; <span class='message'>Loading required package: dplyr</span></div><div class='output co'>#&gt; <span class='message'></span>
+    <span class='fu'>correlation</span>()
+}
+</div><div class='output co'>#&gt; <span class='message'>Loading required package: dplyr</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
@@ -335,7 +337,8 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; virginica  |  Sepal.Width |  Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | 48 | &lt; .001 | Pearson |    50
 #&gt; virginica  | Petal.Length |  Petal.Width | 0.32 | [ 0.05, 0.55] |  2.36 | 48 | 0.045  | Pearson |    50</div><div class='input'>
 <span class='co'># automatic selection of correlation method</span>
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/correlation.html'>correlation</a></span>(<span class='kw'>mtcars</span>[<span class='op'>-</span><span class='fl'>2</span>], method = <span class='st'>"auto"</span>)</div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |         95% CI |     t | df |      p |         Method | n_Obs
+<span class='fu'>correlation</span>(<span class='kw'>mtcars</span>[<span class='op'>-</span><span class='fl'>2</span>], method = <span class='st'>"auto"</span>)
+</div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |         95% CI |     t | df |      p |         Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------------
 #&gt; mpg        |       disp | -0.85 | [-0.92, -0.71] | -8.75 | 30 | &lt; .001 |        Pearson |    32
 #&gt; mpg        |         hp | -0.78 | [-0.89, -0.59] | -6.74 | 30 | &lt; .001 |        Pearson |    32
@@ -358,30 +361,30 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; hp         |         wt |  0.66 | [ 0.40,  0.82] |  4.80 | 30 | 0.001  |        Pearson |    32
 #&gt; hp         |       qsec | -0.71 | [-0.85, -0.48] | -5.49 | 30 | &lt; .001 |        Pearson |    32
 #&gt; hp         |         vs | -0.72 | [-0.86, -0.50] | -5.73 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; hp         |         am | -0.24 | [-0.55,  0.12] | -1.37 | 30 | 1.000  | Point-biserial |    32
-#&gt; hp         |       gear | -0.13 | [-0.45,  0.23] | -0.69 | 30 | 1.000  |        Pearson |    32
+#&gt; hp         |         am | -0.24 | [-0.55,  0.12] | -1.37 | 30 | &gt; .999 | Point-biserial |    32
+#&gt; hp         |       gear | -0.13 | [-0.45,  0.23] | -0.69 | 30 | &gt; .999 |        Pearson |    32
 #&gt; hp         |       carb |  0.75 | [ 0.54,  0.87] |  6.21 | 30 | &lt; .001 |        Pearson |    32
 #&gt; drat       |         wt | -0.71 | [-0.85, -0.48] | -5.56 | 30 | &lt; .001 |        Pearson |    32
-#&gt; drat       |       qsec |  0.09 | [-0.27,  0.43] |  0.50 | 30 | 1.000  |        Pearson |    32
+#&gt; drat       |       qsec |  0.09 | [-0.27,  0.43] |  0.50 | 30 | &gt; .999 |        Pearson |    32
 #&gt; drat       |         vs |  0.44 | [ 0.11,  0.68] |  2.69 | 30 | 0.187  | Point-biserial |    32
 #&gt; drat       |         am |  0.71 | [ 0.48,  0.85] |  5.57 | 30 | &lt; .001 | Point-biserial |    32
 #&gt; drat       |       gear |  0.70 | [ 0.46,  0.84] |  5.36 | 30 | &lt; .001 |        Pearson |    32
-#&gt; drat       |       carb | -0.09 | [-0.43,  0.27] | -0.50 | 30 | 1.000  |        Pearson |    32
-#&gt; wt         |       qsec | -0.17 | [-0.49,  0.19] | -0.97 | 30 | 1.000  |        Pearson |    32
+#&gt; drat       |       carb | -0.09 | [-0.43,  0.27] | -0.50 | 30 | &gt; .999 |        Pearson |    32
+#&gt; wt         |       qsec | -0.17 | [-0.49,  0.19] | -0.97 | 30 | &gt; .999 |        Pearson |    32
 #&gt; wt         |         vs | -0.55 | [-0.76, -0.26] | -3.65 | 30 | 0.020  | Point-biserial |    32
 #&gt; wt         |         am | -0.69 | [-0.84, -0.45] | -5.26 | 30 | &lt; .001 | Point-biserial |    32
 #&gt; wt         |       gear | -0.58 | [-0.77, -0.29] | -3.93 | 30 | 0.011  |        Pearson |    32
 #&gt; wt         |       carb |  0.43 | [ 0.09,  0.68] |  2.59 | 30 | 0.205  |        Pearson |    32
 #&gt; qsec       |         vs |  0.74 | [ 0.53,  0.87] |  6.11 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; qsec       |         am | -0.23 | [-0.54,  0.13] | -1.29 | 30 | 1.000  | Point-biserial |    32
-#&gt; qsec       |       gear | -0.21 | [-0.52,  0.15] | -1.19 | 30 | 1.000  |        Pearson |    32
+#&gt; qsec       |         am | -0.23 | [-0.54,  0.13] | -1.29 | 30 | &gt; .999 | Point-biserial |    32
+#&gt; qsec       |       gear | -0.21 | [-0.52,  0.15] | -1.19 | 30 | &gt; .999 |        Pearson |    32
 #&gt; qsec       |       carb | -0.66 | [-0.82, -0.40] | -4.76 | 30 | 0.001  |        Pearson |    32
-#&gt; vs         |         am |  0.26 | [-0.09,  0.56] |  1.47 | 30 | 1.000  |    Tetrachoric |    32
-#&gt; vs         |       gear |  0.21 | [-0.15,  0.52] |  1.15 | 30 | 1.000  | Point-biserial |    32
+#&gt; vs         |         am |  0.26 | [-0.09,  0.56] |  1.47 | 30 | &gt; .999 |    Tetrachoric |    32
+#&gt; vs         |       gear |  0.21 | [-0.15,  0.52] |  1.15 | 30 | &gt; .999 | Point-biserial |    32
 #&gt; vs         |       carb | -0.57 | [-0.77, -0.28] | -3.80 | 30 | 0.015  | Point-biserial |    32
 #&gt; am         |       gear |  0.79 | [ 0.62,  0.89] |  7.16 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; am         |       carb |  0.06 | [-0.30,  0.40] |  0.32 | 30 | 1.000  | Point-biserial |    32
-#&gt; gear       |       carb |  0.27 | [-0.08,  0.57] |  1.56 | 30 | 1.000  |        Pearson |    32</div></pre>
+#&gt; am         |       carb |  0.06 | [-0.30,  0.40] |  0.32 | 30 | &gt; .999 | Point-biserial |    32
+#&gt; gear       |       carb |  0.27 | [-0.08,  0.57] |  1.56 | 30 | &gt; .999 |        Pearson |    32</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -397,7 +400,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

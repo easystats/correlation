@@ -45,8 +45,6 @@
 
 
 
-  <link href="../extra.css" rel="stylesheet">
-  
 
 <meta property="og:title" content="Fisher z-transformation — z_fisher" />
 <meta property="og:description" content="The Fisher z-transformation converts the standard Pearson's r to a normally distributed variable z'. It is used to compute confidence intervals to correlations. The z' variable is different from the z-statistic." />
@@ -82,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -145,7 +143,7 @@
     <p>The Fisher z-transformation converts the standard Pearson's r to a normally distributed variable z'. It is used to compute confidence intervals to correlations. The z' variable is different from the z-statistic.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/z_fisher.html'>z_fisher</a></span>(r = <span class='kw'>NULL</span>, z = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>z_fisher</span>(r = <span class='kw'>NULL</span>, z = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,7 +162,9 @@
     <p>Zar, J.H., (2014). Spearman Rank Correlation: Overview. Wiley StatsRef: Statistics Reference Online. doi:10.1002/9781118445112.stat05964</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/z_fisher.html'>z_fisher</a></span>(r = <span class='fl'>0.7</span>)</div><div class='output co'>#&gt; [1] 0.8673005</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/z_fisher.html'>z_fisher</a></span>(z = <span class='fl'>0.867</span>)</div><div class='output co'>#&gt; [1] 0.6998467</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>z_fisher</span>(r = <span class='fl'>0.7</span>)
+</div><div class='output co'>#&gt; [1] 0.8673005</div><div class='input'><span class='fu'>z_fisher</span>(z = <span class='fl'>0.867</span>)
+</div><div class='output co'>#&gt; [1] 0.6998467</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -180,7 +180,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

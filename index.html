@@ -17,8 +17,7 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Methods for Correlation Analysis">
+<script src="pkgdown.js"></script><meta property="og:title" content="Methods for Correlation Analysis">
 <meta property="og:description" content="Lightweight package for computing different kinds of correlations, such as partial correlations, Bayesian correlations, multilevel correlations, polychoric correlations, biweight correlations, distance correlations and more. Relies on the easystats ecosystem (Lüdecke, Waggoner &amp; Makowski (2019) &lt;doi:10.21105/joss.01412&gt;).">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -39,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -101,7 +100,8 @@
 <p><code>correlation</code> is an <a href="https://github.com/easystats/easystats"><strong>easystats</strong></a> package focused on correlation analysis. It’s lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as <strong>partial</strong> correlations, <strong>Bayesian</strong> correlations, <strong>multilevel</strong> correlations, <strong>polychoric</strong> correlations, <strong>biweight</strong>, <strong>percentage bend</strong> or <strong>Sheperd’s Pi</strong> correlations (types of robust correlation), <strong>distance</strong> correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, <em>Bayesian partial multilevel correlation</em>).</p>
 <p>You can reference the package and its documentation as follows:</p>
 <ul>
-<li>Makowski, D., Ben-Shachar, M. S., Patil, I. &amp; Lüdecke, D. (2020). <em>Methods and Algorithms for Correlation Analysis in R</em>. CRAN.</li>
+<li>Makowski, D., Ben-Shachar, M. S., Patil, I., &amp; Lüdecke, D. (2019). <em>Methods and Algorithms for Correlation Analysis in R</em>. Journal of Open Source Software, 5(51), 2306. <a href="https://doi.org/10.21105/joss.02306">10.21105/joss.02306</a>
+</li>
 </ul>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -109,7 +109,7 @@
 <p>Run the following:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
-<span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">"easystats/correlation"</span>)
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"easystats/correlation"</span>)
 </pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://easystats.github.io/correlation">"correlation"</a></span>)
@@ -204,11 +204,11 @@
 <span class="fu"><a href="reference/correlation.html">correlation</a></span>(<span class="kw">iris</span>, bayesian = <span class="fl">TRUE</span>)
 <span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |     pd | % in ROPE |    BF |              Prior | n_Obs</span>
 <span class="co">## --------------------------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.38% |    42.25% |  0.51 | Cauchy (0 +- 0.33) |   150</span>
-<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
+<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.00% |    43.18% |  0.51 | Cauchy (0 +- 0.33) |   150</span>
+<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
 <span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
-<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
-<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |     0.07% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
+<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.31] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
+<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |     0.05% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
 <span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
 </pre></div>
 </div>
@@ -343,7 +343,7 @@
 <li><a href="https://cran.r-project.org/package=correlation"><img src="http://cranlogs.r-pkg.org/badges/correlation" alt="downloads"></a></li>
 <li><a href="https://travis-ci.org/easystats/correlation"><img src="https://travis-ci.org/easystats/correlation.svg?branch=master" alt="Build Status"></a></li>
 <li><a href="https://codecov.io/gh/easystats/correlation"><img src="https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://doi.org/10.5281/zenodo.3837171"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.3837171.svg" alt="DOI"></a></li>
+<li><a href="https://doi.org/10.21105/joss.02306"><img src="https://joss.theoj.org/papers/10.21105/joss.02306/status.svg" alt="DOI"></a></li>
 </ul>
 </div>
 </div>
@@ -355,7 +355,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

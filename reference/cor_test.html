@@ -45,8 +45,6 @@
 
 
 
-  <link href="../extra.css" rel="stylesheet">
-  
 
 <meta property="og:title" content="Correlation test — cor_test" />
 <meta property="og:description" content="This function performs a correlation test between two variables." />
@@ -82,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -145,7 +143,7 @@
     <p>This function performs a correlation test between two variables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(
+    <pre class="usage"><span class='fu'>cor_test</span>(
   <span class='kw'>data</span>,
   <span class='kw'>x</span>,
   <span class='kw'>y</span>,
@@ -219,7 +217,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-<h3>Correlation Types</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Correlation Types</h3>
 
 <ul>
 <li><p><strong>Pearson's correlation</strong>: This is the most common correlation method. It corresponds to the covariance of the two variables normalized (i.e., divided) by the product of their standard deviations.</p></li>
@@ -234,7 +232,7 @@
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
 </ul>
 
-<h3>Partial Correlation</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Partial Correlation</h3>
 <p><strong>Partial correlations</strong> are estimated as the correlation between two variables after adjusting for the (linear) effect of one or more other variable.
 The correlation test is then run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model.
 This is why some discrepancies are to be expected for the t- and p-values, CIs, BFs etc (but <em>not</em> the correlation coefficient) compared to other implementations (e.g., <code>ppcor</code>).
@@ -243,7 +241,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 <br /><br />
 <strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</p>
 
-<h3>Notes</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Notes</h3>
 
 <ul>
 <li><p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These are technically Pearson Bayesian correlations of rank transformed data, rather than pure Bayesian rank correlations (which have different priors).</p></li>
@@ -253,59 +251,77 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://easystats.github.io/correlation'>correlation</a></span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p |  Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p |  Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.27, 0.04] | -1.44 | 148 | 0.152 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"spearman"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |   Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.27, 0.04] | -1.44 | 148 | 0.152 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"spearman"</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |   Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | 6.56e+05 | 0.041 | Spearman |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"kendall"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |        95% CI |   tau |     z |     p |  Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | 6.56e+05 | 0.041 | Spearman |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"kendall"</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |        95% CI |   tau |     z |     p |  Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | [-0.23, 0.08] | -0.08 | -1.33 | 0.183 | Kendall |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"biweight"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p |   Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | [-0.23, 0.08] | -0.08 | -1.33 | 0.183 | Kendall |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"biweight"</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p |   Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.13 | [-0.29, 0.03] | -1.65 | 148 | 0.101 | Biweight |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"distance"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |        95% CI |    t |    df |      p |                    Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.13 | [-0.29, 0.03] | -1.65 | 148 | 0.101 | Biweight |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"distance"</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |        95% CI |    t |    df |      p |                    Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.08 | [-0.08, 0.24] | 8.43 | 11024 | &lt; .001 | Distance (Bias Corrected) |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"percentage"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |          Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | 0.08 | [-0.08, 0.24] | 8.43 | 11024 | &lt; .001 | Distance (Bias Corrected) |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"percentage"</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |          Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.19 | [-0.34, -0.03] | -2.40 | 148 | 0.018 | Percentage Bend |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"shepherd"</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |        Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.19 | [-0.34, -0.03] | -2.39 | 148 | 0.018 | Percentage Bend |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"shepherd"</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |        Method | n_Obs
 #&gt; ----------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.38, -0.07] | 6.02e+05 | 0.005 | Shepherd's Pi |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, bayesian = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |   BF |              Prior | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.38, -0.07] | 6.02e+05 | 0.005 | Shepherd's Pi |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, bayesian = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |   BF |              Prior | n_Obs
 #&gt; -----------------------------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.11 | [-0.24, 0.01] | 91.15% |    42.33% | 0.51 | Cauchy (0 +- 0.33) |   150</div><div class='input'>
 <span class='co'># Tetrachoric</span>
 <span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='kw'>iris</span>
 <span class='kw'>data</span><span class='op'>$</span><span class='kw'>Sepal.Width_binary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>data</span><span class='op'>$</span><span class='kw'>Sepal.Width</span> <span class='op'>&gt;</span> <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
 <span class='kw'>data</span><span class='op'>$</span><span class='kw'>Petal.Width_binary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>data</span><span class='op'>$</span><span class='kw'>Petal.Width</span> <span class='op'>&gt;</span> <span class='fl'>1.2</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>data</span>, <span class='st'>"Sepal.Width_binary"</span>, <span class='st'>"Petal.Width_binary"</span>, method = <span class='st'>"tetrachoric"</span>)</div><div class='output co'>#&gt; Parameter1         |         Parameter2 |   rho |         95% CI |     t |  df |      p |      Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='kw'>data</span>, <span class='st'>"Sepal.Width_binary"</span>, <span class='st'>"Petal.Width_binary"</span>, method = <span class='st'>"tetrachoric"</span>)
+</div><div class='output co'>#&gt; Parameter1         |         Parameter2 |   rho |         95% CI |     t |  df |      p |      Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------------------------
 #&gt; Sepal.Width_binary | Petal.Width_binary | -0.53 | [-0.63, -0.40] | -7.49 | 148 | &lt; .001 | Tetrachoric |   150</div><div class='input'>
 <span class='co'># Biserial</span>
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Petal.Width_binary"</span>, method = <span class='st'>"biserial"</span>)</div><div class='output co'>#&gt; Parameter1  |         Parameter2 |   rho |         95% CI |     t |  df |      p |   Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='kw'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Petal.Width_binary"</span>, method = <span class='st'>"biserial"</span>)
+</div><div class='output co'>#&gt; Parameter1  |         Parameter2 |   rho |         95% CI |     t |  df |      p |   Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------------
 #&gt; Sepal.Width | Petal.Width_binary | -0.40 | [-0.53, -0.26] | -5.34 | 148 | &lt; .001 | Biserial |   150</div><div class='input'>
 <span class='co'># Polychoric</span>
 <span class='kw'>data</span><span class='op'>$</span><span class='kw'>Petal.Width_ordinal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>data</span><span class='op'>$</span><span class='kw'>Petal.Width</span>))
 <span class='kw'>data</span><span class='op'>$</span><span class='kw'>Sepal.Length_ordinal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>data</span><span class='op'>$</span><span class='kw'>Sepal.Length</span>))
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>data</span>, <span class='st'>"Petal.Width_ordinal"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, method = <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 1 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.</span></div><div class='output co'>#&gt; Parameter1          |           Parameter2 |  rho |       95% CI |    t |  df |      p |     Method | n_Obs
-#&gt; -----------------------------------------------------------------------------------------------------------
-#&gt; Petal.Width_ordinal | Sepal.Length_ordinal | 0.53 | [0.40, 0.63] | 7.53 | 148 | &lt; .001 | Polychoric |   150</div><div class='input'>
+<span class='fu'>cor_test</span>(<span class='kw'>data</span>, <span class='st'>"Petal.Width_ordinal"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, method = <span class='st'>"polychoric"</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: The items do not have an equal number of response alternatives, global set to FALSE.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 1 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.</span></div><div class='output co'>#&gt; Parameter1          |           Parameter2 |  rho |       95% CI |     t |  df |      p |     Method | n_Obs
+#&gt; ------------------------------------------------------------------------------------------------------------
+#&gt; Petal.Width_ordinal | Sepal.Length_ordinal | 0.76 | [0.68, 0.82] | 14.22 | 148 | &lt; .001 | Polychoric |   150</div><div class='input'>
 <span class='co'># When one variable is continuous, will run 'polyserial' correlation</span>
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, method = <span class='st'>"polychoric"</span>)</div><div class='output co'>#&gt; Parameter1  |           Parameter2 |   rho |        95% CI |     t |  df |     p |     Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='kw'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, method = <span class='st'>"polychoric"</span>)
+</div><div class='output co'>#&gt; Parameter1  |           Parameter2 |   rho |        95% CI |     t |  df |     p |     Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------------------
 #&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | [-0.30, 0.02] | -1.76 | 148 | 0.080 | Polyserial |   150</div><div class='input'>
 <span class='co'># Robust (these two are equivalent)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"pearson"</span>, robust = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |  Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"pearson"</span>, robust = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |  Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | -2.06 | 148 | 0.041 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"spearman"</span>, robust = <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |   Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | -2.06 | 148 | 0.041 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method = <span class='st'>"spearman"</span>, robust = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |   Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | 6.56e+05 | 0.041 | Spearman |   150</div><div class='input'>
 <span class='co'># Partial</span>
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
 #&gt; ----------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.84 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, multilevel = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: lme4</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.84 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, multilevel = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: lme4</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
 #&gt; ----------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.85 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/pkg/correlation/man/cor_test.html'>cor_test</a></span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial_bayesian = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: rstanarm</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
+<span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial_bayesian = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: rstanarm</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs
 #&gt; ----------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.85 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='co'># }</span>
+#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] | 5.84 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='co'># }</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -322,7 +338,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
