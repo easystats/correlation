@@ -6,7 +6,7 @@
   var_y <- .complete_variable_y(data, x, y)
 
   method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
-  rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = method, alternative = "two.sided", exact = FALSE)
+  rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = method, exact = FALSE, ...)
 
   params <- parameters::model_parameters(rez)
   params$Parameter1 <- x
