@@ -1,4 +1,4 @@
-#' @importFrom stats pt median
+#' @importFrom stats median
 #' @keywords internal
 .cor_test_percentage <- function(data, x, y, ci = 0.95, beta = 0.2, ...) {
   var_x <- .complete_variable_x(data, x, y)
@@ -17,17 +17,16 @@
 
   # Result
   r <- sum(a * b) / sqrt(sum(a^2) * sum(b^2))
-  test <- r * sqrt((length(var_x) - 2) / (1 - r^2))
-  sig <- 2 * (1 - stats::pt(abs(test), length(var_x) - 2))
+  p <- cor_to_p(r, n = length(var_x))
   ci_vals <- cor_to_ci(r, n = length(var_x), ci = ci)
 
   data.frame(
     Parameter1 = x,
     Parameter2 = y,
     r = r,
-    t = test,
+    t = p$statistic,
     df = length(var_x) - 2,
-    p = sig,
+    p = p$p,
     CI_low = ci_vals$CI_low,
     CI_high = ci_vals$CI_high,
     Method = "Percentage Bend",

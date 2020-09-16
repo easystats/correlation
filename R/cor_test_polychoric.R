@@ -32,9 +32,9 @@
     method <- "Polychoric"
   }
 
-
-  p <- cor_to_p(r, n = nrow(data))
-  ci_vals <- cor_to_ci(r, n = nrow(data), ci = ci)
+  # t-value approximation
+  p <- cor_to_p(r, n = length(var_x))
+  ci_vals <- cor_to_ci(r, n = length(var_x), ci = ci)
 
   data.frame(
     Parameter1 = x,
