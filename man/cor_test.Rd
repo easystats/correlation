@@ -27,7 +27,7 @@ cor_test(
 
 \item{x, y}{Names of two variables present in the data.}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation), "blomqvist" (for Blomqvist's coefficient), "hoeffding" (for Hoeffding's D), "gamma", "gaussian" (for Gaussian Rank correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
 
 \item{ci}{Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).}
 
@@ -60,7 +60,11 @@ This function performs a correlation test between two variables.
 \item \strong{Distance correlation}: Distance correlation measures both linear and non-linear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.
 \item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20\%).
 \item \strong{Shepherd's Pi correlation}: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped Mahalanobis distance).
+\item \strong{Blomqvist’s coefficient}: The Blomqvist’s coefficient (also referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a median-based non-parametric correlation that has some advantages over measures such as Spearman's or Kendall's estimates (see Shmid and Schimdt, 2006).
+\item \strong{Hoeffding’s D}: The Hoeffding’s D statisticis a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.
 \item \strong{Point-Biserial and biserial correlation}: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
+\item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is similar to Kendall's Tau coefficient. It is relatively robust to outliers and deals well with data that have many ties.
+\item \strong{Gaussian rank Correlation}: The Gaussian rank correlation estimator is a simple and well-performing alternative for robust rank correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of the ranks.
 \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 }}
@@ -90,6 +94,10 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "blomqvist")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "hoeffding")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gamma")
+cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gaussian")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "shepherd")
 cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
 

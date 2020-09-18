@@ -89,3 +89,18 @@ test_that("cor_test hoeffding", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "hoeffding")
   testthat::expect_equal(out$r, as.numeric(0.5629277), tol = 0.01)
 })
+
+test_that("cor_test gamma", {
+  set.seed(333)
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gamma")
+  testthat::expect_equal(out$r, as.numeric(0.8453925), tol = 0.01)
+})
+
+test_that("cor_test gaussian", {
+  set.seed(333)
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian")
+  testthat::expect_equal(out$r, as.numeric(0.87137), tol = 0.01)
+
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian=TRUE)
+  testthat::expect_equal(out$r, as.numeric(0.8620878), tol = 0.01)
+})

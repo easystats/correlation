@@ -2,11 +2,14 @@
 
 ## Changes
 
+- Add "gaussian" rank method.
+- Add "gamma" method.
 - Add "hoeffding" method.
 - Add "blomqvist" method.
 
 ## Bug fixes
 
+- Added `Method` column to Bayesian correlations
 - Fix bug when `robust=TRUE` (https://github.com/easystats/effectsize/issues/87)
 
 # correlation 0.3.0

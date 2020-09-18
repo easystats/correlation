@@ -1,6 +1,6 @@
 #' @keywords internal
 .cor_test_hoeffding <- function(data, x, y, ci = 0.95, ...) {
-  if (!requireNamespace("wdm", quietly = TRUE)) {
+  if (!requireNamespace("Hmisc", quietly = TRUE)) {
     stop("Package `Hmisc` required for 'hoeffding' correlations. Please install it by running `install.packages('Hmisc').", call. = FALSE)
   }
 

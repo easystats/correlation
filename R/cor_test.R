@@ -5,7 +5,7 @@
 #' @param data A data frame.
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation), "blombqvist" (for Blomqvist's coefficient), "hoeffding" (for Hoeffding's D) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
+#' @param method A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation), "blomqvist" (for Blomqvist's coefficient), "hoeffding" (for Hoeffding's D), "gamma", "gaussian" (for Gaussian Rank correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
 #' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be TRUE or "semi" for partial and semi-partial correlations, respectively.
@@ -29,8 +29,10 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "blombqvist")
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "blomqvist")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "hoeffding")
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gamma")
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gaussian")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "shepherd")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
 #'
@@ -112,6 +114,10 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
       out <- .cor_test_blomqvist(data, x, y, ci = ci, ...)
     } else if (method %in% c("hoeffding")) {
       out <- .cor_test_hoeffding(data, x, y, ci = ci, ...)
+    } else if (method %in% c("gamma")) {
+      out <- .cor_test_gamma(data, x, y, ci = ci, ...)
+    } else if (method %in% c("gaussian")) {
+      out <- .cor_test_gaussian(data, x, y, ci = ci, ...)
     } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
     } else {
@@ -132,14 +138,16 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
       stop("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       stop("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("blomqvist", "median")) {
-      stop("Bayesian Blomvquist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
+    } else if (method %in% c("blomqvist", "median", "medial")) {
+      stop("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
     } else if (method %in% c("hoeffding")) {
       stop("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
+    } else if (method %in% c("gamma")) {
+      stop("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
     } else {
-      out <- .cor_test_bayes(data, x, y, ci = ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
+      out <- .cor_test_bayes(data, x, y, ci = ci, method=method, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
     }
   }
 

@@ -21,6 +21,8 @@
 #' \item \strong{Blomqvist’s coefficient}: The Blomqvist’s coefficient (also referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a median-based non-parametric correlation that has some advantages over measures such as Spearman's or Kendall's estimates (see Shmid and Schimdt, 2006).
 #' \item \strong{Hoeffding’s D}: The Hoeffding’s D statisticis a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.
 #' \item \strong{Point-Biserial and biserial correlation}: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
+#' \item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is similar to Kendall's Tau coefficient. It is relatively robust to outliers and deals well with data that have many ties.
+#' \item \strong{Gaussian rank Correlation}: The Gaussian rank correlation estimator is a simple and well-performing alternative for robust rank correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of the ranks.
 #' \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 #' \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
 #' }}
@@ -66,6 +68,7 @@
 #' correlation(mtcars[-2], method = "auto")
 #' @importFrom stats p.adjust
 #' @references \itemize{
+#'   \item Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank correlation estimator: robustness properties. Statistics and Computing, 22(2), 471-483.
 #'   \item Bhushan, N., Mohnert, F., Sloot, D., Jans, L., Albers, C., & Steg, L. (2019). Using a Gaussian graphical model to explore relationships between items and variables in environmental psychology research. Frontiers in psychology, 10, 1050.
 #'   \item Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for correlations when data are not normal. Behavior research methods, 49(1), 294-309.
 #'   \item Fieller, E. C., Hartley, H. O., & Pearson, E. S. (1957). Tests for rank correlation coefficients. I. Biometrika, 44(3/4), 470-481.

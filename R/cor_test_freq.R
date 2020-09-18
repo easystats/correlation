@@ -5,6 +5,12 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
+  .cor_test_base(x, y, var_x, var_y, ci=ci, method=method, ...)
+}
+
+
+#' @keywords internal
+.cor_test_base <- function(x, y, var_x, var_y, ci = 0.95, method = "pearson", ...) {
   method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
   rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = method, exact = FALSE, ...)
 
@@ -19,7 +25,7 @@
   }
 
   # Add CI for non-pearson correlations
-  if (method %in% c( "kendall", "spearman")){
+  if (method %in% c("kendall", "spearman")){
     rez_ci <- cor_to_ci(rez$estimate, n=length(var_x), ci=ci, ...)
     params$CI_low <- rez_ci$CI_low
     params$CI_high <- rez_ci$CI_high
@@ -30,4 +36,5 @@
   if (!("CI_high" %in% names(params))) params$CI_high <- NA
 
   params
+
 }

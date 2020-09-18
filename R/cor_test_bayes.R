@@ -3,7 +3,7 @@
 #' @importFrom effectsize ranktransform
 #' @importFrom parameters model_parameters
 #' @keywords internal
-.cor_test_bayes <- function(data, x, y, ci = 0.95, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), method = "pearson", ...) {
+.cor_test_bayes <- function(data, x, y, ci = 0.95, method = "pearson", bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), ...) {
   if (!requireNamespace("BayesFactor")) {
     stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
   }
@@ -14,6 +14,27 @@
   if (tolower(method) %in% c("spearman", "spear", "s")) {
     var_x <- effectsize::ranktransform(var_x, sign = TRUE, method = "average")
     var_y <- effectsize::ranktransform(var_y, sign = TRUE, method = "average")
+    method <- "Bayesian Spearman"
+  } else if(tolower(method) %in% c("gaussian")){
+    var_x <- qnorm(rank(var_x) / (length(var_x) + 1))
+    var_y <- qnorm(rank(var_y) / (length(var_y) + 1))
+    method <- "Bayesian Gaussian rank"
+  } else {
+    method <- "Bayesian Pearson"
+  }
+
+  out <- .cor_test_bayes_base(x, y, var_x, var_y, ci =ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
+
+  # Add method
+  out$Method <- method
+  out
+}
+
+
+#' @keywords internal
+.cor_test_bayes_base <- function(x, y, var_x, var_y, ci = 0.95, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), method = "pearson", ...) {
+  if (!requireNamespace("BayesFactor")) {
+    stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
   }
 
   if (x == y) {
@@ -49,3 +70,4 @@
   params$Parameter2 <- y
   params[unique(c("Parameter1", "Parameter2", names(params)))]
 }
+

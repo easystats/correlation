@@ -70,6 +70,29 @@ Click on the buttons above to access the package [**documentation**](https://eas
 - [**Types of Correlation**](https://easystats.github.io/correlation/articles/types.html)
 - [**Multilevel Correlations**](https://easystats.github.io/correlation/articles/multilevel.html)
 
+## Features
+
+The *correlation* package can compute many different types of correlation, including:
+
+- [x] **Pearson's correlation**
+- [x] **Spearman's rank correlation**
+- [x] **Kendall's rank correlation**
+- [x] **Biweight midcorrelation**
+- [x] **Distance correlation**
+- [x] **Percentage bend correlation**
+- [x] **Shepherd's Pi correlation**
+- [x] **Blomqvist’s coefficient**
+- [x] **Hoeffding’s D**
+- [x] **Gamma correlation**
+- [x] **Gaussian rank correlation**
+- [x] **Point-Biserial and biserial correlation**
+- [x] **Polychoric correlation**
+- [x] **Tetrachoric correlation**
+- [x] **Multilevel correlation**
+
+An overview and description of these correlations types is [**available here**](https://easystats.github.io/correlation/articles/types.html). Moreover, many of these correlation types are available as **partial** or within a **Bayesian** framework. 
+
+
 
 # Examples
 
