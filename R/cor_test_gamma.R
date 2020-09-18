@@ -4,10 +4,10 @@
   var_y <- .complete_variable_y(data, x, y)
 
   # Get r value
-  Rx <- outer(var_x, var_x, function(u,v) sign(u-v))
-  Ry <- outer(var_y, var_y,function(u,v) sign(u-v))
-  S1 <- Rx*Ry
-  r <- sum(S1)/sum(abs(S1))
+  Rx <- outer(var_x, var_x, function(u, v) sign(u - v))
+  Ry <- outer(var_y, var_y, function(u, v) sign(u - v))
+  S1 <- Rx * Ry
+  r <- sum(S1) / sum(abs(S1))
 
   # t-value approximation
   p <- cor_to_p(r, n = length(var_x))

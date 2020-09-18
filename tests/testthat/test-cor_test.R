@@ -101,6 +101,6 @@ test_that("cor_test gaussian", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian")
   testthat::expect_equal(out$r, as.numeric(0.87137), tol = 0.01)
 
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian=TRUE)
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
   testthat::expect_equal(out$r, as.numeric(0.8620878), tol = 0.01)
 })

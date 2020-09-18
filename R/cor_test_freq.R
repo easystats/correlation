@@ -5,7 +5,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  .cor_test_base(x, y, var_x, var_y, ci=ci, method=method, ...)
+  .cor_test_base(x, y, var_x, var_y, ci = ci, method = method, ...)
 }
 
 
@@ -25,8 +25,8 @@
   }
 
   # Add CI for non-pearson correlations
-  if (method %in% c("kendall", "spearman")){
-    rez_ci <- cor_to_ci(rez$estimate, n=length(var_x), ci=ci, ...)
+  if (method %in% c("kendall", "spearman")) {
+    rez_ci <- cor_to_ci(rez$estimate, n = length(var_x), ci = ci, ...)
     params$CI_low <- rez_ci$CI_low
     params$CI_high <- rez_ci$CI_high
   }
@@ -36,5 +36,4 @@
   if (!("CI_high" %in% names(params))) params$CI_high <- NA
 
   params
-
 }

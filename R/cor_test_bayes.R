@@ -15,7 +15,7 @@
     var_x <- effectsize::ranktransform(var_x, sign = TRUE, method = "average")
     var_y <- effectsize::ranktransform(var_y, sign = TRUE, method = "average")
     method <- "Bayesian Spearman"
-  } else if(tolower(method) %in% c("gaussian")){
+  } else if (tolower(method) %in% c("gaussian")) {
     var_x <- qnorm(rank(var_x) / (length(var_x) + 1))
     var_y <- qnorm(rank(var_y) / (length(var_y) + 1))
     method <- "Bayesian Gaussian rank"
@@ -23,7 +23,7 @@
     method <- "Bayesian Pearson"
   }
 
-  out <- .cor_test_bayes_base(x, y, var_x, var_y, ci =ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
+  out <- .cor_test_bayes_base(x, y, var_x, var_y, ci = ci, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
 
   # Add method
   out$Method <- method
@@ -70,4 +70,3 @@
   params$Parameter2 <- y
   params[unique(c("Parameter1", "Parameter2", names(params)))]
 }
-

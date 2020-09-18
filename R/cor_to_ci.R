@@ -6,9 +6,9 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fiell
   method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
 
   if (method == "kendall") {
-    out <- .cor_to_ci_kendall(cor, n, ci = ci, correction=correction, ...)
+    out <- .cor_to_ci_kendall(cor, n, ci = ci, correction = correction, ...)
   } else if (method == "spearman") {
-    out <- .cor_to_ci_spearman(cor, n, ci = ci, correction=correction, ...)
+    out <- .cor_to_ci_spearman(cor, n, ci = ci, correction = correction, ...)
   } else {
     out <- .cor_to_ci_pearson(cor, n, ci = ci, ...)
   }
