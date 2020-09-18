@@ -125,6 +125,59 @@
 <li><a href="https://easystats.github.io/correlation/articles/multilevel.html"><strong>Multilevel Correlations</strong></a></li>
 </ul>
 </div>
+<div id="features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features" class="anchor"></a>Features</h2>
+<p>The <em>correlation</em> package can compute many different types of correlation, including:</p>
+<ul>
+<li>
+<input type="checkbox" disabled checked><strong>Pearson’s correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Spearman’s rank correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Kendall’s rank correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Biweight midcorrelation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Distance correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Percentage bend correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Shepherd’s Pi correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Blomqvist’s coefficient</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Hoeffding’s D</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Gamma correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Gaussian rank correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Point-Biserial and biserial correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Polychoric correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Tetrachoric correlation</strong>
+</li>
+<li>
+<input type="checkbox" disabled checked><strong>Multilevel correlation</strong>
+</li>
+</ul>
+<p>An overview and description of these correlations types is <a href="https://easystats.github.io/correlation/articles/types.html"><strong>available here</strong></a>. Moreover, many of these correlation types are available as <strong>partial</strong> or within a <strong>Bayesian</strong> framework.</p>
+</div>
 </div>
 <div id="examples" class="section level1">
 <h1 class="hasAnchor">
@@ -202,14 +255,14 @@
 <p>It is very easy to switch to a <strong>Bayesian framework</strong>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="fu"><a href="reference/correlation.html">correlation</a></span>(<span class="kw">iris</span>, bayesian = <span class="fl">TRUE</span>)
-<span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |     pd | % in ROPE |    BF |              Prior | n_Obs</span>
-<span class="co">## --------------------------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] | 92.00% |    43.18% |  0.51 | Cauchy (0 +- 0.33) |   150</span>
-<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
-<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
-<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.31] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
-<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |     0.05% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
-<span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) |   150</span>
+<span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |     pd | % in ROPE |    BF |              Prior |           Method | n_Obs</span>
+<span class="co">## ---------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.02] | 92.03% |    41.93% |  0.51 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.52, -0.31] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] |   100% |     0.07% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
 </pre></div>
 </div>
 <div id="tetrachoric-polychoric-biserial-biweight" class="section level2">
