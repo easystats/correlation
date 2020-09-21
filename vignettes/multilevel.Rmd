@@ -38,7 +38,7 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 ## Data
 
 
-Imagine we have an experiment in which **10 individuals** completed a task with **100 trials**. For each of the 1000 total trials, we measured two things, **V1** and **V2**, and our research aims at **investingating the link between these two variables**.
+Imagine we have an experiment in which **10 individuals** completed a task with **100 trials**. For each of the 1000 total trials, we measured two things, **V1** and **V2**, and our research aims at **investigating the link between these two variables**.
 
 We will generate data using the [`simulate_simpson()`](https://easystats.github.io/correlation/reference/simulate_simpson.html) function from the `correlation` package.
 
