@@ -87,12 +87,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -289,9 +283,9 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |        Method | n_Obs
 #&gt; ----------------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.38, -0.07] | 6.02e+05 | 0.005 | Shepherd's Pi |   150</div><div class='input'><span class='fu'>cor_test</span>(<span class='kw'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, bayesian = <span class='fl'>TRUE</span>)
-</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |   BF |              Prior |           Method | n_Obs
-#&gt; ------------------------------------------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.11 | [-0.24, 0.01] | 91.15% |    42.33% | 0.51 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |    BF |              Prior |           Method | n_Obs
+#&gt; -------------------------------------------------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | -0.11 | [-0.24, 0.01] | 91.15% |    42.33% | 0.509 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</div><div class='input'>
 <span class='co'># Tetrachoric</span>
 <span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='kw'>iris</span>
 <span class='kw'>data</span><span class='op'>$</span><span class='kw'>Sepal.Width_binary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>data</span><span class='op'>$</span><span class='kw'>Sepal.Width</span> <span class='op'>&gt;</span> <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>0</span>)
