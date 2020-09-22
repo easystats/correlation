@@ -90,6 +90,18 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
     data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = FALSE, method = "average")
   }
 
+  n_obs <- length(.complete_variable_x(data, x, y))
+  # This is a trick in case the number of valid observations is lower than 3
+  invalid <- FALSE
+  if(n_obs < 3){
+    warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."))
+    invalid <- TRUE
+    original_info <- list(data=data, x=x, y=y)
+    data <- datasets::mtcars # Basically use a working dataset so the correlation doesn't fail
+    x <- "mpg"
+    y <- "disp"
+  }
+
 
   # Find method
   method <- tolower(method)
@@ -151,8 +163,16 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
     }
   }
 
+  # Replace by NANs if invalid
+  if(isTRUE(invalid)){
+    data <- original_info$data
+    out$Parameter1 <- original_info$x
+    out$Parameter2 <- original_info$y
+    out[!names(out) %in% c("Parameter1", "Parameter2")] <- NA
+  }
+
   # Number of observations
-  out$n_Obs <- sum(stats::complete.cases(data[[x]], data[[y]]))
+  out$n_Obs <- n_obs
 
   # Reorder columns
   if ("CI_low" %in% names(out)) {

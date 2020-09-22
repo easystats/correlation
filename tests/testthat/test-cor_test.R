@@ -104,3 +104,14 @@ test_that("cor_test gaussian", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
   testthat::expect_equal(out$r, as.numeric(0.8620878), tol = 0.01)
 })
+
+
+
+# Edge cases --------------------------------------------------------------
+test_that("cor_test 2 valid observations", {
+  out <- correlation(data.frame(v2 = c(2, 1, 1, 2), v3 = c(1,2, NA, NA)))
+  testthat::expect_true(is.na(out$r))
+})
+
+
+
