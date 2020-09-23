@@ -18,17 +18,11 @@
   }
   data[[binary]] <- as.vector((data[[binary]] - min(data[[binary]], na.rm = TRUE)) / diff(range(data[[binary]], na.rm = TRUE), na.rm = TRUE))
 
-  # Get biserial correlation
+  # Get biserial or point-biserial correlation
   if (method == "biserial") {
     out <- .cor_test_biserial_biserial(data, x, y, continuous, binary, ci)
-
-    # Get point-biserial correlation
   } else {
-    out <- .cor_test_freq(data, continuous, binary, ci = ci, method = "pearson", ...)
-    names(out)[names(out) == "r"] <- "rho"
-    out$Parameter1 <- x
-    out$Parameter2 <- y
-    out$Method <- "Point-biserial"
+    out <- .cor_test_biserial_pointbiserial(data, x, y, continuous, binary, ci, ...)
   }
 
   out
@@ -36,22 +30,22 @@
 
 
 
+#' @keywords internal
+.cor_test_biserial_pointbiserial <- function(data, x, y, continuous, binary, ci, ...) {
 
+  out <- .cor_test_freq(data, continuous, binary, ci = ci, method = "pearson", ...)
+  names(out)[names(out) == "r"] <- "rho"
+  out$Parameter1 <- x
+  out$Parameter2 <- y
+  out$Method <- "Point-biserial"
 
-
-
-
-
-
-
+  out
+}
 
 
 
 #' @keywords internal
 .cor_test_biserial_biserial <- function(data, x, y, continuous, binary, ci) {
-  if (!requireNamespace("psych", quietly = TRUE)) {
-    stop("Package `psych` required for biserial correlations. Please install it by running `install.packages('psych').", call. = FALSE)
-  }
 
   var_x <- .complete_variable_x(data, continuous, binary)
   var_y <- .complete_variable_y(data, continuous, binary)

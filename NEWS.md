@@ -1,13 +1,8 @@
-# correlation 0.x.x
-
-## Changes
-
-- Don't error if less than 3 valid observations ([#100](https://github.com/easystats/correlation/issues/100))
-
 # correlation 0.4.0
 
 ## Changes
 
+- Don't error if less than 3 valid observations ([#100](https://github.com/easystats/correlation/issues/100))
 - Add "gaussian" rank method
 - Add "gamma" method
 - Add "hoeffding" method
