@@ -1,22 +1,30 @@
 context("cor_test")
 
 
-
 test_that("cor_test frequentist", {
+
+  testthat::expect_error(cor_test(iris, Petal.Length, Petal.Width))
+
+  out <- cor_test(iris, "Petal.Length", "Petal.Width")
+  testthat::expect_equal(out$r, 0.962, tol = 0.01)
+
+})
+
+
+test_that("cor_test bayesian", {
+  if (requireNamespace("BayesFactor")) {
+
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
+  testthat::expect_equal(out$r, 0.962, tol = 0.01)
+
+  }
+})
+
+test_that("cor_test tetrachoric", {
   if (requireNamespace("psych")) {
     data <- iris
     data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
     data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
-
-
-    testthat::expect_error(cor_test(data, Petal.Length, Petal.Width))
-
-    out <- cor_test(data, "Petal.Length", "Petal.Width")
-    testthat::expect_equal(out$r, 0.962, tol = 0.01)
-
-    out <- cor_test(data, "Petal.Length", "Petal.Width", bayesian = TRUE)
-    testthat::expect_equal(out$r, 0.962, tol = 0.01)
-
 
     # With Factors / Binary
     out <- cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
@@ -85,9 +93,11 @@ test_that("cor_test blomqvist", {
 })
 
 test_that("cor_test hoeffding", {
+  if (requireNamespace("Hmisc")) {
   set.seed(333)
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "hoeffding")
   testthat::expect_equal(out$r, as.numeric(0.5629277), tol = 0.01)
+  }
 })
 
 test_that("cor_test gamma", {
@@ -101,8 +111,10 @@ test_that("cor_test gaussian", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian")
   testthat::expect_equal(out$r, as.numeric(0.87137), tol = 0.01)
 
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
-  testthat::expect_equal(out$r, as.numeric(0.8620878), tol = 0.01)
+  if (requireNamespace("BayesFactor")) {
+    out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
+    testthat::expect_equal(out$r, as.numeric(0.8620878), tol = 0.01)
+  }
 })
 
 
