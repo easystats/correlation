@@ -51,7 +51,6 @@ Suggests:
 	rmcorr,
 	testthat,
 	tidyr,
-	covr,
 	rstanarm,
 	rmarkdown,
 	see,
