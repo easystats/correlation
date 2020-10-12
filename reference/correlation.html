@@ -137,24 +137,24 @@
     <p>Performs a correlation analysis.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>correlation</span>(
-  <span class='kw'>data</span>,
-  data2 = <span class='kw'>NULL</span>,
-  method = <span class='st'>"pearson"</span>,
-  p_adjust = <span class='st'>"holm"</span>,
-  ci = <span class='fl'>0.95</span>,
-  bayesian = <span class='fl'>FALSE</span>,
-  bayesian_prior = <span class='st'>"medium"</span>,
-  bayesian_ci_method = <span class='st'>"hdi"</span>,
-  bayesian_test = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pd"</span>, <span class='st'>"rope"</span>, <span class='st'>"bf"</span>),
-  redundant = <span class='fl'>FALSE</span>,
-  include_factors = <span class='fl'>FALSE</span>,
-  partial = <span class='fl'>FALSE</span>,
-  partial_bayesian = <span class='fl'>FALSE</span>,
-  multilevel = <span class='fl'>FALSE</span>,
-  robust = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>correlation</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  data2 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  method <span class='op'>=</span> <span class='st'>"pearson"</span>,
+  p_adjust <span class='op'>=</span> <span class='st'>"holm"</span>,
+  ci <span class='op'>=</span> <span class='fl'>0.95</span>,
+  bayesian <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  bayesian_prior <span class='op'>=</span> <span class='st'>"medium"</span>,
+  bayesian_ci_method <span class='op'>=</span> <span class='st'>"hdi"</span>,
+  bayesian_test <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pd"</span>, <span class='st'>"rope"</span>, <span class='st'>"bf"</span><span class='op'>)</span>,
+  redundant <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  include_factors <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  partial <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  partial_bayesian <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  multilevel <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  robust <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -282,10 +282,10 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://easystats.github.io/correlation'>correlation</a></span>)
-<span class='kw'>results</span> <span class='op'>&lt;-</span> <span class='fu'>correlation</span>(<span class='kw'>iris</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://easystats.github.io/correlation/'>correlation</a></span><span class='op'>)</span>
+<span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'>correlation</span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
 
-<span class='kw'>results</span>
+<span class='va'>results</span>
 </div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------
 #&gt; Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] | -1.44 | 148 | 0.152  | Pearson |   150
@@ -293,12 +293,12 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; Sepal.Length |  Petal.Width |  0.82 | [ 0.76,  0.86] | 17.30 | 148 | &lt; .001 | Pearson |   150
 #&gt; Sepal.Width  | Petal.Length | -0.43 | [-0.55, -0.29] | -5.77 | 148 | &lt; .001 | Pearson |   150
 #&gt; Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] | -4.79 | 148 | &lt; .001 | Pearson |   150
-#&gt; Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>results</span>)
+#&gt; Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter    | Petal.Width | Petal.Length | Sepal.Width
 #&gt; -------------------------------------------------------
 #&gt; Sepal.Length |     0.82*** |      0.87*** |       -0.12
 #&gt; Sepal.Width  |    -0.37*** |     -0.43*** |            
-#&gt; Petal.Length |     0.96*** |              |            </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>results</span>, redundant = <span class='fl'>TRUE</span>)
+#&gt; Petal.Length |     0.96*** |              |            </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>results</span>, redundant <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
 #&gt; ----------------------------------------------------------------------
 #&gt; Sepal.Length |      1.00*** |       -0.12 |      0.87*** |     0.82***
@@ -306,11 +306,11 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; Petal.Length |      0.87*** |    -0.43*** |      1.00*** |     0.96***
 #&gt; Petal.Width  |      0.82*** |    -0.37*** |      0.96*** |     1.00***</div><div class='input'>
 <span class='co'># Grouped dataframe</span>
-<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'><a href='https://dplyr.tidyverse.org'>"dplyr"</a></span>)) {
-  <span class='kw'>iris</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='kw'>Species</span>) <span class='op'>%&gt;%</span>
-    <span class='fu'>correlation</span>()
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://dplyr.tidyverse.org'>"dplyr"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>iris</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Species</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>correlation</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div><div class='output co'>#&gt; <span class='message'>Loading required package: dplyr</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
@@ -337,7 +337,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; virginica  |  Sepal.Width |  Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | 48 | &lt; .001 | Pearson |    50
 #&gt; virginica  | Petal.Length |  Petal.Width | 0.32 | [ 0.05, 0.55] |  2.36 | 48 | 0.045  | Pearson |    50</div><div class='input'>
 <span class='co'># automatic selection of correlation method</span>
-<span class='fu'>correlation</span>(<span class='kw'>mtcars</span>[<span class='op'>-</span><span class='fl'>2</span>], method = <span class='st'>"auto"</span>)
+<span class='fu'>correlation</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>2</span><span class='op'>]</span>, method <span class='op'>=</span> <span class='st'>"auto"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |         95% CI |     t | df |      p |         Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------------
 #&gt; mpg        |       disp | -0.85 | [-0.92, -0.71] | -8.75 | 30 | &lt; .001 |        Pearson |    32

@@ -137,18 +137,18 @@
     <p>Convert a correlation matrix to a (semi)partial correlation matrix. Partial correlations are a measure of the correlation between two variables that remains after controlling for (i.e., "partialling" out) all the other relationships. They can be used for graphical Gaussian models, as they represent the direct interactions between two variables, conditioned on all remaining variables. This means that the squared partial correlation between a predictor X1 and a response variable Y can be interpreted as the proportion of (unique) variance accounted for by X1 relative to the residual or unexplained variance of Y that cannot be accounted by the other variables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cor_to_pcor</span>(<span class='kw'>cor</span>, tol = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span>(<span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span>))
+    <pre class="usage"><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>pcor_to_cor</span>(<span class='kw'>pcor</span>, tol = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span>(<span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span>))
+<span class='fu'>pcor_to_cor</span><span class='op'>(</span><span class='va'>pcor</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>cor_to_spcor</span>(cor = <span class='kw'>NULL</span>, cov = <span class='kw'>NULL</span>, tol = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span>(<span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span>))
+<span class='fu'>cor_to_spcor</span><span class='op'>(</span>cor <span class='op'>=</span> <span class='cn'>NULL</span>, cov <span class='op'>=</span> <span class='cn'>NULL</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>spcor_to_cor</span>(
-  spcor = <span class='kw'>NULL</span>,
-  cov = <span class='kw'>NULL</span>,
-  semi = <span class='fl'>FALSE</span>,
-  tol = <span class='kw'>.Machine</span><span class='op'>$</span><span class='kw'>double.eps</span><span class='op'>^</span>(<span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span>)
-)</pre>
+<span class='fu'>spcor_to_cor</span><span class='op'>(</span>
+  spcor <span class='op'>=</span> <span class='cn'>NULL</span>,
+  cov <span class='op'>=</span> <span class='cn'>NULL</span>,
+  semi <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,22 +179,22 @@
     <p>The semi-partial correlation is similar to the partial correlation statistic. However, it represents (when squared) the proportion of (unique) variance accounted for by the predictor X1, relative to the total variance of Y. Thus, it might be seen as a better indicator of the "practical relevance" of a predictor, because it is scaled to (i.e., relative to) the total variability in the response variable.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span>(<span class='kw'>iris</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>])
+    <pre class="examples"><div class='input'><span class='va'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
 
 <span class='co'># Partialize</span>
-<span class='fu'>cor_to_pcor</span>(<span class='kw'>cor</span>)
+<span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt; Sepal.Length    1.0000000   0.6285707    0.7190656  -0.3396174
 #&gt; Sepal.Width     0.6285707   1.0000000   -0.6152919   0.3526260
 #&gt; Petal.Length    0.7190656  -0.6152919    1.0000000   0.8707698
-#&gt; Petal.Width    -0.3396174   0.3526260    0.8707698   1.0000000</div><div class='input'><span class='fu'>cor_to_spcor</span>(<span class='kw'>cor</span>, cov = <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span>(<span class='kw'>iris</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>], <span class='kw'>sd</span>))
+#&gt; Petal.Width    -0.3396174   0.3526260    0.8707698   1.0000000</div><div class='input'><span class='fu'>cor_to_spcor</span><span class='op'>(</span><span class='va'>cor</span>, cov <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, <span class='va'>sd</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt; Sepal.Length   1.00000000  0.30389212    0.3890689  -0.1357714
 #&gt; Sepal.Width    0.55758743  1.00000000   -0.5385056   0.2599849
 #&gt; Petal.Length   0.18506103 -0.13959991    1.0000000   0.3167424
 #&gt; Petal.Width   -0.09001634  0.09394365    0.4415000   1.0000000</div><div class='input'>
 <span class='co'># Inverse</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'>pcor_to_cor</span>(<span class='fu'>cor_to_pcor</span>(<span class='kw'>cor</span>)) <span class='op'>-</span> <span class='kw'>cor</span>, <span class='fl'>2</span>) <span class='co'># Should be 0</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'>pcor_to_cor</span><span class='op'>(</span><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>cor</span>, <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Should be 0</span>
 </div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
 #&gt; Sepal.Length            0           0            0           0
 #&gt; Sepal.Width             0           0            0           0

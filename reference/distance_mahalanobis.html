@@ -137,7 +137,7 @@
     <p>The Mahalanobis distance (in squared units) measures the distance in multivariate space taking into account the covariance structure of the data. Because a few extreme outliers can skew the covariance estimate, the bootstrapped version is considered as more robust.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>distance_mahalanobis</span>(<span class='kw'>data</span>, ci = <span class='fl'>0.95</span>, iterations = <span class='fl'>1000</span>, robust = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>distance_mahalanobis</span><span class='op'>(</span><span class='va'>data</span>, ci <span class='op'>=</span> <span class='fl'>0.95</span>, iterations <span class='op'>=</span> <span class='fl'>1000</span>, robust <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,7 +176,7 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>distance_mahalanobis</span>(<span class='kw'>iris</span>[, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>])
+    <pre class="examples"><div class='input'><span class='fu'>distance_mahalanobis</span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #0000BB;'># Description of Posterior Distributions
 #&gt; 
 #&gt; </span><span>Distance | CI_low | CI_high
@@ -331,7 +331,7 @@
 #&gt;    1.869 |  1.077 |   2.632
 #&gt;    7.944 |  5.698 |  10.715
 #&gt;    3.597 |  2.649 |   4.813
-#&gt; </div><div class='input'><span class='fu'>distance_mahalanobis</span>(<span class='kw'>iris</span>[, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>], robust = <span class='fl'>FALSE</span>)
+#&gt; </div><div class='input'><span class='fu'>distance_mahalanobis</span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, robust <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;       Distance
 #&gt; 1    2.1344679
 #&gt; 2    2.8491187
