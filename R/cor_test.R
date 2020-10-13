@@ -181,6 +181,7 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   }
 
   # Output
+  attr(out, "coefficient_name") <- c("rho", "r", "tau")[c("rho", "r", "tau") %in% names(out)][1]
   attr(out, "ci") <- ci
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out
