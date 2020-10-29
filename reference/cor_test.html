@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -152,6 +152,7 @@
   partial_bayesian <span class='op'>=</span> <span class='cn'>FALSE</span>,
   multilevel <span class='op'>=</span> <span class='cn'>FALSE</span>,
   robust <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  winsorize <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -203,6 +204,10 @@
       <td><p>If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</code> is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).</p></td>
     </tr>
     <tr>
+      <th>winsorize</th>
+      <td><p>Either <code>FALSE</code> or a number between 0 and 1 (e.g., <code>0.2</code>) that corresponds to the threshold of desired <code><a href='winsorize.html'>winsorization</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Arguments passed to or from other methods.</p></td>
     </tr>
@@ -225,6 +230,7 @@
 <li><p><strong>Hoeffding’s D</strong>: The Hoeffding’s D statisticis a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.</p></li>
 <li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.</p></li>
 <li><p><strong>Gamma correlation</strong>: The Goodman-Kruskal gamma statistic is similar to Kendall's Tau coefficient. It is relatively robust to outliers and deals well with data that have many ties.</p></li>
+<li><p><strong>Winsorized correlation</strong>: Correlation of variables that have been formerly Winsorized, i.e., transformed by limiting extreme values to reduce the effect of possibly spurious outliers.</p></li>
 <li><p><strong>Gaussian rank Correlation</strong>: The Gaussian rank correlation estimator is a simple and well-performing alternative for robust rank correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of the ranks.</p></li>
 <li><p><strong>Polychoric correlation</strong>: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.</p></li>
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
@@ -237,7 +243,7 @@ This is why some discrepancies are to be expected for the t- and p-values, CIs, 
 (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
 Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
 <br /><br />
-<strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</p>
+<strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be inlcuded as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using <code>cor_test()</code> and <code><a href='correlation.html'>correlation()</a></code>: If you set <code>multilevel=TRUE</code> in <code><a href='correlation.html'>correlation()</a></code> but <code>partial</code> is set to <code>FALSE</code> (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However, this is not possible when using <code>cor_test()</code> so that if you set <code>multilevel=TRUE</code> in it, the resulting correlations are partial one.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Notes</h3>
 
@@ -255,37 +261,37 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.27, 0.04] | -1.44 | 148 | 0.152 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |   Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | 6.56e+05 | 0.041 | Spearman |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32,  0.00] | 6.56e+05 | 0.041 | Spearman |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |        95% CI |   tau |     z |     p |  Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | [-0.23, 0.08] | -0.08 | -1.33 | 0.183 | Kendall |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"biweight"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | [-0.18, 0.03] | -0.08 | -1.33 | 0.183 | Kendall |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"biweight"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p |   Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.13 | [-0.29, 0.03] | -1.65 | 148 | 0.101 | Biweight |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"distance"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.13 | [-0.29, 0.03] | -1.65 | 148 | 0.100 | Biweight |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"distance"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |        95% CI |    t |    df |      p |                    Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | 0.08 | [-0.08, 0.24] | 8.43 | 11024 | &lt; .001 | Distance (Bias Corrected) |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"percentage"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |          Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.19 | [-0.34, -0.03] | -2.39 | 148 | 0.018 | Percentage Bend |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"blomqvist"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.19 | [-0.34, -0.03] | -2.40 | 148 | 0.018 | Percentage Bend |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"blomqvist"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |    Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.37, -0.07] | -2.82 | 148 | 0.005 | Blomqvist |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"hoeffding"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.37, -0.07] | -2.83 | 148 | 0.005 | Blomqvist |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"hoeffding"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |  df |     p |    Method | n_Obs
 #&gt; -------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | 0.01 | 148 | 0.011 | Hoeffding |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"gamma"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p | Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.08 | [-0.24, 0.08] | -0.99 | 148 | 0.325 |  Gamma |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"gaussian"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.08 | [-0.24, 0.08] | -0.99 | 148 | 0.323 |  Gamma |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"gaussian"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI |     t |  df |     p |        Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.10 | [-0.26, 0.06] | -1.21 | 148 | 0.229 | Gaussian rank |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"shepherd"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |        Method | n_Obs
 #&gt; ----------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.38, -0.07] | 6.02e+05 | 0.005 | Shepherd's Pi |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, bayesian <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |    BF |              Prior |           Method | n_Obs
+#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.39, -0.07] | 6.02e+05 | 0.005 | Shepherd's Pi |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, bayesian <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: BayesFactor</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |    BF |              Prior |           Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.11 | [-0.24, 0.01] | 91.15% |    42.33% | 0.509 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</div><div class='input'>
+#&gt; Sepal.Length | Sepal.Width | -0.11 | [-0.24, 0.01] | 91.90% |    44.20% | 0.509 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</div><div class='input'>
 <span class='co'># Tetrachoric</span>
 <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>iris</span>
 <span class='va'>data</span><span class='op'>$</span><span class='va'>Sepal.Width_binary</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>Sepal.Width</span> <span class='op'>&gt;</span> <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>
@@ -293,24 +299,24 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>data</span>, <span class='st'>"Sepal.Width_binary"</span>, <span class='st'>"Petal.Width_binary"</span>, method <span class='op'>=</span> <span class='st'>"tetrachoric"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1         |         Parameter2 |   rho |         95% CI |     t |  df |      p |      Method | n_Obs
 #&gt; -------------------------------------------------------------------------------------------------------------
-#&gt; Sepal.Width_binary | Petal.Width_binary | -0.53 | [-0.63, -0.40] | -7.49 | 148 | &lt; .001 | Tetrachoric |   150</div><div class='input'>
+#&gt; Sepal.Width_binary | Petal.Width_binary | -0.53 | [-0.63, -0.40] | -7.51 | 148 | &lt; .001 | Tetrachoric |   150</div><div class='input'>
 <span class='co'># Biserial</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Petal.Width_binary"</span>, method <span class='op'>=</span> <span class='st'>"biserial"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1  |         Parameter2 |   rho |         95% CI |     t |  df |      p |   Method | n_Obs
 #&gt; ---------------------------------------------------------------------------------------------------
-#&gt; Sepal.Width | Petal.Width_binary | -0.40 | [-0.53, -0.26] | -5.34 | 148 | &lt; .001 | Biserial |   150</div><div class='input'>
+#&gt; Sepal.Width | Petal.Width_binary | -0.40 | [-0.53, -0.26] | -5.36 | 148 | &lt; .001 | Biserial |   150</div><div class='input'>
 <span class='co'># Polychoric</span>
 <span class='va'>data</span><span class='op'>$</span><span class='va'>Petal.Width_ordinal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>Petal.Width</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>data</span><span class='op'>$</span><span class='va'>Sepal.Length_ordinal</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>Sepal.Length</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>data</span>, <span class='st'>"Petal.Width_ordinal"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, method <span class='op'>=</span> <span class='st'>"polychoric"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: The items do not have an equal number of response alternatives, global set to FALSE.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 1 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.</span></div><div class='output co'>#&gt; Parameter1          |           Parameter2 |  rho |       95% CI |     t |  df |      p |     Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------------------------------
-#&gt; Petal.Width_ordinal | Sepal.Length_ordinal | 0.76 | [0.68, 0.82] | 14.22 | 148 | &lt; .001 | Polychoric |   150</div><div class='input'>
+#&gt; Petal.Width_ordinal | Sepal.Length_ordinal | 0.76 | [0.68, 0.82] | 14.27 | 148 | &lt; .001 | Polychoric |   150</div><div class='input'>
 <span class='co'># When one variable is continuous, will run 'polyserial' correlation</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>data</span>, <span class='st'>"Sepal.Width"</span>, <span class='st'>"Sepal.Length_ordinal"</span>, method <span class='op'>=</span> <span class='st'>"polychoric"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1  |           Parameter2 |   rho |        95% CI |     t |  df |     p |     Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------------------
-#&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | [-0.30, 0.02] | -1.76 | 148 | 0.080 | Polyserial |   150</div><div class='input'>
+#&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | [-0.30, 0.02] | -1.77 | 148 | 0.079 | Polyserial |   150</div><div class='input'>
 <span class='co'># Robust (these two are equivalent)</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"pearson"</span>, robust <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |  Method | n_Obs
@@ -318,7 +324,12 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | -2.06 | 148 | 0.041 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span>, robust <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |     p |   Method | n_Obs
 #&gt; -----------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] | 6.56e+05 | 0.041 | Spearman |   150</div><div class='input'>
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32,  0.00] | 6.56e+05 | 0.041 | Spearman |   150</div><div class='input'>
+<span class='co'># Winsorized</span>
+<span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, winsorize<span class='op'>=</span><span class='fl'>0.2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI |     t |  df |     p |  Method | n_Obs
+#&gt; -------------------------------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | -0.25 | [-0.39, -0.09] | -3.14 | 148 | 0.002 | Pearson |   150</div><div class='input'>
 <span class='co'># Partial</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI |    t |  df |      p |  Method | n_Obs

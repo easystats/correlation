@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -83,7 +83,8 @@
 
       
 
-      </header><script src="multilevel_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="multilevel_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="multilevel_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="multilevel_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Multilevel Correlations</h1>
@@ -147,7 +148,7 @@
 <span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <pre><code>## Parameter1 | Parameter2 |    r |           CI |     t |  df |      p |  Method | n_Obs
 ## --------------------------------------------------------------------------------------
-## V1         |         V2 | 0.50 | [0.45, 0.55] | 18.23 | 998 | &lt; .001 | Pearson |  1000</code></pre>
+## V1         |         V2 | 0.50 | [0.45, 0.55] | 18.24 | 998 | &lt; .001 | Pearson |  1000</code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking the group into account seems to be super important.</p>
 <p>Note: In this simple case where only two variables are of interest, it would be of course best to directly proceed using a mixed regression model instead of correlations. That being said, the latter can be useful for exploratory analysis, when multiple variables are of interest, or in combination with a network or structural approach.</p>
 </div>

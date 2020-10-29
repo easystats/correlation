@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -153,6 +153,7 @@
   partial_bayesian <span class='op'>=</span> <span class='cn'>FALSE</span>,
   multilevel <span class='op'>=</span> <span class='cn'>FALSE</span>,
   robust <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  winsorize <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -220,6 +221,10 @@
       <td><p>If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</code> is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).</p></td>
     </tr>
     <tr>
+      <th>winsorize</th>
+      <td><p>Either <code>FALSE</code> or a number between 0 and 1 (e.g., <code>0.2</code>) that corresponds to the threshold of desired <code><a href='winsorize.html'>winsorization</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Arguments passed to or from other methods.</p></td>
     </tr>
@@ -248,6 +253,7 @@
 <li><p><strong>Hoeffding’s D</strong>: The Hoeffding’s D statisticis a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.</p></li>
 <li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.</p></li>
 <li><p><strong>Gamma correlation</strong>: The Goodman-Kruskal gamma statistic is similar to Kendall's Tau coefficient. It is relatively robust to outliers and deals well with data that have many ties.</p></li>
+<li><p><strong>Winsorized correlation</strong>: Correlation of variables that have been formerly Winsorized, i.e., transformed by limiting extreme values to reduce the effect of possibly spurious outliers.</p></li>
 <li><p><strong>Gaussian rank Correlation</strong>: The Gaussian rank correlation estimator is a simple and well-performing alternative for robust rank correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of the ranks.</p></li>
 <li><p><strong>Polychoric correlation</strong>: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.</p></li>
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
@@ -260,7 +266,7 @@ This is why some discrepancies are to be expected for the t- and p-values, CIs, 
 (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
 Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
 <br /><br />
-<strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.</p>
+<strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be inlcuded as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using <code><a href='cor_test.html'>cor_test()</a></code> and <code>correlation()</code>: If you set <code>multilevel=TRUE</code> in <code>correlation()</code> but <code>partial</code> is set to <code>FALSE</code> (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However, this is not possible when using <code><a href='cor_test.html'>cor_test()</a></code> so that if you set <code>multilevel=TRUE</code> in it, the resulting correlations are partial one.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Notes</h3>
 
@@ -379,7 +385,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; qsec       |         am | -0.23 | [-0.54,  0.13] | -1.29 | 30 | &gt; .999 | Point-biserial |    32
 #&gt; qsec       |       gear | -0.21 | [-0.52,  0.15] | -1.19 | 30 | &gt; .999 |        Pearson |    32
 #&gt; qsec       |       carb | -0.66 | [-0.82, -0.40] | -4.76 | 30 | 0.001  |        Pearson |    32
-#&gt; vs         |         am |  0.26 | [-0.09,  0.56] |  1.47 | 30 | &gt; .999 |    Tetrachoric |    32
+#&gt; vs         |         am |  0.26 | [-0.09,  0.56] |  1.50 | 30 | &gt; .999 |    Tetrachoric |    32
 #&gt; vs         |       gear |  0.21 | [-0.15,  0.52] |  1.15 | 30 | &gt; .999 | Point-biserial |    32
 #&gt; vs         |       carb | -0.57 | [-0.77, -0.28] | -3.80 | 30 | 0.015  | Point-biserial |    32
 #&gt; am         |       gear |  0.79 | [ 0.62,  0.89] |  7.16 | 30 | &lt; .001 | Point-biserial |    32
