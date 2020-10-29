@@ -3,7 +3,6 @@
 ## Changes
 
 - added `winsorize()` function.
-- 'beta' arg in percentage bend has been renamed 'threshold' (same name as for Winsorized correlations).
 - Add "winsorize" argument for Winsorized correlations.
 
 ## Bug fixes

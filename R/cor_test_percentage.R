@@ -1,15 +1,15 @@
 #' @importFrom stats median
 #' @keywords internal
-.cor_test_percentage <- function(data, x, y, ci = 0.95, threshold = 0.2, ...) {
+.cor_test_percentage <- function(data, x, y, ci = 0.95, beta = 0.2, ...) {
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
   temp <- sort(abs(var_x - stats::median(var_x)))
-  omhatx <- temp[floor((1 - threshold) * length(var_x))]
+  omhatx <- temp[floor((1 - beta) * length(var_x))]
   temp <- sort(abs(var_y - stats::median(var_y)))
-  omhaty <- temp[floor((1 - threshold) * length(var_y))]
-  a <- (var_x - .pbos(var_x, threshold)) / omhatx
-  b <- (var_y - .pbos(var_y, threshold)) / omhaty
+  omhaty <- temp[floor((1 - beta) * length(var_y))]
+  a <- (var_x - .pbos(var_x, beta)) / omhatx
+  b <- (var_y - .pbos(var_y, beta)) / omhaty
   a <- ifelse(a <= -1, -1, a)
   a <- ifelse(a >= 1, 1, a)
   b <- ifelse(b <= -1, -1, b)
@@ -38,9 +38,9 @@
 
 
 #' @keywords internal
-.pbos <- function(x, threshold = 0.2) {
+.pbos <- function(x, beta = 0.2) {
   temp <- sort(abs(x - stats::median(x)))
-  omhatx <- temp[floor((1 - threshold) * length(x))]
+  omhatx <- temp[floor((1 - beta) * length(x))]
   psi <- (x - stats::median(x)) / omhatx
   i1 <- length(psi[psi < (-1)])
   i2 <- length(psi[psi > 1])
