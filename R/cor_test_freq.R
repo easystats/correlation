@@ -26,7 +26,7 @@
 
   # Add CI for non-pearson correlations
   if (method %in% c("kendall", "spearman")) {
-    rez_ci <- cor_to_ci(rez$estimate, n = length(var_x), ci = ci, ...)
+    rez_ci <- cor_to_ci(rez$estimate, n = length(var_x), ci = ci, method = method, ...)
     params$CI_low <- rez_ci$CI_low
     params$CI_high <- rez_ci$CI_high
   }

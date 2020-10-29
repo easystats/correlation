@@ -19,6 +19,7 @@ cor_test(
   partial_bayesian = FALSE,
   multilevel = FALSE,
   robust = FALSE,
+  winsorize = FALSE,
   ...
 )
 }
@@ -45,6 +46,8 @@ cor_test(
 
 \item{robust}{If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).}
 
+\item{winsorize}{Either \code{FALSE} or a number between 0 and 1 (e.g., \code{0.2}) that corresponds to the threshold of desired \code{\link[=winsorize]{winsorization}}.}
+
 \item{...}{Arguments passed to or from other methods.}
 }
 \description{
@@ -64,6 +67,7 @@ This function performs a correlation test between two variables.
 \item \strong{Hoeffding’s D}: The Hoeffding’s D statisticis a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.
 \item \strong{Point-Biserial and biserial correlation}: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
 \item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is similar to Kendall's Tau coefficient. It is relatively robust to outliers and deals well with data that have many ties.
+\item \strong{Winsorized correlation}: Correlation of variables that have been formerly Winsorized, i.e., transformed by limiting extreme values to reduce the effect of possibly spurious outliers.
 \item \strong{Gaussian rank Correlation}: The Gaussian rank correlation estimator is a simple and well-performing alternative for robust rank correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of the ranks.
 \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
@@ -76,7 +80,7 @@ This is why some discrepancies are to be expected for the t- and p-values, CIs, 
 (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
 Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
 \cr\cr
-\strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
+\strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be inlcuded as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using \code{cor_test()} and \code{correlation()}: If you set \code{multilevel=TRUE} in \code{correlation()} but \code{partial} is set to \code{FALSE} (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor}}). However, this is not possible when using \code{cor_test()} so that if you set \code{multilevel=TRUE} in it, the resulting correlations are partial one.
 }
 
 \subsection{Notes}{
@@ -121,6 +125,9 @@ cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 # Robust (these two are equivalent)
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALSE)
+
+# Winsorized
+cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize=0.2)
 
 # Partial
 cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)

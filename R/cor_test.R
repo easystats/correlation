@@ -13,6 +13,7 @@
 #' @param bayesian_prior For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.
 #' @param bayesian_ci_method,bayesian_test See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
 #' @param robust If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).
+#' @param winsorize Either \code{FALSE} or a number between 0 and 1 (e.g., \code{0.2}) that corresponds to the threshold of desired \code{\link[=winsorize]{winsorization}}.
 #' @param ... Arguments passed to or from other methods.
 #'
 #'
@@ -57,6 +58,9 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALSE)
 #'
+#' # Winsorized
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize=0.2)
+#'
 #' # Partial
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
@@ -67,7 +71,7 @@
 #' @importFrom effectsize adjust ranktransform
 #' @importFrom stats complete.cases
 #' @export
-cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
+cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize=FALSE, ...) {
 
   # Sanity checks
   if (!x %in% names(data) | !y %in% names(data)) stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
@@ -83,6 +87,11 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
   if (partial) {
     data[[x]] <- effectsize::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
     data[[y]] <- effectsize::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
+  }
+
+  # Winsorize
+  if (!isFALSE(winsorize)) {
+    data[c(x, y)] <- winsorize(data[c(x, y)], threshold=winsorize)
   }
 
   # Robust

@@ -76,6 +76,8 @@ $$\tau_{xy} = \frac{2}{n(n-1)}\sum_{i<j}^{}sign(x_i - x_j) \times sign(y_i - y_j
 
 - **Point-Biserial and biserial correlation**: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
 
+- **Winsorized correlation**: Correlation of variables that have been formerly Winsorized, i.e., transformed by limiting extreme values to reduce the effect of possibly spurious outliers.
+
 - **Polychoric correlation**: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 
 - **Tetrachoric correlation**: Special case of the polychoric correlation applicable when both observed variables are dichotomous.

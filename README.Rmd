@@ -86,6 +86,7 @@ The *correlation* package can compute many different types of correlation, inclu
 - [x] **Gamma correlation**
 - [x] **Gaussian rank correlation**
 - [x] **Point-Biserial and biserial correlation**
+- [x] **Winsorized correlation**
 - [x] **Polychoric correlation**
 - [x] **Tetrachoric correlation**
 - [x] **Multilevel correlation**

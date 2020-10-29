@@ -22,6 +22,7 @@
 #' \item \strong{Hoeffding’s D}: The Hoeffding’s D statisticis a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.
 #' \item \strong{Point-Biserial and biserial correlation}: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
 #' \item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is similar to Kendall's Tau coefficient. It is relatively robust to outliers and deals well with data that have many ties.
+#' \item \strong{Winsorized correlation}: Correlation of variables that have been formerly Winsorized, i.e., transformed by limiting extreme values to reduce the effect of possibly spurious outliers.
 #' \item \strong{Gaussian rank Correlation}: The Gaussian rank correlation estimator is a simple and well-performing alternative for robust rank correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of the ranks.
 #' \item \strong{Polychoric correlation}: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.
 #' \item \strong{Tetrachoric correlation}: Special case of the polychoric correlation applicable when both observed variables are dichotomous.
@@ -34,7 +35,7 @@
 #' (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
 #' Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
 #' \cr\cr
-#' \strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model.
+#' \strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be inlcuded as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using \code{cor_test()} and \code{correlation()}: If you set \code{multilevel=TRUE} in \code{correlation()} but \code{partial} is set to \code{FALSE} (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor}}). However, this is not possible when using \code{cor_test()} so that if you set \code{multilevel=TRUE} in it, the resulting correlations are partial one.
 #' }
 #'
 #' \subsection{Notes}{
@@ -76,7 +77,7 @@
 #'   \item Blomqvist, N. (1950). On a measure of dependence between two random variables,Annals of Mathematical Statistics,21, 593–600
 #' }
 #' @export
-correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, ...) {
+correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize=FALSE, ...) {
 
   # Sanity checks
   if (partial == FALSE & multilevel) {
@@ -94,9 +95,9 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
   if (inherits(data, "grouped_df")) {
-    rez <- .correlation_grouped_df(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, ...)
+    rez <- .correlation_grouped_df(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize=winsorize, ...)
   } else {
-    rez <- .correlation(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, ...)
+    rez <- .correlation(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize=winsorize, ...)
   }
   out <- rez$params
 
@@ -131,7 +132,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 #' @keywords internal
-.correlation_grouped_df <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
+.correlation_grouped_df <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize=FALSE, ...) {
   groups <- setdiff(colnames(attributes(data)$groups), ".rows")
   ungrouped_x <- as.data.frame(data)
   xlist <- split(ungrouped_x, ungrouped_x[groups], sep = " - ")
@@ -148,7 +149,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
         for (i in names(xlist)) {
           xlist[[i]][groups] <- NULL
           ylist[[i]][groups] <- NULL
-          rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
+          rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize=winsorize)
           modelframe_current <- rez$data
           rez$params$Group <- modelframe_current$Group <- i
           out <- rbind(out, rez$params)
@@ -164,7 +165,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
     out <- data.frame()
     for (i in names(xlist)) {
       xlist[[i]][groups] <- NULL
-      rez <- .correlation(xlist[[i]], data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel)
+      rez <- .correlation(xlist[[i]], data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize=winsorize)
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
       out <- rbind(out, rez$params)
@@ -190,7 +191,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 #' @keywords internal
-.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, ...) {
+.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize=FALSE, ...) {
   if (!is.null(data2)) {
     data <- cbind(data, data2)
   }
@@ -228,6 +229,8 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
       bayesian_test = bayesian_test,
       partial = partial,
       multilevel = multilevel,
+      robust = robust,
+      winsorize=winsorize,
       ...
     )
 

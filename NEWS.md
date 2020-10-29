@@ -1,17 +1,30 @@
+# correlation 0.5.0
+
+## Changes
+
+- added `winsorize()` function.
+- 'beta' arg in percentage bend has been renamed 'threshold' (same name as for Winsorized correlations).
+- Add "winsorize" argument for Winsorized correlations.
+
+## Bug fixes
+
+- Fix bug in `cor_to_p` that gave slightly different test statistics.
+
+
 # correlation 0.4.0
 
 ## Changes
 
-- Don't error if less than 3 valid observations ([#100](https://github.com/easystats/correlation/issues/100))
-- Add "gaussian" rank method
-- Add "gamma" method
-- Add "hoeffding" method
-- Add "blomqvist" method
+- Don't error if less than 3 valid observations ([#100](https://github.com/easystats/correlation/issues/100)).
+- Add "gaussian" rank method.
+- Add "gamma" method.
+- Add "hoeffding" method.
+- Add "blomqvist" method.
 
 ## Bug fixes
 
-- Added `Method` column to Bayesian correlations
-- Fix bug when `robust=TRUE` ([#87](https://github.com/easystats/effectsize/issues/87))
+- Added `Method` column to Bayesian correlations.
+- Fix bug when `robust=TRUE` ([#87](https://github.com/easystats/effectsize/issues/87)).
 
 # correlation 0.3.0
 
