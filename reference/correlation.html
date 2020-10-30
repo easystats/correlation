@@ -292,14 +292,14 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 <span class='va'>results</span> <span class='op'>&lt;-</span> <span class='fu'>correlation</span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
 
 <span class='va'>results</span>
-</div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs
-#&gt; ---------------------------------------------------------------------------------------------
-#&gt; Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] | -1.44 | 148 | 0.152  | Pearson |   150
-#&gt; Sepal.Length | Petal.Length |  0.87 | [ 0.83,  0.91] | 21.65 | 148 | &lt; .001 | Pearson |   150
-#&gt; Sepal.Length |  Petal.Width |  0.82 | [ 0.76,  0.86] | 17.30 | 148 | &lt; .001 | Pearson |   150
-#&gt; Sepal.Width  | Petal.Length | -0.43 | [-0.55, -0.29] | -5.77 | 148 | &lt; .001 | Pearson |   150
-#&gt; Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] | -4.79 | 148 | &lt; .001 | Pearson |   150
-#&gt; Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Parameter1   |   Parameter2 |     r |         95% CI | t(148) |      p |  Method | n_Obs
+#&gt; ----------------------------------------------------------------------------------------
+#&gt; Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] |  -1.44 | 0.152  | Pearson |   150
+#&gt; Sepal.Length | Petal.Length |  0.87 | [ 0.83,  0.91] |  21.65 | &lt; .001 | Pearson |   150
+#&gt; Sepal.Length |  Petal.Width |  0.82 | [ 0.76,  0.86] |  17.30 | &lt; .001 | Pearson |   150
+#&gt; Sepal.Width  | Petal.Length | -0.43 | [-0.55, -0.29] |  -5.77 | &lt; .001 | Pearson |   150
+#&gt; Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] |  -4.79 | &lt; .001 | Pearson |   150
+#&gt; Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |  43.39 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>results</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter    | Petal.Width | Petal.Length | Sepal.Width
 #&gt; -------------------------------------------------------
 #&gt; Sepal.Length |     0.82*** |      0.87*** |       -0.12
@@ -322,75 +322,75 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='output co'>#&gt; Group      |   Parameter1 |   Parameter2 |    r |        95% CI |     t | df |      p |  Method | n_Obs
-#&gt; -------------------------------------------------------------------------------------------------------
-#&gt; setosa     | Sepal.Length |  Sepal.Width | 0.74 | [ 0.59, 0.85] |  7.68 | 48 | &lt; .001 | Pearson |    50
-#&gt; setosa     | Sepal.Length | Petal.Length | 0.27 | [-0.01, 0.51] |  1.92 | 48 | 0.202  | Pearson |    50
-#&gt; setosa     | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.01 | 48 | 0.202  | Pearson |    50
-#&gt; setosa     |  Sepal.Width | Petal.Length | 0.18 | [-0.11, 0.43] |  1.25 | 48 | 0.217  | Pearson |    50
-#&gt; setosa     |  Sepal.Width |  Petal.Width | 0.23 | [-0.05, 0.48] |  1.66 | 48 | 0.208  | Pearson |    50
-#&gt; setosa     | Petal.Length |  Petal.Width | 0.33 | [ 0.06, 0.56] |  2.44 | 48 | 0.093  | Pearson |    50
-#&gt; versicolor | Sepal.Length |  Sepal.Width | 0.53 | [ 0.29, 0.70] |  4.28 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor | Sepal.Length | Petal.Length | 0.75 | [ 0.60, 0.85] |  7.95 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor | Sepal.Length |  Petal.Width | 0.55 | [ 0.32, 0.72] |  4.52 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor |  Sepal.Width | Petal.Length | 0.56 | [ 0.33, 0.73] |  4.69 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor |  Sepal.Width |  Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | 48 | &lt; .001 | Pearson |    50
-#&gt; versicolor | Petal.Length |  Petal.Width | 0.79 | [ 0.65, 0.87] |  8.83 | 48 | &lt; .001 | Pearson |    50
-#&gt; virginica  | Sepal.Length |  Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 48 | 0.003  | Pearson |    50
-#&gt; virginica  | Sepal.Length | Petal.Length | 0.86 | [ 0.77, 0.92] | 11.90 | 48 | &lt; .001 | Pearson |    50
-#&gt; virginica  | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 48 | 0.048  | Pearson |    50
-#&gt; virginica  |  Sepal.Width | Petal.Length | 0.40 | [ 0.14, 0.61] |  3.03 | 48 | 0.012  | Pearson |    50
-#&gt; virginica  |  Sepal.Width |  Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | 48 | &lt; .001 | Pearson |    50
-#&gt; virginica  | Petal.Length |  Petal.Width | 0.32 | [ 0.05, 0.55] |  2.36 | 48 | 0.045  | Pearson |    50</div><div class='input'>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='output co'>#&gt; Group      |   Parameter1 |   Parameter2 |    r |        95% CI | t(48) |      p |  Method | n_Obs
+#&gt; --------------------------------------------------------------------------------------------------
+#&gt; setosa     | Sepal.Length |  Sepal.Width | 0.74 | [ 0.59, 0.85] |  7.68 | &lt; .001 | Pearson |    50
+#&gt; setosa     | Sepal.Length | Petal.Length | 0.27 | [-0.01, 0.51] |  1.92 | 0.202  | Pearson |    50
+#&gt; setosa     | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.01 | 0.202  | Pearson |    50
+#&gt; setosa     |  Sepal.Width | Petal.Length | 0.18 | [-0.11, 0.43] |  1.25 | 0.217  | Pearson |    50
+#&gt; setosa     |  Sepal.Width |  Petal.Width | 0.23 | [-0.05, 0.48] |  1.66 | 0.208  | Pearson |    50
+#&gt; setosa     | Petal.Length |  Petal.Width | 0.33 | [ 0.06, 0.56] |  2.44 | 0.093  | Pearson |    50
+#&gt; versicolor | Sepal.Length |  Sepal.Width | 0.53 | [ 0.29, 0.70] |  4.28 | &lt; .001 | Pearson |    50
+#&gt; versicolor | Sepal.Length | Petal.Length | 0.75 | [ 0.60, 0.85] |  7.95 | &lt; .001 | Pearson |    50
+#&gt; versicolor | Sepal.Length |  Petal.Width | 0.55 | [ 0.32, 0.72] |  4.52 | &lt; .001 | Pearson |    50
+#&gt; versicolor |  Sepal.Width | Petal.Length | 0.56 | [ 0.33, 0.73] |  4.69 | &lt; .001 | Pearson |    50
+#&gt; versicolor |  Sepal.Width |  Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | &lt; .001 | Pearson |    50
+#&gt; versicolor | Petal.Length |  Petal.Width | 0.79 | [ 0.65, 0.87] |  8.83 | &lt; .001 | Pearson |    50
+#&gt; virginica  | Sepal.Length |  Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 0.003  | Pearson |    50
+#&gt; virginica  | Sepal.Length | Petal.Length | 0.86 | [ 0.77, 0.92] | 11.90 | &lt; .001 | Pearson |    50
+#&gt; virginica  | Sepal.Length |  Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 0.048  | Pearson |    50
+#&gt; virginica  |  Sepal.Width | Petal.Length | 0.40 | [ 0.14, 0.61] |  3.03 | 0.012  | Pearson |    50
+#&gt; virginica  |  Sepal.Width |  Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | &lt; .001 | Pearson |    50
+#&gt; virginica  | Petal.Length |  Petal.Width | 0.32 | [ 0.05, 0.55] |  2.36 | 0.045  | Pearson |    50</div><div class='input'>
 <span class='co'># automatic selection of correlation method</span>
 <span class='fu'>correlation</span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>2</span><span class='op'>]</span>, method <span class='op'>=</span> <span class='st'>"auto"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |         95% CI |     t | df |      p |         Method | n_Obs
-#&gt; -----------------------------------------------------------------------------------------------
-#&gt; mpg        |       disp | -0.85 | [-0.92, -0.71] | -8.75 | 30 | &lt; .001 |        Pearson |    32
-#&gt; mpg        |         hp | -0.78 | [-0.89, -0.59] | -6.74 | 30 | &lt; .001 |        Pearson |    32
-#&gt; mpg        |       drat |  0.68 | [ 0.44,  0.83] |  5.10 | 30 | &lt; .001 |        Pearson |    32
-#&gt; mpg        |         wt | -0.87 | [-0.93, -0.74] | -9.56 | 30 | &lt; .001 |        Pearson |    32
-#&gt; mpg        |       qsec |  0.42 | [ 0.08,  0.67] |  2.53 | 30 | 0.222  |        Pearson |    32
-#&gt; mpg        |         vs |  0.66 | [ 0.41,  0.82] |  4.86 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; mpg        |         am |  0.60 | [ 0.32,  0.78] |  4.11 | 30 | 0.007  | Point-biserial |    32
-#&gt; mpg        |       gear |  0.48 | [ 0.16,  0.71] |  3.00 | 30 | 0.097  |        Pearson |    32
-#&gt; mpg        |       carb | -0.55 | [-0.75, -0.25] | -3.62 | 30 | 0.021  |        Pearson |    32
-#&gt; disp       |         hp |  0.79 | [ 0.61,  0.89] |  7.08 | 30 | &lt; .001 |        Pearson |    32
-#&gt; disp       |       drat | -0.71 | [-0.85, -0.48] | -5.53 | 30 | &lt; .001 |        Pearson |    32
-#&gt; disp       |         wt |  0.89 | [ 0.78,  0.94] | 10.58 | 30 | &lt; .001 |        Pearson |    32
-#&gt; disp       |       qsec | -0.43 | [-0.68, -0.10] | -2.64 | 30 | 0.197  |        Pearson |    32
-#&gt; disp       |         vs | -0.71 | [-0.85, -0.48] | -5.53 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; disp       |         am | -0.59 | [-0.78, -0.31] | -4.02 | 30 | 0.009  | Point-biserial |    32
-#&gt; disp       |       gear | -0.56 | [-0.76, -0.26] | -3.66 | 30 | 0.020  |        Pearson |    32
-#&gt; disp       |       carb |  0.39 | [ 0.05,  0.65] |  2.35 | 30 | 0.303  |        Pearson |    32
-#&gt; hp         |       drat | -0.45 | [-0.69, -0.12] | -2.75 | 30 | 0.170  |        Pearson |    32
-#&gt; hp         |         wt |  0.66 | [ 0.40,  0.82] |  4.80 | 30 | 0.001  |        Pearson |    32
-#&gt; hp         |       qsec | -0.71 | [-0.85, -0.48] | -5.49 | 30 | &lt; .001 |        Pearson |    32
-#&gt; hp         |         vs | -0.72 | [-0.86, -0.50] | -5.73 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; hp         |         am | -0.24 | [-0.55,  0.12] | -1.37 | 30 | &gt; .999 | Point-biserial |    32
-#&gt; hp         |       gear | -0.13 | [-0.45,  0.23] | -0.69 | 30 | &gt; .999 |        Pearson |    32
-#&gt; hp         |       carb |  0.75 | [ 0.54,  0.87] |  6.21 | 30 | &lt; .001 |        Pearson |    32
-#&gt; drat       |         wt | -0.71 | [-0.85, -0.48] | -5.56 | 30 | &lt; .001 |        Pearson |    32
-#&gt; drat       |       qsec |  0.09 | [-0.27,  0.43] |  0.50 | 30 | &gt; .999 |        Pearson |    32
-#&gt; drat       |         vs |  0.44 | [ 0.11,  0.68] |  2.69 | 30 | 0.187  | Point-biserial |    32
-#&gt; drat       |         am |  0.71 | [ 0.48,  0.85] |  5.57 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; drat       |       gear |  0.70 | [ 0.46,  0.84] |  5.36 | 30 | &lt; .001 |        Pearson |    32
-#&gt; drat       |       carb | -0.09 | [-0.43,  0.27] | -0.50 | 30 | &gt; .999 |        Pearson |    32
-#&gt; wt         |       qsec | -0.17 | [-0.49,  0.19] | -0.97 | 30 | &gt; .999 |        Pearson |    32
-#&gt; wt         |         vs | -0.55 | [-0.76, -0.26] | -3.65 | 30 | 0.020  | Point-biserial |    32
-#&gt; wt         |         am | -0.69 | [-0.84, -0.45] | -5.26 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; wt         |       gear | -0.58 | [-0.77, -0.29] | -3.93 | 30 | 0.011  |        Pearson |    32
-#&gt; wt         |       carb |  0.43 | [ 0.09,  0.68] |  2.59 | 30 | 0.205  |        Pearson |    32
-#&gt; qsec       |         vs |  0.74 | [ 0.53,  0.87] |  6.11 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; qsec       |         am | -0.23 | [-0.54,  0.13] | -1.29 | 30 | &gt; .999 | Point-biserial |    32
-#&gt; qsec       |       gear | -0.21 | [-0.52,  0.15] | -1.19 | 30 | &gt; .999 |        Pearson |    32
-#&gt; qsec       |       carb | -0.66 | [-0.82, -0.40] | -4.76 | 30 | 0.001  |        Pearson |    32
-#&gt; vs         |         am |  0.26 | [-0.09,  0.56] |  1.50 | 30 | &gt; .999 |    Tetrachoric |    32
-#&gt; vs         |       gear |  0.21 | [-0.15,  0.52] |  1.15 | 30 | &gt; .999 | Point-biserial |    32
-#&gt; vs         |       carb | -0.57 | [-0.77, -0.28] | -3.80 | 30 | 0.015  | Point-biserial |    32
-#&gt; am         |       gear |  0.79 | [ 0.62,  0.89] |  7.16 | 30 | &lt; .001 | Point-biserial |    32
-#&gt; am         |       carb |  0.06 | [-0.30,  0.40] |  0.32 | 30 | &gt; .999 | Point-biserial |    32
-#&gt; gear       |       carb |  0.27 | [-0.08,  0.57] |  1.56 | 30 | &gt; .999 |        Pearson |    32</div></pre>
+</div><div class='output co'>#&gt; Parameter1 | Parameter2 |     r |         95% CI | t(30) |      p |         Method | n_Obs
+#&gt; ------------------------------------------------------------------------------------------
+#&gt; mpg        |       disp | -0.85 | [-0.92, -0.71] | -8.75 | &lt; .001 |        Pearson |    32
+#&gt; mpg        |         hp | -0.78 | [-0.89, -0.59] | -6.74 | &lt; .001 |        Pearson |    32
+#&gt; mpg        |       drat |  0.68 | [ 0.44,  0.83] |  5.10 | &lt; .001 |        Pearson |    32
+#&gt; mpg        |         wt | -0.87 | [-0.93, -0.74] | -9.56 | &lt; .001 |        Pearson |    32
+#&gt; mpg        |       qsec |  0.42 | [ 0.08,  0.67] |  2.53 | 0.222  |        Pearson |    32
+#&gt; mpg        |         vs |  0.66 | [ 0.41,  0.82] |  4.86 | &lt; .001 | Point-biserial |    32
+#&gt; mpg        |         am |  0.60 | [ 0.32,  0.78] |  4.11 | 0.007  | Point-biserial |    32
+#&gt; mpg        |       gear |  0.48 | [ 0.16,  0.71] |  3.00 | 0.097  |        Pearson |    32
+#&gt; mpg        |       carb | -0.55 | [-0.75, -0.25] | -3.62 | 0.021  |        Pearson |    32
+#&gt; disp       |         hp |  0.79 | [ 0.61,  0.89] |  7.08 | &lt; .001 |        Pearson |    32
+#&gt; disp       |       drat | -0.71 | [-0.85, -0.48] | -5.53 | &lt; .001 |        Pearson |    32
+#&gt; disp       |         wt |  0.89 | [ 0.78,  0.94] | 10.58 | &lt; .001 |        Pearson |    32
+#&gt; disp       |       qsec | -0.43 | [-0.68, -0.10] | -2.64 | 0.197  |        Pearson |    32
+#&gt; disp       |         vs | -0.71 | [-0.85, -0.48] | -5.53 | &lt; .001 | Point-biserial |    32
+#&gt; disp       |         am | -0.59 | [-0.78, -0.31] | -4.02 | 0.009  | Point-biserial |    32
+#&gt; disp       |       gear | -0.56 | [-0.76, -0.26] | -3.66 | 0.020  |        Pearson |    32
+#&gt; disp       |       carb |  0.39 | [ 0.05,  0.65] |  2.35 | 0.303  |        Pearson |    32
+#&gt; hp         |       drat | -0.45 | [-0.69, -0.12] | -2.75 | 0.170  |        Pearson |    32
+#&gt; hp         |         wt |  0.66 | [ 0.40,  0.82] |  4.80 | 0.001  |        Pearson |    32
+#&gt; hp         |       qsec | -0.71 | [-0.85, -0.48] | -5.49 | &lt; .001 |        Pearson |    32
+#&gt; hp         |         vs | -0.72 | [-0.86, -0.50] | -5.73 | &lt; .001 | Point-biserial |    32
+#&gt; hp         |         am | -0.24 | [-0.55,  0.12] | -1.37 | &gt; .999 | Point-biserial |    32
+#&gt; hp         |       gear | -0.13 | [-0.45,  0.23] | -0.69 | &gt; .999 |        Pearson |    32
+#&gt; hp         |       carb |  0.75 | [ 0.54,  0.87] |  6.21 | &lt; .001 |        Pearson |    32
+#&gt; drat       |         wt | -0.71 | [-0.85, -0.48] | -5.56 | &lt; .001 |        Pearson |    32
+#&gt; drat       |       qsec |  0.09 | [-0.27,  0.43] |  0.50 | &gt; .999 |        Pearson |    32
+#&gt; drat       |         vs |  0.44 | [ 0.11,  0.68] |  2.69 | 0.187  | Point-biserial |    32
+#&gt; drat       |         am |  0.71 | [ 0.48,  0.85] |  5.57 | &lt; .001 | Point-biserial |    32
+#&gt; drat       |       gear |  0.70 | [ 0.46,  0.84] |  5.36 | &lt; .001 |        Pearson |    32
+#&gt; drat       |       carb | -0.09 | [-0.43,  0.27] | -0.50 | &gt; .999 |        Pearson |    32
+#&gt; wt         |       qsec | -0.17 | [-0.49,  0.19] | -0.97 | &gt; .999 |        Pearson |    32
+#&gt; wt         |         vs | -0.55 | [-0.76, -0.26] | -3.65 | 0.020  | Point-biserial |    32
+#&gt; wt         |         am | -0.69 | [-0.84, -0.45] | -5.26 | &lt; .001 | Point-biserial |    32
+#&gt; wt         |       gear | -0.58 | [-0.77, -0.29] | -3.93 | 0.011  |        Pearson |    32
+#&gt; wt         |       carb |  0.43 | [ 0.09,  0.68] |  2.59 | 0.205  |        Pearson |    32
+#&gt; qsec       |         vs |  0.74 | [ 0.53,  0.87] |  6.11 | &lt; .001 | Point-biserial |    32
+#&gt; qsec       |         am | -0.23 | [-0.54,  0.13] | -1.29 | &gt; .999 | Point-biserial |    32
+#&gt; qsec       |       gear | -0.21 | [-0.52,  0.15] | -1.19 | &gt; .999 |        Pearson |    32
+#&gt; qsec       |       carb | -0.66 | [-0.82, -0.40] | -4.76 | 0.001  |        Pearson |    32
+#&gt; vs         |         am |  0.26 | [-0.09,  0.56] |  1.50 | &gt; .999 |    Tetrachoric |    32
+#&gt; vs         |       gear |  0.21 | [-0.15,  0.52] |  1.15 | &gt; .999 | Point-biserial |    32
+#&gt; vs         |       carb | -0.57 | [-0.77, -0.28] | -3.80 | 0.015  | Point-biserial |    32
+#&gt; am         |       gear |  0.79 | [ 0.62,  0.89] |  7.16 | &lt; .001 | Point-biserial |    32
+#&gt; am         |       carb |  0.06 | [-0.30,  0.40] |  0.32 | &gt; .999 | Point-biserial |    32
+#&gt; gear       |       carb |  0.27 | [-0.08,  0.57] |  1.56 | &gt; .999 |        Pearson |    32</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
