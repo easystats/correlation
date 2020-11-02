@@ -4,7 +4,7 @@
 #'
 #' @param data A data frame.
 #' @param data2 An optional data frame.
-#' @param p_adjust Correction method for frequentist correlations. Can be one of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".
+#' @param p_adjust Correction method for frequentist correlations. Can be one of \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"} or \code{"none"}. See \code{\link[stats:p.adjust]{p.adjust()}} for further details.
 #' @param redundant Should the data include redundant rows (where each given correlation is repeated two times).
 #' @inheritParams cor_test
 #'
@@ -35,7 +35,7 @@
 #' (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
 #' Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
 #' \cr\cr
-#' \strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be inlcuded as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using \code{cor_test()} and \code{correlation()}: If you set \code{multilevel=TRUE} in \code{correlation()} but \code{partial} is set to \code{FALSE} (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor}}). However, this is not possible when using \code{cor_test()} so that if you set \code{multilevel=TRUE} in it, the resulting correlations are partial one.
+#' \strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be included as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using \code{cor_test()} and \code{correlation()}: If you set \code{multilevel=TRUE} in \code{correlation()} but \code{partial} is set to \code{FALSE} (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor}}). However, this is not possible when using \code{cor_test()} so that if you set \code{multilevel=TRUE} in it, the resulting correlations are partial one.
 #' }
 #'
 #' \subsection{Notes}{
@@ -95,9 +95,9 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
   if (inherits(data, "grouped_df")) {
-    rez <- .correlation_grouped_df(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize=winsorize, ...)
+    rez <- .correlation_grouped_df(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize = winsorize, ...)
   } else {
-    rez <- .correlation(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize=winsorize, ...)
+    rez <- .correlation(data, data2 = data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize = winsorize, ...)
   }
   out <- rez$params
 
@@ -149,7 +149,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
         for (i in names(xlist)) {
           xlist[[i]][groups] <- NULL
           ylist[[i]][groups] <- NULL
-          rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize=winsorize)
+          rez <- .correlation(xlist[[i]], data2 = ylist[[i]], method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize = winsorize)
           modelframe_current <- rez$data
           rez$params$Group <- modelframe_current$Group <- i
           out <- rbind(out, rez$params)
@@ -165,7 +165,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
     out <- data.frame()
     for (i in names(xlist)) {
       xlist[[i]][groups] <- NULL
-      rez <- .correlation(xlist[[i]], data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize=winsorize)
+      rez <- .correlation(xlist[[i]], data2, method = method, p_adjust = p_adjust, ci = ci, bayesian = bayesian, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, redundant = redundant, include_factors = include_factors, partial = partial, partial_bayesian = partial_bayesian, multilevel = multilevel, robust = robust, winsorize = winsorize)
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
       out <- rbind(out, rez$params)
@@ -177,7 +177,6 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
   out <- out[c("Group", names(out)[names(out) != "Group"])]
   list(params = out, data = modelframe)
 }
-
 
 
 
@@ -230,7 +229,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
       partial = partial,
       multilevel = multilevel,
       robust = robust,
-      winsorize=winsorize,
+      winsorize = winsorize,
       ...
     )
 

@@ -29,15 +29,15 @@ correlation(
 
 \item{data2}{An optional data frame.}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation), "blomqvist" (for Blomqvist's coefficient), "hoeffding" (for Hoeffding's D), "gamma", "gaussian" (for Gaussian Rank correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
+\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of \code{"pearson"} (default), \code{"kendall"}, \code{"spearman"}, \code{"biserial"}, \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"} (for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting \code{"auto"} will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
 
-\item{p_adjust}{Correction method for frequentist correlations. Can be one of "holm" (default), "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr" or "none".}
+\item{p_adjust}{Correction method for frequentist correlations. Can be one of \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"} or \code{"none"}. See \code{\link[stats:p.adjust]{p.adjust()}} for further details.}
 
-\item{ci}{Confidence/Credible Interval level. If "default", then it is set to 0.95 (95\% CI).}
+\item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is set to 0.95 (95\% CI).}
 
 \item{bayesian}{If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
-\item{bayesian_prior}{For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the \code{BayesFactor::correlationBF} function.}
+\item{bayesian_prior}{For the prior argument, several named values are recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and \code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(3)} and \code{1}, respectively. See the \code{BayesFactor::correlationBF} function.}
 
 \item{bayesian_ci_method}{See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
 
@@ -47,7 +47,7 @@ correlation(
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.}
 
-\item{partial}{Can be TRUE or "semi" for partial and semi-partial correlations, respectively.}
+\item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and semi-partial correlations, respectively.}
 
 \item{partial_bayesian}{If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
@@ -96,7 +96,7 @@ This is why some discrepancies are to be expected for the t- and p-values, CIs, 
 (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
 Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
 \cr\cr
-\strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be inlcuded as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using \code{cor_test()} and \code{correlation()}: If you set \code{multilevel=TRUE} in \code{correlation()} but \code{partial} is set to \code{FALSE} (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor}}). However, this is not possible when using \code{cor_test()} so that if you set \code{multilevel=TRUE} in it, the resulting correlations are partial one.
+\strong{Multilevel correlations} are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be included as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using \code{cor_test()} and \code{correlation()}: If you set \code{multilevel=TRUE} in \code{correlation()} but \code{partial} is set to \code{FALSE} (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor}}). However, this is not possible when using \code{cor_test()} so that if you set \code{multilevel=TRUE} in it, the resulting correlations are partial one.
 }
 
 \subsection{Notes}{
