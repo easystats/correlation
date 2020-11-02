@@ -169,11 +169,11 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of "pearson" (default), "kendall", or "spearman", "biserial", "polychoric", "tetrachoric", "biweight", "distance", "percentage" (for percentage bend correlation), "blomqvist" (for Blomqvist's coefficient), "hoeffding" (for Hoeffding's D), "gamma", "gaussian" (for Gaussian Rank correlation) or "shepherd" (for Shepherd's Pi correlation). Setting "auto" will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
+      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of <code>"pearson"</code> (default), <code>"kendall"</code>, <code>"spearman"</code>, <code>"biserial"</code>, <code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>, <code>"distance"</code>, <code>"percentage"</code> (for percentage bend correlation), <code>"blomqvist"</code> (for Blomqvist's coefficient), <code>"hoeffding"</code> (for Hoeffding's D), <code>"gamma"</code>, <code>"gaussian"</code> (for Gaussian Rank correlation) or <code>"shepherd"</code> (for Shepherd's Pi correlation). Setting <code>"auto"</code> will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
     </tr>
     <tr>
       <th>ci</th>
-      <td><p>Confidence/Credible Interval level. If "default", then it is set to 0.95 (95% CI).</p></td>
+      <td><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is set to 0.95 (95% CI).</p></td>
     </tr>
     <tr>
       <th>bayesian, partial_bayesian</th>
@@ -181,7 +181,7 @@
     </tr>
     <tr>
       <th>bayesian_prior</th>
-      <td><p>For the prior argument, several named values are recognized: "medium.narrow", "medium", "wide", and "ultrawide". These correspond to scale values of 1/sqrt(27), 1/3, 1/sqrt(3) and 1, respectively. See the <code><a href='https://rdrr.io/pkg/BayesFactor/man/correlationBF.html'>BayesFactor::correlationBF</a></code> function.</p></td>
+      <td><p>For the prior argument, several named values are recognized: <code>"medium.narrow"</code>, <code>"medium"</code>, <code>"wide"</code>, and <code>"ultrawide"</code>. These correspond to scale values of <code>1/sqrt(27)</code>, <code>1/3</code>, <code>1/sqrt(3)</code> and <code>1</code>, respectively. See the <code><a href='https://rdrr.io/pkg/BayesFactor/man/correlationBF.html'>BayesFactor::correlationBF</a></code> function.</p></td>
     </tr>
     <tr>
       <th>bayesian_ci_method, bayesian_test</th>
@@ -193,7 +193,7 @@
     </tr>
     <tr>
       <th>partial</th>
-      <td><p>Can be TRUE or "semi" for partial and semi-partial correlations, respectively.</p></td>
+      <td><p>Can be <code>TRUE</code> or <code>"semi"</code> for partial and semi-partial correlations, respectively.</p></td>
     </tr>
     <tr>
       <th>multilevel</th>
@@ -243,7 +243,7 @@ This is why some discrepancies are to be expected for the t- and p-values, CIs, 
 (The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
 Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
 <br /><br />
-<strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be inlcuded as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using <code>cor_test()</code> and <code><a href='correlation.html'>correlation()</a></code>: If you set <code>multilevel=TRUE</code> in <code><a href='correlation.html'>correlation()</a></code> but <code>partial</code> is set to <code>FALSE</code> (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However, this is not possible when using <code>cor_test()</code> so that if you set <code>multilevel=TRUE</code> in it, the resulting correlations are partial one.</p>
+<strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be included as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using <code>cor_test()</code> and <code><a href='correlation.html'>correlation()</a></code>: If you set <code>multilevel=TRUE</code> in <code><a href='correlation.html'>correlation()</a></code> but <code>partial</code> is set to <code>FALSE</code> (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However, this is not possible when using <code>cor_test()</code> so that if you set <code>multilevel=TRUE</code> in it, the resulting correlations are partial one.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Notes</h3>
 
