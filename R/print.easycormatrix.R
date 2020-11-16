@@ -1,6 +1,6 @@
 #' @importFrom insight format_p format_pd format_bf format_value format_table
 #' @export
-print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
+format.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
   orig_x <- x
   nums <- sapply(as.data.frame(x), is.numeric)
 
@@ -33,8 +33,12 @@ print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
     x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value, digits = digits)
   }
 
+  as.data.frame(x)
+}
 
 
-  cat(insight::format_table(x))
-  invisible(orig_x)
+#' @export
+print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
+  cat(insight::format_table(format(x)))
+  invisible(x)
 }
