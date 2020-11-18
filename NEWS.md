@@ -2,12 +2,13 @@
 
 ## Changes
 
-- added `winsorize()` function.
-- Add "winsorize" argument for Winsorized correlations.
+- Added `winsorize()` function.
+- Added `winsorize` argument for Winsorized correlations.
+- New function `to_table()`, to format output into nice markdown-tables.
 
 ## Bug fixes
 
-- Fix bug in `cor_to_p` that gave slightly different test statistics.
+- Fix bug in `cor_to_p()` that gave slightly different test statistics.
 
 
 # correlation 0.4.0
