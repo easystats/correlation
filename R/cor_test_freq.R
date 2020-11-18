@@ -14,7 +14,10 @@
   method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
   rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = method, exact = FALSE, ...)
 
-  params <- parameters::model_parameters(rez)
+  # params <- parameters::model_parameters(rez)
+  # this doubles performance according to computation time
+  params <- .extract_corr_parameters(rez)
+
   params$Parameter1 <- x
   params$Parameter2 <- y
 
@@ -36,4 +39,43 @@
   if (!("CI_high" %in% names(params))) params$CI_high <- NA
 
   params
+}
+
+
+
+.extract_corr_parameters <- function(model) {
+  names <- unlist(strsplit(model$data.name, " and ", fixed = TRUE))
+  out <- data.frame(
+    "Parameter1" = names[1],
+    "Parameter2" = names[2],
+    stringsAsFactors = FALSE
+  )
+
+  if (model$method == "Pearson's Chi-squared test") {
+    out$Chi2 <- model$statistic
+    out$df <- model$parameter
+    out$p <- model$p.value
+    out$Method <- "Pearson"
+  } else if (grepl("Pearson", model$method)) {
+    out$r <- model$estimate
+    out$t <- model$statistic
+    out$df <- model$parameter
+    out$p <- model$p.value
+    out$CI_low <- model$conf.int[1]
+    out$CI_high <- model$conf.int[2]
+    out$Method <- "Pearson"
+  } else if (grepl("Spearman", model$method)) {
+    out$rho <- model$estimate
+    out$S <- model$statistic
+    out$df <- model$parameter
+    out$p <- model$p.value
+    out$Method <- "Spearman"
+  } else {
+    out$tau <- model$estimate
+    out$z <- model$statistic
+    out$df <- model$parameter
+    out$p <- model$p.value
+    out$Method <- "Kendall"
+  }
+  out
 }
