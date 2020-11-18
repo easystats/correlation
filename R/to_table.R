@@ -39,12 +39,21 @@ to_table.easycormatrix <- function(x, format = "markdown", digits = 2, stars = T
 #' @importFrom parameters parameters_table
 #' @export
 to_table.easycorrelation <- function(x, format = "markdown", digits = 2, stars = TRUE, ...) {
-  table_caption <- attributes(x)$method
-  if (!is.null(table_caption)) {
-    table_caption <- paste0("Correlation Matrix (", table_caption, "-method)")
+  # caption
+  table_caption <- "Correlation Matrix"
+
+  # footer
+  if (!is.null(x$Method) && !is.null(x$n_Obs)) {
+    footer <- paste0("Method: ", x$Method[1], " (", x$n_Obs[1], " observations)")
+  } else {
+    footer <- NULL
   }
+  x$Method <- NULL
+  x$n_Obs <- NULL
+
+  # final table
   formatted_table <- parameters::parameters_table(x, pretty_names = TRUE, digits = digits, stars = stars, ci_width = NULL, ci_brackets = c("(", ")"))
-  insight::format_table(formatted_table, format = format, caption = table_caption, align = "firstleft")
+  insight::format_table(formatted_table, format = format, caption = table_caption, align = "firstleft", footer = footer)
 }
 
 # Reexports models ------------------------
