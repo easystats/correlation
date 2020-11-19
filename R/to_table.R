@@ -44,12 +44,15 @@ to_table.easycorrelation <- function(x, format = "markdown", digits = 2, stars =
 
   # footer
   if (!is.null(x$Method) && !is.null(x$n_Obs)) {
-    footer <- paste0("Method: ", x$Method[1], " (", x$n_Obs[1], " observations)")
+    footer <- paste0("Method: ", x$Method[1])
+    if (length(unique(x$n_Obs)) == 1) {
+      footer <- paste0(footer, " (", x$n_Obs[1], " observations)")
+      x$n_Obs <- NULL
+    }
   } else {
     footer <- NULL
   }
   x$Method <- NULL
-  x$n_Obs <- NULL
 
   # final table
   formatted_table <- parameters::parameters_table(x, pretty_names = TRUE, digits = digits, stars = stars, ci_width = NULL, ci_brackets = c("(", ")"))
