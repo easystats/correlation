@@ -14,7 +14,7 @@ summary.easycorrelation <- function(object, redundant = FALSE, stars = TRUE, ...
     object <- .add_redundant(object)
   }
 
-  target_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median")][1]
+  target_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median", "Dxy")][1]
   if (is.na(target_col)) {
     target_col <- names(object)[!names(object) %in% c("Parameter1", "Parameter2")][1]
   }

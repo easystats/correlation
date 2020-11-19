@@ -136,6 +136,8 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
       out <- .cor_test_blomqvist(data, x, y, ci = ci, ...)
     } else if (method %in% c("hoeffding")) {
       out <- .cor_test_hoeffding(data, x, y, ci = ci, ...)
+    } else if (method %in% c("somers")) {
+      out <- .cor_test_somers(data, x, y, ci = ci, ...)
     } else if (method %in% c("gamma")) {
       out <- .cor_test_gamma(data, x, y, ci = ci, ...)
     } else if (method %in% c("gaussian")) {
@@ -186,12 +188,12 @@ cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE
 
   # Reorder columns
   if ("CI_low" %in% names(out)) {
-    order <- c("Parameter1", "Parameter2", "r", "rho", "CI_low", "CI_high")
+    order <- c("Parameter1", "Parameter2", "r", "rho", "Dxy", "CI_low", "CI_high")
     out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
   }
 
   # Output
-  attr(out, "coefficient_name") <- c("rho", "r", "tau")[c("rho", "r", "tau") %in% names(out)][1]
+  attr(out, "coefficient_name") <- c("rho", "r", "tau", "Dxy")[c("rho", "r", "tau", "Dxy") %in% names(out)][1]
   attr(out, "ci") <- ci
   class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
   out

@@ -4,7 +4,7 @@
 #'
 #' @param data A data frame.
 #' @param data2 An optional data frame.
-#' @param p_adjust Correction method for frequentist correlations. Can be one of \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"} or \code{"none"}. See \code{\link[stats:p.adjust]{p.adjust()}} for further details.
+#' @param p_adjust Correction method for frequentist correlations. Can be one of \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"}, \code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"}, \code{"somers"} or \code{"none"}. See \code{\link[stats:p.adjust]{p.adjust()}} for further details.
 #' @param redundant Should the data include redundant rows (where each given correlation is repeated two times).
 #' @inheritParams cor_test
 #'
@@ -19,7 +19,8 @@
 #' \item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20\%).
 #' \item \strong{Shepherd's Pi correlation}: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped Mahalanobis distance).
 #' \item \strong{Blomqvist’s coefficient}: The Blomqvist’s coefficient (also referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a median-based non-parametric correlation that has some advantages over measures such as Spearman's or Kendall's estimates (see Shmid and Schimdt, 2006).
-#' \item \strong{Hoeffding’s D}: The Hoeffding’s D statisticis a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.
+#' \item \strong{Hoeffding’s D}: The Hoeffding’s D statistics is a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.
+#' \item \strong{Somers’ D}: The Somers’ D statistics is a non-parametric rank based measure of association between a binary variable and a continuous variable, for instance, in the context of logistic regression the binary outcome and the predicted probabilities for each outcome. Usually, Somers' D is a measure of ordinal association, however, this implementation it is limited to the case of a binary outcome.
 #' \item \strong{Point-Biserial and biserial correlation}: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.
 #' \item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is similar to Kendall's Tau coefficient. It is relatively robust to outliers and deals well with data that have many ties.
 #' \item \strong{Winsorized correlation}: Correlation of variables that have been formerly Winsorized, i.e., transformed by limiting extreme values to reduce the effect of possibly spurious outliers.
@@ -75,6 +76,7 @@
 #'   \item Fieller, E. C., Hartley, H. O., & Pearson, E. S. (1957). Tests for rank correlation coefficients. I. Biometrika, 44(3/4), 470-481.
 #'   \item Langfelder, P., & Horvath, S. (2012). Fast R functions for robust correlations and hierarchical clustering. Journal of statistical software, 46(11).
 #'   \item Blomqvist, N. (1950). On a measure of dependence between two random variables,Annals of Mathematical Statistics,21, 593–600
+#'   \item Somers, R. H. (1962). A new asymmetric measure of association for ordinal variables. American Sociological Review. 27 (6).
 #' }
 #' @export
 correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize=FALSE, ...) {
