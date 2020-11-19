@@ -11,7 +11,7 @@
 
 #' @keywords internal
 .cor_test_base <- function(x, y, var_x, var_y, ci = 0.95, method = "pearson", ...) {
-  method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
+  method <- match.arg(tolower(method), c("pearson", "kendall", "spearman", "somers"), several.ok = FALSE)
   rez <- stats::cor.test(var_x, var_y, conf.level = ci, method = method, exact = FALSE, ...)
 
   # params <- parameters::model_parameters(rez)
