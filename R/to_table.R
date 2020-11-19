@@ -49,6 +49,7 @@ to_table.easycorrelation <- function(x, format = "markdown", digits = 2, stars =
       footer <- paste0(footer, " (", x$n_Obs[1], " observations)")
       x$n_Obs <- NULL
     }
+    footer <- paste0("_", footer, "_")
   } else {
     footer <- NULL
   }
