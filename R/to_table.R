@@ -1,6 +1,8 @@
-#' Export tables into different output formats
+#' @title Export tables into different output formats
+#' @name to_table.easycormatrix
 #'
-#' Export tables (i.e. data frame) into different output formats
+#' @description Export tables (i.e. data frame) into different output formats.
+#'   \code{table_to_markdown()} is a alias for \code{to_table(format = "markdown")}.
 #'
 #' @param x An object returned by \code{\link[=correlation]{correlation()}}
 #'   or its summary.
