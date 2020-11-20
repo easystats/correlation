@@ -1,4 +1,4 @@
-#' @importFrom insight format_p format_pd format_bf format_value format_table
+#' @importFrom insight format_p format_pd format_bf format_value export_table
 #' @export
 format.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
   orig_x <- x
@@ -39,6 +39,6 @@ format.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
 
 #' @export
 print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
-  cat(insight::format_table(format(x, digits = digits, stars = stars)))
+  cat(insight::export_table(format(x, digits = digits, stars = stars)))
   invisible(x)
 }

@@ -5,7 +5,7 @@
 \alias{to_table.easycormatrix}
 \title{Export tables into different output formats}
 \usage{
-table_to_markdown.easycormatrix(x, digits = 2, stars = TRUE, ...)
+\method{table_to_markdown}{easycormatrix}(x, digits = 2, stars = TRUE, ...)
 
 \method{to_table}{easycormatrix}(x, format = "markdown", digits = 2, stars = TRUE, ...)
 }

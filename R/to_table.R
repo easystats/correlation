@@ -27,18 +27,18 @@
 #'
 #' s <- summary(corr)
 #' to_table(s)
-#' @importFrom insight format_table
+#' @importFrom insight export_table
 #' @export
 to_table.easycormatrix <- function(x, format = "markdown", digits = 2, stars = TRUE, ...) {
   table_caption <- attributes(x)$method
   if (!is.null(table_caption)) {
     table_caption <- paste0("Correlation Matrix (", table_caption, "-method)")
   }
-  insight::format_table(format(x, digits = digits, stars = stars), format = format, caption = table_caption, align = "firstleft")
+  insight::export_table(format(x, digits = digits, stars = stars), format = format, caption = table_caption, align = "firstleft")
 }
 
 
-#' @importFrom parameters parameters_table
+#' @importFrom insight parameters_table
 #' @export
 to_table.easycorrelation <- function(x, format = "markdown", digits = 2, stars = TRUE, ...) {
   # caption
@@ -58,8 +58,8 @@ to_table.easycorrelation <- function(x, format = "markdown", digits = 2, stars =
   x$Method <- NULL
 
   # final table
-  formatted_table <- parameters::parameters_table(x, pretty_names = TRUE, digits = digits, stars = stars, ci_width = NULL, ci_brackets = c("(", ")"))
-  insight::format_table(formatted_table, format = format, caption = table_caption, align = "firstleft", footer = footer)
+  formatted_table <- insight::parameters_table(x, pretty_names = TRUE, digits = digits, stars = stars, ci_width = NULL, ci_brackets = c("(", ")"))
+  insight::export_table(formatted_table, format = format, caption = table_caption, align = "firstleft", footer = footer)
 }
 
 # Reexports models ------------------------
