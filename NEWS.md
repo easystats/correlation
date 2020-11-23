@@ -5,7 +5,7 @@
 - Added `winsorize()` function.
 - Added `winsorize` argument for Winsorized correlations.
 - Added `method = "somers"` to `correlation()`, to compute Somers's Dxy rank correlation for binary outcomes.
-- New function `to_table()`, to format output into nice markdown-tables.
+- New function `display()`, to print output into different formats. Currently, only markdown is supported. `print_md()` is an alias for `display(format = "markdown")`.
 
 ## Bug fixes
 

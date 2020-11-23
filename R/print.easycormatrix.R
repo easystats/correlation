@@ -39,6 +39,6 @@ format.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
 
 #' @export
 print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
-  cat(insight::export_table(format(x, digits = digits, stars = stars)))
+  cat(insight::export_table(format(x, digits = digits, stars = stars), format = "text"))
   invisible(x)
 }
