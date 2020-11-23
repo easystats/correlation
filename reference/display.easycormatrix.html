@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fisher z-transformation — z_fisher • correlation</title>
+<title>Export tables into different output formats — display.easycormatrix • correlation</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,9 @@
 
 
 
-<meta property="og:title" content="Fisher z-transformation — z_fisher" />
-<meta property="og:description" content="The Fisher z-transformation converts the standard Pearson's r to a normally distributed variable z'. It is used to compute confidence intervals to correlations. The z' variable is different from the z-statistic." />
+<meta property="og:title" content="Export tables into different output formats — display.easycormatrix" />
+<meta property="og:description" content="Export tables (i.e. data frame) into different output formats.
+  print_md() is a alias for display(format = &quot;markdown&quot;)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -128,37 +129,88 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fisher z-transformation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/z_fisher.R'><code>R/z_fisher.R</code></a></small>
-    <div class="hidden name"><code>z_fisher.Rd</code></div>
+    <h1>Export tables into different output formats</h1>
+    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/display.R'><code>R/display.R</code></a>, <a href='https://github.com/easystats/correlation/blob/master/R/print_md.R'><code>R/print_md.R</code></a></small>
+    <div class="hidden name"><code>display.easycormatrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The Fisher z-transformation converts the standard Pearson's r to a normally distributed variable z'. It is used to compute confidence intervals to correlations. The z' variable is different from the z-statistic.</p>
+    <p>Export tables (i.e. data frame) into different output formats.
+  <code><a href='https://easystats.github.io/insight/reference/display.html'>print_md()</a></code> is a alias for <code><a href='https://easystats.github.io/insight/reference/display.html'>display(format = "markdown")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>z_fisher</span><span class='op'>(</span>r <span class='op'>=</span> <span class='cn'>NULL</span>, z <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for easycormatrix</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>display</a></span><span class='op'>(</span><span class='va'>x</span>, format <span class='op'>=</span> <span class='st'>"markdown"</span>, digits <span class='op'>=</span> <span class='fl'>2</span>, stars <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for easycormatrix</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_md</a></span><span class='op'>(</span><span class='va'>x</span>, digits <span class='op'>=</span> <span class='fl'>2</span>, stars <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>r, z</th>
-      <td><p>The r or the z' value to be converted.</p></td>
+      <th>format</th>
+      <td><p>String, indicating the output format. Currently, only
+<code>"markdown"</code> is supported.</p></td>
+    </tr>
+    <tr>
+      <th>digits</th>
+      <td><p>To do...</p></td>
+    </tr>
+    <tr>
+      <th>stars</th>
+      <td><p>To do...</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Currently not used.</p></td>
+    </tr>
+    <tr>
+      <th>object, x</th>
+      <td><p>An object returned by <code><a href='correlation.html'>correlation()</a></code>
+or its summary.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The transformed value.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <p>A character vector. If <code>format = "markdown"</code>, the return value
+  will be a character vector in markdown-table format.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Zar, J.H., (2014). Spearman Rank Correlation: Overview. Wiley StatsRef: Statistics Reference Online. doi:10.1002/9781118445112.stat05964</p>
+    <p><code><a href='https://easystats.github.io/insight/reference/display.html'>display()</a></code> is useful when the table-output from functions,
+  which is usually printed as formatted text-table to console, should
+  be formatted for pretty table-rendering in markdown documents, or if
+  knitted from rmarkdown to PDF or Word files.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>z_fisher</span><span class='op'>(</span>r <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.8673005</div><div class='input'><span class='fu'>z_fisher</span><span class='op'>(</span>z <span class='op'>=</span> <span class='fl'>0.867</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.6998467</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
+<span class='va'>corr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='correlation.html'>correlation</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>display</a></span><span class='op'>(</span><span class='va'>corr</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; 
+#&gt; Table: Correlation Matrix
+#&gt; 
+#&gt; |Parameter1   |   Parameter2 |     r |         95% CI | t(148) |         p |
+#&gt; |:------------|:------------:|:-----:|:--------------:|:------:|:---------:|
+#&gt; |Sepal.Length |  Sepal.Width | -0.12 |  (-0.27, 0.04) |  -1.44 | 0.152     |
+#&gt; |Sepal.Length | Petal.Length |  0.87 |   (0.83, 0.91) |  21.65 | &lt; .001*** |
+#&gt; |Sepal.Length |  Petal.Width |  0.82 |   (0.76, 0.86) |  17.30 | &lt; .001*** |
+#&gt; |Sepal.Width  | Petal.Length | -0.43 | (-0.55, -0.29) |  -5.77 | &lt; .001*** |
+#&gt; |Sepal.Width  |  Petal.Width | -0.37 | (-0.50, -0.22) |  -4.79 | &lt; .001*** |
+#&gt; |Petal.Length |  Petal.Width |  0.96 |   (0.95, 0.97) |  43.39 | &lt; .001*** |
+#&gt; _Method: Pearson (150 observations)_</div><div class='input'>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>corr</span><span class='op'>)</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>display</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt; 
+#&gt; Table: Correlation Matrix (pearson-method)
+#&gt; 
+#&gt; |Parameter    | Petal.Width | Petal.Length | Sepal.Width |
+#&gt; |:------------|:-----------:|:------------:|:-----------:|
+#&gt; |Sepal.Length |     0.82*** |      0.87*** |       -0.12 |
+#&gt; |Sepal.Width  |    -0.37*** |     -0.43*** |             |
+#&gt; |Petal.Length |     0.96*** |              |             |</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

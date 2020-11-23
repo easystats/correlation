@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.1</span>
       </span>
     </div>
 
@@ -207,11 +207,11 @@
 <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">model</span><span class="op">[</span><span class="fl">6</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">Coefficient</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>&gt; Parameter                    | Coefficient |   SE |       95% CI | t(11903) |      p
 &gt; ------------------------------------------------------------------------------------
-&gt; Type [Distance] : Estimation |        0.90 | 0.02 | [0.86, 0.95] |    40.14 | &lt; .001
-&gt; Type [Kendall] : Estimation  |        0.66 | 0.02 | [0.62, 0.70] |    32.07 | &lt; .001
-&gt; Type [Biweight] : Estimation |        0.53 | 0.02 | [0.50, 0.57] |    29.24 | &lt; .001
-&gt; Type [Spearman] : Estimation |        0.51 | 0.02 | [0.48, 0.54] |    31.70 | &lt; .001
-&gt; Type [Pearson] : Estimation  |        0.44 | 0.02 | [0.41, 0.47] |    26.49 | &lt; .001</code></pre>
+&gt; Type [Distance] * Estimation |        0.90 | 0.02 | [0.86, 0.95] |    40.14 | &lt; .001
+&gt; Type [Kendall] * Estimation  |        0.66 | 0.02 | [0.62, 0.70] |    32.07 | &lt; .001
+&gt; Type [Biweight] * Estimation |        0.53 | 0.02 | [0.50, 0.57] |    29.24 | &lt; .001
+&gt; Type [Spearman] * Estimation |        0.51 | 0.02 | [0.48, 0.54] |    31.70 | &lt; .001
+&gt; Type [Pearson] * Estimation  |        0.44 | 0.02 | [0.41, 0.47] |    26.49 | &lt; .001</code></pre>
 <p>As we can see, <strong>distance</strong> correlation is able to capture the strength even for severly non-linear relationships.</p>
 </div>
 </div>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.1</span>
       </span>
     </div>
 
@@ -123,7 +123,9 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>## Parameter1 | Parameter2 |     r |         95% CI | t(998) |      p |  Method | n_Obs
 ## ------------------------------------------------------------------------------------
-## V1         |         V2 | -0.84 | [-0.86, -0.82] | -48.77 | &lt; .001 | Pearson |  1000</code></pre>
+## V1         |         V2 | -0.84 | [-0.86, -0.82] | -48.77 | &lt; .001 | Pearson |  1000
+## 
+## p-value adjustment method: Holm (1979)</code></pre>
 <p>Indeed, there is <strong>strong, negative and significant correlation</strong> between V1 and V2. Great, can we go ahead and <strong>publish these results in PNAS</strong>?</p>
 </div>
 <div id="the-simpsons-paradox" class="section level2">
@@ -147,7 +149,9 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |      p |  Method | n_Obs
 ## ---------------------------------------------------------------------------------
-## V1         |         V2 | 0.50 | [0.45, 0.55] |  18.24 | &lt; .001 | Pearson |  1000</code></pre>
+## V1         |         V2 | 0.50 | [0.45, 0.55] |  18.24 | &lt; .001 | Pearson |  1000
+## 
+## p-value adjustment method: Holm (1979)</code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking the group into account seems to be super important.</p>
 <p>Note: In this simple case where only two variables are of interest, it would be of course best to directly proceed using a mixed regression model instead of correlations. That being said, the latter can be useful for exploratory analysis, when multiple variables are of interest, or in combination with a network or structural approach.</p>
 </div>
