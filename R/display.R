@@ -29,7 +29,7 @@
 #' display(s)
 #' @export
 display.easycormatrix <- function(object, format = "markdown", digits = 2, stars = TRUE, ...) {
-  print_md(x = x, digits = digits, stars = stars, ...)
+  print_md(x = object, digits = digits, stars = stars, ...)
 }
 
 
