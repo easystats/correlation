@@ -5,11 +5,14 @@
 \alias{print_md.easycormatrix}
 \title{Export tables into different output formats}
 \usage{
-\method{display}{easycormatrix}(x, format = "markdown", digits = 2, stars = TRUE, ...)
+\method{display}{easycormatrix}(object, format = "markdown", digits = 2, stars = TRUE, ...)
 
 \method{print_md}{easycormatrix}(x, digits = 2, stars = TRUE, ...)
 }
 \arguments{
+\item{object, x}{An object returned by \code{\link[=correlation]{correlation()}}
+or its summary.}
+
 \item{format}{String, indicating the output format. Currently, only
 \code{"markdown"} is supported.}
 
@@ -18,9 +21,6 @@
 \item{stars}{To do...}
 
 \item{...}{Currently not used.}
-
-\item{object, x}{An object returned by \code{\link[=correlation]{correlation()}}
-or its summary.}
 }
 \value{
 A character vector. If \code{format = "markdown"}, the return value
