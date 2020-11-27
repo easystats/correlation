@@ -72,7 +72,22 @@
 #' @importFrom parameters data_to_numeric
 #' @importFrom stats complete.cases
 #' @export
-cor_test <- function(data, x, y, method = "pearson", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize = FALSE, ...) {
+cor_test <- function(data,
+                     x,
+                     y,
+                     method = "pearson",
+                     ci = 0.95,
+                     bayesian = FALSE,
+                     bayesian_prior = "medium",
+                     bayesian_ci_method = "hdi",
+                     bayesian_test = c("pd", "rope", "bf"),
+                     include_factors = FALSE,
+                     partial = FALSE,
+                     partial_bayesian = FALSE,
+                     multilevel = FALSE,
+                     robust = FALSE,
+                     winsorize = FALSE,
+                     ...) {
 
   # Sanity checks
   if (!x %in% names(data) | !y %in% names(data)) stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
