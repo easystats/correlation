@@ -23,9 +23,11 @@ bibliography: bibliography.bib
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 library(knitr)
-options(knitr.kable.NA = '',
-        digits=2,
-        dpi=450)
+options(
+  knitr.kable.NA = "",
+  digits = 2,
+  dpi = 450
+)
 
 
 if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -46,7 +48,7 @@ We will generate data using the [`simulate_simpson()`](https://easystats.github.
 ```{r message=FALSE, warning=FALSE}
 library(correlation)
 
-data <- simulate_simpson(n=100, groups=10)
+data <- simulate_simpson(n = 100, groups = 10)
 ```
 
 Now let's visualize the two variables:
@@ -55,13 +57,13 @@ Now let's visualize the two variables:
 ```{r message=FALSE, warning=FALSE}
 library(ggplot2)
 
-ggplot(data, aes(x=V1, y=V2)) + 
+ggplot(data, aes(x = V1, y = V2)) +
   geom_point() +
-  geom_smooth(colour="black", method="lm", se=FALSE) +
+  geom_smooth(colour = "black", method = "lm", se = FALSE) +
   theme_classic()
 ```
 
-That seems pretty straightfoward! It seems like there is a **negative correlation** between V1 and V2. Let's test this.
+That seems pretty straightforward! It seems like there is a **negative correlation** between V1 and V2. Let's test this.
 
 ## Simple correlation
 
@@ -80,10 +82,10 @@ Let's colour our datapoints by group (by individuals):
 ```{r message=FALSE, warning=FALSE}
 library(ggplot2)
 
-ggplot(data, aes(x=V1, y=V2)) + 
-  geom_point(aes(colour=Group)) +
-  geom_smooth(aes(colour=Group), method="lm", se=FALSE) + 
-  geom_smooth(colour="black", method="lm", se=FALSE) + 
+ggplot(data, aes(x = V1, y = V2)) +
+  geom_point(aes(colour = Group)) +
+  geom_smooth(aes(colour = Group), method = "lm", se = FALSE) +
+  geom_smooth(colour = "black", method = "lm", se = FALSE) +
   theme_classic()
 ```
 
@@ -91,7 +93,7 @@ Mmh, interesting. It seems like, for each subject, the relationship is different
 
 **Multilevel *(as in multi-group)* correlations allow us to account for differences between groups**. It is based on a partialization of the group, entered as a random effect in a mixed linear regression.
 
-You can compute them with the [**correlations**](https://github.com/easystats/correlation) package by setting the `multilevel` arguent to `TRUE`.
+You can compute them with the [**correlations**](https://github.com/easystats/correlation) package by setting the `multilevel` argument to `TRUE`.
 
 
 ```{r message=FALSE, warning=FALSE}

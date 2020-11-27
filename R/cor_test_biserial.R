@@ -32,7 +32,6 @@
 
 #' @keywords internal
 .cor_test_biserial_pointbiserial <- function(data, x, y, continuous, binary, ci, ...) {
-
   out <- .cor_test_freq(data, continuous, binary, ci = ci, method = "pearson", ...)
   names(out)[names(out) == "r"] <- "rho"
   out$Parameter1 <- x
@@ -46,7 +45,6 @@
 
 #' @keywords internal
 .cor_test_biserial_biserial <- function(data, x, y, continuous, binary, ci) {
-
   var_x <- .complete_variable_x(data, continuous, binary)
   var_y <- .complete_variable_y(data, continuous, binary)
 
