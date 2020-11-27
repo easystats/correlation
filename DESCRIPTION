@@ -36,29 +36,34 @@ Imports:
 	parameters (>= 0.9.0.1),
 	effectsize
 Suggests:
-	BayesFactor,
-	dplyr,
-	energy,
-	forcats,
-	ggcorrplot,
-	ggplot2,
-	Hmisc,
-	knitr,
-	lme4,
-	polycor,
-	ppcor,
-	psych,
-	rmcorr,
-	testthat,
-	tidyr,
-	rstanarm,
-	rmarkdown,
-	see,
-	wdm,
-	WRS2
+    BayesFactor,
+    dplyr,
+    energy,
+    forcats,
+    ggcorrplot,
+    ggplot2,
+    Hmisc,
+    knitr,
+    lme4,
+    polycor,
+    ppcor,
+    psych,
+    rmcorr,
+    testthat,
+    tidyr,
+    rstanarm,
+    rmarkdown,
+    see,
+    wdm,
+    WRS2,
+    spelling
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Remotes: easystats/insight, easystats/parameters
 VignetteBuilder: knitr
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: watcher, parallel*
+Language: en-US

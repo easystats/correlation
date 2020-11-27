@@ -79,7 +79,7 @@
 #'   \item Somers, R. H. (1962). A new asymmetric measure of association for ordinal variables. American Sociological Review. 27 (6).
 #' }
 #' @export
-correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize=FALSE, ...) {
+correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = 0.95, bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize = FALSE, ...) {
 
   # Sanity checks
   if (partial == FALSE & multilevel) {
@@ -134,7 +134,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 #' @keywords internal
-.correlation_grouped_df <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize=FALSE, ...) {
+.correlation_grouped_df <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = TRUE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize = FALSE, ...) {
   groups <- setdiff(colnames(attributes(data)$groups), ".rows")
   ungrouped_x <- as.data.frame(data)
   xlist <- split(ungrouped_x, ungrouped_x[groups], sep = " - ")
@@ -192,7 +192,7 @@ correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm
 
 
 #' @keywords internal
-.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize=FALSE, ...) {
+.correlation <- function(data, data2 = NULL, method = "pearson", p_adjust = "holm", ci = "default", bayesian = FALSE, bayesian_prior = "medium", bayesian_ci_method = "hdi", bayesian_test = c("pd", "rope", "bf"), redundant = FALSE, include_factors = FALSE, partial = FALSE, partial_bayesian = FALSE, multilevel = FALSE, robust = FALSE, winsorize = FALSE, ...) {
   if (!is.null(data2)) {
     data <- cbind(data, data2)
   }
