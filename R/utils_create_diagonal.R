@@ -14,6 +14,7 @@
   if ("S" %in% names(params)) diagonal$S <- Inf
   if ("z" %in% names(params)) diagonal$z <- Inf
   if ("df" %in% names(params)) diagonal$df <- unique(params$df)[1]
+  if ("df_error" %in% names(params)) diagonal$df_error <- unique(params$df_error)[1]
   if ("CI_low" %in% names(params)) diagonal$CI_low <- 1
   if ("CI_high" %in% names(params)) diagonal$CI_high <- 1
   if ("Method" %in% names(params)) diagonal$Method <- unique(params$Method)[1]
