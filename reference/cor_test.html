@@ -327,7 +327,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; -----------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32,  0.00] | 6.56e+05 | 0.041 | Spearman |   150</div><div class='input'>
 <span class='co'># Winsorized</span>
-<span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, winsorize<span class='op'>=</span><span class='fl'>0.2</span><span class='op'>)</span>
+<span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, winsorize <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |     p |  Method | n_Obs
 #&gt; --------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.25 | [-0.39, -0.09] |  -3.14 | 0.002 | Pearson |   150</div><div class='input'>
