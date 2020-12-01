@@ -12,11 +12,11 @@ winsorize(data, threshold = 0.2)
 \item{threshold}{The amount of Winsorization.}
 }
 \description{
-Winsorizization of data.
+Winsorization of data.
 }
 \examples{
 library(correlation)
 
-winsorize(iris$Sepal.Length, threshold=0.2)
-winsorize(iris, threshold=0.2)
+winsorize(iris$Sepal.Length, threshold = 0.2)
+winsorize(iris, threshold = 0.2)
 }

@@ -31,7 +31,7 @@ Description: Lightweight package for computing different kinds of correlations, 
 Imports:
 	datasets,
 	stats,
-	insight (>= 0.10.0.1),
+	insight (>= 0.11.0),
 	bayestestR,
 	parameters (>= 0.9.0.1),
 	effectsize
@@ -61,7 +61,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
-Remotes: easystats/insight, easystats/parameters
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true

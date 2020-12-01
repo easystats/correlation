@@ -128,7 +128,7 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALSE)
 
 # Winsorized
-cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize=0.2)
+cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
 
 # Partial
 cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
