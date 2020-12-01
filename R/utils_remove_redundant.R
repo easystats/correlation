@@ -21,10 +21,22 @@
 
 #' @keywords internal
 .add_redundant <- function(params, data = NULL) {
+  # save in case of failure
+  original_params <- params
+
+  # inverse parameters
   inversed <- params
   inversed[, c("Parameter1", "Parameter2")] <- params[, c("Parameter2", "Parameter1")]
+
+  # bind and get diagonal data
   params <- rbind(params, inversed)
-  params <- rbind(params, .create_diagonal(params))
+  diagonal <- .create_diagonal(params)
+
+  # skip diagonal if no matching data was found...
+  if (ncol(diagonal) != ncol(params)) {
+    return(original_params)
+  }
+  params <- rbind(params, diagonal)
 
   # Reorder
   if (!is.null(data)) {

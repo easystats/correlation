@@ -33,7 +33,7 @@ Imports:
 	stats,
 	insight (>= 0.11.0),
 	bayestestR,
-	parameters (>= 0.9.0.1),
+	parameters (>= 0.10.0),
 	effectsize
 Suggests:
     BayesFactor,
