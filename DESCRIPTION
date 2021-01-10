@@ -28,6 +28,8 @@ Maintainer: Dominique Makowski <dom.makowski@gmail.com>
 URL: https://easystats.github.io/correlation/
 BugReports: https://github.com/easystats/correlation/issues
 Description: Lightweight package for computing different kinds of correlations, such as partial correlations, Bayesian correlations, multilevel correlations, polychoric correlations, biweight correlations, distance correlations and more. Relies on the easystats ecosystem (Lüdecke, Waggoner & Makowski (2019) <doi:10.21105/joss.01412>).
+Depends:
+  R (>= 3.6)
 Imports:
 	datasets,
 	stats,
