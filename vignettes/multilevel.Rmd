@@ -30,7 +30,9 @@ options(
 )
 
 
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
+if (!requireNamespace("ggplot2", quietly = TRUE) ||
+    ## TODO remove once "adjust()" is fixed in effectsize
+    packageVersion("effectsize") == "0.4.3") {
   knitr::opts_chunk$set(eval = FALSE)
 }
 ```
