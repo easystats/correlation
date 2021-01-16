@@ -61,13 +61,12 @@
 #' # Winsorized
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
 #'
+#' \dontrun{
 #' # Partial
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
-#' \donttest{
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
-#'
 #' @importFrom effectsize adjust ranktransform
 #' @importFrom parameters data_to_numeric
 #' @importFrom stats complete.cases

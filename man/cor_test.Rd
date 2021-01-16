@@ -132,11 +132,10 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALS
 # Winsorized
 cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
 
+\dontrun{
 # Partial
 cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
 cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
-\donttest{
 cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 }
-
 }
