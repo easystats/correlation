@@ -39,6 +39,13 @@ format.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
 
 #' @export
 print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
-  cat(insight::export_table(format(x, digits = digits, stars = stars), format = "text"))
+  formatted_table <- format(x, digits = digits, stars = stars)
+
+  if ("Method" %in% names(formatted_table)) {
+    attr(formatted_table, "table_caption") <- unique(formatted_table$Method)
+    formatted_table$Method <- NULL
+  }
+
+  cat(insight::export_table(formatted_table, format = "text"))
   invisible(x)
 }
