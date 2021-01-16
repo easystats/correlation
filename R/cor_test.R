@@ -30,29 +30,37 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "blomqvist")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "hoeffding")
+#' if (require("wdm", quietly = TRUE)) {
+#'   cor_test(iris, "Sepal.Length", "Sepal.Width", method = "blomqvist")
+#' }
+#' if (require("Hmisc", quietly = TRUE)) {
+#'   cor_test(iris, "Sepal.Length", "Sepal.Width", method = "hoeffding")
+#' }
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gamma")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gaussian")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "shepherd")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
+#' if (require("BayesFactor", quietly = TRUE)) {
+#'   cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
+#' }
 #'
 #' # Tetrachoric
-#' data <- iris
-#' data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
-#' data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
-#' cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
+#' if (require("psych", quietly = TRUE)) {
+#'   data <- iris
+#'   data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
+#'   data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
+#'   cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
 #'
-#' # Biserial
-#' cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
+#'   # Biserial
+#'   cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
 #'
-#' # Polychoric
-#' data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
-#' data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
-#' cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+#'   # Polychoric
+#'   data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
+#'   data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
+#'   cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
 #'
-#' # When one variable is continuous, will run 'polyserial' correlation
-#' cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
+#'   # When one variable is continuous, will run 'polyserial' correlation
+#'   cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
+#' }
 #'
 #' # Robust (these two are equivalent)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
