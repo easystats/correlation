@@ -1,3 +1,9 @@
+# correlation 0.5.1
+
+## Changes
+
+- Fixed CRAN check issues due to changes in dependent packages.
+
 # correlation 0.5.0
 
 ## Changes

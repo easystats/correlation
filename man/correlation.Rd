@@ -51,7 +51,9 @@ correlation(
 
 \item{partial_bayesian}{If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).}
 
-\item{multilevel}{If \code{TRUE}, the factors are included as random factors. Else, if \code{FALSE} (default), they are included as fixed effects in the simple regression model.}
+\item{multilevel}{If \code{TRUE}, the factors are included as random factors.
+Else, if \code{FALSE} (default), they are included as fixed effects in the
+simple regression model.}
 
 \item{robust}{If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).}
 
