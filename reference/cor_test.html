@@ -335,17 +335,12 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |     p |  Method | n_Obs
 #&gt; --------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.25 | [-0.39, -0.09] |  -3.14 | 0.002 | Pearson |   150</div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Partial</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI | t(148) |      p |  Method | n_Obs
-#&gt; ------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] |   5.84 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, multilevel <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Can't extract residuals from model.</span></div><div class='output co'>#&gt; <span class='error'>Error in out[complete.cases(data)] &lt;- as.vector(adjusted): replacement has length zero</span></div><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, multilevel <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial_bayesian <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI | t(148) |      p |  Method | n_Obs
-#&gt; ------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] |   5.84 | &lt; .001 | Pearson |   150</div><div class='input'><span class='co'># }</span>
-
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
