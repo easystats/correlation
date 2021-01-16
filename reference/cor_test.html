@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.1</span>
       </span>
     </div>
 
@@ -199,7 +199,9 @@
     </tr>
     <tr>
       <th>multilevel</th>
-      <td><p>If <code>TRUE</code>, the factors are included as random factors. Else, if <code>FALSE</code> (default), they are included as fixed effects in the simple regression model.</p></td>
+      <td><p>If <code>TRUE</code>, the factors are included as random factors.
+Else, if <code>FALSE</code> (default), they are included as fixed effects in the
+simple regression model.</p></td>
     </tr>
     <tr>
       <th>robust</th>
@@ -338,11 +340,9 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI | t(148) |      p |  Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] |   5.84 | &lt; .001 | Pearson |   150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, multilevel <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: lme4</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI | t(148) |      p |  Method | n_Obs
-#&gt; ------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] |   5.85 | &lt; .001 | Pearson |   150</div><div class='input'><span class='co'># \donttest{</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Can't extract residuals from model.</span></div><div class='output co'>#&gt; <span class='error'>Error in out[complete.cases(data)] &lt;- as.vector(adjusted): replacement has length zero</span></div><div class='input'><span class='co'># \donttest{</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial_bayesian <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: rstanarm</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI | t(148) |      p |  Method | n_Obs
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |       95% CI | t(148) |      p |  Method | n_Obs
 #&gt; ------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] |   5.84 | &lt; .001 | Pearson |   150</div><div class='input'><span class='co'># }</span>
 
