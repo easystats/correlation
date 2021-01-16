@@ -37,15 +37,27 @@ format.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
 }
 
 
+#' @importFrom insight export_table
 #' @export
 print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
   formatted_table <- format(x, digits = digits, stars = stars)
 
-  if ("Method" %in% names(formatted_table)) {
-    attr(formatted_table, "table_caption") <- unique(formatted_table$Method)
-    formatted_table$Method <- NULL
+  table_caption <- NULL
+  if (!is.null(attributes(x)$method)) {
+    table_caption <- c(paste0("# Correlation Matrix (", unique(attributes(x)$method), "-method)"), "blue")
   }
 
-  cat(insight::export_table(formatted_table, format = "text"))
+  footer <- attributes(x)$p_adjust
+  if (!is.null(footer)) {
+    footer <- paste0("\np-value adjustment method: ", parameters::format_p_adjust(footer))
+    if (!is.null(attributes(x)$n)) {
+      footer <- list(footer, paste0("\nObservations: ", unique(attributes(x)$n)))
+    }
+  }
+
+  formatted_table$Method <- NULL
+  formatted_table$n_Obs <- NULL
+
+  cat(insight::export_table(formatted_table, format = "text", caption = table_caption, footer = footer))
   invisible(x)
 }

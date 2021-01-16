@@ -1,5 +1,5 @@
 #' @importFrom parameters format_p_adjust
-#' @importFrom insight export_table parameters_table
+#' @importFrom insight export_table format_table
 #' @rdname display.easycormatrix
 #' @export
 print_md.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
@@ -66,7 +66,7 @@ print_html.easycorrelation <- function(x, digits = 2, stars = TRUE, ...) {
   x$n_Obs <- NULL
 
   # final table
-  formatted_table <- insight::parameters_table(x, pretty_names = TRUE, digits = digits, stars = stars, ci_width = NULL, ci_brackets = c("(", ")"))
+  formatted_table <- insight::format_table(x, pretty_names = TRUE, digits = digits, stars = stars, ci_width = NULL, ci_brackets = c("(", ")"))
   insight::export_table(formatted_table, format = format, caption = table_caption, align = "firstleft", footer = footer)
 }
 
