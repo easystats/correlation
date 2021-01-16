@@ -121,11 +121,14 @@
 <a href="#simple-correlation" class="anchor"></a>Simple correlation</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
-<pre><code>## Parameter1 | Parameter2 |     r |         95% CI | t(998) |      p |  Method | n_Obs
-## ------------------------------------------------------------------------------------
-## V1         |         V2 | -0.84 | [-0.86, -0.82] | -48.77 | &lt; .001 | Pearson |  1000
+<pre><code>## # Correlation table (pearson-method)
 ## 
-## p-value adjustment method: Holm (1979)</code></pre>
+## Parameter1 | Parameter2 |     r |         95% CI | t(998) |         p
+## ---------------------------------------------------------------------
+## V1         |         V2 | -0.84 | [-0.86, -0.82] | -48.77 | &lt; .001***
+## 
+## p-value adjustment method: Holm (1979)
+## Observations: 1000</code></pre>
 <p>Indeed, there is <strong>strong, negative and significant correlation</strong> between V1 and V2. Great, can we go ahead and <strong>publish these results in PNAS</strong>?</p>
 </div>
 <div id="the-simpsons-paradox" class="section level2">
@@ -147,11 +150,12 @@
 <p>You can compute them with the <a href="https://github.com/easystats/correlation"><strong>correlations</strong></a> package by setting the <code>multilevel</code> argument to <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |      p |  Method | n_Obs
-## ---------------------------------------------------------------------------------
-## V1         |         V2 | 0.50 | [0.45, 0.55] |  18.24 | &lt; .001 | Pearson |  1000
+<pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
+## ------------------------------------------------------------------
+## V1         |         V2 | 0.50 | [0.45, 0.55] |  18.24 | &lt; .001***
 ## 
-## p-value adjustment method: Holm (1979)</code></pre>
+## p-value adjustment method: Holm (1979)
+## Observations: 1000</code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking the group into account seems to be super important.</p>
 <p>Note: In this simple case where only two variables are of interest, it would be of course best to directly proceed using a mixed regression model instead of correlations. That being said, the latter can be useful for exploratory analysis, when multiple variables are of interest, or in combination with a network or structural approach.</p>
 </div>
