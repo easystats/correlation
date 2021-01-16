@@ -1,4 +1,4 @@
-#' @importFrom stats complete.cases rnorm
+#' @importFrom stats complete.cases rnorm qnorm
 #' @importFrom utils install.packages
 #' @importFrom effectsize ranktransform
 #' @importFrom parameters model_parameters
@@ -24,8 +24,8 @@
     var_y <- effectsize::ranktransform(var_y, sign = TRUE, method = "average")
     method <- "Bayesian Spearman"
   } else if (tolower(method) %in% c("gaussian")) {
-    var_x <- qnorm(rank(var_x) / (length(var_x) + 1))
-    var_y <- qnorm(rank(var_y) / (length(var_y) + 1))
+    var_x <- stats::qnorm(rank(var_x) / (length(var_x) + 1))
+    var_y <- stats::qnorm(rank(var_y) / (length(var_y) + 1))
     method <- "Bayesian Gaussian rank"
   } else {
     method <- "Bayesian Pearson"

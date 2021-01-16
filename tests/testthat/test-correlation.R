@@ -142,7 +142,7 @@ test_that("format checks", {
   if (requireNamespace("BayesFactor")) {
     out <- correlation(iris, include_factors = TRUE, multilevel = TRUE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
     testthat::expect_equal(c(nrow(out), ncol(out)), c(6, 13))
-    testthat::expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(4, 5))
+    testthat::expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4, 5))
     testthat::expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
   }
 })
