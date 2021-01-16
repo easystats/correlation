@@ -8,14 +8,14 @@ test_that("cor_test frequentist", {
 
 
 test_that("cor_test bayesian", {
-  if (requireNamespace("BayesFactor")) {
+  if (require("BayesFactor", quietly = TRUE)) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
     testthat::expect_equal(out$r, 0.962, tolerance = 0.01)
   }
 })
 
 test_that("cor_test tetrachoric", {
-  if (requireNamespace("psych")) {
+  if (require("psych", quietly = TRUE)) {
     data <- iris
     data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
     data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
@@ -56,16 +56,16 @@ test_that("cor_test robust", {
 
 
 test_that("cor_test distance", {
-  if (requireNamespace("energy")) {
+  if (require("energy", quietly = TRUE)) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
-    comparison <- energy::dcor.ttest(iris$Petal.Length, iris$Petal.Width)
+    comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
     testthat::expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.01)
   }
 })
 
 
 test_that("cor_test percentage", {
-  if (requireNamespace("WRS2")) {
+  if (require("WRS2", quietly = TRUE)) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "percentage")
     comparison <- WRS2::pbcor(iris$Petal.Length, iris$Petal.Width)
     testthat::expect_equal(out$r, as.numeric(comparison$cor), tolerance = 0.01)
@@ -81,13 +81,15 @@ test_that("cor_test shepherd", {
 
 
 test_that("cor_test blomqvist", {
-  set.seed(333)
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "blomqvist")
-  testthat::expect_equal(out$r, as.numeric(0.9066667), tolerance = 0.01)
+  if (require("wdm", quietly = TRUE)) {
+    set.seed(333)
+    out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "blomqvist")
+    testthat::expect_equal(out$r, as.numeric(0.9066667), tolerance = 0.01)
+  }
 })
 
 test_that("cor_test hoeffding", {
-  if (requireNamespace("Hmisc")) {
+  if (require("Hmisc", quietly = TRUE)) {
     set.seed(333)
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "hoeffding")
     testthat::expect_equal(out$r, as.numeric(0.5629277), tolerance = 0.01)
