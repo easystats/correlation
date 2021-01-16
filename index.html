@@ -159,6 +159,9 @@
 <input type="checkbox" disabled checked><strong>Point-Biserial and biserial correlation</strong>
 </li>
 <li>
+<input type="checkbox" disabled checked><strong>Winsorized correlation</strong>
+</li>
+<li>
 <input type="checkbox" disabled checked><strong>Polychoric correlation</strong>
 </li>
 <li>
@@ -181,14 +184,16 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 <span class="va">results</span>
-<span class="co">## Parameter1   |   Parameter2 |     r |         95% CI |     t |  df |      p |  Method | n_Obs</span>
-<span class="co">## ---------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] | -1.44 | 148 | 0.152  | Pearson |   150</span>
-<span class="co">## Sepal.Length | Petal.Length |  0.87 | [ 0.83,  0.91] | 21.65 | 148 | &lt; .001 | Pearson |   150</span>
-<span class="co">## Sepal.Length |  Petal.Width |  0.82 | [ 0.76,  0.86] | 17.30 | 148 | &lt; .001 | Pearson |   150</span>
-<span class="co">## Sepal.Width  | Petal.Length | -0.43 | [-0.55, -0.29] | -5.77 | 148 | &lt; .001 | Pearson |   150</span>
-<span class="co">## Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] | -4.79 | 148 | &lt; .001 | Pearson |   150</span>
-<span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 43.39 | 148 | &lt; .001 | Pearson |   150</span></code></pre></div>
+<span class="co">## Parameter1   |   Parameter2 |     r |         95% CI | t(148) |      p |  Method | n_Obs</span>
+<span class="co">## ----------------------------------------------------------------------------------------</span>
+<span class="co">## Sepal.Length |  Sepal.Width | -0.12 | [-0.27,  0.04] |  -1.44 | 0.152  | Pearson |   150</span>
+<span class="co">## Sepal.Length | Petal.Length |  0.87 | [ 0.83,  0.91] |  21.65 | &lt; .001 | Pearson |   150</span>
+<span class="co">## Sepal.Length |  Petal.Width |  0.82 | [ 0.76,  0.86] |  17.30 | &lt; .001 | Pearson |   150</span>
+<span class="co">## Sepal.Width  | Petal.Length | -0.43 | [-0.55, -0.29] |  -5.77 | &lt; .001 | Pearson |   150</span>
+<span class="co">## Sepal.Width  |  Petal.Width | -0.37 | [-0.50, -0.22] |  -4.79 | &lt; .001 | Pearson |   150</span>
+<span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |  43.39 | &lt; .001 | Pearson |   150</span>
+<span class="co">## </span>
+<span class="co">## p-value adjustment method: Holm (1979)</span></code></pre></div>
 <p>The output is not a square matrix, but a <strong>(tidy) dataframe with all correlations tests per row</strong>. One can also obtain a <strong>matrix</strong> using:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span>
@@ -224,17 +229,19 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Petal.Width</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## Group      |   Parameter1 |  Parameter2 |    r |        95% CI |    t | df |      p |  Method | n_Obs</span>
-<span class="co">## -----------------------------------------------------------------------------------------------------</span>
-<span class="co">## setosa     | Sepal.Length | Sepal.Width | 0.74 | [ 0.59, 0.85] | 7.68 | 48 | &lt; .001 | Pearson |    50</span>
-<span class="co">## setosa     | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] | 2.01 | 48 | 0.101  | Pearson |    50</span>
-<span class="co">## setosa     |  Sepal.Width | Petal.Width | 0.23 | [-0.05, 0.48] | 1.66 | 48 | 0.104  | Pearson |    50</span>
-<span class="co">## versicolor | Sepal.Length | Sepal.Width | 0.53 | [ 0.29, 0.70] | 4.28 | 48 | &lt; .001 | Pearson |    50</span>
-<span class="co">## versicolor | Sepal.Length | Petal.Width | 0.55 | [ 0.32, 0.72] | 4.52 | 48 | &lt; .001 | Pearson |    50</span>
-<span class="co">## versicolor |  Sepal.Width | Petal.Width | 0.66 | [ 0.47, 0.80] | 6.15 | 48 | &lt; .001 | Pearson |    50</span>
-<span class="co">## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] | 3.56 | 48 | 0.002  | Pearson |    50</span>
-<span class="co">## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] | 2.03 | 48 | 0.048  | Pearson |    50</span>
-<span class="co">## virginica  |  Sepal.Width | Petal.Width | 0.54 | [ 0.31, 0.71] | 4.42 | 48 | &lt; .001 | Pearson |    50</span></code></pre></div>
+<span class="co">## Group      |   Parameter1 |  Parameter2 |    r |        95% CI | t(48) |      p |  Method | n_Obs</span>
+<span class="co">## -------------------------------------------------------------------------------------------------</span>
+<span class="co">## setosa     | Sepal.Length | Sepal.Width | 0.74 | [ 0.59, 0.85] |  7.68 | &lt; .001 | Pearson |    50</span>
+<span class="co">## setosa     | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] |  2.01 | 0.101  | Pearson |    50</span>
+<span class="co">## setosa     |  Sepal.Width | Petal.Width | 0.23 | [-0.05, 0.48] |  1.66 | 0.104  | Pearson |    50</span>
+<span class="co">## versicolor | Sepal.Length | Sepal.Width | 0.53 | [ 0.29, 0.70] |  4.28 | &lt; .001 | Pearson |    50</span>
+<span class="co">## versicolor | Sepal.Length | Petal.Width | 0.55 | [ 0.32, 0.72] |  4.52 | &lt; .001 | Pearson |    50</span>
+<span class="co">## versicolor |  Sepal.Width | Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | &lt; .001 | Pearson |    50</span>
+<span class="co">## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 0.002  | Pearson |    50</span>
+<span class="co">## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 0.048  | Pearson |    50</span>
+<span class="co">## virginica  |  Sepal.Width | Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | &lt; .001 | Pearson |    50</span>
+<span class="co">## </span>
+<span class="co">## p-value adjustment method: Holm (1979)</span></code></pre></div>
 </div>
 <div id="bayesian-correlations" class="section level2">
 <h2 class="hasAnchor">
@@ -242,14 +249,14 @@
 <p>It is very easy to switch to a <strong>Bayesian framework</strong>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |     pd | % in ROPE |    BF |              Prior |           Method | n_Obs</span>
-<span class="co">## ---------------------------------------------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.02] | 92.03% |    41.93% |  0.51 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
-<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
-<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
-<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.52, -0.31] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
-<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] |   100% |     0.07% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
-<span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | &gt; 999 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span></code></pre></div>
+<span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |     pd | % in ROPE |     BF |              Prior |           Method | n_Obs</span>
+<span class="co">## ----------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.00] | 92.65% |    42.58% |  0.509 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] |   100% |        0% | &gt; 1000 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] |   100% |        0% | &gt; 1000 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.52, -0.31] |   100% |        0% | &gt; 1000 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] |   100% |     0.12% | &gt; 1000 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span>
+<span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] |   100% |        0% | &gt; 1000 | Cauchy (0 +- 0.33) | Bayesian Pearson |   150</span></code></pre></div>
 </div>
 <div id="tetrachoric-polychoric-biserial-biweight" class="section level2">
 <h2 class="hasAnchor">
@@ -257,29 +264,31 @@
 <p>The <code>correlation</code> package also supports different types of methods, which can deal with correlations <strong>between factors</strong>!</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span>, include_factors <span class="op">=</span> <span class="cn">TRUE</span>, method <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
-<span class="co">## Parameter1         |         Parameter2 |     r |         95% CI |      t |  df |      p |         Method | n_Obs</span>
-<span class="co">## -----------------------------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length       |        Sepal.Width | -0.12 | [-0.27,  0.04] |  -1.44 | 148 | 0.452  |        Pearson |   150</span>
-<span class="co">## Sepal.Length       |       Petal.Length |  0.87 | [ 0.83,  0.91] |  21.65 | 148 | &lt; .001 |        Pearson |   150</span>
-<span class="co">## Sepal.Length       |        Petal.Width |  0.82 | [ 0.76,  0.86] |  17.30 | 148 | &lt; .001 |        Pearson |   150</span>
-<span class="co">## Sepal.Length       |     Species.setosa | -0.72 | [-0.79, -0.63] | -12.53 | 148 | &lt; .001 | Point-biserial |   150</span>
-<span class="co">## Sepal.Length       | Species.versicolor |  0.08 | [-0.08,  0.24] |   0.97 | 148 | 0.452  | Point-biserial |   150</span>
-<span class="co">## Sepal.Length       |  Species.virginica |  0.64 | [ 0.53,  0.72] |  10.08 | 148 | &lt; .001 | Point-biserial |   150</span>
-<span class="co">## Sepal.Width        |       Petal.Length | -0.43 | [-0.55, -0.29] |  -5.77 | 148 | &lt; .001 |        Pearson |   150</span>
-<span class="co">## Sepal.Width        |        Petal.Width | -0.37 | [-0.50, -0.22] |  -4.79 | 148 | &lt; .001 |        Pearson |   150</span>
-<span class="co">## Sepal.Width        |     Species.setosa |  0.60 | [ 0.49,  0.70] |   9.20 | 148 | &lt; .001 | Point-biserial |   150</span>
-<span class="co">## Sepal.Width        | Species.versicolor | -0.47 | [-0.58, -0.33] |  -6.44 | 148 | &lt; .001 | Point-biserial |   150</span>
-<span class="co">## Sepal.Width        |  Species.virginica | -0.14 | [-0.29,  0.03] |  -1.67 | 148 | 0.392  | Point-biserial |   150</span>
-<span class="co">## Petal.Length       |        Petal.Width |  0.96 | [ 0.95,  0.97] |  43.39 | 148 | &lt; .001 |        Pearson |   150</span>
-<span class="co">## Petal.Length       |     Species.setosa | -0.92 | [-0.94, -0.89] | -29.13 | 148 | &lt; .001 | Point-biserial |   150</span>
-<span class="co">## Petal.Length       | Species.versicolor |  0.20 | [ 0.04,  0.35] |   2.51 | 148 | 0.066  | Point-biserial |   150</span>
-<span class="co">## Petal.Length       |  Species.virginica |  0.72 | [ 0.63,  0.79] |  12.66 | 148 | &lt; .001 | Point-biserial |   150</span>
-<span class="co">## Petal.Width        |     Species.setosa | -0.89 | [-0.92, -0.85] | -23.41 | 148 | &lt; .001 | Point-biserial |   150</span>
-<span class="co">## Petal.Width        | Species.versicolor |  0.12 | [-0.04,  0.27] |   1.44 | 148 | 0.452  | Point-biserial |   150</span>
-<span class="co">## Petal.Width        |  Species.virginica |  0.77 | [ 0.69,  0.83] |  14.66 | 148 | &lt; .001 | Point-biserial |   150</span>
-<span class="co">## Species.setosa     | Species.versicolor | -0.88 | [-0.91, -0.84] | -22.35 | 148 | &lt; .001 |    Tetrachoric |   150</span>
-<span class="co">## Species.setosa     |  Species.virginica | -0.88 | [-0.91, -0.84] | -22.35 | 148 | &lt; .001 |    Tetrachoric |   150</span>
-<span class="co">## Species.versicolor |  Species.virginica | -0.88 | [-0.91, -0.84] | -22.35 | 148 | &lt; .001 |    Tetrachoric |   150</span></code></pre></div>
+<span class="co">## Parameter1         |         Parameter2 |     r |         95% CI | t(148) |      p |         Method | n_Obs</span>
+<span class="co">## -----------------------------------------------------------------------------------------------------------</span>
+<span class="co">## Sepal.Length       |        Sepal.Width | -0.12 | [-0.27,  0.04] |  -1.44 | 0.452  |        Pearson |   150</span>
+<span class="co">## Sepal.Length       |       Petal.Length |  0.87 | [ 0.83,  0.91] |  21.65 | &lt; .001 |        Pearson |   150</span>
+<span class="co">## Sepal.Length       |        Petal.Width |  0.82 | [ 0.76,  0.86] |  17.30 | &lt; .001 |        Pearson |   150</span>
+<span class="co">## Sepal.Length       |     Species.setosa | -0.72 | [-0.79, -0.63] | -12.53 | &lt; .001 | Point-biserial |   150</span>
+<span class="co">## Sepal.Length       | Species.versicolor |  0.08 | [-0.08,  0.24] |   0.97 | 0.452  | Point-biserial |   150</span>
+<span class="co">## Sepal.Length       |  Species.virginica |  0.64 | [ 0.53,  0.72] |  10.08 | &lt; .001 | Point-biserial |   150</span>
+<span class="co">## Sepal.Width        |       Petal.Length | -0.43 | [-0.55, -0.29] |  -5.77 | &lt; .001 |        Pearson |   150</span>
+<span class="co">## Sepal.Width        |        Petal.Width | -0.37 | [-0.50, -0.22] |  -4.79 | &lt; .001 |        Pearson |   150</span>
+<span class="co">## Sepal.Width        |     Species.setosa |  0.60 | [ 0.49,  0.70] |   9.20 | &lt; .001 | Point-biserial |   150</span>
+<span class="co">## Sepal.Width        | Species.versicolor | -0.47 | [-0.58, -0.33] |  -6.44 | &lt; .001 | Point-biserial |   150</span>
+<span class="co">## Sepal.Width        |  Species.virginica | -0.14 | [-0.29,  0.03] |  -1.67 | 0.392  | Point-biserial |   150</span>
+<span class="co">## Petal.Length       |        Petal.Width |  0.96 | [ 0.95,  0.97] |  43.39 | &lt; .001 |        Pearson |   150</span>
+<span class="co">## Petal.Length       |     Species.setosa | -0.92 | [-0.94, -0.89] | -29.13 | &lt; .001 | Point-biserial |   150</span>
+<span class="co">## Petal.Length       | Species.versicolor |  0.20 | [ 0.04,  0.35] |   2.51 | 0.066  | Point-biserial |   150</span>
+<span class="co">## Petal.Length       |  Species.virginica |  0.72 | [ 0.63,  0.79] |  12.66 | &lt; .001 | Point-biserial |   150</span>
+<span class="co">## Petal.Width        |     Species.setosa | -0.89 | [-0.92, -0.85] | -23.41 | &lt; .001 | Point-biserial |   150</span>
+<span class="co">## Petal.Width        | Species.versicolor |  0.12 | [-0.04,  0.27] |   1.44 | 0.452  | Point-biserial |   150</span>
+<span class="co">## Petal.Width        |  Species.virginica |  0.77 | [ 0.69,  0.83] |  14.66 | &lt; .001 | Point-biserial |   150</span>
+<span class="co">## Species.setosa     | Species.versicolor | -0.88 | [-0.91, -0.84] | -22.43 | &lt; .001 |    Tetrachoric |   150</span>
+<span class="co">## Species.setosa     |  Species.virginica | -0.88 | [-0.91, -0.84] | -22.43 | &lt; .001 |    Tetrachoric |   150</span>
+<span class="co">## Species.versicolor |  Species.virginica | -0.88 | [-0.91, -0.84] | -22.43 | &lt; .001 |    Tetrachoric |   150</span>
+<span class="co">## </span>
+<span class="co">## p-value adjustment method: Holm (1979)</span></code></pre></div>
 </div>
 <div id="partial-correlations" class="section level2">
 <h2 class="hasAnchor">
