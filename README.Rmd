@@ -18,6 +18,7 @@ editor_options:
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 library(ggplot2)
 library(dplyr)
+library(correlation)
 
 options(digits=2)
 
@@ -29,13 +30,9 @@ knitr::opts_chunk$set(
 ```
 
 
-[![CRAN](http://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
-[![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
-[![Build Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
-[![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/easystats/correlation)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02306/status.svg)](https://doi.org/10.21105/joss.02306)
-
-
+[![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
+[![total](https://cranlogs.r-pkg.org/badges/grand-total/correlation)](https://cranlogs.r-pkg.org/) 
 
 `correlation` is an [**easystats**](https://github.com/easystats/easystats) package focused on correlation analysis. It's lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as **partial** correlations, **Bayesian** correlations, **multilevel** correlations, **polychoric** correlations, **biweight**, **percentage bend** or **Sheperd's Pi** correlations (types of robust correlation), **distance** correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, *Bayesian partial multilevel correlation*).
 
@@ -44,19 +41,25 @@ You can reference the package and its documentation as follows:
 - Makowski, D., Ben-Shachar, M. S., Patil, I., \& Lüdecke, D. (2019). *Methods and Algorithms for Correlation Analysis in R*. Journal of Open Source Software, 5(51), 2306. [10.21105/joss.02306](https://doi.org/10.21105/joss.02306)
 
 
-
 ## Installation
 
+[![CRAN](http://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
+[![Build Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
+[![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/easystats/correlation)
 
-Run the following:
+Run the following to install the stable release of **correlation** from CRAN:
 
-```{r eval=FALSE, message=FALSE, warning=FALSE}
-install.packages("devtools")
-devtools::install_github("easystats/correlation")
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+install.packages("correlation")
 ```
-```{r message=FALSE, warning=FALSE}
-library("correlation")
+
+Or this one to install the latest development version:
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+install.packages("remotes")
+remotes::install_github("easystats/correlation")
 ```
+
 
 ## Documentation
 
