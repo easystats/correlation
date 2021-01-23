@@ -1,6 +1,5 @@
 
 if (require("effectsize", quietly = TRUE) && packageVersion("effectsize") > "0.4.3") {
-
   test_that("comparison rmcorr", {
     if (require("rmcorr", quietly = TRUE)) {
       rez_rmcorr <- rmcorr::rmcorr(Species, Sepal.Length, Sepal.Width, dataset = iris)
@@ -36,5 +35,4 @@ if (require("effectsize", quietly = TRUE) && packageVersion("effectsize") > "0.4
       testthat::expect_equal(max(as.matrix(pcor_to_cor(rez)) - cormatrix), 0, tolerance = 0.01)
     }
   })
-
 }

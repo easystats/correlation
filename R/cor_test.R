@@ -68,7 +68,6 @@
 #'
 #' # Winsorized
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
-#'
 #' \dontrun{
 #' # Partial
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
@@ -97,7 +96,9 @@ cor_test <- function(data,
                      ...) {
 
   # Sanity checks
-  if (!x %in% names(data) | !y %in% names(data)) stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
+  if (!x %in% names(data) | !y %in% names(data)) {
+    stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
+  }
   if (ci == "default") ci <- 0.95
   if (partial == FALSE & (partial_bayesian | multilevel)) partial <- TRUE
 
@@ -193,7 +194,17 @@ cor_test <- function(data,
     } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
     } else {
-      out <- .cor_test_bayes(data, x, y, ci = ci, method = method, bayesian_prior = bayesian_prior, bayesian_ci_method = bayesian_ci_method, bayesian_test = bayesian_test, ...)
+      out <- .cor_test_bayes(
+        data,
+        x,
+        y,
+        ci = ci,
+        method = method,
+        bayesian_prior = bayesian_prior,
+        bayesian_ci_method = bayesian_ci_method,
+        bayesian_test = bayesian_test,
+        ...
+      )
     }
   }
 
