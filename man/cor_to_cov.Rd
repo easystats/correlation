@@ -7,9 +7,11 @@
 cor_to_cov(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2/3))
 }
 \arguments{
-\item{cor}{A correlation matrix, or a partial or a semipartial correlation matrix.}
+\item{cor}{A correlation matrix, or a partial or a semipartial
+correlation matrix.}
 
-\item{sd, variance}{A vector that contains the standard deviations, or the variance, of the variables in the correlation matrix.}
+\item{sd, variance}{A vector that contains the standard deviations, or the
+variance, of the variables in the correlation matrix.}
 
 \item{tol}{Relative tolerance to detect zero singular values.}
 }

@@ -21,7 +21,9 @@
 #'
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall")
 #' cor_to_p(-0.07699679, n = 150, method = "kendall")
-#' @references Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for correlations when data are not normal. Behavior research methods, 49(1), 294-309.
+#' @references Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
+#'   correlations when data are not normal. Behavior research methods, 49(1),
+#'   294-309.
 #'
 #' @importFrom stats qnorm pt
 #' @export

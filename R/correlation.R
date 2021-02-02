@@ -442,15 +442,14 @@ correlation <- function(data,
   if (method == "polychoric") multilevel <- TRUE
 
   # Clean data and get combinations -------------
-  combinations <-
-    .get_combinations(
-      data,
-      data2 = NULL,
-      redundant = FALSE,
-      include_factors = include_factors,
-      multilevel = multilevel,
-      method = method
-    )
+  combinations <- .get_combinations(
+    data,
+    data2 = NULL,
+    redundant = FALSE,
+    include_factors = include_factors,
+    multilevel = multilevel,
+    method = method
+  )
   data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
 
   # LOOP ----------------
@@ -498,10 +497,7 @@ correlation <- function(data,
 
   # P-values adjustments
   if ("p" %in% names(params)) {
-    params$p <- stats::p.adjust(params$p,
-      method = p_adjust,
-      n = nrow(params)
-    )
+    params$p <- stats::p.adjust(params$p, method = p_adjust, n = nrow(params))
   }
 
   # Redundant
