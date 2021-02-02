@@ -28,7 +28,7 @@
     Parameter2 = y,
     rho = r,
     t = p$statistic,
-    df = length(var_x) - 2,
+    df_error = length(var_x) - 2,
     p = p$p,
     CI_low = ci_vals$CI_low,
     CI_high = ci_vals$CI_high,

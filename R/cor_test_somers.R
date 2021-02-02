@@ -15,7 +15,7 @@
     Parameter2 = y,
     Dxy = r,
     t = NA,
-    df = length(var_x) - 2,
+    df_error = length(var_x) - 2,
     p = NA,
     CI_low = NA,
     CI_high = NA,
