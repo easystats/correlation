@@ -9,13 +9,16 @@ distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = TRUE, ...)
 \arguments{
 \item{data}{A data frame.}
 
-\item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is set to 0.95 (95\% CI).}
+\item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
+set to 0.95 (95\% CI).}
 
 \item{iterations}{The number of draws to simulate/bootstrap (when \code{robust} is \code{TRUE}).}
 
 \item{robust}{If \code{TRUE}, will run a bootstrapped version of the function with i iterations.}
 
-\item{...}{Arguments passed to or from other methods.}
+\item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
+other methods. \code{\link[stats::cor.test]{cor.test()}} for further
+details.}
 }
 \value{
 Description of the Mahalanobis distance.

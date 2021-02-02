@@ -14,13 +14,27 @@ cor_to_p(cor, n, method = "pearson")
 
 \item{n}{The sample size (number of observations).}
 
-\item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is set to 0.95 (95\% CI).}
+\item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
+set to 0.95 (95\% CI).}
 
-\item{method}{A character string indicating which correlation coefficient is to be used for the test. One of \code{"pearson"} (default), \code{"kendall"}, \code{"spearman"}, \code{"biserial"}, \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"} (for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting \code{"auto"} will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).}
+\item{method}{A character string indicating which correlation coefficient is
+to be used for the test. One of \code{"pearson"} (default),
+\code{"kendall"}, \code{"spearman"}, \code{"biserial"},
+\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
+\code{"distance"}, \code{"percentage"} (for percentage bend correlation),
+\code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
+Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank
+correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
+\code{"auto"} will attempt at selecting the most relevant method
+(polychoric when ordinal factors involved, tetrachoric when dichotomous
+factors involved, point-biserial if one dichotomous and one continuous and
+pearson otherwise).}
 
 \item{correction}{Only used if method is 'spearman' or 'kendall'. Can be 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.}
 
-\item{...}{Arguments passed to or from other methods.}
+\item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
+other methods. \code{\link[stats::cor.test]{cor.test()}} for further
+details.}
 }
 \value{
 A list containing a p-value and the statistic or the CI bounds.

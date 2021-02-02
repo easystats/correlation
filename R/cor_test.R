@@ -4,17 +4,51 @@
 #'
 #' @param data A data frame.
 #' @param x,y Names of two variables present in the data.
-#' @param ci Confidence/Credible Interval level. If \code{"default"}, then it is set to 0.95 (95\% CI).
-#' @param method A character string indicating which correlation coefficient is to be used for the test. One of \code{"pearson"} (default), \code{"kendall"}, \code{"spearman"}, \code{"biserial"}, \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"} (for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting \code{"auto"} will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).
-#' @param bayesian,partial_bayesian If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).
-#' @param include_factors If \code{TRUE}, the factors are kept and eventually converted to numeric or used as random effects (depending of \code{multilevel}). If \code{FALSE}, factors are removed upfront.
-#' @param partial Can be \code{TRUE} or \code{"semi"} for partial and semi-partial correlations, respectively.
+#' @param ci Confidence/Credible Interval level. If \code{"default"}, then it is
+#'   set to 0.95 (95\% CI).
+#' @param method A character string indicating which correlation coefficient is
+#'   to be used for the test. One of \code{"pearson"} (default),
+#'   \code{"kendall"}, \code{"spearman"}, \code{"biserial"},
+#'   \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
+#'   \code{"distance"}, \code{"percentage"} (for percentage bend correlation),
+#'   \code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
+#'   Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank
+#'   correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
+#'   \code{"auto"} will attempt at selecting the most relevant method
+#'   (polychoric when ordinal factors involved, tetrachoric when dichotomous
+#'   factors involved, point-biserial if one dichotomous and one continuous and
+#'   pearson otherwise).
+#' @param bayesian,partial_bayesian If TRUE, will run the correlations under a
+#'   Bayesian framework. Note that for partial correlations, you will also need
+#'   to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian
+#'   partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
+#'   correlations (i.e., Bayesian correlation based on frequentist
+#'   partialization).
+#' @param include_factors If \code{TRUE}, the factors are kept and eventually
+#'   converted to numeric or used as random effects (depending of
+#'   \code{multilevel}). If \code{FALSE}, factors are removed upfront.
+#' @param partial Can be \code{TRUE} or \code{"semi"} for partial and
+#'   semi-partial correlations, respectively.
 #' @inheritParams effectsize::adjust
-#' @param bayesian_prior For the prior argument, several named values are recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and \code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(3)} and \code{1}, respectively. See the \code{BayesFactor::correlationBF} function.
-#' @param bayesian_ci_method,bayesian_test See arguments in \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
-#' @param robust If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).
-#' @param winsorize Either \code{FALSE} or a number between 0 and 1 (e.g., \code{0.2}) that corresponds to the threshold of desired \code{\link[=winsorize]{winsorization}}.
-#' @param ... Arguments passed to or from other methods.
+#' @param bayesian_prior For the prior argument, several named values are
+#'   recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and
+#'   \code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)},
+#'   \code{1/3}, \code{1/sqrt(3)} and \code{1}, respectively. See the
+#'   \code{BayesFactor::correlationBF} function.
+#' @param bayesian_ci_method,bayesian_test See arguments in
+#'   \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
+#' @param robust If TRUE, will rank-transform the variables prior to estimating
+#'   the correlation. Note that, for instance, a Pearson's correlation on
+#'   rank-transformed data is equivalent to a Spearman's rank correlation. Thus,
+#'   using \code{robust=TRUE} and \code{method="spearman"} is redundant.
+#'   Nonetheless, it is an easy way to increase the robustness of the
+#'   correlation (as well as obtaining Bayesian Spearman rank Correlations).
+#' @param winsorize Either \code{FALSE} or a number between 0 and 1 (e.g.,
+#'   \code{0.2}) that corresponds to the threshold of desired
+#'   \code{\link[=winsorize]{winsorization}}.
+#' @param ... Additional arguments (e.g., \code{alternative}) to be passed to
+#'   other methods. \code{\link[stats::cor.test]{cor.test()}} for further
+#'   details.
 #'
 #'
 #' @inherit correlation details
@@ -99,6 +133,7 @@ cor_test <- function(data,
   if (!x %in% names(data) | !y %in% names(data)) {
     stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
   }
+
   if (ci == "default") ci <- 0.95
   if (partial == FALSE & (partial_bayesian | multilevel)) partial <- TRUE
 
