@@ -171,31 +171,56 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of <code>"pearson"</code> (default), <code>"kendall"</code>, <code>"spearman"</code>, <code>"biserial"</code>, <code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>, <code>"distance"</code>, <code>"percentage"</code> (for percentage bend correlation), <code>"blomqvist"</code> (for Blomqvist's coefficient), <code>"hoeffding"</code> (for Hoeffding's D), <code>"gamma"</code>, <code>"gaussian"</code> (for Gaussian Rank correlation) or <code>"shepherd"</code> (for Shepherd's Pi correlation). Setting <code>"auto"</code> will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
+      <td><p>A character string indicating which correlation coefficient is
+to be used for the test. One of <code>"pearson"</code> (default),
+<code>"kendall"</code>, <code>"spearman"</code>, <code>"biserial"</code>,
+<code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>,
+<code>"distance"</code>, <code>"percentage"</code> (for percentage bend correlation),
+<code>"blomqvist"</code> (for Blomqvist's coefficient), <code>"hoeffding"</code> (for
+Hoeffding's D), <code>"gamma"</code>, <code>"gaussian"</code> (for Gaussian Rank
+correlation) or <code>"shepherd"</code> (for Shepherd's Pi correlation). Setting
+<code>"auto"</code> will attempt at selecting the most relevant method
+(polychoric when ordinal factors involved, tetrachoric when dichotomous
+factors involved, point-biserial if one dichotomous and one continuous and
+pearson otherwise).</p></td>
     </tr>
     <tr>
       <th>ci</th>
-      <td><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is set to 0.95 (95% CI).</p></td>
+      <td><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
+set to 0.95 (95% CI).</p></td>
     </tr>
     <tr>
       <th>bayesian, partial_bayesian</th>
-      <td><p>If TRUE, will run the correlations under a Bayesian framework. Note that for partial correlations, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian partial correlations. Otherwise, you will obtain pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on frequentist partialization).</p></td>
+      <td><p>If TRUE, will run the correlations under a
+Bayesian framework. Note that for partial correlations, you will also need
+to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian
+partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
+correlations (i.e., Bayesian correlation based on frequentist
+partialization).</p></td>
     </tr>
     <tr>
       <th>bayesian_prior</th>
-      <td><p>For the prior argument, several named values are recognized: <code>"medium.narrow"</code>, <code>"medium"</code>, <code>"wide"</code>, and <code>"ultrawide"</code>. These correspond to scale values of <code>1/sqrt(27)</code>, <code>1/3</code>, <code>1/sqrt(3)</code> and <code>1</code>, respectively. See the <code><a href='https://rdrr.io/pkg/BayesFactor/man/correlationBF.html'>BayesFactor::correlationBF</a></code> function.</p></td>
+      <td><p>For the prior argument, several named values are
+recognized: <code>"medium.narrow"</code>, <code>"medium"</code>, <code>"wide"</code>, and
+<code>"ultrawide"</code>. These correspond to scale values of <code>1/sqrt(27)</code>,
+<code>1/3</code>, <code>1/sqrt(3)</code> and <code>1</code>, respectively. See the
+<code><a href='https://rdrr.io/pkg/BayesFactor/man/correlationBF.html'>BayesFactor::correlationBF</a></code> function.</p></td>
     </tr>
     <tr>
       <th>bayesian_ci_method, bayesian_test</th>
-      <td><p>See arguments in <code>model_parameters</code> for <code>BayesFactor</code> tests.</p></td>
+      <td><p>See arguments in
+<code>model_parameters</code> for <code>BayesFactor</code> tests.</p></td>
     </tr>
     <tr>
       <th>include_factors</th>
-      <td><p>If <code>TRUE</code>, the factors are kept and eventually converted to numeric or used as random effects (depending of <code>multilevel</code>). If <code>FALSE</code>, factors are removed upfront.</p></td>
+      <td><p>If <code>TRUE</code>, the factors are kept and eventually
+converted to numeric or used as random effects (depending of
+<code>multilevel</code>). If <code>FALSE</code>, factors are removed upfront.</p></td>
     </tr>
     <tr>
       <th>partial</th>
-      <td><p>Can be <code>TRUE</code> or <code>"semi"</code> for partial and semi-partial correlations, respectively.</p></td>
+      <td><p>Can be <code>TRUE</code> or <code>"semi"</code> for partial and
+semi-partial correlations, respectively.</p></td>
     </tr>
     <tr>
       <th>multilevel</th>
@@ -205,15 +230,23 @@ simple regression model.</p></td>
     </tr>
     <tr>
       <th>robust</th>
-      <td><p>If TRUE, will rank-transform the variables prior to estimating the correlation. Note that, for instance, a Pearson's correlation on rank-transformed data is equivalent to a Spearman's rank correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</code> is redundant. Nonetheless, it is an easy way to increase the robustness of the correlation (as well as obtaining Bayesian Spearman rank Correlations).</p></td>
+      <td><p>If <code>TRUE</code>, will rank-transform the variables prior to
+estimating the correlation. Note that, for instance, a Pearson's
+correlation on rank-transformed data is equivalent to a Spearman's rank
+correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</code> is
+redundant. Nonetheless, it is an easy way to increase the robustness of the
+correlation (as well as obtaining Bayesian Spearman rank Correlations).</p></td>
     </tr>
     <tr>
       <th>winsorize</th>
-      <td><p>Either <code>FALSE</code> or a number between 0 and 1 (e.g., <code>0.2</code>) that corresponds to the threshold of desired <code><a href='winsorize.html'>winsorization</a></code>.</p></td>
+      <td><p>Either <code>FALSE</code> or a number between 0 and 1 (e.g.,
+<code>0.2</code>) that corresponds to the threshold of desired
+<code><a href='winsorize.html'>winsorization</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments passed to or from other methods.</p></td>
+      <td><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
+other methods. See <code><a href='https://rdrr.io/r/stats/cor.test.html'>stats::cor.test</a></code> for further details.</p></td>
     </tr>
     </table>
 
@@ -223,37 +256,116 @@ simple regression model.</p></td>
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Correlation Types</h3>
 
 <ul>
-<li><p><strong>Pearson's correlation</strong>: This is the most common correlation method. It corresponds to the covariance of the two variables normalized (i.e., divided) by the product of their standard deviations.</p></li>
-<li><p><strong>Spearman's rank correlation</strong>: A non-parametric measure of rank correlation (statistical dependence between the rankings of two variables). The Spearman correlation between two variables is equal to the Pearson correlation between the rank values of those two variables; while Pearson's correlation assesses linear relationships, Spearman's correlation assesses monotonic relationships (whether linear or not). Confidence Intervals (CI) for Spearman's correlations are computed using the Fieller et al. (1957) correction (see Bishara and Hittner, 2017).</p></li>
-<li><p><strong>Kendall's rank correlation</strong>: In the normal case, the Kendall correlation is preferred than the Spearman correlation because of a smaller gross error sensitivity (GES) and a smaller asymptotic variance (AV), making it more robust and more efficient. However, the interpretation of Kendall's tau is less direct than that of Spearman's rho, in the sense that it quantifies the difference between the % of concordant and discordant pairs among all possible pairwise events. Confidence Intervals (CI) for Kendall's correlations are computed using the Fieller et al. (1957) correction (see Bishara and Hittner, 2017).</p></li>
-<li><p><strong>Biweight midcorrelation</strong>: A measure of similarity that is median-based, instead of the traditional mean-based, thus being less sensitive to outliers. It can be used as a robust alternative to other similarity metrics, such as Pearson correlation (Langfelder \&amp; Horvath, 2012).</p></li>
-<li><p><strong>Distance correlation</strong>: Distance correlation measures both linear and non-linear association between two random variables or random vectors. This is in contrast to Pearson's correlation, which can only detect linear association between two random variables.</p></li>
-<li><p><strong>Percentage bend correlation</strong>: Introduced by Wilcox (1994), it is based on a down-weight of a specified percentage of marginal observations deviating from the median (by default, 20%).</p></li>
-<li><p><strong>Shepherd's Pi correlation</strong>: Equivalent to a Spearman's rank correlation after outliers removal (by means of bootstrapped Mahalanobis distance).</p></li>
-<li><p><strong>Blomqvist’s coefficient</strong>: The Blomqvist’s coefficient (also referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a median-based non-parametric correlation that has some advantages over measures such as Spearman's or Kendall's estimates (see Shmid and Schimdt, 2006).</p></li>
-<li><p><strong>Hoeffding’s D</strong>: The Hoeffding’s D statistics is a non-parametric rank based measure of association that detects more general departures from independence (Hoeffding 1948), including non-linear associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks, otherwise it can have lower values), with larger values indicating a stronger relationship between the variables.</p></li>
-<li><p><strong>Somers’ D</strong>: The Somers’ D statistics is a non-parametric rank based measure of association between a binary variable and a continuous variable, for instance, in the context of logistic regression the binary outcome and the predicted probabilities for each outcome. Usually, Somers' D is a measure of ordinal association, however, this implementation it is limited to the case of a binary outcome.</p></li>
-<li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation coefficient used when one variable is continuous and the other is dichotomous (binary). Point-Biserial is equivalent to a Pearson's correlation, while Biserial should be used when the binary variable is assumed to have an underlying continuity. For example, anxiety level can be measured on a continuous scale, but can be classified dichotomously as high/low.</p></li>
-<li><p><strong>Gamma correlation</strong>: The Goodman-Kruskal gamma statistic is similar to Kendall's Tau coefficient. It is relatively robust to outliers and deals well with data that have many ties.</p></li>
-<li><p><strong>Winsorized correlation</strong>: Correlation of variables that have been formerly Winsorized, i.e., transformed by limiting extreme values to reduce the effect of possibly spurious outliers.</p></li>
-<li><p><strong>Gaussian rank Correlation</strong>: The Gaussian rank correlation estimator is a simple and well-performing alternative for robust rank correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of the ranks.</p></li>
-<li><p><strong>Polychoric correlation</strong>: Correlation between two theorised normally distributed continuous latent variables, from two observed ordinal variables.</p></li>
-<li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric correlation applicable when both observed variables are dichotomous.</p></li>
+<li><p><strong>Pearson's correlation</strong>: This is the most common correlation
+method. It corresponds to the covariance of the two variables normalized
+(i.e., divided) by the product of their standard deviations.</p></li>
+<li><p><strong>Spearman's rank correlation</strong>: A non-parametric measure of rank
+correlation (statistical dependence between the rankings of two variables).
+The Spearman correlation between two variables is equal to the Pearson
+correlation between the rank values of those two variables; while Pearson's
+correlation assesses linear relationships, Spearman's correlation assesses
+monotonic relationships (whether linear or not). Confidence Intervals (CI)
+for Spearman's correlations are computed using the Fieller et al. (1957)
+correction (see Bishara and Hittner, 2017).</p></li>
+<li><p><strong>Kendall's rank correlation</strong>: In the normal case, the Kendall
+correlation is preferred than the Spearman correlation because of a smaller
+gross error sensitivity (GES) and a smaller asymptotic variance (AV), making
+it more robust and more efficient. However, the interpretation of Kendall's
+tau is less direct than that of Spearman's rho, in the sense that it
+quantifies the difference between the % of concordant and discordant pairs
+among all possible pairwise events. Confidence Intervals (CI) for Kendall's
+correlations are computed using the Fieller et al. (1957) correction (see
+Bishara and Hittner, 2017).</p></li>
+<li><p><strong>Biweight midcorrelation</strong>: A measure of similarity that is
+median-based, instead of the traditional mean-based, thus being less
+sensitive to outliers. It can be used as a robust alternative to other
+similarity metrics, such as Pearson correlation (Langfelder \&amp; Horvath,
+2012).</p></li>
+<li><p><strong>Distance correlation</strong>: Distance correlation measures both
+linear and non-linear association between two random variables or random
+vectors. This is in contrast to Pearson's correlation, which can only detect
+linear association between two random variables.</p></li>
+<li><p><strong>Percentage bend correlation</strong>: Introduced by Wilcox (1994), it
+is based on a down-weight of a specified percentage of marginal observations
+deviating from the median (by default, 20%).</p></li>
+<li><p><strong>Shepherd's Pi correlation</strong>: Equivalent to a Spearman's rank
+correlation after outliers removal (by means of bootstrapped Mahalanobis
+distance).</p></li>
+<li><p><strong>Blomqvist’s coefficient</strong>: The Blomqvist’s coefficient (also
+referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
+median-based non-parametric correlation that has some advantages over
+measures such as Spearman's or Kendall's estimates (see Shmid and Schimdt,
+2006).</p></li>
+<li><p><strong>Hoeffding’s D</strong>: The Hoeffding’s D statistics is a
+non-parametric rank based measure of association that detects more general
+departures from independence (Hoeffding 1948), including non-linear
+associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied
+ranks, otherwise it can have lower values), with larger values indicating a
+stronger relationship between the variables.</p></li>
+<li><p><strong>Somers’ D</strong>: The Somers’ D statistics is a non-parametric rank
+based measure of association between a binary variable and a continuous
+variable, for instance, in the context of logistic regression the binary
+outcome and the predicted probabilities for each outcome. Usually, Somers' D
+is a measure of ordinal association, however, this implementation it is
+limited to the case of a binary outcome.</p></li>
+<li><p><strong>Point-Biserial and biserial correlation</strong>: Correlation
+coefficient used when one variable is continuous and the other is dichotomous
+(binary). Point-Biserial is equivalent to a Pearson's correlation, while
+Biserial should be used when the binary variable is assumed to have an
+underlying continuity. For example, anxiety level can be measured on a
+continuous scale, but can be classified dichotomously as high/low.</p></li>
+<li><p><strong>Gamma correlation</strong>: The Goodman-Kruskal gamma statistic is
+similar to Kendall's Tau coefficient. It is relatively robust to outliers and
+deals well with data that have many ties.</p></li>
+<li><p><strong>Winsorized correlation</strong>: Correlation of variables that have
+been formerly Winsorized, i.e., transformed by limiting extreme values to
+reduce the effect of possibly spurious outliers.</p></li>
+<li><p><strong>Gaussian rank Correlation</strong>: The Gaussian rank correlation
+estimator is a simple and well-performing alternative for robust rank
+correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of
+the ranks.</p></li>
+<li><p><strong>Polychoric correlation</strong>: Correlation between two theorized
+normally distributed continuous latent variables, from two observed ordinal
+variables.</p></li>
+<li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric
+correlation applicable when both observed variables are dichotomous.</p></li>
 </ul>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Partial Correlation</h3>
-<p><strong>Partial correlations</strong> are estimated as the correlation between two variables after adjusting for the (linear) effect of one or more other variable.
-The correlation test is then run after having partialized the dataset, independently from it. In other words, it considers partialization as an independent step generating a different dataset, rather than belonging to the same model.
-This is why some discrepancies are to be expected for the t- and p-values, CIs, BFs etc (but <em>not</em> the correlation coefficient) compared to other implementations (e.g., <code>ppcor</code>).
-(The size of these discrepancies depends on the number of covariates partialled-out and the strength of the linear association between all variables.)
-Such partial correlations can be represented as Gaussian Graphical Models (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see Bhushan et al., 2019).
+<p><strong>Partial correlations</strong> are estimated as the correlation between two
+variables after adjusting for the (linear) effect of one or more other
+variable. The correlation test is then run after having partialized the
+dataset, independently from it. In other words, it considers partialization
+as an independent step generating a different dataset, rather than belonging
+to the same model. This is why some discrepancies are to be expected for the
+t- and p-values, CIs, BFs etc (but <em>not</em> the correlation coefficient)
+compared to other implementations (e.g., <code>ppcor</code>). (The size of these
+discrepancies depends on the number of covariates partialled-out and the
+strength of the linear association between all variables.) Such partial
+correlations can be represented as Gaussian Graphical Models (GGM), an
+increasingly popular tool in psychology. A GGM traditionally include a set of
+variables depicted as circles ("nodes"), and a set of lines that visualize
+relationships between them, which thickness represents the strength of
+association (see Bhushan et al., 2019).
 <br /><br />
-<strong>Multilevel correlations</strong> are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed model (note that the remaining continuous variables of the dataset will still be included as fixed effects, similarly to regular partial correlations). That said, there is an important difference between using <code>cor_test()</code> and <code><a href='correlation.html'>correlation()</a></code>: If you set <code>multilevel=TRUE</code> in <code><a href='correlation.html'>correlation()</a></code> but <code>partial</code> is set to <code>FALSE</code> (as per default), then a back-transformation from partial to non-partial correlation will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However, this is not possible when using <code>cor_test()</code> so that if you set <code>multilevel=TRUE</code> in it, the resulting correlations are partial one.</p>
+<strong>Multilevel correlations</strong> are a special case of partial correlations
+where the variable to be adjusted for is a factor and is included as a random
+effect in a mixed model (note that the remaining continuous variables of the
+dataset will still be included as fixed effects, similarly to regular partial
+correlations). That said, there is an important difference between using
+<code>cor_test()</code> and <code><a href='correlation.html'>correlation()</a></code>: If you set <code>multilevel=TRUE</code>
+in <code><a href='correlation.html'>correlation()</a></code> but <code>partial</code> is set to <code>FALSE</code> (as per
+default), then a back-transformation from partial to non-partial correlation
+will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However,
+this is not possible when using <code>cor_test()</code> so that if you set
+<code>multilevel=TRUE</code> in it, the resulting correlations are partial one.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Notes</h3>
 
 <ul>
-<li><p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These are technically Pearson Bayesian correlations of rank transformed data, rather than pure Bayesian rank correlations (which have different priors).</p></li>
+<li><p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These
+  are technically Pearson Bayesian correlations of rank transformed data,
+  rather than pure Bayesian rank correlations (which have different priors).</p></li>
 </ul>
 
 
@@ -307,7 +419,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 #&gt; <span class='message'>Welcome to BayesFactor 0.9.12-4.2. If you have questions, please contact Richard Morey (richarddmorey@gmail.com).</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>Type BFManual() to open the manual.</span>
-#&gt; <span class='message'>************</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |    BF |              Prior
+#&gt; <span class='message'>************</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |    BF |              Prior
 #&gt; ----------------------------------------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.24, 0.01] | 91.65% |    41.38% | 0.509 | Cauchy (0 +- 0.33)</div><div class='input'>
 <span class='co'># Tetrachoric</span>
@@ -348,8 +460,7 @@ Such partial correlations can be represented as Gaussian Graphical Models (GGM),
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, winsorize <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |       p
 #&gt; ----------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.25 | [-0.39, -0.09] |  -3.14 | 0.002**</div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+#&gt; Sepal.Length | Sepal.Width | -0.25 | [-0.39, -0.09] |  -3.14 | 0.002**</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Partial</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, multilevel <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>

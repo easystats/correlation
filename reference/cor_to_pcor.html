@@ -47,7 +47,15 @@
 
 
 <meta property="og:title" content="Correlation Matrix to (Semi) Partial Correlations — cor_to_pcor" />
-<meta property="og:description" content="Convert a correlation matrix to a (semi)partial correlation matrix. Partial correlations are a measure of the correlation between two variables that remains after controlling for (i.e., &quot;partialling&quot; out) all the other relationships. They can be used for graphical Gaussian models, as they represent the direct interactions between two variables, conditioned on all remaining variables. This means that the squared partial correlation between a predictor X1 and a response variable Y can be interpreted as the proportion of (unique) variance accounted for by X1 relative to the residual or unexplained variance of Y that cannot be accounted by the other variables." />
+<meta property="og:description" content="Convert a correlation matrix to a (semi)partial correlation matrix. Partial
+correlations are a measure of the correlation between two variables that
+remains after controlling for (i.e., &quot;partialling&quot; out) all the other
+relationships. They can be used for graphical Gaussian models, as they
+represent the direct interactions between two variables, conditioned on all
+remaining variables. This means that the squared partial correlation between
+a predictor X1 and a response variable Y can be interpreted as the proportion
+of (unique) variance accounted for by X1 relative to the residual or
+unexplained variance of Y that cannot be accounted by the other variables." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -136,7 +144,15 @@
     </div>
 
     <div class="ref-description">
-    <p>Convert a correlation matrix to a (semi)partial correlation matrix. Partial correlations are a measure of the correlation between two variables that remains after controlling for (i.e., "partialling" out) all the other relationships. They can be used for graphical Gaussian models, as they represent the direct interactions between two variables, conditioned on all remaining variables. This means that the squared partial correlation between a predictor X1 and a response variable Y can be interpreted as the proportion of (unique) variance accounted for by X1 relative to the residual or unexplained variance of Y that cannot be accounted by the other variables.</p>
+    <p>Convert a correlation matrix to a (semi)partial correlation matrix. Partial
+correlations are a measure of the correlation between two variables that
+remains after controlling for (i.e., "partialling" out) all the other
+relationships. They can be used for graphical Gaussian models, as they
+represent the direct interactions between two variables, conditioned on all
+remaining variables. This means that the squared partial correlation between
+a predictor X1 and a response variable Y can be interpreted as the proportion
+of (unique) variance accounted for by X1 relative to the residual or
+unexplained variance of Y that cannot be accounted by the other variables.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
@@ -157,7 +173,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>cor, pcor, spcor</th>
-      <td><p>A correlation matrix, or a partial or a semipartial correlation matrix.</p></td>
+      <td><p>A correlation matrix, or a partial or a semipartial
+correlation matrix.</p></td>
     </tr>
     <tr>
       <th>tol</th>
@@ -165,7 +182,8 @@
     </tr>
     <tr>
       <th>cov</th>
-      <td><p>A covariance matrix (or a vector of the SD of the variables). Required for semi-partial correlations.</p></td>
+      <td><p>A covariance matrix (or a vector of the SD of the variables).
+Required for semi-partial correlations.</p></td>
     </tr>
     <tr>
       <th>semi</th>
@@ -178,7 +196,12 @@
     <p>The (semi) partial correlation matrix.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The semi-partial correlation is similar to the partial correlation statistic. However, it represents (when squared) the proportion of (unique) variance accounted for by the predictor X1, relative to the total variance of Y. Thus, it might be seen as a better indicator of the "practical relevance" of a predictor, because it is scaled to (i.e., relative to) the total variability in the response variable.</p>
+    <p>The semi-partial correlation is similar to the partial correlation statistic.
+However, it represents (when squared) the proportion of (unique) variance
+accounted for by the predictor X1, relative to the total variance of Y. Thus,
+it might be seen as a better indicator of the "practical relevance" of a
+predictor, because it is scaled to (i.e., relative to) the total variability
+in the response variable.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>

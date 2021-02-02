@@ -156,19 +156,36 @@
     </tr>
     <tr>
       <th>ci</th>
-      <td><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is set to 0.95 (95% CI).</p></td>
+      <td><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
+set to 0.95 (95% CI).</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>A character string indicating which correlation coefficient is to be used for the test. One of <code>"pearson"</code> (default), <code>"kendall"</code>, <code>"spearman"</code>, <code>"biserial"</code>, <code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>, <code>"distance"</code>, <code>"percentage"</code> (for percentage bend correlation), <code>"blomqvist"</code> (for Blomqvist's coefficient), <code>"hoeffding"</code> (for Hoeffding's D), <code>"gamma"</code>, <code>"gaussian"</code> (for Gaussian Rank correlation) or <code>"shepherd"</code> (for Shepherd's Pi correlation). Setting <code>"auto"</code> will attempt at selecting the most relevant method (polychoric when ordinal factors involved, tetrachoric when dichotomous factors involved, point-biserial if one dichotomous and one continuous and pearson otherwise).</p></td>
+      <td><p>A character string indicating which correlation coefficient is
+to be used for the test. One of <code>"pearson"</code> (default),
+<code>"kendall"</code>, <code>"spearman"</code>, <code>"biserial"</code>,
+<code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>,
+<code>"distance"</code>, <code>"percentage"</code> (for percentage bend correlation),
+<code>"blomqvist"</code> (for Blomqvist's coefficient), <code>"hoeffding"</code> (for
+Hoeffding's D), <code>"gamma"</code>, <code>"gaussian"</code> (for Gaussian Rank
+correlation) or <code>"shepherd"</code> (for Shepherd's Pi correlation). Setting
+<code>"auto"</code> will attempt at selecting the most relevant method
+(polychoric when ordinal factors involved, tetrachoric when dichotomous
+factors involved, point-biserial if one dichotomous and one continuous and
+pearson otherwise).</p></td>
     </tr>
     <tr>
       <th>correction</th>
-      <td><p>Only used if method is 'spearman' or 'kendall'. Can be 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.</p></td>
+      <td><p>Only used if method is 'spearman' or 'kendall'. Can be
+'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or
+'none'. Bonett and Wright (2000) claim their correction ('bw') performs
+better, though the Bishara and Hittner (2017) paper favours the Fieller
+correction. Both are generally very similar.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments passed to or from other methods.</p></td>
+      <td><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
+other methods. See <code><a href='https://rdrr.io/r/stats/cor.test.html'>stats::cor.test</a></code> for further details.</p></td>
     </tr>
     </table>
 
@@ -177,7 +194,9 @@
     <p>A list containing a p-value and the statistic or the CI bounds.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Bishara, A. J., &amp; Hittner, J. B. (2017). Confidence intervals for correlations when data are not normal. Behavior research methods, 49(1), 294-309.</p>
+    <p>Bishara, A. J., &amp; Hittner, J. B. (2017). Confidence intervals for
+  correlations when data are not normal. Behavior research methods, 49(1),
+  294-309.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span><span class='op'>)</span>
