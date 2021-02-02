@@ -37,18 +37,17 @@
 #'   \code{BayesFactor::correlationBF} function.
 #' @param bayesian_ci_method,bayesian_test See arguments in
 #'   \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
-#' @param robust If TRUE, will rank-transform the variables prior to estimating
-#'   the correlation. Note that, for instance, a Pearson's correlation on
-#'   rank-transformed data is equivalent to a Spearman's rank correlation. Thus,
-#'   using \code{robust=TRUE} and \code{method="spearman"} is redundant.
-#'   Nonetheless, it is an easy way to increase the robustness of the
+#' @param robust If \code{TRUE}, will rank-transform the variables prior to
+#'   estimating the correlation. Note that, for instance, a Pearson's
+#'   correlation on rank-transformed data is equivalent to a Spearman's rank
+#'   correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
+#'   redundant. Nonetheless, it is an easy way to increase the robustness of the
 #'   correlation (as well as obtaining Bayesian Spearman rank Correlations).
 #' @param winsorize Either \code{FALSE} or a number between 0 and 1 (e.g.,
 #'   \code{0.2}) that corresponds to the threshold of desired
 #'   \code{\link[=winsorize]{winsorization}}.
 #' @param ... Additional arguments (e.g., \code{alternative}) to be passed to
-#'   other methods. See \code{\link[stats::cor.test]{cor.test()}} for further
-#'   details.
+#'   other methods. See \code{stats::cor.test} for further details.
 #'
 #'
 #' @inherit correlation details

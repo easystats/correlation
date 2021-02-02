@@ -83,8 +83,7 @@ correlation (as well as obtaining Bayesian Spearman rank Correlations).}
 \code{\link[=winsorize]{winsorization}}.}
 
 \item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
-other methods. See \code{\link[stats::cor.test]{cor.test()}} for further
-details.}
+other methods. See \code{stats::cor.test} for further details.}
 }
 \description{
 This function performs a correlation test between two variables.

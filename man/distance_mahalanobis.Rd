@@ -17,8 +17,7 @@ set to 0.95 (95\% CI).}
 \item{robust}{If \code{TRUE}, will run a bootstrapped version of the function with i iterations.}
 
 \item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
-other methods. See \code{\link[stats::cor.test]{cor.test()}} for further
-details.}
+other methods. See \code{stats::cor.test} for further details.}
 }
 \value{
 Description of the Mahalanobis distance.
