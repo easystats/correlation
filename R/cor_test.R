@@ -47,7 +47,7 @@
 #'   \code{0.2}) that corresponds to the threshold of desired
 #'   \code{\link[=winsorize]{winsorization}}.
 #' @param ... Additional arguments (e.g., \code{alternative}) to be passed to
-#'   other methods. \code{\link[stats::cor.test]{cor.test()}} for further
+#'   other methods. See \code{\link[stats::cor.test]{cor.test()}} for further
 #'   details.
 #'
 #'
