@@ -1,5 +1,10 @@
 #' @keywords internal
-.get_combinations <- function(data, data2 = NULL, redundant = TRUE, include_factors = TRUE, multilevel = FALSE, method = "pearson") {
+.get_combinations <- function(data,
+                              data2 = NULL,
+                              redundant = TRUE,
+                              include_factors = TRUE,
+                              multilevel = FALSE,
+                              method = "pearson") {
   data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
 
   if (method == "polychoric") {

@@ -71,11 +71,11 @@ semi-partial correlations, respectively.}
 Else, if \code{FALSE} (default), they are included as fixed effects in the
 simple regression model.}
 
-\item{robust}{If TRUE, will rank-transform the variables prior to estimating
-the correlation. Note that, for instance, a Pearson's correlation on
-rank-transformed data is equivalent to a Spearman's rank correlation. Thus,
-using \code{robust=TRUE} and \code{method="spearman"} is redundant.
-Nonetheless, it is an easy way to increase the robustness of the
+\item{robust}{If \code{TRUE}, will rank-transform the variables prior to
+estimating the correlation. Note that, for instance, a Pearson's
+correlation on rank-transformed data is equivalent to a Spearman's rank
+correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
+redundant. Nonetheless, it is an easy way to increase the robustness of the
 correlation (as well as obtaining Bayesian Spearman rank Correlations).}
 
 \item{winsorize}{Either \code{FALSE} or a number between 0 and 1 (e.g.,

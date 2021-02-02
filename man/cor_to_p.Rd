@@ -30,7 +30,11 @@ correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
 factors involved, point-biserial if one dichotomous and one continuous and
 pearson otherwise).}
 
-\item{correction}{Only used if method is 'spearman' or 'kendall'. Can be 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or 'none'. Bonett and Wright (2000) claim their correction ('bw') performs better, though the Bishara and Hittner (2017) paper favours the Fieller correction. Both are generally very similar.}
+\item{correction}{Only used if method is 'spearman' or 'kendall'. Can be
+'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or
+'none'. Bonett and Wright (2000) claim their correction ('bw') performs
+better, though the Bishara and Hittner (2017) paper favours the Fieller
+correction. Both are generally very similar.}
 
 \item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
 other methods. See \code{stats::cor.test} for further details.}
@@ -56,5 +60,7 @@ cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall")
 cor_to_p(-0.07699679, n = 150, method = "kendall")
 }
 \references{
-Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for correlations when data are not normal. Behavior research methods, 49(1), 294-309.
+Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
+  correlations when data are not normal. Behavior research methods, 49(1),
+  294-309.
 }
