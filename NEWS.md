@@ -2,6 +2,13 @@
 
 ## Changes
 
+- Added `verbose` arguments to some functions, to toggle warnings on/off.
+
+- `cor_test()` (and hence, `correlation()`) now default the `winsorize` argument
+  to `.1` when it's set to `TRUE`.
+
+## Changes
+
 - Fixed CRAN check issues due to changes in dependent packages.
 
 # correlation 0.5.0

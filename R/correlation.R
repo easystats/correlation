@@ -11,6 +11,7 @@
 #'   \code{\link[stats:p.adjust]{p.adjust()}} for further details.
 #' @param redundant Should the data include redundant rows (where each given
 #'   correlation is repeated two times).
+#' @param verbose Toggle warnings.
 #' @inheritParams cor_test
 #'
 #' @details
@@ -213,6 +214,7 @@ correlation <- function(data,
                         multilevel = FALSE,
                         robust = FALSE,
                         winsorize = FALSE,
+                        verbose = TRUE,
                         ...) {
 
   # Sanity checks
@@ -253,6 +255,7 @@ correlation <- function(data,
         multilevel = multilevel,
         robust = robust,
         winsorize = winsorize,
+        verbose = verbose,
         ...
       )
   } else {
@@ -274,6 +277,7 @@ correlation <- function(data,
         multilevel = multilevel,
         robust = robust,
         winsorize = winsorize,
+        verbose = verbose,
         ...
       )
   }
@@ -326,6 +330,7 @@ correlation <- function(data,
                                     multilevel = FALSE,
                                     robust = FALSE,
                                     winsorize = FALSE,
+                                    verbose = TRUE,
                                     ...) {
   groups <- setdiff(colnames(attributes(data)$groups), ".rows")
   ungrouped_x <- as.data.frame(data)
@@ -425,13 +430,16 @@ correlation <- function(data,
                          multilevel = FALSE,
                          robust = FALSE,
                          winsorize = FALSE,
+                         verbose = TRUE,
                          ...) {
   if (!is.null(data2)) {
     data <- cbind(data, data2)
   }
 
   if (ncol(data) <= 2 & any(sapply(data, is.factor)) & include_factors == FALSE) {
-    warning("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you.")
+    if (isTRUE(verbose)) {
+      warning("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you.", call. = FALSE)
+    }
     include_factors <- TRUE
   }
 
@@ -462,6 +470,11 @@ correlation <- function(data,
     x <- as.character(combinations[i, "Parameter1"])
     y <- as.character(combinations[i, "Parameter2"])
 
+    # avoid repeated warnings
+    if (i > 1) {
+      verbose <- FALSE
+    }
+
     result <- cor_test(data,
       x = x,
       y = y,
@@ -475,6 +488,7 @@ correlation <- function(data,
       multilevel = multilevel,
       robust = robust,
       winsorize = winsorize,
+      verbose = verbose,
       ...
     )
 

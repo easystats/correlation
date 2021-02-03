@@ -2,14 +2,21 @@
 % Please edit documentation in R/winsorize.R
 \name{winsorize}
 \alias{winsorize}
+\alias{winsorize.numeric}
 \title{Winsorize data}
 \usage{
-winsorize(data, threshold = 0.2)
+winsorize(data, ...)
+
+\method{winsorize}{numeric}(data, threshold = 0.2, verbose = TRUE, ...)
 }
 \arguments{
 \item{data}{Dataframe or vector.}
 
-\item{threshold}{The amount of Winsorization.}
+\item{...}{Currently not used.}
+
+\item{threshold}{The amount of winsorization.}
+
+\item{verbose}{Toggle warnings.}
 }
 \description{
 Winsorization of data.

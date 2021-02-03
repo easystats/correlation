@@ -21,6 +21,7 @@ correlation(
   multilevel = FALSE,
   robust = FALSE,
   winsorize = FALSE,
+  verbose = TRUE,
   ...
 )
 }
@@ -101,6 +102,8 @@ correlation (as well as obtaining Bayesian Spearman rank Correlations).}
 \item{winsorize}{Either \code{FALSE} or a number between 0 and 1 (e.g.,
 \code{0.2}) that corresponds to the threshold of desired
 \code{\link[=winsorize]{winsorization}}.}
+
+\item{verbose}{Toggle warnings.}
 
 \item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
 other methods. See \code{stats::cor.test} for further details.}

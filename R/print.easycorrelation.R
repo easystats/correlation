@@ -43,12 +43,12 @@ print.easycorrelation <- function(x, digits = 2, stars = TRUE, ...) {
 
   # N-obs
   if (!is.null(x$n_Obs)) {
-    if(length(unique(x$n_Obs)) == 1){
+    if (length(unique(x$n_Obs)) == 1) {
       nobs <- unique(x$n_Obs)
     } else{
       nobs <- paste0(min(x$n_Obs), "-", max(x$n_Obs))
     }
-    footer <- paste0(footer, "\nObservations: ", nobs)
+    footer <- paste0(footer, "\nObservations: ", nobs, "\n")
   }
   footer
 }

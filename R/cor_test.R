@@ -46,6 +46,7 @@
 #' @param winsorize Either \code{FALSE} or a number between 0 and 1 (e.g.,
 #'   \code{0.2}) that corresponds to the threshold of desired
 #'   \code{\link[=winsorize]{winsorization}}.
+#' @param verbose Toggle warnings.
 #' @param ... Additional arguments (e.g., \code{alternative}) to be passed to
 #'   other methods. See \code{stats::cor.test} for further details.
 #'
@@ -126,6 +127,7 @@ cor_test <- function(data,
                      multilevel = FALSE,
                      robust = FALSE,
                      winsorize = FALSE,
+                     verbose = TRUE,
                      ...) {
 
   # Sanity checks
@@ -148,8 +150,12 @@ cor_test <- function(data,
   }
 
   # Winsorize
-  if (!isFALSE(winsorize)) {
-    data[c(x, y)] <- winsorize(data[c(x, y)], threshold = winsorize)
+  if (!isFALSE(winsorize) && !is.null(winsorize)) {
+    # set default
+    if (isTRUE(winsorize)) {
+      winsorize <- .1
+    }
+    data[c(x, y)] <- winsorize(data[c(x, y)], threshold = winsorize, verbose = verbose)
   }
 
   # Robust
@@ -161,7 +167,9 @@ cor_test <- function(data,
   # This is a trick in case the number of valid observations is lower than 3
   invalid <- FALSE
   if (n_obs < 3) {
-    warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."))
+    if (isTRUE(verbose)) {
+      warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."), call. = FALSE)
+    }
     invalid <- TRUE
     original_info <- list(data = data, x = x, y = y)
     data <- datasets::mtcars # Basically use a working dataset so the correlation doesn't fail
