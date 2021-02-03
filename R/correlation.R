@@ -339,25 +339,24 @@ correlation <- function(data,
         for (i in names(xlist)) {
           xlist[[i]][groups] <- NULL
           ylist[[i]][groups] <- NULL
-          rez <-
-            .correlation(
-              xlist[[i]],
-              data2 = ylist[[i]],
-              method = method,
-              p_adjust = p_adjust,
-              ci = ci,
-              bayesian = bayesian,
-              bayesian_prior = bayesian_prior,
-              bayesian_ci_method = bayesian_ci_method,
-              bayesian_test = bayesian_test,
-              redundant = redundant,
-              include_factors = include_factors,
-              partial = partial,
-              partial_bayesian = partial_bayesian,
-              multilevel = multilevel,
-              robust = robust,
-              winsorize = winsorize
-            )
+          rez <- .correlation(
+            xlist[[i]],
+            data2 = ylist[[i]],
+            method = method,
+            p_adjust = p_adjust,
+            ci = ci,
+            bayesian = bayesian,
+            bayesian_prior = bayesian_prior,
+            bayesian_ci_method = bayesian_ci_method,
+            bayesian_test = bayesian_test,
+            redundant = redundant,
+            include_factors = include_factors,
+            partial = partial,
+            partial_bayesian = partial_bayesian,
+            multilevel = multilevel,
+            robust = robust,
+            winsorize = winsorize
+          )
           modelframe_current <- rez$data
           rez$params$Group <- modelframe_current$Group <- i
           out <- rbind(out, rez$params)
@@ -373,25 +372,24 @@ correlation <- function(data,
     out <- data.frame()
     for (i in names(xlist)) {
       xlist[[i]][groups] <- NULL
-      rez <-
-        .correlation(
-          xlist[[i]],
-          data2,
-          method = method,
-          p_adjust = p_adjust,
-          ci = ci,
-          bayesian = bayesian,
-          bayesian_prior = bayesian_prior,
-          bayesian_ci_method = bayesian_ci_method,
-          bayesian_test = bayesian_test,
-          redundant = redundant,
-          include_factors = include_factors,
-          partial = partial,
-          partial_bayesian = partial_bayesian,
-          multilevel = multilevel,
-          robust = robust,
-          winsorize = winsorize
-        )
+      rez <- .correlation(
+        xlist[[i]],
+        data2,
+        method = method,
+        p_adjust = p_adjust,
+        ci = ci,
+        bayesian = bayesian,
+        bayesian_prior = bayesian_prior,
+        bayesian_ci_method = bayesian_ci_method,
+        bayesian_test = bayesian_test,
+        redundant = redundant,
+        include_factors = include_factors,
+        partial = partial,
+        partial_bayesian = partial_bayesian,
+        multilevel = multilevel,
+        robust = robust,
+        winsorize = winsorize
+      )
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
       out <- rbind(out, rez$params)
@@ -434,6 +432,7 @@ correlation <- function(data,
   }
 
   # Sanity checks ----------------
+
   # What if only factors
   if (sum(sapply(if (is.null(data2)) data else cbind(data, data2), is.numeric)) == 0) {
     include_factors <- TRUE
@@ -442,6 +441,7 @@ correlation <- function(data,
   if (method == "polychoric") multilevel <- TRUE
 
   # Clean data and get combinations -------------
+
   combinations <- .get_combinations(
     data,
     data2 = NULL,
@@ -453,6 +453,7 @@ correlation <- function(data,
   data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
 
   # LOOP ----------------
+
   for (i in 1:nrow(combinations)) {
     x <- as.character(combinations[i, "Parameter1"])
     y <- as.character(combinations[i, "Parameter2"])
