@@ -223,6 +223,10 @@ correlation <- function(data,
     convert_back_to_r <- FALSE
   }
 
+  # p-adjustment
+  if (bayesian == TRUE) {
+    p_adjust <- "none"
+  }
 
   # CI
   if (ci == "default") {

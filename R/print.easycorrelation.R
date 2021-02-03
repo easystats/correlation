@@ -16,17 +16,39 @@ print.easycorrelation <- function(x, digits = 2, stars = TRUE, ...) {
     table_caption <- c(paste0("# Correlation table (", table_caption, "-method)"), "blue")
   }
 
-  # footer
-  footer <- attributes(x)$p_adjust
-  if (!is.null(footer)) {
-    footer <- paste0("\np-value adjustment method: ", parameters::format_p_adjust(footer))
-    if (!is.null(x$n_Obs)) {
-      footer <- list(footer, paste0("\nObservations: ", unique(x$n_Obs)))
-    }
-  }
+
   formatted_table$Method <- NULL
   formatted_table$n_Obs <- NULL
 
-  cat(insight::export_table(formatted_table, format = "text", caption = table_caption, footer = footer))
+  cat(insight::export_table(formatted_table,
+                            format = "text",
+                            caption = table_caption,
+                            footer = .print_easycorrelation_add_footer(x)))
   invisible(x)
+}
+
+
+
+#' @keywords internal
+.print_easycorrelation_add_footer <- function(x){
+
+  footer <- ""
+
+  # P-adjust
+  if (attributes(x)$bayesian == FALSE) {
+    footer <- paste0(footer,
+                     "\np-value adjustment method: ",
+                     parameters::format_p_adjust(attributes(x)$p_adjust))
+  }
+
+  # N-obs
+  if (!is.null(x$n_Obs)) {
+    if(length(unique(x$n_Obs)) == 1){
+      nobs <- unique(x$n_Obs)
+    } else{
+      nobs <- paste0(min(x$n_Obs), "-", max(x$n_Obs))
+    }
+    footer <- paste0(footer, "\nObservations: ", nobs)
+  }
+  footer
 }

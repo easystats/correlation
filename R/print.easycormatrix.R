@@ -47,17 +47,12 @@ print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
     table_caption <- c(paste0("# Correlation Matrix (", unique(attributes(x)$method), "-method)"), "blue")
   }
 
-  footer <- attributes(x)$p_adjust
-  if (!is.null(footer)) {
-    footer <- paste0("\np-value adjustment method: ", parameters::format_p_adjust(footer))
-    if (!is.null(attributes(x)$n)) {
-      footer <- list(footer, paste0("\nObservations: ", unique(attributes(x)$n)))
-    }
-  }
-
   formatted_table$Method <- NULL
   formatted_table$n_Obs <- NULL
 
-  cat(insight::export_table(formatted_table, format = "text", caption = table_caption, footer = footer))
+  cat(insight::export_table(formatted_table,
+                            format = "text",
+                            caption = table_caption,
+                            footer = .print_easycorrelation_add_footer(x)))
   invisible(x)
 }
