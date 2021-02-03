@@ -8,7 +8,7 @@ test_that("comparison with other packages", {
 
     # Pearson
     out <- correlation(iris, include_factors = FALSE)
-    rez <- as.data.frame(as.table(out))
+    rez <- as.data.frame(summary(out, redundant = TRUE))
 
     r <- as.matrix(rez[2:5])
     expect_equal(mean(r - cor(iris[1:4])), 0, tolerance = 0.0001)
@@ -22,7 +22,7 @@ test_that("comparison with other packages", {
 
     # Spearman
     out <- correlation(iris, include_factors = FALSE, method = "spearman")
-    rez <- as.data.frame(as.table(out))
+    rez <- as.data.frame(summary(out, redundant = TRUE))
 
     r <- as.matrix(rez[2:5])
     expect_equal(mean(r - cor(iris[1:4], method = "spearman")), 0, tolerance = 0.0001)
@@ -35,26 +35,26 @@ test_that("comparison with other packages", {
 
     # Kendall
     out <- correlation(iris, include_factors = FALSE, method = "kendall")
-    rez <- as.data.frame(as.table(out))
+    rez <- as.data.frame(summary(out, redundant = TRUE))
 
     r <- as.matrix(rez[2:5])
     expect_equal(mean(r - cor(iris[1:4], method = "kendall")), 0, tolerance = 0.0001)
 
     # Biweight
     out <- correlation(iris, include_factors = FALSE, method = "biweight")
-    rez <- as.data.frame(as.table(out))
+    rez <- as.data.frame(summary(out, redundant = TRUE))
     r <- as.matrix(rez[2:5])
     expect_equal(mean(r - cor(iris[1:4])), 0, tolerance = 0.01)
 
     # X and Y
     out <- correlation(iris[1:2], iris[3:4])
-    rez <- as.data.frame(as.table(out))
+    rez <- as.data.frame(summary(out, redundant = TRUE))
     r <- as.matrix(rez[2:3])
     expect_equal(mean(r - cor(iris[1:2], iris[3:4])), 0, tolerance = 0.0001)
 
     # Partial
     out <- correlation(mtcars, include_factors = FALSE, partial = TRUE, p_adjust = "none")
-    rez <- as.data.frame(as.table(out))
+    rez <- as.data.frame(summary(out, redundant = TRUE))
 
     r <- as.matrix(rez[2:ncol(rez)])
     ppcor <- ppcor::pcor(mtcars)
@@ -67,7 +67,7 @@ test_that("comparison with other packages", {
     # Bayesian
     if (requireNamespace("BayesFactor")) {
       out <- correlation(iris, include_factors = FALSE, bayesian = TRUE)
-      rez <- as.data.frame(as.table(out))
+      rez <- as.data.frame(summary(out, redundant = TRUE))
 
       r <- as.matrix(rez[2:5])
       expect_equal(mean(r - cor(iris[1:4])), 0, tolerance = 0.01)
@@ -82,7 +82,7 @@ test_that("comparison with other packages", {
 
       # Bayesian - Partial
       out <- correlation(iris, include_factors = FALSE, bayesian = TRUE, partial = TRUE)
-      rez <- as.data.frame(as.table(out))
+      rez <- as.data.frame(summary(out, redundant = TRUE))
 
       r <- as.matrix(rez[2:5])
       ppcor <- ppcor::pcor(iris[1:4])
@@ -95,7 +95,7 @@ test_that("comparison with other packages", {
 
       # Bayesian (Full) - Partial
       out <- correlation(iris, include_factors = FALSE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
-      rez <- as.data.frame(as.table(out))
+      rez <- as.data.frame(summary(out, redundant = TRUE))
 
       r <- as.matrix(rez[2:5])
       ppcor <- ppcor::pcor(iris[1:4])
@@ -113,19 +113,19 @@ test_that("comparison with other packages", {
 # Size
 test_that("format checks", {
   out <- correlation(iris, include_factors = TRUE)
-  expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(7, 8))
+  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7, 8))
   expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(6, 7))
 
   out <- correlation(iris, method = "auto", include_factors = TRUE)
-  expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(7, 8))
+  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7, 8))
   expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(6, 7))
 
   expect_true(all(c("Pearson", "Point-biserial", "Tetrachoric") %in% out$Method))
 
   # X and Y
   out <- correlation(iris[1:2], iris[3:4])
-  expect_equal(c(nrow(out), ncol(out)), c(4, 10))
-  expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(2, 3))
+  expect_equal(c(nrow(out), ncol(out)), c(4, 11))
+  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(2, 3))
   expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(2, 3))
 
   # Grouped
@@ -133,15 +133,15 @@ test_that("format checks", {
     out <- iris %>%
       dplyr::group_by(Species) %>%
       correlation(include_factors = TRUE)
-    expect_equal(c(nrow(out), ncol(out)), c(18, 11))
-    expect_equal(c(nrow(as.table(out)), ncol(as.table(out))), c(12, 6))
+    expect_equal(c(nrow(out), ncol(out)), c(18, 12))
+    expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(12, 6))
     expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(9, 5))
   }
 
   # Bayesian full partial
   if (requireNamespace("BayesFactor")) {
     out <- correlation(iris, include_factors = TRUE, multilevel = TRUE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
-    expect_equal(c(nrow(out), ncol(out)), c(6, 13))
+    expect_equal(c(nrow(out), ncol(out)), c(6, 14))
     expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4, 5))
     expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
   }

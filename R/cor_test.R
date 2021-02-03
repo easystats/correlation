@@ -250,7 +250,7 @@ cor_test <- function(data,
     out[!names(out) %in% c("Parameter1", "Parameter2")] <- NA
   }
 
-  # Number of observations
+  # Number of observations and CI
   out$n_Obs <- n_obs
   out$CI <- ci
 
