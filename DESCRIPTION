@@ -63,6 +63,9 @@ Suggests:
     tidyr,
     wdm,
     WRS2
+Remotes:
+    easystats/bayestestR,
+    easystats/parameters
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
