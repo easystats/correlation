@@ -115,6 +115,18 @@ test_that("cor_test gaussian", {
 
 
 
+# Additional arguments ----------------------------------------------------
+
+
+test_that("cor_test one-sided p value", {
+  baseline <- cor.test(iris$Petal.Length, iris$Petal.Width, alternative="greater")
+
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", alternative="greater")
+  expect_equal(out$p, baseline$p.value, tolerance = 0.000001)
+})
+
+
+
 # Edge cases --------------------------------------------------------------
 test_that("cor_test 2 valid observations", {
   out <- correlation(data.frame(v2 = c(2, 1, 1, 2), v3 = c(1, 2, NA, NA)))
