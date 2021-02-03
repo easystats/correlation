@@ -58,8 +58,8 @@ test_that("cor_test robust", {
 test_that("cor_test distance", {
   if (require("energy", quietly = TRUE)) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
-    comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
-    expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.01)
+    comparison <- energy::dcor.ttest(iris$Petal.Length, iris$Petal.Width)
+    expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.001)
   }
 })
 
