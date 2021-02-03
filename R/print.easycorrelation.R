@@ -35,7 +35,7 @@ print.easycorrelation <- function(x, digits = 2, stars = TRUE, ...) {
   footer <- ""
 
   # P-adjust
-  if (attributes(x)$bayesian == FALSE) {
+  if (isFALSE(attributes(x)$bayesian)) {
     footer <- paste0(footer,
                      "\np-value adjustment method: ",
                      parameters::format_p_adjust(attributes(x)$p_adjust))
