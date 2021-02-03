@@ -250,12 +250,13 @@ cor_test <- function(data,
     out[!names(out) %in% c("Parameter1", "Parameter2")] <- NA
   }
 
-  # Number of observations
+  # Number of observations and CI
   out$n_Obs <- n_obs
+  out$CI <- ci
 
   # Reorder columns
   if ("CI_low" %in% names(out)) {
-    order <- c("Parameter1", "Parameter2", "r", "rho", "Dxy", "CI_low", "CI_high")
+    order <- c("Parameter1", "Parameter2", "r", "rho", "Dxy", "CI", "CI_low", "CI_high")
     out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
   }
 

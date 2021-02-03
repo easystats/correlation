@@ -124,7 +124,7 @@ test_that("format checks", {
 
   # X and Y
   out <- correlation(iris[1:2], iris[3:4])
-  expect_equal(c(nrow(out), ncol(out)), c(4, 10))
+  expect_equal(c(nrow(out), ncol(out)), c(4, 11))
   expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(2, 3))
   expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(2, 3))
 
@@ -133,7 +133,7 @@ test_that("format checks", {
     out <- iris %>%
       dplyr::group_by(Species) %>%
       correlation(include_factors = TRUE)
-    expect_equal(c(nrow(out), ncol(out)), c(18, 11))
+    expect_equal(c(nrow(out), ncol(out)), c(18, 12))
     expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(12, 6))
     expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(9, 5))
   }
