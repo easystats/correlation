@@ -155,6 +155,7 @@
   multilevel <span class='op'>=</span> <span class='cn'>FALSE</span>,
   robust <span class='op'>=</span> <span class='cn'>FALSE</span>,
   winsorize <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -242,6 +243,10 @@ correlation (as well as obtaining Bayesian Spearman rank Correlations).</p></td>
       <td><p>Either <code>FALSE</code> or a number between 0 and 1 (e.g.,
 <code>0.2</code>) that corresponds to the threshold of desired
 <code><a href='winsorize.html'>winsorization</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Toggle warnings.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -375,27 +380,41 @@ this is not possible when using <code>cor_test()</code> so that if you set
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI | t(148) |     p
 #&gt; -------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.27, 0.04] |  -1.44 | 0.152</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.27, 0.04] |  -1.44 | 0.152
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |      p
 #&gt; -----------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32,  0.00] | 6.56e+05 | 0.041*</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32,  0.00] | 6.56e+05 | 0.041*
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |        95% CI |   tau |     z |     p
 #&gt; ------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | [-0.18, 0.03] | -0.08 | -1.33 | 0.183</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"biweight"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | [-0.18, 0.03] | -0.08 | -1.33 | 0.183
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"biweight"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI | t(148) |     p
 #&gt; -------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.13 | [-0.29, 0.03] |  -1.65 | 0.100</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"distance"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.13 | [-0.29, 0.03] |  -1.65 | 0.100
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"distance"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r |        95% CI | t(11024) |         p
 #&gt; ------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.08 | [-0.08, 0.24] |     8.43 | &lt; .001***</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"percentage"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | 0.08 | [-0.08, 0.24] |     8.43 | &lt; .001***
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"percentage"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |      p
 #&gt; ---------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.19 | [-0.34, -0.03] |  -2.40 | 0.018*</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://github.com/tnagler/wdm-r'>"wdm"</a></span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+#&gt; Sepal.Length | Sepal.Width | -0.19 | [-0.34, -0.03] |  -2.40 | 0.018*
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://github.com/tnagler/wdm-r'>"wdm"</a></span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"blomqvist"</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |       p
 #&gt; ----------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.37, -0.07] |  -2.83 | 0.005**</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://hbiostat.org/R/Hmisc/'>"Hmisc"</a></span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.37, -0.07] |  -2.83 | 0.005**
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://hbiostat.org/R/Hmisc/'>"Hmisc"</a></span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"hoeffding"</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; <span class='message'></span>
@@ -403,16 +422,24 @@ this is not possible when using <code>cor_test()</code> so that if you set
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    format.pval, units</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |    r | 95% CI | t(148) |      p
 #&gt; ------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.01 |        |        | 0.011*</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"gamma"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | 0.01 |        |        | 0.011*
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"gamma"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI | t(148) |     p
 #&gt; -------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.08 | [-0.24, 0.08] |  -0.99 | 0.323</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"gaussian"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.08 | [-0.24, 0.08] |  -0.99 | 0.323
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"gaussian"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |        95% CI | t(148) |     p
 #&gt; -------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.10 | [-0.26, 0.06] |  -1.21 | 0.229</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"shepherd"</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.10 | [-0.26, 0.06] |  -1.21 | 0.229
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"shepherd"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |       p
 #&gt; ------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.39, -0.07] | 6.02e+05 | 0.005**</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://richarddmorey.github.io/BayesFactor/'>"BayesFactor"</a></span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+#&gt; Sepal.Length | Sepal.Width | -0.23 | [-0.39, -0.07] | 6.02e+05 | 0.005**
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://richarddmorey.github.io/BayesFactor/'>"BayesFactor"</a></span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, bayesian <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; <span class='message'>************</span>
@@ -421,7 +448,9 @@ this is not possible when using <code>cor_test()</code> so that if you set
 #&gt; <span class='message'>Type BFManual() to open the manual.</span>
 #&gt; <span class='message'>************</span></div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE |    BF |         Prior
 #&gt; -----------------------------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.24, 0.01] | 91.65% |    41.38% | 0.509 | Beta (3 +- 3)</div><div class='input'>
+#&gt; Sepal.Length | Sepal.Width | -0.12 | [-0.24, 0.01] | 91.65% |    41.38% | 0.509 | Beta (3 +- 3)
+#&gt; 
+#&gt; Observations: 150</div><div class='input'>
 <span class='co'># Tetrachoric</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://personality-project.org/r/psych/'>"psych"</a></span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>iris</span>
@@ -447,20 +476,28 @@ this is not possible when using <code>cor_test()</code> so that if you set
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    %+%, alpha</span></div><div class='output co'>#&gt; <span class='warning'>Warning: The items do not have an equal number of response alternatives, global set to FALSE.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 1 cells were adjusted for 0 values using the correction for continuity. Examine your data carefully.</span></div><div class='output co'>#&gt; Parameter1  |           Parameter2 |   rho |        95% CI | t(148) |     p
 #&gt; ---------------------------------------------------------------------------
-#&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | [-0.30, 0.02] |  -1.77 | 0.079</div><div class='input'>
+#&gt; Sepal.Width | Sepal.Length_ordinal | -0.14 | [-0.30, 0.02] |  -1.77 | 0.079
+#&gt; 
+#&gt; Observations: 150</div><div class='input'>
 <span class='co'># Robust (these two are equivalent)</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"pearson"</span>, robust <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |      p
 #&gt; ---------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] |  -2.06 | 0.041*</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span>, robust <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] |  -2.06 | 0.041*
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span>, robust <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |      p
 #&gt; -----------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32,  0.00] | 6.56e+05 | 0.041*</div><div class='input'>
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32,  0.00] | 6.56e+05 | 0.041*
+#&gt; 
+#&gt; Observations: 150</div><div class='input'>
 <span class='co'># Winsorized</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, winsorize <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |       p
 #&gt; ----------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.25 | [-0.39, -0.09] |  -3.14 | 0.002**</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+#&gt; Sepal.Length | Sepal.Width | -0.25 | [-0.39, -0.09] |  -3.14 | 0.002**
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Partial</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, partial <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, multilevel <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
