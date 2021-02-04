@@ -120,7 +120,7 @@ test_that("format checks", {
   expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7, 8))
   expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(6, 7))
 
-  expect_true(all(c("Pearson", "Point-biserial", "Tetrachoric") %in% out$Method))
+  expect_true(all(c("Pearson correlation", "Point-biserial correlation", "Tetrachoric correlation") %in% out$Method))
 
   # X and Y
   out <- correlation(iris[1:2], iris[3:4])

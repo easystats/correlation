@@ -237,49 +237,47 @@ correlation <- function(data,
 
 
   if (inherits(data, "grouped_df")) {
-    rez <-
-      .correlation_grouped_df(
-        data,
-        data2 = data2,
-        method = method,
-        p_adjust = p_adjust,
-        ci = ci,
-        bayesian = bayesian,
-        bayesian_prior = bayesian_prior,
-        bayesian_ci_method = bayesian_ci_method,
-        bayesian_test = bayesian_test,
-        redundant = redundant,
-        include_factors = include_factors,
-        partial = partial,
-        partial_bayesian = partial_bayesian,
-        multilevel = multilevel,
-        robust = robust,
-        winsorize = winsorize,
-        verbose = verbose,
-        ...
-      )
+    rez <- .correlation_grouped_df(
+      data,
+      data2 = data2,
+      method = method,
+      p_adjust = p_adjust,
+      ci = ci,
+      bayesian = bayesian,
+      bayesian_prior = bayesian_prior,
+      bayesian_ci_method = bayesian_ci_method,
+      bayesian_test = bayesian_test,
+      redundant = redundant,
+      include_factors = include_factors,
+      partial = partial,
+      partial_bayesian = partial_bayesian,
+      multilevel = multilevel,
+      robust = robust,
+      winsorize = winsorize,
+      verbose = verbose,
+      ...
+    )
   } else {
-    rez <-
-      .correlation(
-        data,
-        data2 = data2,
-        method = method,
-        p_adjust = p_adjust,
-        ci = ci,
-        bayesian = bayesian,
-        bayesian_prior = bayesian_prior,
-        bayesian_ci_method = bayesian_ci_method,
-        bayesian_test = bayesian_test,
-        redundant = redundant,
-        include_factors = include_factors,
-        partial = partial,
-        partial_bayesian = partial_bayesian,
-        multilevel = multilevel,
-        robust = robust,
-        winsorize = winsorize,
-        verbose = verbose,
-        ...
-      )
+    rez <- .correlation(
+      data,
+      data2 = data2,
+      method = method,
+      p_adjust = p_adjust,
+      ci = ci,
+      bayesian = bayesian,
+      bayesian_prior = bayesian_prior,
+      bayesian_ci_method = bayesian_ci_method,
+      bayesian_test = bayesian_test,
+      redundant = redundant,
+      include_factors = include_factors,
+      partial = partial,
+      partial_bayesian = partial_bayesian,
+      multilevel = multilevel,
+      robust = robust,
+      winsorize = winsorize,
+      verbose = verbose,
+      ...
+    )
   }
   out <- rez$params
 
@@ -513,6 +511,15 @@ correlation <- function(data,
     }
   }
 
+  # Make method column more informative
+  if ("Method" %in% names(params)) {
+    params$Method <- paste0(params$Method, " correlation")
+
+    # Did Winsorization happen? If yes, Method column should reflect that
+    if (!isFALSE(winsorize) && !is.null(winsorize)) {
+      params$Method <- paste0("Winsorized ", params$Method)
+    }
+  }
 
   # P-values adjustments
   if ("p" %in% names(params)) {

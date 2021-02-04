@@ -31,18 +31,17 @@
     method <- "Bayesian Pearson"
   }
 
-  out <-
-    .cor_test_bayes_base(
-      x,
-      y,
-      var_x,
-      var_y,
-      ci = ci,
-      bayesian_prior = bayesian_prior,
-      bayesian_ci_method = bayesian_ci_method,
-      bayesian_test = bayesian_test,
-      ...
-    )
+  out <- .cor_test_bayes_base(
+    x,
+    y,
+    var_x,
+    var_y,
+    ci = ci,
+    bayesian_prior = bayesian_prior,
+    bayesian_ci_method = bayesian_ci_method,
+    bayesian_test = bayesian_test,
+    ...
+  )
 
   # Add method
   out$Method <- method
@@ -68,15 +67,14 @@
   if (x == y) {
     # Avoid error in the case of perfect correlation
     rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale = bayesian_prior)
-    params <-
-      parameters::model_parameters(
-        rez,
-        ci_method = bayesian_ci_method,
-        test = bayesian_test,
-        rope_range = c(-0.1, 0.1),
-        rope_ci = 1,
-        ...
-      )
+    params <- parameters::model_parameters(
+      rez,
+      ci_method = bayesian_ci_method,
+      test = bayesian_test,
+      rope_range = c(-0.1, 0.1),
+      rope_ci = 1,
+      ...
+    )
     if ("Median" %in% names(params)) params$Median <- 1
     if ("Mean" %in% names(params)) params$Mean <- 1
     if ("MAP" %in% names(params)) params$MAP <- 1
@@ -89,15 +87,14 @@
     if ("BF" %in% names(params)) params$BF <- Inf
   } else {
     rez <- BayesFactor::correlationBF(var_x, var_y, rscale = bayesian_prior)
-    params <-
-      parameters::model_parameters(
-        rez,
-        ci_method = bayesian_ci_method,
-        test = bayesian_test,
-        rope_range = c(-0.1, 0.1),
-        rope_ci = 1,
-        ...
-      )
+    params <- parameters::model_parameters(
+      rez,
+      ci_method = bayesian_ci_method,
+      test = bayesian_test,
+      rope_range = c(-0.1, 0.1),
+      rope_ci = 1,
+      ...
+    )
   }
 
   # Rename coef
