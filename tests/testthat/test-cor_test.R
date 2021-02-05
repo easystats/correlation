@@ -10,7 +10,15 @@ test_that("cor_test frequentist", {
 test_that("cor_test bayesian", {
   if (require("BayesFactor", quietly = TRUE)) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
-    expect_equal(out$r, 0.962, tolerance = 0.01)
+    expect_equal(out$r, 0.9591191, tolerance = 0.01)
+
+    out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman", bayesian = TRUE)
+    expect_equal(out2$rho, 0.9323004, tolerance = 0.01)
+
+    df <- iris
+    df$Petal.Length2 <- df$Petal.Length
+    out <- cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE)
+    expect_equal(out$rho, 1.000, tolerance = 0.01)
   }
 })
 
