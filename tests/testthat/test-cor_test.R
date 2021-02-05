@@ -60,6 +60,9 @@ test_that("cor_test distance", {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
     comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
     expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.001)
+
+    out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance", corrected = FALSE)
+    expect_equal(out2$r, 0.9736309, tolerance = 0.001)
   }
 })
 
@@ -77,6 +80,12 @@ test_that("cor_test shepherd", {
   set.seed(333)
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd")
   expect_equal(out$r, as.numeric(0.94762), tolerance = 0.01)
+
+  if (require("BayesFactor", quietly = TRUE)) {
+    set.seed(333)
+    out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd", bayesian = TRUE)
+    expect_equal(out2$rho, as.numeric(0.9429992), tolerance = 0.01)
+  }
 })
 
 
