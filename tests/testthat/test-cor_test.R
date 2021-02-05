@@ -10,7 +10,15 @@ test_that("cor_test frequentist", {
 test_that("cor_test bayesian", {
   if (require("BayesFactor", quietly = TRUE)) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
-    expect_equal(out$r, 0.962, tolerance = 0.01)
+    expect_equal(out$r, 0.9591191, tolerance = 0.01)
+
+    out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman", bayesian = TRUE)
+    expect_equal(out2$rho, 0.9323004, tolerance = 0.01)
+
+    df <- iris
+    df$Petal.Length2 <- df$Petal.Length
+    out <- cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE)
+    expect_equal(out$rho, 1.000, tolerance = 0.01)
   }
 })
 
@@ -97,11 +105,16 @@ test_that("cor_test blomqvist", {
   }
 })
 
-test_that("cor_test hoeffding", {
+test_that("cor_test hoeffding and somers", {
   if (require("Hmisc", quietly = TRUE)) {
     set.seed(333)
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "hoeffding")
     expect_equal(out$r, as.numeric(0.5629277), tolerance = 0.01)
+
+    set.seed(333)
+    df <- data.frame(x = 1:6, y = c(0, 0, 1, 0, 1, 1))
+    out2 <- cor_test(df, "y", "x", method = "somers")
+    expect_equal(out2$Dxy, as.numeric(0.7777778), tolerance = 0.01)
   }
 })
 
