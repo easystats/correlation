@@ -10,7 +10,7 @@ if (require("effectsize", quietly = TRUE) && packageVersion("effectsize") > "0.4
 
       expect_equal(rez$r, rez_rmcorr$r, tolerance = 0.001)
       expect_equal(rez$p, rez_rmcorr$p, tolerance = 0.001)
-      #expect_equal(rez$df_error, rez_rmcorr$df)
+      # expect_equal(rez$df_error, rez_rmcorr$df)
       expect_equal(rez$CI_low, rez_rmcorr$CI[1], tolerance = 0.01)
       expect_equal(rez$CI_high, rez_rmcorr$CI[2], tolerance = 0.01)
     }

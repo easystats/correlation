@@ -32,9 +32,9 @@ test_that("cor_test tetrachoric", {
     expect_equal(out$rho, 0.9999, tolerance = 0.01)
 
     # Biserial
-   expect_error(cor_test(data, "brainwt", "sleep_rem_binary", method = "pointbiserial"))
+    expect_error(cor_test(data, "brainwt", "sleep_rem_binary", method = "pointbiserial"))
 
-   expect_error(cor_test(data, "brainwt", "sleep_rem_binary", method = "biserial"))
+    expect_error(cor_test(data, "brainwt", "sleep_rem_binary", method = "biserial"))
   }
 })
 
