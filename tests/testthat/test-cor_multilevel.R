@@ -2,11 +2,17 @@
 if (require("effectsize", quietly = TRUE) && packageVersion("effectsize") > "0.4.3") {
   test_that("comparison rmcorr", {
     if (require("rmcorr", quietly = TRUE)) {
+      set.seed(123)
       rez_rmcorr <- rmcorr::rmcorr(Species, Sepal.Length, Sepal.Width, dataset = iris)
+
+      set.seed(123)
       rez <- cor_test(iris[c(1, 2, 5)], "Sepal.Length", "Sepal.Width", partial = TRUE, multilevel = TRUE)
 
       expect_equal(rez$r, rez_rmcorr$r, tolerance = 0.001)
       expect_equal(rez$p, rez_rmcorr$p, tolerance = 0.001)
+      #expect_equal(rez$df_error, rez_rmcorr$df)
+      expect_equal(rez$CI_low, rez_rmcorr$CI[1], tolerance = 0.01)
+      expect_equal(rez$CI_high, rez_rmcorr$CI[2], tolerance = 0.01)
     }
   })
 
