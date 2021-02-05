@@ -17,8 +17,6 @@ if (require("effectsize", quietly = TRUE) && packageVersion("effectsize") > "0.4
   })
 
 
-
-
   test_that("Reductio ad absurdum", {
     if (require("bayestestR", quietly = TRUE)) {
       cormatrix <- matrix(c(
