@@ -1,13 +1,16 @@
 # correlation 0.5.1
 
-## Changes
+## New Features
 
 - Added `verbose` arguments to some functions, to toggle warnings on/off.
 
 - `cor_test()` (and hence, `correlation()`) now default the `winsorize` argument
   to `.1` when it's set to `TRUE`.
 
-## Changes
+- The `Method` column in output dataframe is now more explicit about the
+  correlation method used.
+
+## Minor Changes
 
 - Fixed CRAN check issues due to changes in dependent packages.
 

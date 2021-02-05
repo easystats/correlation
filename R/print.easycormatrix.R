@@ -51,8 +51,9 @@ print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
   formatted_table$n_Obs <- NULL
 
   cat(insight::export_table(formatted_table,
-                            format = "text",
-                            caption = table_caption,
-                            footer = .print_easycorrelation_add_footer(x)))
+    format = "text",
+    caption = table_caption,
+    footer = .print_easycorrelation_add_footer(x)
+  ))
   invisible(x)
 }

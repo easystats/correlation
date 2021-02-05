@@ -35,9 +35,9 @@ BugReports: https://github.com/easystats/correlation/issues
 Depends:
     R (>= 3.4)
 Imports:
-    bayestestR,
+    bayestestR (>= 0.8.2),
     datasets,
-    effectsize,
+    effectsize (>= 0.4.3),
     insight (>= 0.12.0),
     parameters (>= 0.11.0),
     stats
@@ -66,12 +66,13 @@ Suggests:
 Remotes:
     easystats/insight,
     easystats/bayestestR,
-    easystats/parameters
+    easystats/parameters,
+    easystats/effectsize
 VignetteBuilder: 
     knitr
-Config/testthat/edition: 3
-Config/testthat/parallel: true
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.1.1
+Config/testthat/edition: 3
+Config/testthat/parallel: true

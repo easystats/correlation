@@ -119,9 +119,9 @@ test_that("cor_test gaussian", {
 
 
 test_that("cor_test one-sided p value", {
-  baseline <- cor.test(iris$Petal.Length, iris$Petal.Width, alternative="greater")
+  baseline <- cor.test(iris$Petal.Length, iris$Petal.Width, alternative = "greater")
 
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", alternative="greater")
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", alternative = "greater")
   expect_equal(out$p, baseline$p.value, tolerance = 0.000001)
 })
 
