@@ -2,6 +2,9 @@ test_that("testing Winsorized correlation", {
   if (requireNamespace("WRS2")) {
     df <- data.frame(x = mtcars$wt, y = mtcars$mpg)
 
+    expect_equal(correlation(df, winsorize = 1.5)$r, correlation(df)$r, tolerance = 0.01)
+    expect_equal(correlation(df, winsorize = 1.5, verbose = FALSE)$r, correlation(df)$r, tolerance = 0.01)
+
     set.seed(123)
     params1 <- as.data.frame(correlation(df, winsorize = TRUE))
     params2 <- as.data.frame(correlation(df, winsorize = 0.3))
@@ -28,4 +31,8 @@ test_that("testing Winsorized correlation", {
     #   expect_equal(params4$Prior_Location, -1.25, tolerance = 0.1)
     # }
   }
+})
+
+test_that("testing Winsorization of factors", {
+  expect_equal(winsorize(as.factor(mtcars$am)), as.factor(mtcars$am))
 })
