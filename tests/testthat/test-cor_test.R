@@ -6,6 +6,14 @@ test_that("cor_test frequentist", {
   expect_equal(out$r, 0.962, tolerance = 0.01)
 })
 
+test_that("cor_test kendall", {
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "kendall")
+  out2 <- stats::cor.test(iris$Petal.Length, iris$Petal.Width, method = "kendall")
+
+  expect_equal(out$tau, out2$estimate[[1]], tolerance = 0.001)
+  expect_equal(out$p, out2$p.value[[1]], tolerance = 0.001)
+})
+
 
 test_that("cor_test bayesian", {
   if (require("BayesFactor", quietly = TRUE)) {
@@ -22,6 +30,10 @@ test_that("cor_test bayesian", {
 
     out4 <- .cor_test_bayes_base(df$Petal.Length[1], df$Petal.Length2[1])
     expect_equal(out4$rho, 1.000, tolerance = 0.01)
+
+    set.seed(123)
+    out5 <- cor_test(mtcars, "wt", "mpg", method = "shepherd", bayesian = TRUE)
+    expect_equal(out5$rho, -0.7795719, tolerance = 0.01)
   }
 })
 

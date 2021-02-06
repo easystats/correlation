@@ -6,6 +6,13 @@ test_that("cor_test frequentist", {
   expect_equal(out$r, -0.2213348, tolerance = 0.01)
 })
 
+test_that("cor_test kendall", {
+  out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "kendall")
+  out2 <- stats::cor.test(ggplot2::msleep$brainwt, ggplot2::msleep$sleep_rem, method = "kendall")
+
+  expect_equal(out$tau, out2$estimate[[1]], tolerance = 0.001)
+  expect_equal(out$p, out2$p.value[[1]], tolerance = 0.001)
+})
 
 test_that("cor_test bayesian", {
   if (require("BayesFactor", quietly = TRUE)) {
