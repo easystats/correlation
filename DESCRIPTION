@@ -1,7 +1,7 @@
 Type: Package
 Package: correlation
 Title: Methods for Correlation Analysis
-Version: 0.5.0.1
+Version: 0.5.1
 Authors@R: 
     c(person(given = "Dominique",
              family = "Makowski",
@@ -63,11 +63,6 @@ Suggests:
     tidyr,
     wdm,
     WRS2
-Remotes:
-    easystats/insight,
-    easystats/bayestestR,
-    easystats/parameters,
-    easystats/effectsize
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

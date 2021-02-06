@@ -10,6 +10,10 @@
 - The `Method` column in output dataframe is now more explicit about the
   correlation method used.
 
+## Bug Fixes
+
+- Winsorization doesn't fail when `NA`s are present (#130).
+
 ## Minor Changes
 
 - Fixed CRAN check issues due to changes in dependent packages.
