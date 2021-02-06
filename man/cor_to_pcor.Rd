@@ -4,7 +4,6 @@
 \alias{cor_to_pcor}
 \alias{pcor_to_cor}
 \alias{cor_to_spcor}
-\alias{spcor_to_cor}
 \title{Correlation Matrix to (Semi) Partial Correlations}
 \usage{
 cor_to_pcor(cor, tol = .Machine$double.eps^(2/3))
@@ -12,13 +11,6 @@ cor_to_pcor(cor, tol = .Machine$double.eps^(2/3))
 pcor_to_cor(pcor, tol = .Machine$double.eps^(2/3))
 
 cor_to_spcor(cor = NULL, cov = NULL, tol = .Machine$double.eps^(2/3))
-
-spcor_to_cor(
-  spcor = NULL,
-  cov = NULL,
-  semi = FALSE,
-  tol = .Machine$double.eps^(2/3)
-)
 }
 \arguments{
 \item{cor, pcor, spcor}{A correlation matrix, or a partial or a semipartial
