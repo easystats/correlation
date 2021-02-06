@@ -71,9 +71,14 @@ test_that("cor_test distance", {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
     comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
     expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.001)
+    expect_identical(out$Method, "Distance (Bias Corrected)")
 
-    out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance", corrected = FALSE)
-    expect_equal(out2$r, 0.9736309, tolerance = 0.001)
+    # correction
+    df1 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance", corrected = FALSE)
+    df2 <- .cor_test_distance(iris, "Petal.Length", "Petal.Width", corrected = FALSE)
+
+    expect_equal(df1$r, df2$r, tolerance = 0.001)
+    expect_identical(df2$Method, "Distance")
   }
 })
 
