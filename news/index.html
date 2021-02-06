@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -146,6 +146,13 @@
 <li><p>The <code>Method</code> column in output dataframe is now more explicit about the correlation method used.</p></li>
 </ul>
 </div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
+<ul>
+<li>Winsorization doesn’t fail when <code>NA</code>s are present (<a href='https://github.com/easystats/correlation/issues/130'>#130</a>).</li>
+</ul>
+</div>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor"></a>Minor Changes</h2>
@@ -168,9 +175,9 @@
 <li><p>New function <code><a href="https://easystats.github.io/insight/reference/display.html">display()</a></code>, to print output into different formats. Currently, only markdown is supported. <code><a href="https://easystats.github.io/insight/reference/display.html">print_md()</a></code> is an alias for <code><a href="https://easystats.github.io/insight/reference/display.html">display(format = "markdown")</a></code>.</p></li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix bug in <code><a href="../reference/cor_to_ci.html">cor_to_p()</a></code> that gave slightly different test statistics.</li>
 </ul>
@@ -191,9 +198,9 @@
 <li><p>Add “blomqvist” method.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>Added <code>Method</code> column to Bayesian correlations.</p></li>
 <li><p>Fix bug when <code>robust=TRUE</code> (<a href="https://github.com/easystats/effectsize/issues/87"><a href='https://github.com/easystats/correlation/issues/87'>#87</a></a>).</p></li>
@@ -208,9 +215,9 @@
 <h2 class="hasAnchor">
 <a href="#changes-2" class="anchor"></a>Changes</h2>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 </div>
 </div>
     <div id="correlation-021" class="section level1">
@@ -225,9 +232,9 @@
 <li><p>Improved documentation (<a href='https://github.com/easystats/correlation/issues/45'>#45</a>, <a href='https://github.com/easystats/correlation/issues/63'>#63</a>)</p></li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>Removed CI threshold column from <code><a href="../reference/distance_mahalanobis.html">distance_mahalanobis()</a></code></p></li>
 <li><p>Fixed bug (<a href='https://github.com/easystats/correlation/issues/76'>#76</a>)</p></li>
@@ -245,9 +252,9 @@
 <li>Some changes were made.</li>
 </ul>
 </div>
-<div id="bug-fixes-4" class="section level2">
+<div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Some bugs were fixed.</li>
 </ul>
@@ -265,9 +272,9 @@
 <li><p>Add <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code>-method for <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-5" class="section level2">
+<div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>Fixed issue in <code><a href="../reference/correlation.html">correlation()</a></code> for some edge cases when <code>include_factors = TRUE</code>.</p></li>
 <li><p>Fixed issue in <code><a href="../reference/correlation.html">correlation()</a></code> for correlation coefficients with less than four complete pairs of observations (in such cases, <code><a href="../reference/cor_test.html">cor_test()</a></code> now returns <code>NA</code> for the confidence intervals).</p></li>
@@ -287,7 +294,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://dominiquemakowski.github.io/'>Dominique Makowski</a>, Daniel Lüdecke.</p>
+  <p>Developed by <a href='https://dominiquemakowski.github.io/'>Dominique Makowski</a>, <a href='https://github.com/strengejacke'>Daniel Lüdecke</a>, <a href='https://github.com/mattansb'>Mattan S. Ben-Shachar</a>, <a href='https://sites.google.com/site/indrajeetspatilmorality/'>Indrajeet Patil</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -121,9 +121,11 @@
 <a href="#simple-correlation" class="anchor"></a>Simple correlation</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
-<pre><code>## Parameter1 | Parameter2 |     r |         95% CI | t(998) |         p
-## ---------------------------------------------------------------------
-## V1         |         V2 | -0.84 | [-0.86, -0.82] | -48.77 | &lt; .001***
+<pre><code>## # Correlation table (pearson-method)
+## 
+## Parameter1 | Parameter2 |     r |   CI |         95% CI | t(998) |         p
+## ----------------------------------------------------------------------------
+## V1         |         V2 | -0.84 | 0.95 | [-0.86, -0.82] | -48.77 | &lt; .001***
 ## 
 ## p-value adjustment method: Holm (1979)
 ## Observations: 1000</code></pre>
@@ -169,7 +171,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://dominiquemakowski.github.io/">Dominique Makowski</a>, Daniel Lüdecke.</p>
+  <p>Developed by <a href="https://dominiquemakowski.github.io/">Dominique Makowski</a>, <a href="https://github.com/strengejacke">Daniel Lüdecke</a>, <a href="https://github.com/mattansb">Mattan S. Ben-Shachar</a>, <a href="https://sites.google.com/site/indrajeetspatilmorality/">Indrajeet Patil</a>.</p>
 </div>
 
 <div class="pkgdown">
