@@ -30,3 +30,9 @@ test_that("z_fisher works", {
   expect_equal(z_fisher(r = 0.7), 0.8673005, tolerance = 0.001)
   expect_equal(z_fisher(z = 0.867), 0.6998467, tolerance = 0.001)
 })
+
+test_that("simulate_simpson works", {
+  set.seed(123)
+  df <- simulate_simpson(n = 100, groups = 5, r = 0.5)
+  expect_equal(dim(df), c(500L, 3L))
+})
