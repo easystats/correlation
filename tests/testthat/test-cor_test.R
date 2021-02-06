@@ -6,6 +6,14 @@ test_that("cor_test frequentist", {
   expect_equal(out$r, 0.962, tolerance = 0.01)
 })
 
+test_that("cor_test kendall", {
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "kendall")
+  out2 <- stats::cor.test(iris$Petal.Length, iris$Petal.Width, method = "kendall")
+
+  expect_equal(out$tau, out2$estimate[[1]], tolerance = 0.001)
+  expect_equal(out$p, out2$p.value[[1]], tolerance = 0.001)
+})
+
 
 test_that("cor_test bayesian", {
   if (require("BayesFactor", quietly = TRUE)) {
@@ -17,8 +25,15 @@ test_that("cor_test bayesian", {
 
     df <- iris
     df$Petal.Length2 <- df$Petal.Length
-    out <- cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE)
-    expect_equal(out$rho, 1.000, tolerance = 0.01)
+    out3 <- cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE)
+    expect_equal(out3$rho, 1.000, tolerance = 0.01)
+
+    out4 <- .cor_test_bayes_base(df$Petal.Length[1], df$Petal.Length2[1])
+    expect_equal(out4$rho, 1.000, tolerance = 0.01)
+
+    set.seed(123)
+    out5 <- cor_test(mtcars, "wt", "mpg", method = "shepherd", bayesian = TRUE)
+    expect_equal(out5$rho, -0.7795719, tolerance = 0.01)
   }
 })
 
@@ -68,9 +83,14 @@ test_that("cor_test distance", {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
     comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
     expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.001)
+    expect_identical(out$Method, "Distance (Bias Corrected)")
 
-    out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance", corrected = FALSE)
-    expect_equal(out2$r, 0.9736309, tolerance = 0.001)
+    # correction
+    df1 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance", corrected = FALSE)
+    df2 <- .cor_test_distance(iris, "Petal.Length", "Petal.Width", corrected = FALSE)
+
+    expect_equal(df1$r, df2$r, tolerance = 0.001)
+    expect_identical(df2$Method, "Distance")
   }
 })
 

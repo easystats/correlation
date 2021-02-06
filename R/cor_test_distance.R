@@ -11,6 +11,9 @@
       r = rez$r,
       CI_low = NA,
       CI_high = NA,
+      t = NA,
+      df_error = NA,
+      p = NA,
       Method = "Distance"
     )
   } else {
@@ -27,6 +30,8 @@
       Method = "Distance (Bias Corrected)"
     )
   }
+
+  rez
 }
 
 

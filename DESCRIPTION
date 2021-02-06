@@ -1,7 +1,7 @@
 Type: Package
 Package: correlation
 Title: Methods for Correlation Analysis
-Version: 0.5.0.1
+Version: 0.5.1
 Authors@R: 
     c(person(given = "Dominique",
              family = "Makowski",
@@ -15,14 +15,14 @@ Authors@R:
              comment = c(ORCID = "0000-0002-8895-3206")),
       person(given = "Mattan S.",
              family = "Ben-Shachar",
-             role = "ctb",
+             role = "aut",
              email = "matanshm@post.bgu.ac.il",
              comment = c(ORCID = "0000-0002-4287-4801")),
       person(given = "Indrajeet",
              family = "Patil",
-             role = "ctb",
+             role = "aut",
              email = "patilindrajeet.science@gmail.com",
-             comment = c(ORCID = "0000-0003-1995-6531")))
+             comment = c(ORCID = "0000-0003-1995-6531", Twitter = "@patilindrajeets")))
 Maintainer: Dominique Makowski <dom.makowski@gmail.com>
 Description: Lightweight package for computing different kinds
     of correlations, such as partial correlations, Bayesian correlations,
@@ -63,11 +63,6 @@ Suggests:
     tidyr,
     wdm,
     WRS2
-Remotes:
-    easystats/insight,
-    easystats/bayestestR,
-    easystats/parameters,
-    easystats/effectsize
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

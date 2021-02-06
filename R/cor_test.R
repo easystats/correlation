@@ -155,6 +155,10 @@ cor_test <- function(data,
     if (isTRUE(winsorize)) {
       winsorize <- .1
     }
+
+    # winsorization would otherwise fail in case of NAs present
+    data <- stats::na.omit(data)
+
     data[c(x, y)] <- winsorize(data[c(x, y)], threshold = winsorize, verbose = verbose)
   }
 
