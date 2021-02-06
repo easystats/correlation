@@ -17,8 +17,11 @@ test_that("cor_test bayesian", {
 
     df <- iris
     df$Petal.Length2 <- df$Petal.Length
-    out <- cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE)
-    expect_equal(out$rho, 1.000, tolerance = 0.01)
+    out3 <- cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE)
+    expect_equal(out3$rho, 1.000, tolerance = 0.01)
+
+    out4 <- .cor_test_bayes_base(df$Petal.Length[1], df$Petal.Length2[1])
+    expect_equal(out4$rho, 1.000, tolerance = 0.01)
   }
 })
 
