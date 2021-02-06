@@ -47,3 +47,4 @@ references.bib
 ^\.github/workflows/pr-commands\.yaml$
 hextools
 ^paper/.
+^WIP/.
