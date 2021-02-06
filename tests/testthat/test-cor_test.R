@@ -20,6 +20,13 @@ test_that("cor_test bayesian", {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
     expect_equal(out$r, 0.9591191, tolerance = 0.01)
 
+    set.seed(123)
+    df_1 <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
+
+    set.seed(123)
+    df_2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "auto", bayesian = TRUE)
+    expect_equal(df_1, df_2, tolerance = 0.001)
+
     out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman", bayesian = TRUE)
     expect_equal(out2$rho, 0.9323004, tolerance = 0.01)
 
@@ -34,6 +41,21 @@ test_that("cor_test bayesian", {
     set.seed(123)
     out5 <- cor_test(mtcars, "wt", "mpg", method = "shepherd", bayesian = TRUE)
     expect_equal(out5$rho, -0.7795719, tolerance = 0.01)
+
+    set.seed(123)
+    out6 <- cor_test(mtcars, "wt", "mpg", method = "gaussian", bayesian = TRUE)
+    expect_equal(out6$rho, -0.8294838, tolerance = 0.01)
+
+    # unsupported
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "biserial", bayesian = TRUE))
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "polychoric", bayesian = TRUE))
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "tetrachoric", bayesian = TRUE))
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "biweight", bayesian = TRUE))
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "distance", bayesian = TRUE))
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "percentage", bayesian = TRUE))
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "blomqvist", bayesian = TRUE))
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "hoeffding", bayesian = TRUE))
+    expect_error(cor_test(mtcars, "wt", "mpg", method = "gamma", bayesian = TRUE))
   }
 })
 
