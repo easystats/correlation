@@ -13,15 +13,13 @@ pcor_to_cor(pcor, tol = .Machine$double.eps^(2/3))
 cor_to_spcor(cor = NULL, cov = NULL, tol = .Machine$double.eps^(2/3))
 }
 \arguments{
-\item{cor, pcor, spcor}{A correlation matrix, or a partial or a semipartial
+\item{cor, pcor}{A correlation matrix, or a partial or a semipartial
 correlation matrix.}
 
 \item{tol}{Relative tolerance to detect zero singular values.}
 
 \item{cov}{A covariance matrix (or a vector of the SD of the variables).
 Required for semi-partial correlations.}
-
-\item{semi}{Semi-partial correlations.}
 }
 \value{
 The (semi) partial correlation matrix.

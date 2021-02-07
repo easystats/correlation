@@ -68,6 +68,6 @@ VignetteBuilder:
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.1.9000
 Config/testthat/edition: 3
 Config/testthat/parallel: true

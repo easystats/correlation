@@ -75,7 +75,8 @@ Click on the buttons above to access the package [**documentation**](https://eas
 
 ## Features
 
-The *correlation* package can compute many different types of correlation, including:
+The *correlation* package can compute many different types of correlation,
+including:
 
 - [x] **Pearson's correlation**
 - [x] **Spearman's rank correlation**
@@ -94,9 +95,9 @@ The *correlation* package can compute many different types of correlation, inclu
 - [x] **Tetrachoric correlation**
 - [x] **Multilevel correlation**
 
-An overview and description of these correlations types is [**available here**](https://easystats.github.io/correlation/articles/types.html). Moreover, many of these correlation types are available as **partial** or within a **Bayesian** framework. 
-
-
+An overview and description of these correlations types is [**available here**](https://easystats.github.io/correlation/articles/types.html). Moreover,
+many of these correlation types are available as **partial** or within a
+**Bayesian** framework.
 
 # Examples
 
@@ -134,7 +135,8 @@ results %>%
 
 ## Grouped dataframes
 
-The function also supports **stratified correlations**, all within the *tidyverse* workflow!
+The function also supports **stratified correlations**, all within the
+*tidyverse* workflow!
 
 ```{r message=FALSE, warning=FALSE}
 iris %>% 
@@ -155,14 +157,12 @@ correlation(iris, bayesian = TRUE)
 
 ## Tetrachoric, Polychoric, Biserial, Biweight...
 
-The `correlation` package also supports different types of methods, which can deal with correlations **between factors**!
+The `correlation` package also supports different types of methods, which can
+deal with correlations **between factors**!
 
 ```{r message=FALSE, warning=FALSE}
 correlation(iris, include_factors = TRUE, method = "auto")
 ```
-
-
-
 
 
 ## Partial Correlations
@@ -177,7 +177,11 @@ iris %>%
 
 ## Gaussian Graphical Models (GGMs)
 
-Such partial correlations can also be represented as **Gaussian Graphical Models** (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles ("nodes"), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see [Bhushan et al., 2019](https://www.frontiersin.org/articles/10.3389/fpsyg.2019.01050/full)).
+Such partial correlations can also be represented as **Gaussian Graphical
+Models** (GGM), an increasingly popular tool in psychology. A GGM traditionally
+include a set of variables depicted as circles ("nodes"), and a set of lines
+that visualize relationships between them, which thickness represents the
+strength of association (see [Bhushan et al., 2019](https://www.frontiersin.org/articles/10.3389/fpsyg.2019.01050/full)).
 
 ```{r message=FALSE, warning=FALSE}
 library(see) # for plotting
@@ -188,14 +192,12 @@ mtcars %>%
   plot()
 ```
 
-
-
-
 ## Multilevel Correlations
 
-
-It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on **linear mixed models** that include the factors as random effects. They can be see as correlations *adjusted* for some group (*hierarchical*) variability.
-
+It also provide some cutting-edge methods, such as Multilevel (partial)
+correlations. These are are partial correlations based on **linear mixed
+models** that include the factors as random effects. They can be see as
+correlations *adjusted* for some group (*hierarchical*) variability.
 
 ```{r message=FALSE, warning=FALSE}
 iris %>% 
@@ -203,13 +205,12 @@ iris %>%
   summary()
 ```
 
-
-However, if the `partial` argument is set to `FALSE`, it will try to convert the partial coefficient into regular ones.These can be **converted back** to full correlations:
+However, if the `partial` argument is set to `FALSE`, it will try to convert the
+partial coefficient into regular ones.These can be **converted back** to full
+correlations:
 
 ```{r message=FALSE, warning=FALSE}
 iris %>% 
   correlation(partial = FALSE, multilevel = TRUE) %>% 
   summary()
 ```
-
-
