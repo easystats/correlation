@@ -46,11 +46,9 @@ Somers’
 StatsRef
 Steg
 Tetrachoric
-Waggoner
 Winsorization
 Winsorize
 Winsorized
-Winsorizization
 Zar
 al
 biserial
@@ -88,4 +86,5 @@ spearman
 tetrachoric
 theorised
 tidyverse
+winsorization
 xy

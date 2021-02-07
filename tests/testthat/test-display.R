@@ -1,6 +1,4 @@
 test_that("display method works", {
-  skip_on_os("windows")
-
   expect_equal(
     display(correlation(iris)),
     structure(c(
