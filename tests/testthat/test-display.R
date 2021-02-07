@@ -4,7 +4,7 @@ test_that("display works properly", {
   set.seed(123)
   corr <- correlation(iris)
 
-  expect_equal(
+  expect_output(
     display(corr),
     structure(c(
       "Table: Correlation Matrix (pearson-method)", "",
