@@ -48,6 +48,7 @@ Suggests:
     forcats,
     ggcorrplot,
     ggplot2,
+    gt,
     Hmisc,
     knitr,
     lme4,
