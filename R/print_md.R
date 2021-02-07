@@ -27,12 +27,14 @@ print_html.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
   }
   x$Method <- NULL
   x$n_Obs <- NULL
-  insight::export_table(format(x, digits = digits, stars = stars), format = format, caption = table_caption, footer = footer, align = "firstleft")
+  insight::export_table(
+    format(x, digits = digits, stars = stars),
+    format = format,
+    caption = table_caption,
+    footer = footer,
+    align = "firstleft"
+  )
 }
-
-
-
-
 
 
 #' @export
@@ -66,8 +68,22 @@ print_html.easycorrelation <- function(x, digits = 2, stars = TRUE, ...) {
   x$n_Obs <- NULL
 
   # final table
-  formatted_table <- insight::format_table(x, pretty_names = TRUE, digits = digits, stars = stars, ci_width = NULL, ci_brackets = c("(", ")"))
-  insight::export_table(formatted_table, format = format, caption = table_caption, align = "firstleft", footer = footer)
+  formatted_table <- insight::format_table(
+    x,
+    pretty_names = TRUE,
+    digits = digits,
+    stars = stars,
+    ci_width = NULL,
+    ci_brackets = c("(", ")")
+  )
+
+  insight::export_table(
+    formatted_table,
+    format = format,
+    caption = table_caption,
+    align = "firstleft",
+    footer = footer
+  )
 }
 
 
