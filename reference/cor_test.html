@@ -388,9 +388,9 @@ this is not possible when using <code>cor_test()</code> so that if you set
 #&gt; Sepal.Length | Sepal.Width | -0.17 | 0.95 | [-0.32,  0.00] | 6.56e+05 | 0.041*
 #&gt; 
 #&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   CI |        95% CI |   tau |     z |     p
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   tau |   CI |        95% CI |     z |     p
 #&gt; -------------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | 0.95 | [-0.18, 0.03] | -0.08 | -1.33 | 0.183
+#&gt; Sepal.Length | Sepal.Width | -0.08 | 0.95 | [-0.18, 0.03] | -1.33 | 0.183
 #&gt; 
 #&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"biweight"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |   CI |        95% CI | t(148) |     p

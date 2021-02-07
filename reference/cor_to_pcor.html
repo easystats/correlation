@@ -159,20 +159,13 @@ unexplained variance of Y that cannot be accounted by the other variables.</p>
 
 <span class='fu'>pcor_to_cor</span><span class='op'>(</span><span class='va'>pcor</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>cor_to_spcor</span><span class='op'>(</span>cor <span class='op'>=</span> <span class='cn'>NULL</span>, cov <span class='op'>=</span> <span class='cn'>NULL</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>spcor_to_cor</span><span class='op'>(</span>
-  spcor <span class='op'>=</span> <span class='cn'>NULL</span>,
-  cov <span class='op'>=</span> <span class='cn'>NULL</span>,
-  semi <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+<span class='fu'>cor_to_spcor</span><span class='op'>(</span>cor <span class='op'>=</span> <span class='cn'>NULL</span>, cov <span class='op'>=</span> <span class='cn'>NULL</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cor, pcor, spcor</th>
+      <th>cor, pcor</th>
       <td><p>A correlation matrix, or a partial or a semipartial
 correlation matrix.</p></td>
     </tr>
@@ -184,10 +177,6 @@ correlation matrix.</p></td>
       <th>cov</th>
       <td><p>A covariance matrix (or a vector of the SD of the variables).
 Required for semi-partial correlations.</p></td>
-    </tr>
-    <tr>
-      <th>semi</th>
-      <td><p>Semi-partial correlations.</p></td>
     </tr>
     </table>
 
