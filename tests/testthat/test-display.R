@@ -15,3 +15,19 @@ test_that("display method works", {
     ), format = "pipe", class = c("knitr_kable", "character"))
   )
 })
+
+test_that("print method works - HTML", {
+  expect_equal(
+    display(correlation(subset(mtcars, select = c("wt", "mpg")), format = "html")),
+    structure(c(
+      "Table: Correlation Matrix (pearson-method)", "",
+      "|Parameter1 | Parameter2 |     r |         95% CI | t(30) |         p |",
+      "|:----------|:----------:|:-----:|:--------------:|:-----:|:---------:|",
+      "|wt         |        mpg | -0.87 | (-0.93, -0.74) | -9.56 | < .001*** |",
+      "p-value adjustment method: Holm (1979)", "Observations: 32"
+    ), format = "pipe", class = c(
+      "knitr_kable",
+      "character"
+    ))
+  )
+})

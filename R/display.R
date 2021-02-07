@@ -41,8 +41,6 @@ display.easycormatrix <- function(object, format = "markdown", digits = 2, stars
 display.easycorrelation <- display.easycormatrix
 
 
-
-
 # Reexports models ------------------------
 
 #' @importFrom insight display
