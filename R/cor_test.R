@@ -110,7 +110,7 @@
 #' }
 #' @importFrom effectsize adjust ranktransform
 #' @importFrom parameters data_to_numeric
-#' @importFrom stats complete.cases na.omit
+#' @importFrom stats complete.cases na.omit sd
 #' @export
 cor_test <- function(data,
                      x,
