@@ -193,14 +193,14 @@ or its summary.</p></td>
 #&gt; 
 #&gt; Table: Correlation Matrix (pearson-method)
 #&gt; 
-#&gt; |Parameter1   |   Parameter2 |     r |   CI |         95% CI | t(148) |         p |
-#&gt; |:------------|:------------:|:-----:|:----:|:--------------:|:------:|:---------:|
-#&gt; |Sepal.Length |  Sepal.Width | -0.12 | 0.95 |  (-0.27, 0.04) |  -1.44 | 0.152     |
-#&gt; |Sepal.Length | Petal.Length |  0.87 | 0.95 |   (0.83, 0.91) |  21.65 | &lt; .001*** |
-#&gt; |Sepal.Length |  Petal.Width |  0.82 | 0.95 |   (0.76, 0.86) |  17.30 | &lt; .001*** |
-#&gt; |Sepal.Width  | Petal.Length | -0.43 | 0.95 | (-0.55, -0.29) |  -5.77 | &lt; .001*** |
-#&gt; |Sepal.Width  |  Petal.Width | -0.37 | 0.95 | (-0.50, -0.22) |  -4.79 | &lt; .001*** |
-#&gt; |Petal.Length |  Petal.Width |  0.96 | 0.95 |   (0.95, 0.97) |  43.39 | &lt; .001*** |
+#&gt; |Parameter1   |   Parameter2 |     r |         95% CI | t(148) |         p |
+#&gt; |:------------|:------------:|:-----:|:--------------:|:------:|:---------:|
+#&gt; |Sepal.Length |  Sepal.Width | -0.12 |  (-0.27, 0.04) |  -1.44 | 0.152     |
+#&gt; |Sepal.Length | Petal.Length |  0.87 |   (0.83, 0.91) |  21.65 | &lt; .001*** |
+#&gt; |Sepal.Length |  Petal.Width |  0.82 |   (0.76, 0.86) |  17.30 | &lt; .001*** |
+#&gt; |Sepal.Width  | Petal.Length | -0.43 | (-0.55, -0.29) |  -5.77 | &lt; .001*** |
+#&gt; |Sepal.Width  |  Petal.Width | -0.37 | (-0.50, -0.22) |  -4.79 | &lt; .001*** |
+#&gt; |Petal.Length |  Petal.Width |  0.96 |   (0.95, 0.97) |  43.39 | &lt; .001*** |
 #&gt; p-value adjustment method: Holm (1979)
 #&gt; Observations: 150</div><div class='input'>
 <span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>corr</span><span class='op'>)</span>
