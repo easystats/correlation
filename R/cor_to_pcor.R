@@ -19,11 +19,10 @@
 #'
 #'
 #'
-#' @param cor,pcor,spcor A correlation matrix, or a partial or a semipartial
+#' @param cor,pcor A correlation matrix, or a partial or a semipartial
 #'   correlation matrix.
 #' @param cov A covariance matrix (or a vector of the SD of the variables).
 #'   Required for semi-partial correlations.
-#' @param semi Semi-partial correlations.
 #' @param tol Relative tolerance to detect zero singular values.
 #'
 #' @return The (semi) partial correlation matrix.
@@ -98,19 +97,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 }
 
 
-
-
-
-
-
-
-
-
 # Convenience Functions --------------------------------------------------------
-
-
-
-
 
 #' @keywords internal
 .cor_to_pcor_easycorrelation <- function(pcor = NULL, cor = NULL, tol = .Machine$double.eps^(2 / 3)) {
@@ -212,11 +199,6 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
 
 
-
-
-
-
-
 #' @keywords internal
 .cor_to_pcor <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
   # Get cor
@@ -247,24 +229,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
 
 
-
-
-
-
-
-
-
-
-
-
 # Internals ---------------------------------------------------------------
-
-
-
-
-
-
-
 
 #' @keywords internal
 .get_cor <- function(cor = NULL, cov = NULL) {

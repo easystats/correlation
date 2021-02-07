@@ -110,7 +110,7 @@
 #' }
 #' @importFrom effectsize adjust ranktransform
 #' @importFrom parameters data_to_numeric
-#' @importFrom stats complete.cases
+#' @importFrom stats complete.cases na.omit
 #' @export
 cor_test <- function(data,
                      x,
@@ -268,7 +268,7 @@ cor_test <- function(data,
 
   # Reorder columns
   if ("CI_low" %in% names(out)) {
-    order <- c("Parameter1", "Parameter2", "r", "rho", "Dxy", "CI", "CI_low", "CI_high")
+    order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high")
     out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
   }
 
