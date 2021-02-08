@@ -72,6 +72,7 @@ test_that("cor_test tetrachoric", {
     data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
     data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
     out <- cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+
     # Curently CRAN checks show two possible results for this:
     if (isTRUE(all.equal(out$rho, 0.7507764, tolerance = 0.1))) {
       expect_equal(out$rho, 0.7507764, tolerance = 0.1)
@@ -192,7 +193,12 @@ test_that("cor_test one-sided p value", {
 
 
 # Edge cases --------------------------------------------------------------
+
 test_that("cor_test 2 valid observations", {
   out <- correlation(data.frame(v2 = c(2, 1, 1, 2), v3 = c(1, 2, NA, NA)))
   expect_true(is.na(out$r))
+
+  out2 <- .cor_test_freq(mtcars[1:3, ], "wt", "mpg")
+  expect_true(is.na(out2$CI_low))
+  expect_true(is.na(out2$CI_high))
 })
