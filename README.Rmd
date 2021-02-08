@@ -15,7 +15,7 @@ editor_options:
 
 # correlation <img src='man/figures/logo.png' align="right" height="139" />
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
+```{r README-1, echo = FALSE, warning=FALSE, message=FALSE}
 library(ggplot2)
 library(dplyr)
 library(correlation)
@@ -49,13 +49,13 @@ You can reference the package and its documentation as follows:
 
 Run the following to install the stable release of **correlation** from CRAN:
 
-```{r, warning=FALSE, message=FALSE, eval=FALSE}
+```{r README-2, warning=FALSE, message=FALSE, eval=FALSE}
 install.packages("correlation")
 ```
 
 Or this one to install the latest development version:
 
-```{r, warning=FALSE, message=FALSE, eval=FALSE}
+```{r README-3, warning=FALSE, message=FALSE, eval=FALSE}
 install.packages("remotes")
 remotes::install_github("easystats/correlation")
 ```
@@ -105,25 +105,25 @@ The main function is [`correlation()`](https://easystats.github.io/correlation/r
 
 ## Correlation details and matrix
 
-```{r message=FALSE, warning=FALSE}
+```{r README-4, message=FALSE, warning=FALSE}
 results <- correlation(iris)
 results
 ```
 
 The output is not a square matrix, but a **(tidy) dataframe with all correlations tests per row**. One can also obtain a **matrix** using:
 
-```{r message=FALSE, warning=FALSE}
+```{r README-5, message=FALSE, warning=FALSE}
 summary(results)
 ```
 
 Note that one can also obtain the full, **square** and redundant matrix using:
 
-```{r message=FALSE, warning=FALSE}
+```{r README-6, message=FALSE, warning=FALSE}
 summary(results, redundant=TRUE)
 ```
 
 
-```{r message=FALSE, warning=FALSE}
+```{r README-7, message=FALSE, warning=FALSE}
 library(dplyr)
 library(see)
 
@@ -138,7 +138,7 @@ results %>%
 The function also supports **stratified correlations**, all within the
 *tidyverse* workflow!
 
-```{r message=FALSE, warning=FALSE}
+```{r README-8, message=FALSE, warning=FALSE}
 iris %>% 
   select(Species, Sepal.Length, Sepal.Width, Petal.Width) %>% 
   group_by(Species) %>% 
@@ -150,7 +150,7 @@ iris %>%
 
 It is very easy to switch to a **Bayesian framework**.
 
-```{r message=FALSE, warning=FALSE}
+```{r README-9, message=FALSE, warning=FALSE}
 correlation(iris, bayesian = TRUE)
 ```
 
@@ -160,7 +160,7 @@ correlation(iris, bayesian = TRUE)
 The `correlation` package also supports different types of methods, which can
 deal with correlations **between factors**!
 
-```{r message=FALSE, warning=FALSE}
+```{r README-10, message=FALSE, warning=FALSE}
 correlation(iris, include_factors = TRUE, method = "auto")
 ```
 
@@ -169,7 +169,7 @@ correlation(iris, include_factors = TRUE, method = "auto")
 
 It also supports **partial correlations** (as well as Bayesian partial correlations).
 
-```{r message=FALSE, warning=FALSE}
+```{r README-11, message=FALSE, warning=FALSE}
 iris %>% 
   correlation(partial = TRUE) %>% 
   summary()
@@ -183,7 +183,7 @@ include a set of variables depicted as circles ("nodes"), and a set of lines
 that visualize relationships between them, which thickness represents the
 strength of association (see [Bhushan et al., 2019](https://www.frontiersin.org/articles/10.3389/fpsyg.2019.01050/full)).
 
-```{r message=FALSE, warning=FALSE}
+```{r README-12, message=FALSE, warning=FALSE}
 library(see) # for plotting
 library(ggraph) # needs to be loaded
 
@@ -199,7 +199,7 @@ correlations. These are are partial correlations based on **linear mixed
 models** that include the factors as random effects. They can be see as
 correlations *adjusted* for some group (*hierarchical*) variability.
 
-```{r message=FALSE, warning=FALSE}
+```{r README-13, message=FALSE, warning=FALSE}
 iris %>% 
   correlation(partial = TRUE, multilevel = TRUE) %>% 
   summary()
@@ -209,7 +209,7 @@ However, if the `partial` argument is set to `FALSE`, it will try to convert the
 partial coefficient into regular ones.These can be **converted back** to full
 correlations:
 
-```{r message=FALSE, warning=FALSE}
+```{r README-14, message=FALSE, warning=FALSE}
 iris %>% 
   correlation(partial = FALSE, multilevel = TRUE) %>% 
   summary()

@@ -60,7 +60,7 @@ Suggests:
     rstanarm,
     see,
     spelling,
-    testthat,
+    testthat (>= 3.0.1),
     tidyr,
     wdm,
     WRS2

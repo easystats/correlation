@@ -1,6 +1,6 @@
 # display and print method works - markdown -----------------------------
 
-if (require("gt")) {
+if (require("gt") && packageVersion("insight") >= "0.12.0.1") {
   test_that("display and print method works - markdown", {
     skip_on_cran()
 
@@ -21,6 +21,8 @@ if (require("gt")) {
     )
 
     expect_output(print(correlation(iris)))
+
+    expect_snapshot(display(correlation(iris)), cran = FALSE)
   })
 
   # display and print method works - HTML -----------------------------
