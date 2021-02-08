@@ -38,7 +38,7 @@ Imports:
     bayestestR (>= 0.8.2),
     datasets,
     effectsize (>= 0.4.3),
-    insight (>= 0.12.0.1),
+    insight (>= 0.12.0),
     parameters (>= 0.11.0),
     stats
 Suggests:
@@ -64,8 +64,6 @@ Suggests:
     tidyr,
     wdm,
     WRS2
-Remotes:
-    easystats/insight
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
