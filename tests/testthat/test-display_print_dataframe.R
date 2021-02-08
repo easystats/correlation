@@ -33,6 +33,7 @@ if (require("gt") && packageVersion("insight") >= "0.12.0.1") {
     expect_output(display(print(correlation(subset(mtcars, select = c("wt", "mpg"))), format = "html")))
 
     expect_snapshot(print(correlation(subset(mtcars, select = c("wt", "mpg"))), format = "html"),
-                    cran = FALSE)
+      cran = FALSE
+    )
   })
 }

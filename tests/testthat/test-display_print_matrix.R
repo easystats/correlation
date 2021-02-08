@@ -33,11 +33,7 @@ if (require("gt") && packageVersion("insight") >= "0.12.0.1") {
   test_that("display and print method works - html", {
     skip_on_cran()
 
-    expect_output(print(summary(correlation(iris)), format = "html"))
-
-    # don't run this
-    # waldo can't handle this
-    # Error: Internal Error: reached theoretically unreachable branch 2, contact maintainer.
+    # to be run when  `diffobj` version  > 0.3.3.9000 is on CRAN
     # expect_snapshot(display(summary(correlation(iris)), format = "html"), cran = FALSE)
 
     expect_snapshot(print(summary(correlation(iris)), format = "html"), cran = FALSE)
