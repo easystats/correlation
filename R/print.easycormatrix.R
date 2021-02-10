@@ -1,33 +1,36 @@
 #' @importFrom insight format_p format_pd format_bf format_value export_table
 #' @export
-format.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
-  orig_x <- x
+format.easycormatrix <- function(x, digits = 2, stars = "default", ...) {
   nums <- sapply(as.data.frame(x), is.numeric)
 
   # Find attributes
-  p <- attributes(x)
+  attri <- attributes(x)
 
-  if ("stars" %in% names(p)) {
-    stars <- p$stars
+  if (stars == "default"){
+    if("stars" %in% names(attri)) {
+      stars <- attri$stars
+    } else {
+      stars <- TRUE
+    }
   }
 
   # Significance
-  type <- names(p)[names(p) %in% c("BF", "pd", "p")][1]
-  p <- p[[type]]
+  type <- names(attri)[names(attri) %in% c("BF", "pd", "p")][1]
+  attri <- attri[[type]]
 
-  if (!is.null(p)) {
+  if (!is.null(attri)) {
     if (type == "p") {
-      p[, nums] <- sapply(p[, nums], insight::format_p, stars_only = TRUE)
+      attri[, nums] <- sapply(attri[, nums], insight::format_p, stars_only = TRUE)
     } else if (type == "pd") {
-      p[, nums] <- sapply(p[, nums], insight::format_pd, stars_only = TRUE)
+      attri[, nums] <- sapply(attri[, nums], insight::format_pd, stars_only = TRUE)
     } else if (type == "BF") {
-      p[, nums] <- sapply(p[, nums], insight::format_bf, stars_only = TRUE)
+      attri[, nums] <- sapply(attri[, nums], insight::format_bf, stars_only = TRUE)
     }
 
     # Round and eventually add stars
     x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value, digits = digits)
     if (stars) {
-      x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(p[, nums]))
+      x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(attri[, nums]))
     }
   } else {
     x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value, digits = digits)
@@ -39,7 +42,7 @@ format.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
 
 #' @importFrom insight export_table
 #' @export
-print.easycormatrix <- function(x, digits = 2, stars = TRUE, ...) {
+print.easycormatrix <- function(x, digits = 2, stars = "default", ...) {
   formatted_table <- format(x, digits = digits, stars = stars)
 
   table_caption <- NULL

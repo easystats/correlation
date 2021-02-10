@@ -28,7 +28,7 @@ publication/*
 ^\.httr-oauth$
 ^CRAN-RELEASE$
 tests\^spelling
-^LICENSE\.md$
+^LICENSE
 ^\.lintr$
 ^\.circleci$
 ^tests/manual$
