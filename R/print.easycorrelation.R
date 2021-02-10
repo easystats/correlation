@@ -1,7 +1,7 @@
 #' @importFrom insight format_table
 #' @export
 format.easycorrelation <- function(x, digits = 2, stars = TRUE, ...) {
-  insight::format_table(x, stars = stars, digits = digits)
+  insight::format_table(x, digits = digits, stars = stars, ...)
 }
 
 
@@ -9,7 +9,7 @@ format.easycorrelation <- function(x, digits = 2, stars = TRUE, ...) {
 #' @importFrom parameters format_p_adjust
 #' @export
 print.easycorrelation <- function(x, digits = 2, stars = TRUE, ...) {
-  formatted_table <- format(x, digits = digits, stars = stars)
+  formatted_table <- format(x, digits = digits, stars = stars, ...)
 
   table_caption <- attributes(x)$method
   if (!is.null(table_caption)) {
