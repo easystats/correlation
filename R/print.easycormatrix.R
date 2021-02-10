@@ -6,8 +6,8 @@ format.easycormatrix <- function(x, digits = 2, stars = "default", ...) {
   # Find attributes
   attri <- attributes(x)
 
-  if (stars == "default"){
-    if("stars" %in% names(attri)) {
+  if (stars == "default") {
+    if ("stars" %in% names(attri)) {
       stars <- attri$stars
     } else {
       stars <- TRUE

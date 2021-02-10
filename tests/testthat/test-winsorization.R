@@ -2,8 +2,15 @@ test_that("testing Winsorized correlation", {
   if (requireNamespace("WRS2")) {
     df <- data.frame(x = mtcars$wt, y = mtcars$mpg)
 
-    expect_equal(correlation(df, winsorize = 1.5)$r, correlation(df)$r, tolerance = 0.01)
-    expect_equal(correlation(df, winsorize = 1.5, verbose = FALSE)$r, correlation(df)$r, tolerance = 0.01)
+    # when winsorization is misspecified
+    expect_equal(suppressWarnings(correlation(df, winsorize = 1.5)$r),
+      correlation(df)$r,
+      tolerance = 0.01
+    )
+    expect_equal(suppressWarnings(correlation(df, winsorize = 1.5, verbose = FALSE)$r),
+      correlation(df)$r,
+      tolerance = 0.01
+    )
 
     set.seed(123)
     params1 <- as.data.frame(correlation(df, winsorize = TRUE))
