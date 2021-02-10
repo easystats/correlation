@@ -102,6 +102,8 @@ test_that("cor_test robust", {
 
 
 test_that("cor_test distance", {
+  skip_if(getRversion() < "4.0")
+
   if (require("energy", quietly = TRUE)) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
     comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
