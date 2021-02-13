@@ -1,4 +1,6 @@
-# correlation 0.5.1
+# correlation 0.6.0.1
+
+# correlation 0.6.0
 
 ## New Features
 
