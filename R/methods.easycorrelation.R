@@ -1,5 +1,5 @@
 #' @export
-summary.easycorrelation <- function(object, redundant = FALSE, stars = TRUE, ...) {
+summary.easycorrelation <- function(object, redundant = FALSE, stars = TRUE, include_significance = FALSE, ...) {
 
   # If data2 is present
   if (!is.null(attributes(object)$data2)) {
@@ -30,6 +30,7 @@ summary.easycorrelation <- function(object, redundant = FALSE, stars = TRUE, ...
   attributes(out) <-
     c(attributes(out), attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))])
   attr(out, "stars") <- stars
+  attr(out, "include_significance") <- include_significance
   attr(out, "redundant") <- redundant
   attr(out, "coefficient_name") <- target_col
   class(out) <- c("easycormatrix", "see_easycormatrix", class(out))

@@ -1,49 +1,67 @@
 #' @importFrom insight format_p format_pd format_bf format_value export_table
 #' @export
-format.easycormatrix <- function(x, digits = 2, stars = "default", ...) {
+format.easycormatrix <- function(x, digits = 2, stars = NULL, include_significance = NULL, ...) {
+
+  # Round and format values
   nums <- sapply(as.data.frame(x), is.numeric)
+  x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value, digits = digits)
+
 
   # Find attributes
   attri <- attributes(x)
 
-  if (stars == "default") {
+  # Stars arguments (NULL -> try to get from attributes)
+  if (is.null(NULL)) {
     if ("stars" %in% names(attri)) {
       stars <- attri$stars
     } else {
-      stars <- TRUE
+      stars <- TRUE # That's the real default
     }
   }
+  if(is.null(include_significance)) {
+    if ("include_significance" %in% names(attri)) {
+      include_significance <- attri$include_significance
+    } else {
+      include_significance <- FALSE # That's the real default
+    }
+  }
+  stars_only <- FALSE
+  if(include_significance == FALSE && stars == TRUE) {
+    stars_only <- TRUE
+  }
+
 
   # Significance
   type <- names(attri)[names(attri) %in% c("BF", "pd", "p")][1]
-  attri <- attri[[type]]
+  sig <- attri[[type]]
 
-  if (!is.null(attri)) {
+  if (!is.null(sig)) {
     if (type == "p") {
-      attri[, nums] <- sapply(attri[, nums], insight::format_p, stars_only = TRUE)
+      sig[, nums] <- sapply(sig[, nums], insight::format_p, stars = stars, digits = "apa", stars_only = stars_only)
     } else if (type == "pd") {
-      attri[, nums] <- sapply(attri[, nums], insight::format_pd, stars_only = TRUE)
+      sig[, nums] <- sapply(sig[, nums], insight::format_pd, stars = stars, stars_only = stars_only)
     } else if (type == "BF") {
-      attri[, nums] <- sapply(attri[, nums], insight::format_bf, stars_only = TRUE)
+      sig[, nums] <- sapply(sig[, nums], insight::format_bf, stars = stars, stars_only = stars_only)
+    }
+    if(stars_only == FALSE) {
+      sig[, nums] <- sapply(sig[, nums], function(x) ifelse(x != "", paste0(" (", x, ")"), ""))
     }
 
-    # Round and eventually add stars
-    x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value, digits = digits)
-    if (stars) {
-      x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(attri[, nums]))
-    }
-  } else {
-    x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value, digits = digits)
+    if(include_significance | stars) x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(sig[, nums]))
+
   }
 
   as.data.frame(x)
 }
 
 
+
+
+
 #' @importFrom insight export_table
 #' @export
-print.easycormatrix <- function(x, digits = 2, stars = "default", ...) {
-  formatted_table <- format(x, digits = digits, stars = stars)
+print.easycormatrix <- function(x, digits = 2, stars = NULL, include_significance = NULL, ...) {
+  formatted_table <- format(x, digits = digits, stars = stars, include_significance = include_significance, ...)
 
   table_caption <- NULL
   if (!is.null(attributes(x)$method)) {

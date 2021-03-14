@@ -33,7 +33,6 @@ test_that("cor_test tetrachoric", {
 
     data$sleep_rem_ordinal <- as.factor(round(data$sleep_rem))
     data$brainwt_ordinal <- as.factor(round(data$brainwt))
-    expect_error(cor_test(data, "sleep_rem_ordinal", "brainwt_ordinal", method = "polychoric"))
 
     out <- cor_test(data, "brainwt", "brainwt_ordinal", method = "polychoric")
     expect_equal(out$rho, 0.9999, tolerance = 0.01)
