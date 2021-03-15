@@ -4,7 +4,15 @@
 \alias{display.easycormatrix}
 \title{Export tables into different output formats}
 \usage{
-\method{display}{easycormatrix}(object, format = "markdown", digits = 2, stars = TRUE, ...)
+\method{display}{easycormatrix}(
+  object,
+  format = "markdown",
+  digits = 2,
+  p_digits = 3,
+  stars = TRUE,
+  include_significance = NULL,
+  ...
+)
 }
 \arguments{
 \item{object, x}{An object returned by \code{\link[=correlation]{correlation()}}
