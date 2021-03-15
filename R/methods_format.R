@@ -151,7 +151,7 @@ format.easycormatrix <- function(x,
   if (is.null(arg)) {
     if (arg_name %in% names(attri)) {
       arg <- attri[[arg_name]]
-    } else if ("additional_arguments" %in% names(attri) && arg_name %in% names(attri$additional_arguments)){
+    } else if ("additional_arguments" %in% names(attri) && arg_name %in% names(attri$additional_arguments)) {
       arg <- attri$additional_arguments[[arg_name]]
     } else {
       arg <- default # That's the real default

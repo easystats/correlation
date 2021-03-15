@@ -19,16 +19,16 @@ print.easycormatrix <- print.easycorrelation
 
 .print_md_html_easycorrelation <- function(x,
                                            digits = NULL,
-                                           stars = NULL,
                                            p_digits = NULL,
+                                           stars = NULL,
                                            format = "markdown",
                                            ...) {
 
   formatted_table <- format(
     x,
     digits = digits,
-    stars = stars,
     p_digits = p_digits,
+    stars = stars,
     ci_width = NULL,
     ci_brackets = c("(", ")"),
     format = format,

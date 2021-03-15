@@ -51,6 +51,7 @@ display.easycormatrix <- function(object,
       digits = digits,
       p_digits = p_digits,
       stars = stars,
+      include_significance = include_significance,
       ...
     )
   }
@@ -58,7 +59,33 @@ display.easycormatrix <- function(object,
 
 
 #' @export
-display.easycorrelation <- display.easycormatrix
+display.easycorrelation <- function(object,
+                                  format = "markdown",
+                                  digits = 2,
+                                  p_digits = 3,
+                                  stars = TRUE,
+                                  ...) {
+
+  if (format == "markdown") {
+    print_md(
+      x = object,
+      digits = digits,
+      p_digits = p_digits,
+      stars = stars,
+      ...
+    )
+  } else {
+    print_html(
+      x = object,
+      digits = digits,
+      p_digits = p_digits,
+      stars = stars,
+      ...
+    )
+  }
+}
+
+
 
 
 # Reexports models ------------------------
