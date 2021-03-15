@@ -1,6 +1,6 @@
 #' @importFrom insight format_p format_pd format_bf format_value export_table
 #' @export
-format.easycormatrix <- function(x, digits = 2, stars = NULL, include_significance = NULL, ...) {
+format.easycormatrix <- function(x, digits = 2, stars = NULL, include_significance = NULL, p_digits = NULL, ...) {
 
   # Round and format values
   nums <- sapply(as.data.frame(x), is.numeric)
@@ -10,21 +10,12 @@ format.easycormatrix <- function(x, digits = 2, stars = NULL, include_significan
   # Find attributes
   attri <- attributes(x)
 
-  # Stars arguments (NULL -> try to get from attributes)
-  if (is.null(NULL)) {
-    if ("stars" %in% names(attri)) {
-      stars <- attri$stars
-    } else {
-      stars <- TRUE # That's the real default
-    }
-  }
-  if(is.null(include_significance)) {
-    if ("include_significance" %in% names(attri)) {
-      include_significance <- attri$include_significance
-    } else {
-      include_significance <- FALSE # That's the real default
-    }
-  }
+  # Retrieve arguments from attributes (or assign default)
+  stars <- .retrieve_arg_from_attr(attri, stars, default = TRUE)
+  include_significance <- .retrieve_arg_from_attr(attri, include_significance, default = FALSE)
+  p_digits <- .retrieve_arg_from_attr(attri, p_digits, default = "apa")
+
+  # Deduct if stars only
   stars_only <- FALSE
   if(include_significance == FALSE && stars == TRUE) {
     stars_only <- TRUE
@@ -37,7 +28,7 @@ format.easycormatrix <- function(x, digits = 2, stars = NULL, include_significan
 
   if (!is.null(sig)) {
     if (type == "p") {
-      sig[, nums] <- sapply(sig[, nums], insight::format_p, stars = stars, digits = "apa", stars_only = stars_only)
+      sig[, nums] <- sapply(sig[, nums], insight::format_p, stars = stars, digits = p_digits, stars_only = stars_only)
     } else if (type == "pd") {
       sig[, nums] <- sapply(sig[, nums], insight::format_pd, stars = stars, stars_only = stars_only)
     } else if (type == "BF") {
@@ -60,8 +51,8 @@ format.easycormatrix <- function(x, digits = 2, stars = NULL, include_significan
 
 #' @importFrom insight export_table
 #' @export
-print.easycormatrix <- function(x, digits = 2, stars = NULL, include_significance = NULL, ...) {
-  formatted_table <- format(x, digits = digits, stars = stars, include_significance = include_significance, ...)
+print.easycormatrix <- function(x, digits = 2, stars = NULL, include_significance = NULL, p_digits = NULL, ...) {
+  formatted_table <- format(x, digits = digits, stars = stars, include_significance = include_significance, p_digits = p_digits, ...)
 
   table_caption <- NULL
   if (!is.null(attributes(x)$method)) {
@@ -77,4 +68,21 @@ print.easycormatrix <- function(x, digits = 2, stars = NULL, include_significanc
     footer = .print_easycorrelation_add_footer(x)
   ))
   invisible(x)
+}
+
+
+
+
+
+#' @keywords internal
+.retrieve_arg_from_attr <- function(attributes, arg, default) {
+  arg_name <- deparse(substitute(arg))
+  if (is.null(arg)) {
+    if (arg_name %in% names(attributes)) {
+      arg <- attributes[[arg_name]]
+    } else {
+      arg <- default # That's the real default
+    }
+  }
+  arg
 }
