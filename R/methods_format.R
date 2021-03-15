@@ -30,9 +30,10 @@ format.easycorrelation <- function(x, digits = NULL, stars = NULL, p_digits = NU
 #' @export
 format.easycormatrix <- function(x,
                                  digits = NULL,
+                                 p_digits = NULL,
                                  stars = NULL,
                                  include_significance = NULL,
-                                 p_digits = NULL,
+                                 format = NULL,
                                  ...) {
 
   # Find attributes
@@ -79,8 +80,8 @@ format.easycormatrix <- function(x,
 
   # Prepare output
   out <- as.data.frame(x)
-  attr(out, "table_footer") <- .format_easycorrelation_footer(x)
-  attr(out, "table_caption") <- .format_easycorrelation_caption(x)
+  attr(out, "table_footer") <- .format_easycorrelation_footer(x, format = format)
+  attr(out, "table_caption") <- .format_easycorrelation_caption(x, format = format)
   out
 }
 
@@ -90,13 +91,12 @@ format.easycormatrix <- function(x,
 
 
 #' @keywords internal
-.format_easycorrelation_footer <- function(x) {
+.format_easycorrelation_footer <- function(x, format = NULL) {
   footer <- ""
 
   # P-adjust
   if (isFALSE(attributes(x)$bayesian)) {
     footer <- paste0(
-      footer,
       "\np-value adjustment method: ",
       parameters::format_p_adjust(attributes(x)$p_adjust)
     )
@@ -111,12 +111,19 @@ format.easycormatrix <- function(x,
     }
     footer <- paste0(footer, "\nObservations: ", nobs, "\n")
   }
+
+  # for html/markdown, create list
+  if (!is.null(format) && format != "text") {
+    footer <- unlist(strsplit(footer, "\n"))
+    footer <- list(footer[nchar(footer) > 0])
+  }
+
   footer
 }
 
 
 #' @keywords internal
-.format_easycorrelation_caption <- function(x) {
+.format_easycorrelation_caption <- function(x, format = NULL) {
   if (!is.null(attributes(x)$method)) {
     caption <- c(paste0("# Correlation Matrix (", unique(attributes(x)$method), "-method)"), "blue")
   } else {

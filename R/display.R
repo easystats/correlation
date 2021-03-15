@@ -28,11 +28,32 @@
 #' s <- summary(corr)
 #' display(s)
 #' @export
-display.easycormatrix <- function(object, format = "markdown", digits = 2, stars = TRUE, ...) {
+display.easycormatrix <- function(object,
+                                  format = "markdown",
+                                  digits = 2,
+                                  p_digits = 3,
+                                  stars = TRUE,
+                                  include_significance = NULL,
+                                  ...) {
+
   if (format == "markdown") {
-    print_md(x = object, digits = digits, stars = stars, ...)
+    print_md(
+      x = object,
+      digits = digits,
+      p_digits = p_digits,
+      stars = stars,
+      include_significance = include_significance,
+      ...
+    )
   } else {
-    print_html(x = object, digits = digits, stars = stars, ...)
+    print_html(
+      x = object,
+      digits = digits,
+      p_digits = p_digits,
+      stars = stars,
+      include_significance = include_significance,
+      ...
+    )
   }
 }
 
