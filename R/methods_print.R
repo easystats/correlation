@@ -17,8 +17,24 @@ print.easycormatrix <- print.easycorrelation
 
 # MD and HTML --------------------------------------------------------------
 
-.print_md_html_easycorrelation <- function(x, format = "markdown", ...) {
-  formatted_table <- format(x, ci_width = NULL, ci_brackets = c("(", ")"), ...)
+.print_md_html_easycorrelation <- function(x,
+                                           digits = NULL,
+                                           stars = NULL,
+                                           p_digits = NULL,
+                                           format = "markdown",
+                                           ...) {
+
+  formatted_table <- format(
+    x,
+    digits = digits,
+    stars = stars,
+    p_digits = p_digits,
+    ci_width = NULL,
+    ci_brackets = c("(", ")"),
+    format = format,
+    ...
+  )
+
   insight::export_table(
     formatted_table,
     format = format,
@@ -28,18 +44,60 @@ print.easycormatrix <- print.easycorrelation
 }
 
 #' @export
-print_md.easycorrelation <- function(x, ...) {
-  .print_md_html_easycorrelation(x, format = "markdown", ...)
+print_md.easycorrelation <- function(x,
+                                     digits = NULL,
+                                     stars = NULL,
+                                     p_digits = NULL,
+                                     ...) {
+  .print_md_html_easycorrelation(
+    x,
+    digits = digits,
+    stars = stars,
+    p_digits = p_digits,
+    format = "markdown",
+    ...
+  )
 }
 
 
 #' @export
-print_html.easycorrelation <- function(x, ...) {
-  .print_md_html_easycorrelation(x, format = "html", ...)
+print_html.easycorrelation <- function(x,
+                                       digits = NULL,
+                                       stars = NULL,
+                                       p_digits = NULL,
+                                       ...) {
+  .print_md_html_easycorrelation(
+    x,
+    digits = digits,
+    stars = stars,
+    p_digits = p_digits,
+    format = "html",
+    ...
+  )
 }
 
-.print_md_html_easycormatrix <- function(x, format = "markdown", ...) {
-  formatted_table <- format(x, ...)
+
+
+.print_md_html_easycormatrix <- function(x,
+                                         digits = NULL,
+                                         stars = NULL,
+                                         include_significance = NULL,
+                                         p_digits = NULL,
+                                         format = "markdown",
+                                         ...) {
+
+  formatted_table <- format(
+    x,
+    digits = digits,
+    stars = stars,
+    include_significance = include_significance,
+    p_digits = p_digits,
+    ci_width = NULL,
+    ci_brackets = c("(", ")"),
+    format = format,
+    ...
+  )
+
   insight::export_table(
     formatted_table,
     format = format,
@@ -49,16 +107,41 @@ print_html.easycorrelation <- function(x, ...) {
 }
 
 #' @export
-print_md.easycormatrix <- function(x, ...) {
-  .print_md_html_easycormatrix(x, format = "markdown", ...)
+print_md.easycormatrix <- function(x,
+                                   digits = NULL,
+                                   stars = NULL,
+                                   include_significance = NULL,
+                                   p_digits = NULL,
+                                   ...) {
+  .print_md_html_easycormatrix(
+    x,
+    digits = digits,
+    stars = stars,
+    include_significance = include_significance,
+    p_digits = p_digits,
+    format = "markdown",
+    ...
+  )
 }
 
 
 #' @export
-print_html.easycormatrix <- function(x, ...) {
-  .print_md_html_easycormatrix(x, format = "html", ...)
+print_html.easycormatrix <- function(x,
+                                     digits = NULL,
+                                     stars = NULL,
+                                     include_significance = NULL,
+                                     p_digits = NULL,
+                                     ...) {
+  .print_md_html_easycormatrix(
+    x,
+    digits = digits,
+    stars = stars,
+    include_significance = include_significance,
+    p_digits = p_digits,
+    format = "html",
+    ...
+  )
 }
-
 
 
 

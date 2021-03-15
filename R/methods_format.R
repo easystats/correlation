@@ -28,7 +28,12 @@ format.easycorrelation <- function(x, digits = NULL, stars = NULL, p_digits = NU
 
 #' @importFrom insight format_p format_pd format_bf format_value export_table
 #' @export
-format.easycormatrix <- function(x, digits = NULL, stars = NULL, include_significance = NULL, p_digits = NULL, ...) {
+format.easycormatrix <- function(x,
+                                 digits = NULL,
+                                 stars = NULL,
+                                 include_significance = NULL,
+                                 p_digits = NULL,
+                                 ...) {
 
   # Find attributes
   attri <- attributes(x)
@@ -47,7 +52,7 @@ format.easycormatrix <- function(x, digits = NULL, stars = NULL, include_signifi
 
   # Deduct if stars only
   stars_only <- FALSE
-  if(include_significance == FALSE && stars == TRUE) {
+  if (include_significance == FALSE && stars == TRUE) {
     stars_only <- TRUE
   }
 
@@ -64,11 +69,11 @@ format.easycormatrix <- function(x, digits = NULL, stars = NULL, include_signifi
     } else if (type == "BF") {
       sig[, nums] <- sapply(sig[, nums], insight::format_bf, stars = stars, stars_only = stars_only)
     }
-    if(stars_only == FALSE) {
+    if (stars_only == FALSE) {
       sig[, nums] <- sapply(sig[, nums], function(x) ifelse(x != "", paste0(" (", x, ")"), ""))
     }
 
-    if(include_significance | stars) x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(sig[, nums]))
+    if (include_significance | stars) x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(sig[, nums]))
 
   }
 
