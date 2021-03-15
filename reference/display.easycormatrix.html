@@ -138,7 +138,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Export tables into different output formats</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/display.R'><code>R/display.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/display.R'><code>R/display.R</code></a>, <a href='https://github.com/easystats/correlation/blob/master/R/methods_print.R'><code>R/methods_print.R</code></a></small>
     <div class="hidden name"><code>display.easycormatrix.Rd</code></div>
     </div>
 
@@ -154,6 +154,32 @@
   digits <span class='op'>=</span> <span class='fl'>2</span>,
   p_digits <span class='op'>=</span> <span class='fl'>3</span>,
   stars <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  include_significance <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for easycorrelation</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_md</a></span><span class='op'>(</span><span class='va'>x</span>, digits <span class='op'>=</span> <span class='cn'>NULL</span>, p_digits <span class='op'>=</span> <span class='cn'>NULL</span>, stars <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for easycorrelation</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_html</a></span><span class='op'>(</span><span class='va'>x</span>, digits <span class='op'>=</span> <span class='cn'>NULL</span>, p_digits <span class='op'>=</span> <span class='cn'>NULL</span>, stars <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for easycormatrix</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_md</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  digits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  p_digits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stars <span class='op'>=</span> <span class='cn'>NULL</span>,
+  include_significance <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for easycormatrix</span>
+<span class='fu'><a href='https://easystats.github.io/insight/reference/display.html'>print_html</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  digits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  p_digits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stars <span class='op'>=</span> <span class='cn'>NULL</span>,
   include_significance <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -172,11 +198,15 @@ or its summary.</p></td>
 <code>"markdown"</code> is supported.</p></td>
     </tr>
     <tr>
-      <th>digits</th>
+      <th>digits, p_digits</th>
       <td><p>To do...</p></td>
     </tr>
     <tr>
       <th>stars</th>
+      <td><p>To do...</p></td>
+    </tr>
+    <tr>
+      <th>include_significance</th>
       <td><p>To do...</p></td>
     </tr>
     <tr>
