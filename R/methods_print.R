@@ -43,6 +43,8 @@ print.easycormatrix <- print.easycorrelation
   )
 }
 
+
+#' @rdname display.easycormatrix
 #' @export
 print_md.easycorrelation <- function(x,
                                      digits = NULL,
@@ -60,6 +62,7 @@ print_md.easycorrelation <- function(x,
 }
 
 
+#' @rdname display.easycormatrix
 #' @export
 print_html.easycorrelation <- function(x,
                                        digits = NULL,
@@ -106,6 +109,8 @@ print_html.easycorrelation <- function(x,
   )
 }
 
+
+#' @rdname display.easycormatrix
 #' @export
 print_md.easycormatrix <- function(x,
                                    digits = NULL,
@@ -125,6 +130,7 @@ print_md.easycormatrix <- function(x,
 }
 
 
+#' @rdname display.easycormatrix
 #' @export
 print_html.easycormatrix <- function(x,
                                      digits = NULL,

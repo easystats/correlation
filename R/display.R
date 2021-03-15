@@ -8,8 +8,9 @@
 #'   or its summary.
 #' @param format String, indicating the output format. Currently, only
 #'   \code{"markdown"} is supported.
-#' @param digits To do...
+#' @param digits,p_digits To do...
 #' @param stars To do...
+#' @param include_significance To do...
 #' @param ... Currently not used.
 #'
 #' @return A character vector. If \code{format = "markdown"}, the return value
@@ -60,11 +61,11 @@ display.easycormatrix <- function(object,
 
 #' @export
 display.easycorrelation <- function(object,
-                                  format = "markdown",
-                                  digits = 2,
-                                  p_digits = 3,
-                                  stars = TRUE,
-                                  ...) {
+                                    format = "markdown",
+                                    digits = 2,
+                                    p_digits = 3,
+                                    stars = TRUE,
+                                    ...) {
 
   if (format == "markdown") {
     print_md(
