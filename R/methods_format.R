@@ -4,7 +4,13 @@
 
 #' @importFrom insight format_table
 #' @export
-format.easycorrelation <- function(x, digits = NULL, stars = NULL, p_digits = NULL, ...) {
+format.easycorrelation <- function(x,
+                                   digits = NULL,
+                                   p_digits = NULL,
+                                   stars = NULL,
+                                   format = NULL,
+                                   ...) {
+
   attri <- attributes(x)
 
   out <- insight::format_table(x,
@@ -16,8 +22,8 @@ format.easycorrelation <- function(x, digits = NULL, stars = NULL, p_digits = NU
   out$Method <- NULL
   out$n_Obs <- NULL
 
-  attr(out, "table_footer") <- .format_easycorrelation_footer(x)
-  attr(out, "table_caption") <- .format_easycorrelation_caption(x)
+  attr(out, "table_footer") <- .format_easycorrelation_footer(x, format = format)
+  attr(out, "table_caption") <- .format_easycorrelation_caption(x, format = format)
   out
 }
 
@@ -125,7 +131,11 @@ format.easycormatrix <- function(x,
 #' @keywords internal
 .format_easycorrelation_caption <- function(x, format = NULL) {
   if (!is.null(attributes(x)$method)) {
-    caption <- c(paste0("# Correlation Matrix (", unique(attributes(x)$method), "-method)"), "blue")
+    if (is.null(format) || format == "text") {
+      caption <- c(paste0("# Correlation Matrix (", unique(attributes(x)$method), "-method)"), "blue")
+    } else {
+      caption <- paste0("Correlation Matrix (", unique(attributes(x)$method), "-method)")
+    }
   } else {
     caption <- NULL
   }

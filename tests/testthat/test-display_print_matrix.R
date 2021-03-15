@@ -1,4 +1,4 @@
-if (require("gt") && packageVersion("insight") >= "0.12.0.1") {
+if (require("testthat") && require("gt") && packageVersion("insight") >= "0.12.0.1") {
 
   # display and print method works - markdown -----------------------------
 

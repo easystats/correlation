@@ -51,7 +51,6 @@ display.easycormatrix <- function(object,
       digits = digits,
       p_digits = p_digits,
       stars = stars,
-      include_significance = include_significance,
       ...
     )
   }

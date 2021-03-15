@@ -46,14 +46,14 @@ print.easycormatrix <- print.easycorrelation
 #' @export
 print_md.easycorrelation <- function(x,
                                      digits = NULL,
-                                     stars = NULL,
                                      p_digits = NULL,
+                                     stars = NULL,
                                      ...) {
   .print_md_html_easycorrelation(
     x,
     digits = digits,
-    stars = stars,
     p_digits = p_digits,
+    stars = stars,
     format = "markdown",
     ...
   )
@@ -63,14 +63,14 @@ print_md.easycorrelation <- function(x,
 #' @export
 print_html.easycorrelation <- function(x,
                                        digits = NULL,
-                                       stars = NULL,
                                        p_digits = NULL,
+                                       stars = NULL,
                                        ...) {
   .print_md_html_easycorrelation(
     x,
     digits = digits,
-    stars = stars,
     p_digits = p_digits,
+    stars = stars,
     format = "html",
     ...
   )
