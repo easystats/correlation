@@ -121,7 +121,7 @@ format.easycormatrix <- function(x,
   # for html/markdown, create list
   if (!is.null(format) && format != "text") {
     footer <- unlist(strsplit(footer, "\n"))
-    footer <- list(footer[nchar(footer) > 0])
+    footer <- as.list(footer[nchar(footer) > 0])
   }
 
   footer
