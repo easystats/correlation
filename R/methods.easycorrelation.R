@@ -30,8 +30,6 @@ summary.easycorrelation <- function(object, redundant = FALSE, ...) {
   attributes(out) <-
     c(attributes(out), attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))])
   attributes(out) <- c(attributes(out), list(...))
-  # attr(out, "stars") <- stars
-  # attr(out, "include_significance") <- include_significance
   attr(out, "redundant") <- redundant
   attr(out, "coefficient_name") <- target_col
   class(out) <- c("easycormatrix", "see_easycormatrix", class(out))
