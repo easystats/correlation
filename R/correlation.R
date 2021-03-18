@@ -135,6 +135,10 @@
 #' will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor}}). However,
 #' this is not possible when using \code{cor_test()} so that if you set
 #' \code{multilevel=TRUE} in it, the resulting correlations are partial one.
+#' Note that for Bayesian multilevel correlations, if \code{partial = FALSE},
+#' the back transformation will also recompute p-values based on the new r scores,
+#' and will drop the Bayes factors (as they are not relevant anymore). To keep
+#' Bayesian scores, don't forget to set \code{partial = TRUE}.
 #' }
 #'
 #' \subsection{Notes}{
