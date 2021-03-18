@@ -31,7 +31,7 @@ cor_test(
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default),
-\code{"kendall"}, \code{"spearman"}, \code{"biserial"},
+\code{"kendall"}, \code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
 \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
 \code{"distance"}, \code{"percentage"} (for percentage bend correlation),
 \code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
@@ -73,15 +73,18 @@ Else, if \code{FALSE} (default), they are included as fixed effects in the
 simple regression model.}
 
 \item{robust}{If \code{TRUE}, will rank-transform the variables prior to
-estimating the correlation. Note that, for instance, a Pearson's
+estimating the correlation, which is one way of making the analysis more
+resistant to extreme values (outliers). Note that, for instance, a Pearson's
 correlation on rank-transformed data is equivalent to a Spearman's rank
 correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
-redundant. Nonetheless, it is an easy way to increase the robustness of the
-correlation (as well as obtaining Bayesian Spearman rank Correlations).}
+redundant. Nonetheless, it is an easy option to increase the robustness of the
+correlation as well as flexible way to obtain Bayesian or multilevel
+Spearman-like rank correlations.}
 
-\item{winsorize}{Either \code{FALSE} or a number between 0 and 1 (e.g.,
-\code{0.2}) that corresponds to the threshold of desired
-\code{\link[=winsorize]{winsorization}}.}
+\item{winsorize}{Another way of making the correlation more "robust" (i.e.,
+limiting the impact of extreme values). Can be either \code{FALSE} or a
+number between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired
+threshold. See the \code{\link[=winsorize]{winsorize()}} function for more details.}
 
 \item{verbose}{Toggle warnings.}
 

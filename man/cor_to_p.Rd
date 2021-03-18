@@ -19,7 +19,7 @@ set to 0.95 (95\% CI).}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default),
-\code{"kendall"}, \code{"spearman"}, \code{"biserial"},
+\code{"kendall"}, \code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
 \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
 \code{"distance"}, \code{"percentage"} (for percentage bend correlation),
 \code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
