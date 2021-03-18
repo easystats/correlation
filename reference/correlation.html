@@ -181,7 +181,7 @@
       <th>method</th>
       <td><p>A character string indicating which correlation coefficient is
 to be used for the test. One of <code>"pearson"</code> (default),
-<code>"kendall"</code>, <code>"spearman"</code>, <code>"biserial"</code>,
+<code>"kendall"</code>, <code>"spearman"</code> (but see also the <code>robust</code> argument), <code>"biserial"</code>,
 <code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>,
 <code>"distance"</code>, <code>"percentage"</code> (for percentage bend correlation),
 <code>"blomqvist"</code> (for Blomqvist's coefficient), <code>"hoeffding"</code> (for
@@ -266,17 +266,20 @@ simple regression model.</p></td>
     <tr>
       <th>robust</th>
       <td><p>If <code>TRUE</code>, will rank-transform the variables prior to
-estimating the correlation. Note that, for instance, a Pearson's
+estimating the correlation, which is one way of making the analysis more
+resistant to extreme values (outliers). Note that, for instance, a Pearson's
 correlation on rank-transformed data is equivalent to a Spearman's rank
 correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</code> is
-redundant. Nonetheless, it is an easy way to increase the robustness of the
-correlation (as well as obtaining Bayesian Spearman rank Correlations).</p></td>
+redundant. Nonetheless, it is an easy option to increase the robustness of the
+correlation as well as flexible way to obtain Bayesian or multilevel
+Spearman-like rank correlations.</p></td>
     </tr>
     <tr>
       <th>winsorize</th>
-      <td><p>Either <code>FALSE</code> or a number between 0 and 1 (e.g.,
-<code>0.2</code>) that corresponds to the threshold of desired
-<code><a href='winsorize.html'>winsorization</a></code>.</p></td>
+      <td><p>Another way of making the correlation more "robust" (i.e.,
+limiting the impact of extreme values). Can be either <code>FALSE</code> or a
+number between 0 and 1 (e.g., <code>0.2</code>) that corresponds to the desired
+threshold. See the <code><a href='winsorize.html'>winsorize()</a></code> function for more details.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -404,7 +407,11 @@ in <code>correlation()</code> but <code>partial</code> is set to <code>FALSE</co
 default), then a back-transformation from partial to non-partial correlation
 will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However,
 this is not possible when using <code><a href='cor_test.html'>cor_test()</a></code> so that if you set
-<code>multilevel=TRUE</code> in it, the resulting correlations are partial one.</p>
+<code>multilevel=TRUE</code> in it, the resulting correlations are partial one.
+Note that for Bayesian multilevel correlations, if <code>partial = FALSE</code>,
+the back transformation will also recompute p-values based on the new r scores,
+and will drop the Bayes factors (as they are not relevant anymore). To keep
+Bayesian scores, don't forget to set <code>partial = TRUE</code>.</p>
 
 <h3 class='hasAnchor' id='notes'><a class='anchor' href='#notes'></a>Notes</h3>
 
