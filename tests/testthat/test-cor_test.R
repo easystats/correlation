@@ -38,13 +38,15 @@ test_that("cor_test bayesian", {
     out4 <- .cor_test_bayes_base(df$Petal.Length[1], df$Petal.Length2[1])
     expect_equal(out4$rho, 1.000, tolerance = 0.01)
 
-    set.seed(123)
-    out5 <- cor_test(mtcars, "wt", "mpg", method = "shepherd", bayesian = TRUE)
-    expect_equal(out5$rho, -0.7795719, tolerance = 0.01)
+    if (getRversion() >= "3.6") {
+      set.seed(123)
+      out5 <- cor_test(mtcars, "wt", "mpg", method = "shepherd", bayesian = TRUE)
+      expect_equal(out5$rho, -0.7795719, tolerance = 0.01)
 
-    set.seed(123)
-    out6 <- cor_test(mtcars, "wt", "mpg", method = "gaussian", bayesian = TRUE)
-    expect_equal(out6$rho, -0.8294838, tolerance = 0.01)
+      set.seed(123)
+      out6 <- cor_test(mtcars, "wt", "mpg", method = "gaussian", bayesian = TRUE)
+      expect_equal(out6$rho, -0.8294838, tolerance = 0.01)
+    }
 
     # unsupported
     expect_error(cor_test(mtcars, "wt", "mpg", method = "biserial", bayesian = TRUE))

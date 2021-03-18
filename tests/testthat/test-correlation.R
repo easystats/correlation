@@ -1,9 +1,9 @@
 
 test_that("comparison with other packages", {
-  if (requireNamespace("ppcor") &
-    requireNamespace("Hmisc") &
-    requireNamespace("dplyr")) {
-    library(dplyr)
+  if (requireNamespace("ppcor") &&
+    requireNamespace("Hmisc") &&
+    require("lme4", quietly = TRUE) &&
+    require("dplyr")) {
     set.seed(333)
 
     # Pearson
