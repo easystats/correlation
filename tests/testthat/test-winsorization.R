@@ -45,5 +45,5 @@ test_that("testing Winsorization of factors", {
 })
 
 test_that("with missing values", {
-  expect_equal(length(winsorize(as.factor(ggplot2::msleep$vore))), 76)
+  expect_equal(length(winsorize(as.factor(ggplot2::msleep$vore))), 83)
 })
