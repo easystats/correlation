@@ -51,7 +51,6 @@ winsorize.numeric <- function(data, threshold = 0.2, verbose = TRUE, ...) {
     return(data)
   }
 
-  data <- stats::na.omit(data)
   y <- sort(data)
   n <- length(data)
   ibot <- floor(threshold * n) + 1
