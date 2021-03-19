@@ -23,7 +23,6 @@ print.easycormatrix <- print.easycorrelation
                                            stars = NULL,
                                            format = "markdown",
                                            ...) {
-
   formatted_table <- format(
     x,
     digits = digits,
@@ -88,7 +87,6 @@ print_html.easycorrelation <- function(x,
                                          include_significance = NULL,
                                          format = "markdown",
                                          ...) {
-
   formatted_table <- format(
     x,
     digits = digits,
