@@ -527,7 +527,7 @@ correlation <- function(data,
 
   # P-values adjustments
   if ("p" %in% names(params)) {
-    params$p <- stats::p.adjust(params$p, method = p_adjust, n = nrow(params))
+    params$p <- stats::p.adjust(params$p, method = p_adjust)
   }
 
   # Redundant
@@ -539,7 +539,6 @@ correlation <- function(data,
     params <- params[!params$Parameter1 %in% names(data2), ]
     params <- params[params$Parameter2 %in% names(data2), ]
   }
-
 
   list(params = params, data = data)
 }

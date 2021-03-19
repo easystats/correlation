@@ -10,14 +10,14 @@ format.easycorrelation <- function(x,
                                    stars = NULL,
                                    format = NULL,
                                    ...) {
-
   attri <- attributes(x)
 
   out <- insight::format_table(x,
-                               digits = .retrieve_arg_from_attr(attri, digits, default = 2),
-                               stars = .retrieve_arg_from_attr(attri, stars, default = TRUE),
-                               p_digits = .retrieve_arg_from_attr(attri, p_digits, default = "apa"),
-                               ...)
+    digits = .retrieve_arg_from_attr(attri, digits, default = 2),
+    stars = .retrieve_arg_from_attr(attri, stars, default = TRUE),
+    p_digits = .retrieve_arg_from_attr(attri, p_digits, default = "apa"),
+    ...
+  )
 
   out$Method <- NULL
   out$n_Obs <- NULL
@@ -81,7 +81,6 @@ format.easycormatrix <- function(x,
     }
 
     if (include_significance | stars) x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(sig[, nums]))
-
   }
 
   # Prepare output
