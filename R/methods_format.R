@@ -1,7 +1,5 @@
 # Correlation table ---------------------------------------------------------
 
-
-
 #' @importFrom insight format_table
 #' @export
 format.easycorrelation <- function(x,
@@ -26,7 +24,6 @@ format.easycorrelation <- function(x,
   attr(out, "table_caption") <- .format_easycorrelation_caption(x, format = format)
   out
 }
-
 
 
 # Correlation matrix -----------------------------------------------------------
@@ -70,17 +67,34 @@ format.easycormatrix <- function(x,
 
   if (!is.null(sig)) {
     if (type == "p") {
-      sig[, nums] <- sapply(sig[, nums], insight::format_p, stars = stars, digits = p_digits, stars_only = stars_only)
+      sig[, nums] <- sapply(
+        sig[, nums],
+        insight::format_p,
+        stars = stars,
+        digits = p_digits,
+        stars_only = stars_only
+      )
     } else if (type == "pd") {
-      sig[, nums] <- sapply(sig[, nums], insight::format_pd, stars = stars, stars_only = stars_only)
+      sig[, nums] <- sapply(sig[, nums],
+        insight::format_pd,
+        stars = stars,
+        stars_only = stars_only
+      )
     } else if (type == "BF") {
-      sig[, nums] <- sapply(sig[, nums], insight::format_bf, stars = stars, stars_only = stars_only)
+      sig[, nums] <- sapply(sig[, nums],
+        insight::format_bf,
+        stars = stars,
+        stars_only = stars_only
+      )
     }
+
     if (stars_only == FALSE) {
       sig[, nums] <- sapply(sig[, nums], function(x) ifelse(x != "", paste0(" (", x, ")"), ""))
     }
 
-    if (include_significance | stars) x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(sig[, nums]))
+    if (include_significance || stars) {
+      x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(sig[, nums]))
+    }
   }
 
   # Prepare output
