@@ -12,9 +12,11 @@ distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = TRUE, ...)
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
 set to 0.95 (95\% CI).}
 
-\item{iterations}{The number of draws to simulate/bootstrap (when \code{robust} is \code{TRUE}).}
+\item{iterations}{The number of draws to simulate/bootstrap (when
+\code{robust} is \code{TRUE}).}
 
-\item{robust}{If \code{TRUE}, will run a bootstrapped version of the function with i iterations.}
+\item{robust}{If \code{TRUE}, will run a bootstrapped version of the function
+with i iterations.}
 
 \item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
 other methods. See \code{stats::cor.test} for further details.}
@@ -23,7 +25,10 @@ other methods. See \code{stats::cor.test} for further details.}
 Description of the Mahalanobis distance.
 }
 \description{
-The Mahalanobis distance (in squared units) measures the distance in multivariate space taking into account the covariance structure of the data. Because a few extreme outliers can skew the covariance estimate, the bootstrapped version is considered as more robust.
+The Mahalanobis distance (in squared units) measures the distance in
+multivariate space taking into account the covariance structure of the data.
+Because a few extreme outliers can skew the covariance estimate, the
+bootstrapped version is considered as more robust.
 }
 \examples{
 library(correlation)
@@ -33,6 +38,8 @@ distance_mahalanobis(iris[, 1:4], robust = FALSE)
 }
 \references{
 \itemize{
-  \item Schwarzkopf, D. S., De Haas, B., & Rees, G. (2012). Better ways to improve standards in brain-behavior correlation analysis. Frontiers in human neuroscience, 6, 200.
+  \item Schwarzkopf, D. S., De Haas, B., & Rees, G. (2012). Better ways to
+  improve standards in brain-behavior correlation analysis. Frontiers in
+  human neuroscience, 6, 200.
 }
 }

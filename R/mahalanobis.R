@@ -1,13 +1,20 @@
 #' Mahalanobis distance and confidence interval (CI)
 #'
-#' The Mahalanobis distance (in squared units) measures the distance in multivariate space taking into account the covariance structure of the data. Because a few extreme outliers can skew the covariance estimate, the bootstrapped version is considered as more robust.
+#' The Mahalanobis distance (in squared units) measures the distance in
+#' multivariate space taking into account the covariance structure of the data.
+#' Because a few extreme outliers can skew the covariance estimate, the
+#' bootstrapped version is considered as more robust.
 #'
 #' @inheritParams correlation
-#' @param iterations The number of draws to simulate/bootstrap (when \code{robust} is \code{TRUE}).
-#' @param robust If \code{TRUE}, will run a bootstrapped version of the function with i iterations.
+#' @param iterations The number of draws to simulate/bootstrap (when
+#'   \code{robust} is \code{TRUE}).
+#' @param robust If \code{TRUE}, will run a bootstrapped version of the function
+#'   with i iterations.
 #'
 #' @references \itemize{
-#'   \item Schwarzkopf, D. S., De Haas, B., & Rees, G. (2012). Better ways to improve standards in brain-behavior correlation analysis. Frontiers in human neuroscience, 6, 200.
+#'   \item Schwarzkopf, D. S., De Haas, B., & Rees, G. (2012). Better ways to
+#'   improve standards in brain-behavior correlation analysis. Frontiers in
+#'   human neuroscience, 6, 200.
 #' }
 #'
 #' @return Description of the Mahalanobis distance.
@@ -20,7 +27,11 @@
 #' @importFrom stats mahalanobis cov
 #' @importFrom bayestestR describe_posterior
 #' @export
-distance_mahalanobis <- function(data, ci = 0.95, iterations = 1000, robust = TRUE, ...) {
+distance_mahalanobis <- function(data,
+                                 ci = 0.95,
+                                 iterations = 1000,
+                                 robust = TRUE,
+                                 ...) {
   if (robust) {
     Ms <- matrix(data = NA, nrow = iterations, ncol = nrow(data))
     for (i in 1:iterations) {
@@ -33,7 +44,12 @@ distance_mahalanobis <- function(data, ci = 0.95, iterations = 1000, robust = TR
       Ms[i, ] <- m
     }
     # Get summary
-    d <- bayestestR::describe_posterior(as.data.frame(Ms), centrality = "median", ci = ci, test = "pd")
+    d <- bayestestR::describe_posterior(
+      as.data.frame(Ms),
+      centrality = "median",
+      ci = ci,
+      test = "pd"
+    )
     d <- as.data.frame(d[c("Median", "CI_low", "CI_high")])
     rownames(d) <- NULL
     names(d) <- c("Distance", "CI_low", "CI_high")

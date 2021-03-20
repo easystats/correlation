@@ -1,5 +1,11 @@
 # correlation 0.6.0.1
 
+## Bug Fixes
+
+- The `0.6.0` release introduced a bug in Winsorized Pearson correlation where
+  the missing values were removed from the entire data, instead for each pair
+  (#151). This is now fixed.
+
 # correlation 0.6.0
 
 ## New Features
