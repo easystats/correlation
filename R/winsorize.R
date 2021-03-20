@@ -26,8 +26,8 @@ winsorize <- function(data, ...) {
 
 
 #' @export
-winsorize.factor <- function(data, threshold = 0.2, ...) {
-  stats::na.omit(data)
+winsorize.factor <- function(data, ...) {
+  data
 }
 
 #' @export
@@ -38,7 +38,7 @@ winsorize.logical <- winsorize.factor
 
 #' @export
 winsorize.data.frame <- function(data, threshold = 0.2, verbose = TRUE, ...) {
-  sapply(stats::na.omit(data), winsorize, threshold = threshold, verbose = verbose)
+  sapply(data, winsorize, threshold = threshold, verbose = verbose)
 }
 
 #' @rdname winsorize
@@ -51,7 +51,6 @@ winsorize.numeric <- function(data, threshold = 0.2, verbose = TRUE, ...) {
     return(data)
   }
 
-  data <- stats::na.omit(data)
   y <- sort(data)
   n <- length(data)
   ibot <- floor(threshold * n) + 1
