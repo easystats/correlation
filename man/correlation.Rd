@@ -30,15 +30,19 @@ correlation(
 \arguments{
 \item{data}{A data frame.}
 
-\item{data2}{An optional data frame.}
+\item{data2}{An optional data frame. If specified, all pair-wise correlations
+between the variables in \code{data} and \code{data2} will be computed.}
 
-\item{select, select2}{Optional names of variables that should be selected
-for correlation. Instead of providing the data frames with those  variables
-that should be correlated, \code{data} can be a data frame and \code{select}
-and \code{select2} are (quoted) names of variables (columns) in \code{data}.
-\code{correlation()} will then compute the correlation between
-\code{data[select]} and \code{data[select2]}. This is a "pipe-friendly"
-alternative way of using \code{correlation()} (see 'Examples').}
+\item{select, select2}{(Ignored if \code{data2} is specified.) Optional names
+of variables that should be selected for correlation. Instead of providing
+the data frames with those variables that should be correlated, \code{data}
+can be a data frame and \code{select} and \code{select2} are (quoted) names
+of variables (columns) in \code{data}. \code{correlation()} will then
+compute the correlation between \code{data[select]} and
+\code{data[select2]}. If only \code{select} is specified, all pair-wise
+correlations between the \code{select} variables will be computed. This is
+a "pipe-friendly" alternative way of using \code{correlation()} (see
+'Examples').}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default),

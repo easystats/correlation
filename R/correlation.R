@@ -3,14 +3,18 @@
 #' Performs a correlation analysis.
 #'
 #' @param data A data frame.
-#' @param data2 An optional data frame.
-#' @param select,select2 Optional names of variables that should be selected
-#'   for correlation. Instead of providing the data frames with those  variables
-#'   that should be correlated, \code{data} can be a data frame and \code{select}
-#'   and \code{select2} are (quoted) names of variables (columns) in \code{data}.
-#'   \code{correlation()} will then compute the correlation between
-#'   \code{data[select]} and \code{data[select2]}. This is a "pipe-friendly"
-#'   alternative way of using \code{correlation()} (see 'Examples').
+#' @param data2 An optional data frame. If specified, all pair-wise correlations
+#'   between the variables in \code{data} and \code{data2} will be computed.
+#' @param select,select2 (Ignored if \code{data2} is specified.) Optional names
+#'   of variables that should be selected for correlation. Instead of providing
+#'   the data frames with those variables that should be correlated, \code{data}
+#'   can be a data frame and \code{select} and \code{select2} are (quoted) names
+#'   of variables (columns) in \code{data}. \code{correlation()} will then
+#'   compute the correlation between \code{data[select]} and
+#'   \code{data[select2]}. If only \code{select} is specified, all pair-wise
+#'   correlations between the \code{select} variables will be computed. This is
+#'   a "pipe-friendly" alternative way of using \code{correlation()} (see
+#'   'Examples').
 #' @param p_adjust Correction method for frequentist correlations. Can be one of
 #'   \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"},
 #'   \code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"},
@@ -235,7 +239,6 @@ correlation <- function(data,
                         winsorize = FALSE,
                         verbose = TRUE,
                         ...) {
-
   # Sanity checks
   if (partial == FALSE & multilevel) {
     partial <- TRUE
@@ -254,7 +257,7 @@ correlation <- function(data,
     ci <- 0.95
   }
 
-  if (is.null(data2) && !is.null(select) && !is.null(select2)) {
+  if (is.null(data2) && !is.null(select)) {
     # check for valid names
     all_selected <- c(select, select2)
     not_in_data <- !all_selected %in% colnames(data)
@@ -267,16 +270,17 @@ correlation <- function(data,
       grp_df <- attributes(data)$groups
       grp_var <- setdiff(colnames(grp_df), ".rows")
       select <- unique(c(select, grp_var))
-      select2 <- unique(c(select2, grp_var))
+      select2 <- if (!is.null(select2)) unique(c(select2, grp_var))
     } else {
       grp_df <- NULL
     }
 
-    data2 <- data[select2]
+
+    data2 <- if (!is.null(select2)) data[select2]
     data <- data[select]
 
     attr(data, "groups") <- grp_df
-    attr(data2, "groups") <- grp_df
+    attr(data2, "groups") <- if (!is.null(select2)) grp_df
   }
 
   if (inherits(data, "grouped_df")) {
