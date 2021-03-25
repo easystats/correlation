@@ -148,7 +148,7 @@ test_that("format checks", {
     expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(1, 3))
     expect_equal(out[["r"]], c(0.8179, -0.3661), tolerance = 1e-2)
     expect_equal(out$Parameter1, c("Petal.Width", "Petal.Width"))
-    expect_equal(out$Parameter1, c("Sepal.Length", "Sepal.Width"))
+    expect_equal(out$Parameter2, c("Sepal.Length", "Sepal.Width"))
   }
 
   # Bayesian full partial
