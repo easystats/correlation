@@ -521,21 +521,22 @@ correlation <- function(data,
       verbose <- FALSE
     }
 
-    result <- cor_test(data,
-                       x = x,
-                       y = y,
-                       ci = ci,
-                       method = method,
-                       bayesian = bayesian,
-                       bayesian_prior = bayesian_prior,
-                       bayesian_ci_method = bayesian_ci_method,
-                       bayesian_test = bayesian_test,
-                       partial = partial,
-                       multilevel = multilevel,
-                       robust = robust,
-                       winsorize = winsorize,
-                       verbose = verbose,
-                       ...
+    result <- cor_test(
+      data,
+      x = x,
+      y = y,
+      ci = ci,
+      method = method,
+      bayesian = bayesian,
+      bayesian_prior = bayesian_prior,
+      bayesian_ci_method = bayesian_ci_method,
+      bayesian_test = bayesian_test,
+      partial = partial,
+      multilevel = multilevel,
+      robust = robust,
+      winsorize = winsorize,
+      verbose = verbose,
+      ...
     )
 
     # Merge
