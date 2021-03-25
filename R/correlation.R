@@ -4,6 +4,13 @@
 #'
 #' @param data A data frame.
 #' @param data2 An optional data frame.
+#' @param select,select2 Optional names of variables that should be selected
+#'   for correlation. Instead of providing the data frames with those  variables
+#'   that should be correlated, \code{data} can be a data frame and \code{select}
+#'   and \code{select2} are (quoted) names of variables (columns) in \code{data}.
+#'   \code{correlation()} will then compute the correlation between
+#'   \code{data[select]} and \code{data[select2]}. This is a "pipe-friendly"
+#'   alternative way of using \code{correlation()} (see 'Examples').
 #' @param p_adjust Correction method for frequentist correlations. Can be one of
 #'   \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"},
 #'   \code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"},
@@ -163,6 +170,12 @@
 #' results
 #' summary(results)
 #' summary(results, redundant = TRUE)
+#'
+#' # pipe-friendly usage
+#' if (require("dplyr")) {
+#'   iris %>%
+#'     correlation(select = "Petal.Width", select2 = c("Sepal.Length"))
+#' }
 #'
 #' # Grouped dataframe
 #' if (require("dplyr")) {
