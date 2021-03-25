@@ -1,13 +1,14 @@
 #' Winsorize data
 #'
 #' Winsorizing or winsorization is the transformation of statistics by limiting
-#' extreme values in the statistical data to reduce the effect of possibly spurious
-#' outliers. The distribution of many statistics can be heavily influenced by outliers.
-#' A typical strategy is to set all outliers (values beyond a certain threshold)
-#' to a specified percentile of the data; for example, a 90\% winsorization would
-#' see all data below the 5th percentile set to the 5th percentile, and data above
-#' the 95th percentile set to the 95th percentile. Winsorized estimators are
-#' usually more robust to outliers than their more standard forms.
+#' extreme values in the statistical data to reduce the effect of possibly
+#' spurious outliers. The distribution of many statistics can be heavily
+#' influenced by outliers. A typical strategy is to set all outliers (values
+#' beyond a certain threshold) to a specified percentile of the data; for
+#' example, a 90\% winsorization would see all data below the 5th percentile set
+#' to the 5th percentile, and data above the 95th percentile set to the 95th
+#' percentile. Winsorized estimators are usually more robust to outliers than
+#' their more standard forms.
 #'
 #' @param data Dataframe or vector.
 #' @param threshold The amount of winsorization.

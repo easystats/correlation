@@ -183,9 +183,18 @@
 #'
 #' # Grouped dataframe
 #' if (require("dplyr")) {
+#'   # grouped correlations
 #'   iris %>%
 #'     group_by(Species) %>%
 #'     correlation()
+#'
+#'   # selecting specific variables for correlation
+#'   mtcars %>%
+#'     group_by(am) %>%
+#'     correlation(
+#'       select = c("cyl", "wt"),
+#'       select2 = c("hp")
+#'     )
 #' }
 #'
 #' # automatic selection of correlation method
