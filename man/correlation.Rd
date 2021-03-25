@@ -278,7 +278,7 @@ summary(results, redundant = TRUE)
 # pipe-friendly usage
 if (require("dplyr")) {
   iris \%>\%
-    correlation(select = "Petal.Width", select2 = c("Sepal.Length"))
+    correlation(select = "Petal.Width", select2 = "Sepal.Length")
 }
 
 # Grouped dataframe
