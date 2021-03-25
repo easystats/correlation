@@ -255,11 +255,6 @@ correlation <- function(data,
   }
 
   if (is.null(data2) && !is.null(select) && !is.null(select2)) {
-    # check for duplicates
-    if (any(select %in% select2) && verbose) {
-      warning("Some of the variables in the correlation matrix are identical.", call. = FALSE)
-    }
-
     # check for valid names
     all_selected <- c(select, select2)
     not_in_data <- !all_selected %in% colnames(data)
