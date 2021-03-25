@@ -7,6 +7,8 @@
 correlation(
   data,
   data2 = NULL,
+  select = NULL,
+  select2 = NULL,
   method = "pearson",
   p_adjust = "holm",
   ci = 0.95,
@@ -29,6 +31,14 @@ correlation(
 \item{data}{A data frame.}
 
 \item{data2}{An optional data frame.}
+
+\item{select, select2}{Optional names of variables that should be selected
+for correlation. Instead of providing the data frames with those  variables
+that should be correlated, \code{data} can be a data frame and \code{select}
+and \code{select2} are (quoted) names of variables (columns) in \code{data}.
+\code{correlation()} will then compute the correlation between
+\code{data[select]} and \code{data[select2]}. This is a "pipe-friendly"
+alternative way of using \code{correlation()} (see 'Examples').}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default),
@@ -264,6 +274,12 @@ results <- correlation(iris)
 results
 summary(results)
 summary(results, redundant = TRUE)
+
+# pipe-friendly usage
+if (require("dplyr")) {
+  iris \%>\%
+    correlation(select = "Petal.Width", select2 = "Sepal.Length")
+}
 
 # Grouped dataframe
 if (require("dplyr")) {
