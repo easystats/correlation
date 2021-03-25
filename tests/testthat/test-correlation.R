@@ -141,8 +141,10 @@ test_that("format checks", {
   # pipe and select
   if (requireNamespace("dplyr")) {
     out <- iris %>%
-      correlation(select = "Petal.Width",
-                  select2 = c("Sepal.Length", "Sepal.Width"))
+      correlation(
+        select = "Petal.Width",
+        select2 = c("Sepal.Length", "Sepal.Width")
+      )
     expect_equal(c(nrow(out), ncol(out)), c(2, 11))
     expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(1, 3))
     expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(1, 3))

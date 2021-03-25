@@ -1,5 +1,10 @@
 # correlation 0.6.0.1
 
+## New Features
+
+- `correlation` gains two new arguments: `select` and `select2` to select
+  specific variables from dataframes to compare (#146).
+
 ## Bug Fixes
 
 - The `0.6.0` release introduced a bug in Winsorized Pearson correlation where
