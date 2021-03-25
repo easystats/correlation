@@ -204,6 +204,8 @@
 #' @export
 correlation <- function(data,
                         data2 = NULL,
+                        select = NULL,
+                        select2 = NULL,
                         method = "pearson",
                         p_adjust = "holm",
                         ci = 0.95,
@@ -239,6 +241,35 @@ correlation <- function(data,
     ci <- 0.95
   }
 
+  if (is.null(data2) && !is.null(select) && !is.null(select2)) {
+    # check for duplicates
+    if (any(select %in% select2) && verbose) {
+      warning("Some of the variables in the correlation matrix are identical.", call. = FALSE)
+    }
+
+    # check for valid names
+    all_selected <- c(select, select2)
+    not_in_data <- !all_selected %in% colnames(data)
+    if (any(not_in_data)) {
+      stop(paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", "))
+    }
+
+    # for grouped df, add group variables to both data frames
+    if (inherits(data, "grouped_df")) {
+      grp_df <- attributes(data)$groups
+      grp_var <- setdiff(colnames(grp_df), ".rows")
+      select <- unique(c(select, grp_var))
+      select2 <- unique(c(select2, grp_var))
+    } else {
+      grp_df <- NULL
+    }
+
+    data2 <- data[select2]
+    data <- data[select]
+
+    attr(data, "groups") <- grp_df
+    attr(data2, "groups") <- grp_df
+  }
 
   if (inherits(data, "grouped_df")) {
     rez <- .correlation_grouped_df(
@@ -478,20 +509,20 @@ correlation <- function(data,
     }
 
     result <- cor_test(data,
-      x = x,
-      y = y,
-      ci = ci,
-      method = method,
-      bayesian = bayesian,
-      bayesian_prior = bayesian_prior,
-      bayesian_ci_method = bayesian_ci_method,
-      bayesian_test = bayesian_test,
-      partial = partial,
-      multilevel = multilevel,
-      robust = robust,
-      winsorize = winsorize,
-      verbose = verbose,
-      ...
+                       x = x,
+                       y = y,
+                       ci = ci,
+                       method = method,
+                       bayesian = bayesian,
+                       bayesian_prior = bayesian_prior,
+                       bayesian_ci_method = bayesian_ci_method,
+                       bayesian_test = bayesian_test,
+                       partial = partial,
+                       multilevel = multilevel,
+                       robust = robust,
+                       winsorize = winsorize,
+                       verbose = verbose,
+                       ...
     )
 
     # Merge
