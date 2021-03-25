@@ -180,17 +180,21 @@
     </tr>
     <tr>
       <th>data2</th>
-      <td><p>An optional data frame.</p></td>
+      <td><p>An optional data frame. If specified, all pair-wise correlations
+between the variables in <code>data</code> and <code>data2</code> will be computed.</p></td>
     </tr>
     <tr>
       <th>select, select2</th>
-      <td><p>Optional names of variables that should be selected
-for correlation. Instead of providing the data frames with those  variables
-that should be correlated, <code>data</code> can be a data frame and <code>select</code>
-and <code>select2</code> are (quoted) names of variables (columns) in <code>data</code>.
-<code>correlation()</code> will then compute the correlation between
-<code>data[select]</code> and <code>data[select2]</code>. This is a "pipe-friendly"
-alternative way of using <code>correlation()</code> (see 'Examples').</p></td>
+      <td><p>(Ignored if <code>data2</code> is specified.) Optional names
+of variables that should be selected for correlation. Instead of providing
+the data frames with those variables that should be correlated, <code>data</code>
+can be a data frame and <code>select</code> and <code>select2</code> are (quoted) names
+of variables (columns) in <code>data</code>. <code>correlation()</code> will then
+compute the correlation between <code>data[select]</code> and
+<code>data[select2]</code>. If only <code>select</code> is specified, all pair-wise
+correlations between the <code>select</code> variables will be computed. This is
+a "pipe-friendly" alternative way of using <code>correlation()</code> (see
+'Examples').</p></td>
     </tr>
     <tr>
       <th>method</th>
