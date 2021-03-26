@@ -358,7 +358,11 @@ correlation <- function(data,
 
   attr(out, "additional_arguments") <- list(...)
 
-  class(out) <- unique(c("easycorrelation", "see_easycorrelation", "parameters_model", class(out)))
+  if (inherits(data, "grouped_df")) {
+    class(out) <- unique(c("easycorrelation", "see_easycorrelation", "grouped_easycorrelation", "parameters_model", class(out)))
+  } else {
+    class(out) <- unique(c("easycorrelation", "see_easycorrelation", "parameters_model", class(out)))
+  }
 
   if (convert_back_to_r) out <- pcor_to_cor(pcor = out) # Revert back to r if needed.
   out
