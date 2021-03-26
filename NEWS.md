@@ -4,6 +4,8 @@
 
 - `correlation` gains two new arguments: `select` and `select2` to select
   specific variables from dataframes to compare (#146).
+  
+- `as.matrix` method works for grouped correlations (#148).
 
 ## Bug Fixes
 

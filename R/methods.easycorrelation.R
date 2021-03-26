@@ -32,7 +32,13 @@ summary.easycorrelation <- function(object, redundant = FALSE, ...) {
   attributes(out) <- c(attributes(out), list(...))
   attr(out, "redundant") <- redundant
   attr(out, "coefficient_name") <- target_col
-  class(out) <- c("easycormatrix", "see_easycormatrix", class(out))
+
+  if (inherits(object, "grouped_easycorrelation")) {
+    class(out) <- c("easycormatrix", "see_easycormatrix", "grouped_easycormatrix", class(out))
+  } else {
+    class(out) <- c("easycormatrix", "see_easycormatrix", class(out))
+  }
+
   out
 }
 
@@ -51,8 +57,18 @@ as.table.easycorrelation <- function(x, ...) {
 #' @export
 as.matrix.easycorrelation <- function(x, ...) {
   mat <- summary(x, redundant = TRUE)
-  row.names(mat) <- mat$Parameter
-  mat <- mat[-1]
+
+  if (inherits(mat, "grouped_easycormatrix")) {
+    mat$Parameter <- paste(mat$Group, "-", mat$Parameter)
+    row.names(mat) <- mat$Parameter
+    mat <- mat[-c(1:2)]
+    # self-correlations
+    mat[is.na(mat)] <- 1
+  } else {
+    row.names(mat) <- mat$Parameter
+    mat <- mat[-1]
+  }
+
   as.matrix(mat)
 }
 
