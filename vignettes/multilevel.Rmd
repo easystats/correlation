@@ -19,9 +19,8 @@ bibliography: bibliography.bib
 
 This vignette can be cited as:
 
-> Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019). > Methods
-and Algorithms for Correlation Analysis in R. _Journal of Open > Source
-Software_, _5_(51), 2306. 10.21105/joss.02306
+Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019). Methods
+and Algorithms for Correlation Analysis in R. _Journal of Open Source Software_, _5_(51), 2306. doi:10.21105/joss.02306
 
 ---
 

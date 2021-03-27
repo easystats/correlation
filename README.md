@@ -16,12 +16,14 @@ bend** or **Sheperd’s Pi** correlations (types of robust correlation),
 also allowing for combinations between them (for instance, *Bayesian
 partial multilevel correlation*).
 
+## Citation
+
 You can reference the package and its documentation as follows:
 
--   Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019).
-    *Methods and Algorithms for Correlation Analysis in R*. Journal of
-    Open Source Software, 5(51), 2306.
-    [10.21105/joss.02306](https://doi.org/10.21105/joss.02306)
+Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019).
+*Methods and Algorithms for Correlation Analysis in R*. Journal of Open
+Source Software, *5*(51), 2306.
+[10.21105/joss.02306](https://doi.org/10.21105/joss.02306)
 
 ## Installation
 
@@ -100,7 +102,7 @@ and comes with a number of possible options.
 ``` r
 results <- correlation(iris)
 results
-## # Correlation table (pearson-method)
+## # Correlation Matrix (pearson-method)
 ## 
 ## Parameter1   |   Parameter2 |     r |         95% CI | t(148) |         p
 ## -------------------------------------------------------------------------
@@ -169,7 +171,7 @@ iris %>%
   select(Species, Sepal.Length, Sepal.Width, Petal.Width) %>% 
   group_by(Species) %>% 
   correlation()
-## # Correlation table (pearson-method)
+## # Correlation Matrix (pearson-method)
 ## 
 ## Group      |   Parameter1 |  Parameter2 |    r |        95% CI | t(48) |         p
 ## ----------------------------------------------------------------------------------
@@ -179,8 +181,8 @@ iris %>%
 ## versicolor | Sepal.Length | Sepal.Width | 0.53 | [ 0.29, 0.70] |  4.28 | < .001***
 ## versicolor | Sepal.Length | Petal.Width | 0.55 | [ 0.32, 0.72] |  4.52 | < .001***
 ## versicolor |  Sepal.Width | Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | < .001***
-## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 0.002**  
-## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 0.048*   
+## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | < .01**  
+## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | < .05*   
 ## virginica  |  Sepal.Width | Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | < .001***
 ## 
 ## p-value adjustment method: Holm (1979)
@@ -193,15 +195,15 @@ It is very easy to switch to a **Bayesian framework**.
 
 ``` r
 correlation(iris, bayesian = TRUE)
-## # Correlation table (pearson-method)
+## # Correlation Matrix (pearson-method)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |        BF |         Prior
 ## ------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] |  92.38% |    42.83% |     0.509 | Beta (3 +- 3)
-## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.89] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Sepal.Length |  Petal.Width |  0.80 | [ 0.76,  0.85] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Sepal.Width  | Petal.Length | -0.41 | [-0.52, -0.31] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] | 100%*** |     0.12% | > 1000*** | Beta (3 +- 3)
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] |  91.70% |    43.38% |     0.509 | Beta (3 +- 3)
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.84] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
+## Sepal.Width  | Petal.Length | -0.41 | [-0.53, -0.31] | 100%*** |     0.03% | > 1000*** | Beta (3 +- 3)
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.25] | 100%*** |     0.15% | > 1000*** | Beta (3 +- 3)
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
 ## 
 ## Observations: 150
@@ -214,7 +216,7 @@ which can deal with correlations **between factors**!
 
 ``` r
 correlation(iris, include_factors = TRUE, method = "auto")
-## # Correlation table (auto-method)
+## # Correlation Matrix (auto-method)
 ## 
 ## Parameter1         |         Parameter2 |     r |         95% CI | t(148) |         p
 ## -------------------------------------------------------------------------------------
