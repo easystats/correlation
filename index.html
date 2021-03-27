@@ -98,11 +98,12 @@
 </h1></div>
 
 <p><code>correlation</code> is an <a href="https://github.com/easystats/easystats" class="external-link"><strong>easystats</strong></a> package focused on correlation analysis. It’s lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as <strong>partial</strong> correlations, <strong>Bayesian</strong> correlations, <strong>multilevel</strong> correlations, <strong>polychoric</strong> correlations, <strong>biweight</strong>, <strong>percentage bend</strong> or <strong>Sheperd’s Pi</strong> correlations (types of robust correlation), <strong>distance</strong> correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, <em>Bayesian partial multilevel correlation</em>).</p>
+<div id="citation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#citation" class="anchor"></a>Citation</h2>
 <p>You can reference the package and its documentation as follows:</p>
-<ul>
-<li>Makowski, D., Ben-Shachar, M. S., Patil, I., &amp; Lüdecke, D. (2019). <em>Methods and Algorithms for Correlation Analysis in R</em>. Journal of Open Source Software, 5(51), 2306. <a href="https://doi.org/10.21105/joss.02306" class="external-link">10.21105/joss.02306</a>
-</li>
-</ul>
+<p>Makowski, D., Ben-Shachar, M. S., Patil, I., &amp; Lüdecke, D. (2019). <em>Methods and Algorithms for Correlation Analysis in R</em>. Journal of Open Source Software, <em>5</em>(51), 2306. <a href="https://doi.org/10.21105/joss.02306" class="external-link">10.21105/joss.02306</a></p>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -192,7 +193,7 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 <span class="va">results</span>
-<span class="co">## # Correlation table (pearson-method)</span>
+<span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
 <span class="co">## Parameter1   |   Parameter2 |     r |         95% CI | t(148) |         p</span>
 <span class="co">## -------------------------------------------------------------------------</span>
@@ -248,7 +249,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Petal.Width</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## # Correlation table (pearson-method)</span>
+<span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
 <span class="co">## Group      |   Parameter1 |  Parameter2 |    r |        95% CI | t(48) |         p</span>
 <span class="co">## ----------------------------------------------------------------------------------</span>
@@ -258,8 +259,8 @@
 <span class="co">## versicolor | Sepal.Length | Sepal.Width | 0.53 | [ 0.29, 0.70] |  4.28 | &lt; .001***</span>
 <span class="co">## versicolor | Sepal.Length | Petal.Width | 0.55 | [ 0.32, 0.72] |  4.52 | &lt; .001***</span>
 <span class="co">## versicolor |  Sepal.Width | Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | &lt; .001***</span>
-<span class="co">## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 0.002**  </span>
-<span class="co">## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 0.048*   </span>
+<span class="co">## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | &lt; .01**  </span>
+<span class="co">## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | &lt; .05*   </span>
 <span class="co">## virginica  |  Sepal.Width | Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | &lt; .001***</span>
 <span class="co">## </span>
 <span class="co">## p-value adjustment method: Holm (1979)</span>
@@ -271,15 +272,15 @@
 <p>It is very easy to switch to a <strong>Bayesian framework</strong>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## # Correlation table (pearson-method)</span>
+<span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
 <span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |        BF |         Prior</span>
 <span class="co">## ------------------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] |  92.38% |    42.83% |     0.509 | Beta (3 +- 3)</span>
-<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.89] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
-<span class="co">## Sepal.Length |  Petal.Width |  0.80 | [ 0.76,  0.85] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
-<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.52, -0.31] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
-<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] | 100%*** |     0.12% | &gt; 1000*** | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] |  91.70% |    43.38% |     0.509 | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.84] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.53, -0.31] | 100%*** |     0.03% | &gt; 1000*** | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.25] | 100%*** |     0.15% | &gt; 1000*** | Beta (3 +- 3)</span>
 <span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
 <span class="co">## </span>
 <span class="co">## Observations: 150</span></code></pre></div>
@@ -290,7 +291,7 @@
 <p>The <code>correlation</code> package also supports different types of methods, which can deal with correlations <strong>between factors</strong>!</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span>, include_factors <span class="op">=</span> <span class="cn">TRUE</span>, method <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
-<span class="co">## # Correlation table (auto-method)</span>
+<span class="co">## # Correlation Matrix (auto-method)</span>
 <span class="co">## </span>
 <span class="co">## Parameter1         |         Parameter2 |     r |         95% CI | t(148) |         p</span>
 <span class="co">## -------------------------------------------------------------------------------------</span>
