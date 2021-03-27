@@ -19,9 +19,8 @@ bibliography: bibliography.bib
 
 This vignette can be cited as:
 
-> Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019). > Methods
-and Algorithms for Correlation Analysis in R. _Journal of Open > Source
-Software_, _5_(51), 2306. 10.21105/joss.02306
+Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019). Methods
+and Algorithms for Correlation Analysis in R. _Journal of Open Source Software_, _5_(51), 2306. doi:10.21105/joss.02306
 
 ---
 
@@ -45,18 +44,20 @@ if (!requireNamespace("ggplot2", quietly = TRUE) ||
 ## Data
 
 Imagine we have an experiment in which **10 individuals** completed a task with
-**100 trials**. For each of the 1000 total trials, we measured two things,
-**V1** and **V2**, and our research aims at **investigating the link between
-these two variables**.
+**100 trials**. For each trial - there will 1000 trials (10 * 1000) in total -
+we measured two things, **V1** and **V2**, and we are interested in
+**investigating the link between these two variables**.
 
 We will generate data using the
 [`simulate_simpson()`](https://easystats.github.io/correlation/reference/simulate_simpson.html)
-function from this package.
+function from this package and look at its summary:
 
 ```{r}
 library(correlation)
 
 data <- simulate_simpson(n = 100, groups = 10)
+
+summary(data)
 ```
 
 Now let's visualize the two variables:
@@ -79,13 +80,14 @@ correlation** between V1 and V2. Let's test this.
 correlation(data)
 ```
 
-Indeed, there is **strong, negative and significant correlation** between V1 and
-V2. Great, can we go ahead and **publish these results in PNAS**?
+Indeed, there is  a **strong, negative and significant correlation** between V1
+and V2.
+
+Great, can we go ahead and **publish these results in _PNAS_**?
 
 ## The Simpson's Paradox
 
-Hold on sunshine! Ever heard of something called the [**Simpson's
-Paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox)?
+Not so fast! Ever heard of the [**Simpson's Paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox)?
 
 Let's colour our datapoints by group (by individuals):
 
@@ -113,6 +115,12 @@ the `multilevel` argument to `TRUE`.
 
 ```{r}
 correlation(data, multilevel = TRUE)
+```
+
+For completeness, let's also see if its Bayesian cousin agrees with it:
+
+```{r}
+correlation(data, multilevel = TRUE, bayesian = TRUE)
 ```
 
 **Dayum!** 

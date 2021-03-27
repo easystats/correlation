@@ -157,14 +157,15 @@
 #'   \item Kendall and Spearman correlations when \code{bayesian=TRUE}: These
 #'   are technically Pearson Bayesian correlations of rank transformed data,
 #'   rather than pure Bayesian rank correlations (which have different priors).
-#'
 #' }}
 #'
 #' @return A correlation object that can be displayed using the \code{print},
 #'   \code{summary} or \code{table} methods.
 #'
 #' \subsection{Multiple tests correction}{
-#' About multiple tests corrections.
+#' The \code{p_adjust} argument can be used to adjust p-values for multiple
+#' comparisons. All adjustment methods available in \code{p.adjust} function
+#' \code{stats} package are supported.
 #' }
 #'
 #' @examples
