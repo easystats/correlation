@@ -1,5 +1,9 @@
 # correlation 0.6.0.1
 
+## Breaking Changes
+
+- `robust` argument deprecated in favour of `ranktransform`.
+
 ## New Features
 
 - `correlation` gains two new arguments: `select` and `select2` to select
