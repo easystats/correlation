@@ -114,12 +114,12 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>##        V1             V2           Group          
-##  Min.   :-1.4   Min.   :-12.1   Length:1000       
+##  Min.   :-2.4   Min.   :-13.3   Length:1000       
 ##  1st Qu.: 3.0   1st Qu.: -8.0   Class :character  
-##  Median : 5.5   Median : -5.4   Mode  :character  
+##  Median : 5.5   Median : -5.6   Mode  :character  
 ##  Mean   : 5.5   Mean   : -5.5                     
-##  3rd Qu.: 8.0   3rd Qu.: -3.0                     
-##  Max.   :12.5   Max.   :  1.9</code></pre>
+##  3rd Qu.: 7.9   3rd Qu.: -3.0                     
+##  Max.   :12.4   Max.   :  1.5</code></pre>
 <p>Now let’s visualize the two variables:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
@@ -180,7 +180,7 @@
 <pre><code>## Loading required namespace: BayesFactor</code></pre>
 <pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
 ## ------------------------------------------------------------------
-## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.14 | &lt; .001***
+## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.11 | &lt; .001***
 ## 
 ## Observations: 1000</code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking the group into account seems to be super important.</p>
