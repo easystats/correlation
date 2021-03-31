@@ -162,7 +162,8 @@
   partial <span class='op'>=</span> <span class='cn'>FALSE</span>,
   partial_bayesian <span class='op'>=</span> <span class='cn'>FALSE</span>,
   multilevel <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  robust <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  ranktransform <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  robust <span class='op'>=</span> <span class='cn'>NULL</span>,
   winsorize <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
@@ -239,7 +240,7 @@ Else, if <code>FALSE</code> (default), they are included as fixed effects in the
 simple regression model.</p></td>
     </tr>
     <tr>
-      <th>robust</th>
+      <th>ranktransform</th>
       <td><p>If <code>TRUE</code>, will rank-transform the variables prior to
 estimating the correlation, which is one way of making the analysis more
 resistant to extreme values (outliers). Note that, for instance, a Pearson's
@@ -248,6 +249,12 @@ correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</c
 redundant. Nonetheless, it is an easy option to increase the robustness of the
 correlation as well as flexible way to obtain Bayesian or multilevel
 Spearman-like rank correlations.</p></td>
+    </tr>
+    <tr>
+      <th>robust</th>
+      <td><p>Old name for <code>ranktransform</code>. Will be removed in subsequent 
+versions, so better to use <code>ranktransform</code> which is more explicit about 
+what it does.</p></td>
     </tr>
     <tr>
       <th>winsorize</th>
@@ -496,15 +503,15 @@ Bayesian scores, don't forget to set <code>partial = TRUE</code>.</p>
 #&gt; 
 #&gt; Observations: 150</div><div class='input'>
 <span class='co'># Robust (these two are equivalent)</span>
-<span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"pearson"</span>, robust <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |      p
-#&gt; ---------------------------------------------------------------------
-#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] |  -2.06 | &lt; .05*
-#&gt; 
-#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span>, robust <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Parameter1   |  Parameter2 |   rho |         95% CI |        S |      p
 #&gt; -----------------------------------------------------------------------
 #&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32,  0.00] | 6.56e+05 | &lt; .05*
+#&gt; 
+#&gt; Observations: 150</div><div class='input'><span class='fu'>cor_test</span><span class='op'>(</span><span class='va'>iris</span>, <span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>, method <span class='op'>=</span> <span class='st'>"pearson"</span>, ranktransform <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Parameter1   |  Parameter2 |     r |         95% CI | t(148) |      p
+#&gt; ---------------------------------------------------------------------
+#&gt; Sepal.Length | Sepal.Width | -0.17 | [-0.32, -0.01] |  -2.06 | &lt; .05*
 #&gt; 
 #&gt; Observations: 150</div><div class='input'>
 <span class='co'># Winsorized</span>

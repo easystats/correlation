@@ -165,7 +165,8 @@
   partial <span class='op'>=</span> <span class='cn'>FALSE</span>,
   partial_bayesian <span class='op'>=</span> <span class='cn'>FALSE</span>,
   multilevel <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  robust <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  ranktransform <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  robust <span class='op'>=</span> <span class='cn'>NULL</span>,
   winsorize <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
@@ -283,7 +284,7 @@ Else, if <code>FALSE</code> (default), they are included as fixed effects in the
 simple regression model.</p></td>
     </tr>
     <tr>
-      <th>robust</th>
+      <th>ranktransform</th>
       <td><p>If <code>TRUE</code>, will rank-transform the variables prior to
 estimating the correlation, which is one way of making the analysis more
 resistant to extreme values (outliers). Note that, for instance, a Pearson's
@@ -292,6 +293,12 @@ correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</c
 redundant. Nonetheless, it is an easy option to increase the robustness of the
 correlation as well as flexible way to obtain Bayesian or multilevel
 Spearman-like rank correlations.</p></td>
+    </tr>
+    <tr>
+      <th>robust</th>
+      <td><p>Old name for <code>ranktransform</code>. Will be removed in subsequent 
+versions, so better to use <code>ranktransform</code> which is more explicit about 
+what it does.</p></td>
     </tr>
     <tr>
       <th>winsorize</th>
