@@ -245,10 +245,18 @@ correlation <- function(data,
                         partial = FALSE,
                         partial_bayesian = FALSE,
                         multilevel = FALSE,
-                        robust = FALSE,
+                        ranktransform = FALSE,
+                        robust = NULL,
                         winsorize = FALSE,
                         verbose = TRUE,
                         ...) {
+
+  # Deprecation warnings
+  if(!is.null(robust)) {
+    warning("The 'robust' argument is deprecated in favour of 'ranktransform' (more explicit). Please use the latter instead to remove this warning.")
+    ranktransform <- robust
+  }
+
   # Sanity checks
   if (partial == FALSE & multilevel) {
     partial <- TRUE
@@ -309,7 +317,7 @@ correlation <- function(data,
       partial = partial,
       partial_bayesian = partial_bayesian,
       multilevel = multilevel,
-      robust = robust,
+      ranktransform = ranktransform,
       winsorize = winsorize,
       verbose = verbose,
       ...
@@ -330,7 +338,7 @@ correlation <- function(data,
       partial = partial,
       partial_bayesian = partial_bayesian,
       multilevel = multilevel,
-      robust = robust,
+      ranktransform = ranktransform,
       winsorize = winsorize,
       verbose = verbose,
       ...
@@ -387,7 +395,7 @@ correlation <- function(data,
                                     partial = FALSE,
                                     partial_bayesian = FALSE,
                                     multilevel = FALSE,
-                                    robust = FALSE,
+                                    ranktransform = FALSE,
                                     winsorize = FALSE,
                                     verbose = TRUE,
                                     ...) {
@@ -422,7 +430,7 @@ correlation <- function(data,
             partial = partial,
             partial_bayesian = partial_bayesian,
             multilevel = multilevel,
-            robust = robust,
+            ranktransform = ranktransform,
             winsorize = winsorize
           )
           modelframe_current <- rez$data
@@ -455,7 +463,7 @@ correlation <- function(data,
         partial = partial,
         partial_bayesian = partial_bayesian,
         multilevel = multilevel,
-        robust = robust,
+        ranktransform = ranktransform,
         winsorize = winsorize
       )
       modelframe_current <- rez$data
@@ -487,7 +495,7 @@ correlation <- function(data,
                          partial = FALSE,
                          partial_bayesian = FALSE,
                          multilevel = FALSE,
-                         robust = FALSE,
+                         ranktransform = FALSE,
                          winsorize = FALSE,
                          verbose = TRUE,
                          ...) {
@@ -546,7 +554,7 @@ correlation <- function(data,
       bayesian_test = bayesian_test,
       partial = partial,
       multilevel = multilevel,
-      robust = robust,
+      ranktransform = ranktransform,
       winsorize = winsorize,
       verbose = verbose,
       ...

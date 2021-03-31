@@ -37,7 +37,7 @@
 #'   \code{BayesFactor::correlationBF} function.
 #' @param bayesian_ci_method,bayesian_test See arguments in
 #'   \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
-#' @param robust If \code{TRUE}, will rank-transform the variables prior to
+#' @param ranktransform If \code{TRUE}, will rank-transform the variables prior to
 #'   estimating the correlation, which is one way of making the analysis more
 #'   resistant to extreme values (outliers). Note that, for instance, a Pearson's
 #'   correlation on rank-transformed data is equivalent to a Spearman's rank
@@ -45,6 +45,9 @@
 #'   redundant. Nonetheless, it is an easy option to increase the robustness of the
 #'   correlation as well as flexible way to obtain Bayesian or multilevel
 #'   Spearman-like rank correlations.
+#' @param robust Old name for \code{ranktransform}. Will be removed in subsequent 
+#'   versions, so better to use \code{ranktransform} which is more explicit about 
+#'   what it does.
 #' @param winsorize Another way of making the correlation more "robust" (i.e.,
 #'   limiting the impact of extreme values). Can be either \code{FALSE} or a
 #'   number between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired
@@ -100,8 +103,8 @@
 #' }
 #'
 #' # Robust (these two are equivalent)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", robust = TRUE)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman", robust = FALSE)
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", ranktransform = TRUE)
 #'
 #' # Winsorized
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
@@ -128,10 +131,17 @@ cor_test <- function(data,
                      partial = FALSE,
                      partial_bayesian = FALSE,
                      multilevel = FALSE,
-                     robust = FALSE,
+                     ranktransform = FALSE,
+                     robust = NULL,
                      winsorize = FALSE,
                      verbose = TRUE,
                      ...) {
+
+  # Deprecation warnings
+  if(!is.null(robust)) {
+    warning("The 'robust' argument is deprecated in favour of 'ranktransform' (more explicit). Please use the latter instead to remove this warning.")
+    ranktransform <- robust
+  }
 
   # Sanity checks
   if (!x %in% names(data) | !y %in% names(data)) {
@@ -165,8 +175,8 @@ cor_test <- function(data,
     data <- as.data.frame(winsorize(stats::na.omit(data[c(x, y)]), threshold = winsorize, verbose = verbose))
   }
 
-  # Robust
-  if (robust) {
+  # Rank transform (i.e., "robust")
+  if (ranktransform) {
     data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = FALSE, method = "average")
   }
 

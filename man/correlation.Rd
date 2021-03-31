@@ -21,7 +21,8 @@ correlation(
   partial = FALSE,
   partial_bayesian = FALSE,
   multilevel = FALSE,
-  robust = FALSE,
+  ranktransform = FALSE,
+  robust = NULL,
   winsorize = FALSE,
   verbose = TRUE,
   ...
@@ -106,7 +107,7 @@ partialization).}
 Else, if \code{FALSE} (default), they are included as fixed effects in the
 simple regression model.}
 
-\item{robust}{If \code{TRUE}, will rank-transform the variables prior to
+\item{ranktransform}{If \code{TRUE}, will rank-transform the variables prior to
 estimating the correlation, which is one way of making the analysis more
 resistant to extreme values (outliers). Note that, for instance, a Pearson's
 correlation on rank-transformed data is equivalent to a Spearman's rank
@@ -114,6 +115,10 @@ correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
 redundant. Nonetheless, it is an easy option to increase the robustness of the
 correlation as well as flexible way to obtain Bayesian or multilevel
 Spearman-like rank correlations.}
+
+\item{robust}{Old name for \code{ranktransform}. Will be removed in subsequent 
+versions, so better to use \code{ranktransform} which is more explicit about 
+what it does.}
 
 \item{winsorize}{Another way of making the correlation more "robust" (i.e.,
 limiting the impact of extreme values). Can be either \code{FALSE} or a
