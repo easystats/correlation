@@ -42,8 +42,9 @@ if (!requireNamespace("see", quietly = TRUE) ||
 
 This vignette can be cited as:
 
-Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019). Methods
-and Algorithms for Correlation Analysis in R. _Journal of Open Source Software_, _5_(51), 2306. doi:10.21105/joss.02306
+```{r cite}
+citation("correlation")
+```
 
 ---
 
@@ -51,7 +52,7 @@ and Algorithms for Correlation Analysis in R. _Journal of Open Source Software_,
 
 Correlations tests are arguably one of the most commonly used statistical
 procedures, and are used as a basis in many applications such as exploratory
-data analysis, structural modelling, data engineering etc. In this context, we
+data analysis, structural modeling, data engineering, etc. In this context, we
 present **correlation**, a toolbox for the R language [@Rteam] and part of the
 [**easystats**](https://github.com/easystats/easystats) collection, focused on
 correlation analysis. Its goal is to be lightweight, easy to use, and allows for
@@ -130,7 +131,7 @@ binary variable is assumed to have an underlying continuity. For example,
 anxiety level can be measured on a continuous scale, but can be classified
 dichotomously as high/low.
 
-- **Winsorized correlation**: Correlation of variables that have been formerly
+- **Winsorized correlation**: Correlation of variables that have been
 Winsorized, i.e., transformed by limiting extreme values to reduce the effect of
 possibly spurious outliers.
 
@@ -141,7 +142,7 @@ distributed continuous latent variables, from two observed ordinal variables.
 applicable when both observed variables are dichotomous.
 
 - **Partial correlation**: Correlation between two variables after adjusting for
-the (linear) the effect of one or more variables. The correlation test is here
+the (linear) effect of one or more variables. The correlation test is 
 run after having partialized the dataset, independently from it. In other words,
 it considers partialization as an independent step generating a different
 dataset, rather than belonging to the same model. This is why some discrepancies
@@ -154,7 +155,7 @@ $$r_{xy.z} = r_{e_{x.z},e_{y.z}}$$
 
 - **Multilevel correlation**: Multilevel correlations are a special case of
 partial correlations where the variable to be adjusted for is a factor and is
-included as a random effect in a mixed model.
+included as a random effect in a mixed-effects model.
 
 ## Comparison
 

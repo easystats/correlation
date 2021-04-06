@@ -7,6 +7,8 @@
 
 0 errors | 0 warnings | 0 note
 
+ * Fixes `NOTE`s and `WARNING`s in `R CMD CHECK` for last released version.
+
 ## revdepcheck results
 
 We checked 4 reverse dependencies, comparing R CMD check results across CRAN and

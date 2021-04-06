@@ -252,7 +252,7 @@ correlation <- function(data,
                         ...) {
 
   # Deprecation warnings
-  if(!is.null(robust)) {
+  if (!is.null(robust)) {
     warning("The 'robust' argument is deprecated in favour of 'ranktransform' (more explicit). Please use the latter instead to remove this warning.")
     ranktransform <- robust
   }

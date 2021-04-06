@@ -1,4 +1,4 @@
-if (require("testthat") && require("gt")  && require("dplyr")) {
+if (require("testthat") && require("gt") && require("dplyr")) {
 
   # display and print method works - markdown -----------------------------
 
