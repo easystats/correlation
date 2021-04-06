@@ -19,8 +19,9 @@ bibliography: bibliography.bib
 
 This vignette can be cited as:
 
-Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019). Methods
-and Algorithms for Correlation Analysis in R. _Journal of Open Source Software_, _5_(51), 2306. doi:10.21105/joss.02306
+```{r cite}
+citation("correlation")
+```
 
 ---
 
@@ -102,8 +103,7 @@ ggplot(data, aes(x = V1, y = V2)) +
 ```
 
 Mmh, interesting. It seems like, for each subject, the relationship is
-different. The negative general trend seems to be created by **differences
-between the groups** and could be spurious!
+different. The (global) negative trend seems to be an artifact of **differences between the groups** and could be spurious!
 
 **Multilevel *(as in multi-group)* ** correlations allow us to account for
 **differences between groups**. It is based on a partialization of the group,

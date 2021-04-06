@@ -116,8 +116,8 @@ redundant. Nonetheless, it is an easy option to increase the robustness of the
 correlation as well as flexible way to obtain Bayesian or multilevel
 Spearman-like rank correlations.}
 
-\item{robust}{Old name for \code{ranktransform}. Will be removed in subsequent 
-versions, so better to use \code{ranktransform} which is more explicit about 
+\item{robust}{Old name for \code{ranktransform}. Will be removed in subsequent
+versions, so better to use \code{ranktransform} which is more explicit about
 what it does.}
 
 \item{winsorize}{Another way of making the correlation more "robust" (i.e.,

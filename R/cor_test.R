@@ -45,8 +45,8 @@
 #'   redundant. Nonetheless, it is an easy option to increase the robustness of the
 #'   correlation as well as flexible way to obtain Bayesian or multilevel
 #'   Spearman-like rank correlations.
-#' @param robust Old name for \code{ranktransform}. Will be removed in subsequent 
-#'   versions, so better to use \code{ranktransform} which is more explicit about 
+#' @param robust Old name for \code{ranktransform}. Will be removed in subsequent
+#'   versions, so better to use \code{ranktransform} which is more explicit about
 #'   what it does.
 #' @param winsorize Another way of making the correlation more "robust" (i.e.,
 #'   limiting the impact of extreme values). Can be either \code{FALSE} or a
@@ -138,7 +138,7 @@ cor_test <- function(data,
                      ...) {
 
   # Deprecation warnings
-  if(!is.null(robust)) {
+  if (!is.null(robust)) {
     warning("The 'robust' argument is deprecated in favour of 'ranktransform' (more explicit). Please use the latter instead to remove this warning.")
     ranktransform <- robust
   }
