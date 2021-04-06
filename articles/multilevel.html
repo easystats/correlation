@@ -100,28 +100,49 @@
     
 <hr>
 <p>This vignette can be cited as:</p>
-<p>Makowski, D., Ben-Shachar, M. S., Patil, I., &amp; Lüdecke, D. (2019). Methods and Algorithms for Correlation Analysis in R. <em>Journal of Open Source Software</em>, <em>5</em>(51), 2306. <a href="doi:10.21105/joss.02306" class="uri">doi:10.21105/joss.02306</a></p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## To cite 'correlation' in publications use:
+## 
+##   Makowski, D., Ben-Shachar, M. S., Patil, I., &amp; Lüdecke, D. (2019).
+##   Methods and Algorithms for Correlation Analysis in R. Journal of Open
+##   Source Software, 5(51), 2306. doi:10.21105/joss.02306
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Article{,
+##     title = {Methods and Algorithms for Correlation Analysis in R.},
+##     author = {Dominique Makowski and Mattan S. Ben-Shachar and Indrajeet Patil and Daniel Lüdecke},
+##     doi = {10.21105/joss.02306},
+##     year = {2020},
+##     journal = {Journal of Open Source Software},
+##     number = {51},
+##     volume = {5},
+##     pages = {2306},
+##     url = {https://joss.theoj.org/papers/10.21105/joss.02306},
+##   }</code></pre>
 <hr>
 <div id="data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data" class="anchor"></a>Data</h2>
 <p>Imagine we have an experiment in which <strong>10 individuals</strong> completed a task with <strong>100 trials</strong>. For each trial - there will 1000 trials (10 * 1000) in total - we measured two things, <strong>V1</strong> and <strong>V2</strong>, and we are interested in <strong>investigating the link between these two variables</strong>.</p>
 <p>We will generate data using the <a href="https://easystats.github.io/correlation/reference/simulate_simpson.html" class="external-link"><code>simulate_simpson()</code></a> function from this package and look at its summary:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/correlation/" class="external-link">correlation</a></span><span class="op">)</span>
 
 <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_simpson.html">simulate_simpson</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, groups <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>##        V1             V2           Group          
-##  Min.   :-2.0   Min.   :-12.5   Length:1000       
-##  1st Qu.: 3.0   1st Qu.: -8.0   Class :character  
-##  Median : 5.5   Median : -5.6   Mode  :character  
+##  Min.   :-1.3   Min.   :-11.8   Length:1000       
+##  1st Qu.: 2.9   1st Qu.: -8.0   Class :character  
+##  Median : 5.5   Median : -5.4   Mode  :character  
 ##  Mean   : 5.5   Mean   : -5.5                     
-##  3rd Qu.: 8.0   3rd Qu.: -3.0                     
-##  Max.   :12.6   Max.   :  1.3</code></pre>
+##  3rd Qu.: 7.9   3rd Qu.: -3.0                     
+##  Max.   :12.0   Max.   :  1.5</code></pre>
 <p>Now let’s visualize the two variables:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">V1</span>, y <span class="op">=</span> <span class="va">V2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -135,7 +156,7 @@
 <div id="simple-correlation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#simple-correlation" class="anchor"></a>Simple correlation</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>## # Correlation Matrix (pearson-method)
 ## 
@@ -153,7 +174,7 @@
 <a href="#the-simpsons-paradox" class="anchor"></a>The Simpson’s Paradox</h2>
 <p>Not so fast! Ever heard of the <a href="https://en.wikipedia.org/wiki/Simpson%27s_paradox" class="external-link"><strong>Simpson’s Paradox</strong></a>?</p>
 <p>Let’s colour our datapoints by group (by individuals):</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">V1</span>, y <span class="op">=</span> <span class="va">V2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -164,10 +185,10 @@
 <pre><code>## `geom_smooth()` using formula 'y ~ x'
 ## `geom_smooth()` using formula 'y ~ x'</code></pre>
 <p><img src="multilevel_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>Mmh, interesting. It seems like, for each subject, the relationship is different. The negative general trend seems to be created by <strong>differences between the groups</strong> and could be spurious!</p>
+<p>Mmh, interesting. It seems like, for each subject, the relationship is different. The (global) negative trend seems to be an artifact of <strong>differences between the groups</strong> and could be spurious!</p>
 <p><strong>Multilevel <em>(as in multi-group)</em> </strong> correlations allow us to account for <strong>differences between groups</strong>. It is based on a partialization of the group, entered as a random effect in a mixed linear regression.</p>
 <p>You can compute them with the <a href="https://github.com/easystats/correlation" class="external-link"><strong>correlations</strong></a> package by setting the <code>multilevel</code> argument to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
 ## ------------------------------------------------------------------
@@ -175,12 +196,12 @@
 ## 
 ## Observations: 1000</code></pre>
 <p>For completeness, let’s also see if its Bayesian cousin agrees with it:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required namespace: BayesFactor</code></pre>
 <pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
 ## ------------------------------------------------------------------
-## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.16 | &lt; .001***
+## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.13 | &lt; .001***
 ## 
 ## Observations: 1000</code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking the group into account seems to be super important.</p>
