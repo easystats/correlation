@@ -1,8 +1,8 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1.9001
-pkgdown_sha: 38f0d8a2db6e26027bc4da8ded7d035e4ddaf987
+pkgdown_sha: ddafb4ac3eff2ec4e5988b6b13bc4585e9df186c
 articles:
   multilevel: multilevel.html
   types: types.html
-last_built: 2021-03-31T07:58Z
+last_built: 2021-04-06T12:09Z
 
