@@ -8,11 +8,8 @@ cor_boot <- function(data,
                      ...) {
 
   if (!is.null(cluster)) {
-    if (!requireNamespace("tidyr", quietly = TRUE)) {
-      stop("Package `tidyr` required for clustered bootstrapping. Please install it by running `install.packages('tidyr').", call. = FALSE)
-    }
     bs_data <- data[, c(x, y, cluster)]
-    bs_data <- tidyr::nest(bs_data, data = -c(cluster))
+    bs_data <- split(bs_data, bs_data[[cluster]])
     # clustered bootstrap
     bs_results <- clusterboot(
       bs_data = bs_data,
@@ -30,15 +27,16 @@ cor_boot <- function(data,
     )
   }
 
-  bs_ci <- boot::boot.ci(bs_results, conf = ci, type = "bca", index = 2)
+  # TODO: Replace this with the r-to-z transformation
+  bs_ci <- boot::boot.ci(bs_results, conf = ci, type = "perc", index = 2)
 
   out <- data.frame(
     "Parameter1" = x,
     "Parameter2" = y,
     r = bs_results$t0[2],
-    se = sd(bs_results$t[, 2]),
-    CI_low = bs_ci$bca[[4]],
-    CI_high = bs_ci$bca[[5]],
+    SE = sd(bs_results$t[, 2]),
+    CI_low = bs_ci$percent[[4]],
+    CI_high = bs_ci$percent[[5]],
     Method = method,
     stringsAsFactors = FALSE
   )
@@ -73,9 +71,7 @@ clusterboot <- function(bs_data, method, R, ...) {
 }
 
 clusterboot_stat <- function(data, index, method) {
-  resample <- data[index, ]
-  resample <- tidyr::unnest(resample, cols = data)
-  resample <- resample[-1]
+  resample <- do.call(rbind, data[index])
   stats::cor(resample, method = method)
 }
 
