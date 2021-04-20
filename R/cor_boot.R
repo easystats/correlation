@@ -72,7 +72,7 @@ clusterboot <- function(bs_data, method, R, ...) {
 
 clusterboot_stat <- function(data, index, method) {
   resample <- do.call(rbind, data[index])
-  stats::cor(resample, method = method)
+  stats::cor(resample[, 1:2], method = method)
 }
 
 
