@@ -27,16 +27,16 @@ cor_boot <- function(data,
     )
   }
 
-  # TODO: Replace this with the r-to-z transformation
   bs_ci <- boot::boot.ci(bs_results, conf = ci, type = "perc", index = 2)
+  bs_ci <- bs_ci$percent[4:5]
 
   out <- data.frame(
     "Parameter1" = x,
     "Parameter2" = y,
-    r = bs_results$t0[2],
-    SE = sd(bs_results$t[, 2]),
-    CI_low = bs_ci$percent[[4]],
-    CI_high = bs_ci$percent[[5]],
+    r = z_to_r(bs_results$t0[2]),
+    SE = sd(z_to_r(bs_results$t[, 2])),
+    CI_low = z_to_r(bs_ci[[1]]),
+    CI_high = z_to_r(bs_ci[[2]]),
     Method = method,
     stringsAsFactors = FALSE
   )
@@ -55,8 +55,18 @@ singleboot <- function(bs_data, method, R, ...) {
   )
 }
 
+r_to_z <- function(r) {
+  0.5 * log((1 + r) / (1 - r))
+}
+
+z_to_r <- function(z) {
+  (exp(2 * z) - 1) / (exp(2 * z) + 1)
+}
+
 singleboot_stat <- function(data, index, method) {
-  stats::cor(data[index, ], method = method)
+  r <- stats::cor(data[index, ], method = method)
+  z <- r_to_z(r)
+  z
 }
 
 ## Cluster Bootstrap
@@ -72,7 +82,9 @@ clusterboot <- function(bs_data, method, R, ...) {
 
 clusterboot_stat <- function(data, index, method) {
   resample <- do.call(rbind, data[index])
-  stats::cor(resample, method = method)
+  r <- stats::cor(resample[, 1:2], method = method)
+  z <- r_to_z(r)
+  z
 }
 
 
