@@ -41,8 +41,8 @@
 )
 }
 \arguments{
-\item{object, x}{An object returned by \code{\link[=correlation]{correlation()}}
-or its summary.}
+\item{object, x}{An object returned by
+\code{\link[=correlation]{correlation()}} or its summary.}
 
 \item{format}{String, indicating the output format. Currently, only
 \code{"markdown"} is supported.}

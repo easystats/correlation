@@ -107,8 +107,6 @@ format.easycormatrix <- function(x,
 
 # Footers and Captions ----------------------------------------------------
 
-
-
 #' @keywords internal
 .format_easycorrelation_footer <- function(x, format = NULL) {
   footer <- ""
@@ -152,6 +150,7 @@ format.easycormatrix <- function(x,
   } else {
     caption <- NULL
   }
+
   caption
 }
 
@@ -161,6 +160,7 @@ format.easycormatrix <- function(x,
 #' @keywords internal
 .retrieve_arg_from_attr <- function(attri, arg, default) {
   arg_name <- deparse(substitute(arg))
+
   if (is.null(arg)) {
     if (arg_name %in% names(attri)) {
       arg <- attri[[arg_name]]
@@ -170,5 +170,6 @@ format.easycormatrix <- function(x,
       arg <- default # That's the real default
     }
   }
+
   arg
 }
