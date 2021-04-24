@@ -22,7 +22,7 @@ summary.easycorrelation <- function(object, redundant = FALSE, target_col = NULL
     }
   } else {
     target_col <- target_col[target_col %in% names(object)][1]
-    if (length(target_col) == 0) {
+    if (is.na(target_col) || length(target_col) == 0) {
       stop("`target_col` must be a column name in the correlation object.", call. = FALSE)
     }
   }
