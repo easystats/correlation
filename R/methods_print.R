@@ -14,6 +14,27 @@ print.easycorrelation <- function(x, ...) {
 print.easycormatrix <- print.easycorrelation
 
 
+#' @export
+print.easymatrixlist <- function(x, cols = "auto", ...) {
+  if (cols == "auto") {
+    cols <- c(names(x)[1], "n_Obs", "p")
+  }
+  cols <- cols[cols %in% names(x)]
+  for (i in cols) {
+    cat(" ", i, " ", "\n", rep("-", nchar(i) + 2), "\n", sep = "")
+    print(x[[i]])
+    cat("\n")
+  }
+}
+
+#' @export
+print.grouped_easymatrixlist <- function(x, cols = "auto", ...) {
+  for (i in names(x)) {
+    cat(rep("=", nchar(i) + 2), "\n ", i, " ", "\n", rep("=", nchar(i) + 2), "\n\n", sep = "")
+    print(x[[i]])
+    cat("\n")
+  }
+}
 
 # MD and HTML --------------------------------------------------------------
 

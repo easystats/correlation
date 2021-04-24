@@ -1,5 +1,5 @@
 #' @export
-summary.easycorrelation <- function(object, redundant = FALSE, ...) {
+summary.easycorrelation <- function(object, redundant = FALSE, target_col = NULL, ...) {
 
   # If data2 is present
   if (!is.null(attributes(object)$data2)) {
@@ -14,10 +14,18 @@ summary.easycorrelation <- function(object, redundant = FALSE, ...) {
     object <- .add_redundant(object)
   }
 
-  target_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median", "Dxy")][1]
-  if (is.na(target_col)) {
-    target_col <- names(object)[!names(object) %in% c("Parameter1", "Parameter2")][1]
+  if (is.null(target_col)) {
+    target_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median", "Dxy")][1]
+    if (is.na(target_col)) {
+      target_col <- names(object)[!names(object) %in% c("Parameter1", "Parameter2")][1]
+    }
+  } else {
+    target_col <- target_col[target_col %in% names(object)][1]
+    if (length(target_col) == 0) {
+      stop("`target_col` must be a column name in the correlation object.", call. = FALSE)
+    }
   }
+
   out <- .create_matrix(frame, object, column = target_col, redundant = redundant)
 
   # Fill attributes
@@ -73,6 +81,23 @@ as.matrix.easycorrelation <- function(x, ...) {
 }
 
 
+#' @export
+as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
+
+  if (inherits(x, "grouped_easycorrelation")) {
+    lx <- split(x, x$Group)
+    lx <- lapply(lx, .create_matrix_list, cols = cols)
+
+  } else {
+    lx <- .create_matrix_list(x, cols = cols)
+  }
+
+  if (inherits(x, "grouped_easycorrelation")) {
+    class(lx) <- c("grouped_easymatrixlist", "easymatrixlist")
+  }
+
+  return(lx)
+}
 
 
 
@@ -147,4 +172,41 @@ plot.easycormatrix <- function(x, ...) {
   }
 
   frame
+}
+
+
+#' @keywords internal
+.create_matrix_list <- function(object, cols = NULL, redundant = FALSE, ...) {
+
+  if (inherits(object, "grouped_easycorrelation")) {
+    class(object) <- class(object)[class(object) != "grouped_easycorrelation"]
+  }
+
+  if (is.null(cols)) {
+    cols <- colnames(object)[!colnames(object) %in% c("Group", "Parameter1", "Parameter2")]
+  }
+
+  sx <- summary(object = object, redundant = redundant, ...)
+
+  .corr <- sx
+  attributes(.corr) <- attributes(.corr)[c("names", "row.names")]
+  class(.corr) <- c("easycormatrix", "data.frame")
+
+  lx <- c(
+    list(coefficient = .corr),
+    attributes(sx)[cols[cols %in% names(attributes(sx))]]
+  )
+  lx <- lapply(
+    lx,
+    `attributes<-`,
+    value = attributes(.corr)
+  )
+  names(lx)[1] <- attributes(sx)$coefficient_name
+
+  attributes(lx) <- c(
+    attributes(lx),
+    class = "easymatrixlist",
+    attributes(sx)[!names(attributes(sx)) %in% c("names", "row.names", "class", "coefficient_name", names(lx))]
+  )
+  return(lx)
 }
