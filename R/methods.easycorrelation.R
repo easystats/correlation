@@ -1,7 +1,11 @@
+# target_col argument can be used to matrix-fy a specific column.
 # @examples
-# summary(correlation(mtcars))
+# summary(correlation(mtcars), target_col = "p")
 #' @export
-summary.easycorrelation <- function(object, redundant = FALSE, target_col = NULL, ...) {
+summary.easycorrelation <- function(object,
+                                    redundant = FALSE,
+                                    target_col = NULL,
+                                    ...) {
 
   # If data2 is present
   if (!is.null(attributes(object)$data2)) {
