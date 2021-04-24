@@ -106,10 +106,6 @@ test_that("comparison with other packages", {
 
 
 
-
-
-
-
 # Size
 test_that("format checks", {
   out <- correlation(iris, include_factors = TRUE)
@@ -163,13 +159,6 @@ test_that("format checks", {
 })
 
 
-
-
-
-
-
-
-
 test_that("specific types", {
   data <- data.frame(
     x = as.ordered(sample(1:5, 20, TRUE)),
@@ -177,4 +166,9 @@ test_that("specific types", {
   )
 
   correlation(data, method = "polychoric")
+})
+
+test_that("as.data.frame for correlation output", {
+  set.seed(123)
+  expect_snapshot(as.data.frame(correlation(ggplot2::msleep)))
 })

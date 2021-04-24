@@ -4,8 +4,8 @@
 #' @description Export tables (i.e. data frame) into different output formats.
 #'   \code{print_md()} is a alias for \code{display(format = "markdown")}.
 #'
-#' @param object,x An object returned by \code{\link[=correlation]{correlation()}}
-#'   or its summary.
+#' @param object,x An object returned by
+#'   \code{\link[=correlation]{correlation()}} or its summary.
 #' @param format String, indicating the output format. Currently, only
 #'   \code{"markdown"} is supported.
 #' @param digits,p_digits To do...
@@ -83,8 +83,6 @@ display.easycorrelation <- function(object,
     )
   }
 }
-
-
 
 
 # Reexports models ------------------------

@@ -1,3 +1,5 @@
+# @examples
+# summary(correlation(mtcars))
 #' @export
 summary.easycorrelation <- function(object, redundant = FALSE, target_col = NULL, ...) {
 
@@ -7,7 +9,6 @@ summary.easycorrelation <- function(object, redundant = FALSE, target_col = NULL
   }
 
   frame <- .get_matrix(object, square = redundant)
-
 
   # Add redundant
   if (redundant) {
@@ -35,8 +36,7 @@ summary.easycorrelation <- function(object, redundant = FALSE, target_col = NULL
   }
 
   # Transfer attributes
-  attributes(out) <-
-    c(attributes(out), attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))])
+  attributes(out) <- c(attributes(out), attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))])
   attributes(out) <- c(attributes(out), list(...))
   attr(out, "redundant") <- redundant
   attr(out, "coefficient_name") <- target_col
@@ -51,17 +51,14 @@ summary.easycorrelation <- function(object, redundant = FALSE, target_col = NULL
 }
 
 
-
 #' @export
 as.table.easycorrelation <- function(x, ...) {
   .Deprecated("summary(..., redundant = TRUE)")
   summary(x, redundant = TRUE)
 }
 
-
-
-
-
+# @examples
+# as.matrix(correlation(mtcars))
 #' @export
 as.matrix.easycorrelation <- function(x, ...) {
   mat <- summary(x, redundant = TRUE)
@@ -80,7 +77,8 @@ as.matrix.easycorrelation <- function(x, ...) {
   as.matrix(mat)
 }
 
-
+# @examples
+# as.list(correlation(mtcars))
 #' @export
 as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
   if (inherits(x, "grouped_easycorrelation")) {
@@ -98,8 +96,6 @@ as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
 }
 
 
-
-
 # plot ----------------------------
 
 #' @export
@@ -112,9 +108,7 @@ plot.easycormatrix <- function(x, ...) {
 }
 
 
-
 # Internals ---------------------------------------------------------------
-
 
 #' @keywords internal
 .create_matrix <- function(frame, object, column = "r", redundant = TRUE) {
@@ -130,6 +124,7 @@ plot.easycormatrix <- function(x, ...) {
   } else {
     out <- .fill_matrix(frame, object, column = column, redundant = redundant)
   }
+
   out
 }
 
