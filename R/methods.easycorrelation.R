@@ -83,11 +83,9 @@ as.matrix.easycorrelation <- function(x, ...) {
 
 #' @export
 as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
-
   if (inherits(x, "grouped_easycorrelation")) {
     lx <- split(x, x$Group)
     lx <- lapply(lx, .create_matrix_list, cols = cols)
-
   } else {
     lx <- .create_matrix_list(x, cols = cols)
   }
@@ -109,16 +107,13 @@ plot.easycormatrix <- function(x, ...) {
   if (!requireNamespace("see", quietly = TRUE)) {
     stop("Package 'see' needed to plot correlation graphs. Please install it by running `install.packages('see')`.")
   }
+
   NextMethod()
 }
 
 
 
-
-
-
 # Internals ---------------------------------------------------------------
-
 
 
 #' @keywords internal
@@ -137,18 +132,6 @@ plot.easycormatrix <- function(x, ...) {
   }
   out
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #' @keywords internal
@@ -177,7 +160,6 @@ plot.easycormatrix <- function(x, ...) {
 
 #' @keywords internal
 .create_matrix_list <- function(object, cols = NULL, redundant = FALSE, ...) {
-
   if (inherits(object, "grouped_easycorrelation")) {
     class(object) <- class(object)[class(object) != "grouped_easycorrelation"]
   }
@@ -196,11 +178,13 @@ plot.easycormatrix <- function(x, ...) {
     list(coefficient = .corr),
     attributes(sx)[cols[cols %in% names(attributes(sx))]]
   )
+
   lx <- lapply(
     lx,
     `attributes<-`,
     value = attributes(.corr)
   )
+
   names(lx)[1] <- attributes(sx)$coefficient_name
 
   attributes(lx) <- c(
@@ -208,5 +192,6 @@ plot.easycormatrix <- function(x, ...) {
     class = "easymatrixlist",
     attributes(sx)[!names(attributes(sx)) %in% c("names", "row.names", "class", "coefficient_name", names(lx))]
   )
+
   return(lx)
 }
