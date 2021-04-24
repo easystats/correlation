@@ -125,7 +125,7 @@
 <hr>
 <div id="different-methods-for-correlations" class="section level2">
 <h2 class="hasAnchor">
-<a href="#different-methods-for-correlations" class="anchor"></a>Different Methods for Correlations</h2>
+<a href="#different-methods-for-correlations" class="anchor" aria-hidden="true"></a>Different Methods for Correlations</h2>
 <p>Correlations tests are arguably one of the most commonly used statistical procedures, and are used as a basis in many applications such as exploratory data analysis, structural modeling, data engineering, etc. In this context, we present <strong>correlation</strong>, a toolbox for the R language <span class="citation">(R Core Team 2019)</span> and part of the <a href="https://github.com/easystats/easystats" class="external-link"><strong>easystats</strong></a> collection, focused on correlation analysis. Its goal is to be lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as:</p>
 <ul>
 <li>
@@ -165,7 +165,7 @@
 </div>
 <div id="comparison" class="section level2">
 <h2 class="hasAnchor">
-<a href="#comparison" class="anchor"></a>Comparison</h2>
+<a href="#comparison" class="anchor" aria-hidden="true"></a>Comparison</h2>
 <p>We will fit different types of correlations of generated data with different link strengths and link types.</p>
 <p>Let’s first load the required libraries for this analysis.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -177,7 +177,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
 <div id="utility-functions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#utility-functions" class="anchor"></a>Utility functions</h3>
+<a href="#utility-functions" class="anchor" aria-hidden="true"></a>Utility functions</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">generate_results</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span>, <span class="va">n</span> <span class="op">=</span> <span class="fl">100</span>, <span class="va">transformation</span> <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">bayestestR</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/simulate_correlation.html" class="external-link">simulate_correlation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>, r <span class="op">=</span> <span class="va">r</span><span class="op">)</span>
@@ -202,7 +202,7 @@
 </div>
 <div id="effect-of-relationship-type" class="section level3">
 <h3 class="hasAnchor">
-<a href="#effect-of-relationship-type" class="anchor"></a>Effect of Relationship Type</h3>
+<a href="#effect-of-relationship-type" class="anchor" aria-hidden="true"></a>Effect of Relationship Type</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">r</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.999</span>, length.out <span class="op">=</span> <span class="fl">200</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -264,7 +264,7 @@
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
+<a href="#references" class="anchor" aria-hidden="true"></a>References</h1>
 <div id="refs" class="references">
 <div id="ref-bishara2017confidence">
 <p>Bishara, Anthony J, and James B Hittner. 2017. “Confidence Intervals for Correlations When Data Are Not Normal.” <em>Behavior Research Methods</em> 49 (1): 294–309. <a href="https://doi.org/10.3758/s13428-016-0702-8" class="external-link">https://doi.org/10.3758/s13428-016-0702-8</a>.</p>

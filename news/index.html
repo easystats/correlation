@@ -142,11 +142,11 @@
 
     <div id="correlation-061" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.1">
-<a href="#correlation-061" class="anchor"></a>correlation 0.6.1<small> 2021-04-09 </small>
+<a href="#correlation-061" class="anchor" aria-hidden="true"></a>correlation 0.6.1<small> 2021-04-09 </small>
 </h1>
 <div id="breaking-changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking Changes</h2>
+<a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking Changes</h2>
 <ul>
 <li>
 <code>simualte_simpson()</code>: The groups are now named after the pattern “G_” (can be altered with the <code>group_prefix</code> argument).</li>
@@ -156,7 +156,7 @@
 </div>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New Features</h2>
+<a href="#new-features" class="anchor" aria-hidden="true"></a>New Features</h2>
 <ul>
 <li><p><code>correlation</code> gains two new arguments: <code>select</code> and <code>select2</code> to select specific variables from dataframes to compare (<a href='https://github.com/easystats/correlation/issues/146'>#146</a>).</p></li>
 <li><p><code>as.matrix</code> method works for grouped correlations (<a href='https://github.com/easystats/correlation/issues/148'>#148</a>).</p></li>
@@ -164,7 +164,7 @@
 </div>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h2>
+<a href="#bug-fixes" class="anchor" aria-hidden="true"></a>Bug Fixes</h2>
 <ul>
 <li>The <code>0.6.0</code> release introduced a bug in Winsorized Pearson correlation where the missing values were removed from the entire data, instead for each pair (<a href='https://github.com/easystats/correlation/issues/151'>#151</a>). This is now fixed.</li>
 </ul>
@@ -172,11 +172,11 @@
 </div>
     <div id="correlation-060" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.0">
-<a href="#correlation-060" class="anchor"></a>correlation 0.6.0<small> 2021-02-12 </small>
+<a href="#correlation-060" class="anchor" aria-hidden="true"></a>correlation 0.6.0<small> 2021-02-12 </small>
 </h1>
 <div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New Features</h2>
+<a href="#new-features-1" class="anchor" aria-hidden="true"></a>New Features</h2>
 <ul>
 <li><p>Added <code>verbose</code> arguments to some functions, to toggle warnings on/off.</p></li>
 <li><p><code><a href="../reference/cor_test.html">cor_test()</a></code> (and hence, <code><a href="../reference/correlation.html">correlation()</a></code>) now default the <code>winsorize</code> argument to <code>.1</code> when it’s set to <code>TRUE</code>.</p></li>
@@ -185,14 +185,14 @@
 </div>
 <div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h2>
+<a href="#bug-fixes-1" class="anchor" aria-hidden="true"></a>Bug Fixes</h2>
 <ul>
 <li>Winsorization doesn’t fail when <code>NA</code>s are present (<a href='https://github.com/easystats/correlation/issues/130'>#130</a>).</li>
 </ul>
 </div>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes" class="anchor"></a>Minor Changes</h2>
+<a href="#minor-changes" class="anchor" aria-hidden="true"></a>Minor Changes</h2>
 <ul>
 <li>Fixed CRAN check issues due to changes in dependent packages.</li>
 </ul>
@@ -200,11 +200,11 @@
 </div>
     <div id="correlation-050" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.0">
-<a href="#correlation-050" class="anchor"></a>correlation 0.5.0<small> 2020-12-02 </small>
+<a href="#correlation-050" class="anchor" aria-hidden="true"></a>correlation 0.5.0<small> 2020-12-02 </small>
 </h1>
 <div id="changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes" class="anchor"></a>Changes</h2>
+<a href="#changes" class="anchor" aria-hidden="true"></a>Changes</h2>
 <ul>
 <li><p>Added <code><a href="../reference/winsorize.html">winsorize()</a></code> function.</p></li>
 <li><p>Added <code>winsorize</code> argument for Winsorized correlations.</p></li>
@@ -214,7 +214,7 @@
 </div>
 <div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
 <ul>
 <li>Fix bug in <code><a href="../reference/cor_to_p.html">cor_to_p()</a></code> that gave slightly different test statistics.</li>
 </ul>
@@ -222,11 +222,11 @@
 </div>
     <div id="correlation-040" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.0">
-<a href="#correlation-040" class="anchor"></a>correlation 0.4.0<small> 2020-09-27 </small>
+<a href="#correlation-040" class="anchor" aria-hidden="true"></a>correlation 0.4.0<small> 2020-09-27 </small>
 </h1>
 <div id="changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-1" class="anchor"></a>Changes</h2>
+<a href="#changes-1" class="anchor" aria-hidden="true"></a>Changes</h2>
 <ul>
 <li><p>Don’t error if less than 3 valid observations (<a href="https://github.com/easystats/correlation/issues/100" class="external-link"><a href='https://github.com/easystats/correlation/issues/100'>#100</a></a>).</p></li>
 <li><p>Add “gaussian” rank method.</p></li>
@@ -237,7 +237,7 @@
 </div>
 <div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
 <ul>
 <li><p>Added <code>Method</code> column to Bayesian correlations.</p></li>
 <li><p>Fix bug when <code>robust=TRUE</code> (<a href="https://github.com/easystats/effectsize/issues/87" class="external-link"><a href='https://github.com/easystats/correlation/issues/87'>#87</a></a>).</p></li>
@@ -246,24 +246,24 @@
 </div>
     <div id="correlation-030" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.0">
-<a href="#correlation-030" class="anchor"></a>correlation 0.3.0<small> 2020-06-19 </small>
+<a href="#correlation-030" class="anchor" aria-hidden="true"></a>correlation 0.3.0<small> 2020-06-19 </small>
 </h1>
 <div id="changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-2" class="anchor"></a>Changes</h2>
+<a href="#changes-2" class="anchor" aria-hidden="true"></a>Changes</h2>
 </div>
 <div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
 </div>
 </div>
     <div id="correlation-021" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.1">
-<a href="#correlation-021" class="anchor"></a>correlation 0.2.1<small> 2020-05-05 </small>
+<a href="#correlation-021" class="anchor" aria-hidden="true"></a>correlation 0.2.1<small> 2020-05-05 </small>
 </h1>
 <div id="changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-3" class="anchor"></a>Changes</h2>
+<a href="#changes-3" class="anchor" aria-hidden="true"></a>Changes</h2>
 <ul>
 <li><p>Added confidence intervals CI support for Spearman and Kendall (<a href='https://github.com/easystats/correlation/issues/80'>#80</a>)</p></li>
 <li><p>Improved documentation (<a href='https://github.com/easystats/correlation/issues/45'>#45</a>, <a href='https://github.com/easystats/correlation/issues/63'>#63</a>)</p></li>
@@ -271,7 +271,7 @@
 </div>
 <div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-5" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
 <ul>
 <li><p>Removed CI threshold column from <code><a href="../reference/distance_mahalanobis.html">distance_mahalanobis()</a></code></p></li>
 <li><p>Fixed bug (<a href='https://github.com/easystats/correlation/issues/76'>#76</a>)</p></li>
@@ -280,18 +280,18 @@
 </div>
     <div id="correlation-020" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.0">
-<a href="#correlation-020" class="anchor"></a>correlation 0.2.0<small> 2020-04-09 </small>
+<a href="#correlation-020" class="anchor" aria-hidden="true"></a>correlation 0.2.0<small> 2020-04-09 </small>
 </h1>
 <div id="changes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-4" class="anchor"></a>Changes</h2>
+<a href="#changes-4" class="anchor" aria-hidden="true"></a>Changes</h2>
 <ul>
 <li>Some changes were made.</li>
 </ul>
 </div>
 <div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
 <ul>
 <li>Some bugs were fixed.</li>
 </ul>
@@ -299,11 +299,11 @@
 </div>
     <div id="correlation-010" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.0">
-<a href="#correlation-010" class="anchor"></a>correlation 0.1.0<small> 2020-03-16 </small>
+<a href="#correlation-010" class="anchor" aria-hidden="true"></a>correlation 0.1.0<small> 2020-03-16 </small>
 </h1>
 <div id="changes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-5" class="anchor"></a>Changes</h2>
+<a href="#changes-5" class="anchor" aria-hidden="true"></a>Changes</h2>
 <ul>
 <li><p>Initial CRAN release.</p></li>
 <li><p>Add <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>-method for <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>.</p></li>
@@ -311,7 +311,7 @@
 </div>
 <div id="bug-fixes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-7" class="anchor" aria-hidden="true"></a>Bug fixes</h2>
 <ul>
 <li><p>Fixed issue in <code><a href="../reference/correlation.html">correlation()</a></code> for some edge cases when <code>include_factors = TRUE</code>.</p></li>
 <li><p>Fixed issue in <code><a href="../reference/correlation.html">correlation()</a></code> for correlation coefficients with less than four complete pairs of observations (in such cases, <code><a href="../reference/cor_test.html">cor_test()</a></code> now returns <code>NA</code> for the confidence intervals).</p></li>
