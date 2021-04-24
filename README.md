@@ -21,9 +21,8 @@ partial multilevel correlation*).
 You can reference the package and its documentation as follows:
 
 Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019).
-*Methods and Algorithms for Correlation Analysis in R*. Journal of Open
-Source Software, *5*(51), 2306.
-[10.21105/joss.02306](https://doi.org/10.21105/joss.02306)
+Methods and Algorithms for Correlation Analysis in R. *Journal of Open
+Source Software*, *5*(51), 2306. <https://doi.org/10.21105/joss.02306>
 
 ## Installation
 
@@ -137,7 +136,7 @@ Note that one can also obtain the full, **square** and redundant matrix
 using:
 
 ``` r
-summary(results, redundant=TRUE)
+summary(results, redundant = TRUE)
 ## # Correlation Matrix (pearson-method)
 ## 
 ## Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
@@ -154,8 +153,8 @@ summary(results, redundant=TRUE)
 library(dplyr)
 library(see)
 
-results %>% 
-  summary(redundant=TRUE) %>% 
+results %>%
+  summary(redundant = TRUE) %>%
   plot()
 ```
 
@@ -167,9 +166,9 @@ The function also supports **stratified correlations**, all within the
 *tidyverse* workflow!
 
 ``` r
-iris %>% 
-  select(Species, Sepal.Length, Sepal.Width, Petal.Width) %>% 
-  group_by(Species) %>% 
+iris %>%
+  select(Species, Sepal.Length, Sepal.Width, Petal.Width) %>%
+  group_by(Species) %>%
   correlation()
 ## # Correlation Matrix (pearson-method)
 ## 
@@ -199,11 +198,11 @@ correlation(iris, bayesian = TRUE)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |        BF |         Prior
 ## ------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] |  91.70% |    43.38% |     0.509 | Beta (3 +- 3)
-## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.84] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Sepal.Width  | Petal.Length | -0.41 | [-0.53, -0.31] | 100%*** |     0.03% | > 1000*** | Beta (3 +- 3)
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.25] | 100%*** |     0.15% | > 1000*** | Beta (3 +- 3)
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.01] |  91.57% |    42.88% |     0.509 | Beta (3 +- 3)
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
+## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
 ## 
 ## Observations: 150
@@ -252,8 +251,8 @@ It also supports **partial correlations** (as well as Bayesian partial
 correlations).
 
 ``` r
-iris %>% 
-  correlation(partial = TRUE) %>% 
+iris %>%
+  correlation(partial = TRUE) %>%
   summary()
 ## # Correlation Matrix (pearson-method)
 ## 
@@ -280,8 +279,8 @@ al.,
 library(see) # for plotting
 library(ggraph) # needs to be loaded
 
-mtcars %>% 
-  correlation(partial = TRUE) %>% 
+mtcars %>%
+  correlation(partial = TRUE) %>%
   plot()
 ```
 
@@ -290,13 +289,14 @@ mtcars %>%
 ## Multilevel Correlations
 
 It also provide some cutting-edge methods, such as Multilevel (partial)
-correlations. These are are partial correlations based on **linear mixed
-models** that include the factors as random effects. They can be see as
-correlations *adjusted* for some group (*hierarchical*) variability.
+correlations. These are are partial correlations based on linear
+mixed-effects models that include the factors as **random effects**.
+They can be see as correlations *adjusted* for some group
+(*hierarchical*) variability.
 
 ``` r
-iris %>% 
-  correlation(partial = TRUE, multilevel = TRUE) %>% 
+iris %>%
+  correlation(partial = TRUE, multilevel = TRUE) %>%
   summary()
 ## # Correlation Matrix (pearson-method)
 ## 
@@ -314,8 +314,8 @@ convert the partial coefficient into regular ones.These can be
 **converted back** to full correlations:
 
 ``` r
-iris %>% 
-  correlation(partial = FALSE, multilevel = TRUE) %>% 
+iris %>%
+  correlation(partial = FALSE, multilevel = TRUE) %>%
   summary()
 ## Parameter    | Petal.Width | Petal.Length | Sepal.Width
 ## -------------------------------------------------------

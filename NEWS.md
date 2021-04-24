@@ -2,15 +2,20 @@
 
 ## Breaking Changes
 
-- `simualte_simpson()`: The groups are now named after the pattern "G_" (can be altered with the `group_prefix` argument).
+- `simualte_simpson()`: The groups are now named after the pattern "G_" (can be
+  altered with the `group_prefix` argument).
+
 - `robust` argument deprecated in favour of `ranktransform`.
 
 ## New Features
 
 - `correlation` gains two new arguments: `select` and `select2` to select
   specific variables from dataframes to compare (#146).
-  
+
 - `as.matrix` method works for grouped correlations (#148).
+
+- New `as.list` method returns a list of various matrices related to correlation
+  analysis (correlation, number of observations, *p*-values, etc.).
 
 ## Bug Fixes
 
