@@ -102,7 +102,7 @@
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor" aria-hidden="true"></a>Citation</h2>
 <p>You can reference the package and its documentation as follows:</p>
-<p>Makowski, D., Ben-Shachar, M. S., Patil, I., &amp; Lüdecke, D. (2019). <em>Methods and Algorithms for Correlation Analysis in R</em>. Journal of Open Source Software, <em>5</em>(51), 2306. <a href="https://doi.org/10.21105/joss.02306" class="external-link">10.21105/joss.02306</a></p>
+<p>Makowski, D., Ben-Shachar, M. S., Patil, I., &amp; Lüdecke, D. (2019). Methods and Algorithms for Correlation Analysis in R. <em>Journal of Open Source Software</em>, <em>5</em>(51), 2306. <a href="https://doi.org/10.21105/joss.02306" class="external-link uri">https://doi.org/10.21105/joss.02306</a></p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -220,7 +220,7 @@
 <span class="co">## p-value adjustment method: Holm (1979)</span></code></pre></div>
 <p>Note that one can also obtain the full, <strong>square</strong> and redundant matrix using:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span>, redundant<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span>, redundant <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
 <span class="co">## Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width</span>
@@ -235,8 +235,8 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/see/" class="external-link">see</a></span><span class="op">)</span>
 
-<span class="va">results</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span>redundant<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">results</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span>redundant <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-7-1.png"><!-- --></p>
 </div>
@@ -245,9 +245,9 @@
 <a href="#grouped-dataframes" class="anchor" aria-hidden="true"></a>Grouped dataframes</h2>
 <p>The function also supports <strong>stratified correlations</strong>, all within the <em>tidyverse</em> workflow!</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Petal.Width</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Petal.Width</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
@@ -276,11 +276,11 @@
 <span class="co">## </span>
 <span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |        BF |         Prior</span>
 <span class="co">## ------------------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.01] |  91.70% |    43.38% |     0.509 | Beta (3 +- 3)</span>
-<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
-<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.84] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
-<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.53, -0.31] | 100%*** |     0.03% | &gt; 1000*** | Beta (3 +- 3)</span>
-<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.25] | 100%*** |     0.15% | &gt; 1000*** | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.01] |  91.57% |    42.88% |     0.509 | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
+<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
 <span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | &gt; 1000*** | Beta (3 +- 3)</span>
 <span class="co">## </span>
 <span class="co">## Observations: 150</span></code></pre></div>
@@ -325,8 +325,8 @@
 <a href="#partial-correlations" class="anchor" aria-hidden="true"></a>Partial Correlations</h2>
 <p>It also supports <strong>partial correlations</strong> (as well as Bayesian partial correlations).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
@@ -346,18 +346,18 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/see/" class="external-link">see</a></span><span class="op">)</span> <span class="co"># for plotting</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">ggraph</span><span class="op">)</span> <span class="co"># needs to be loaded</span>
 
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">mtcars</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-12-1.png"><!-- --></p>
 </div>
 <div id="multilevel-correlations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multilevel-correlations" class="anchor" aria-hidden="true"></a>Multilevel Correlations</h2>
-<p>It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on <strong>linear mixed models</strong> that include the factors as random effects. They can be see as correlations <em>adjusted</em> for some group (<em>hierarchical</em>) variability.</p>
+<p>It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on linear mixed-effects models that include the factors as <strong>random effects</strong>. They can be see as correlations <em>adjusted</em> for some group (<em>hierarchical</em>) variability.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
@@ -370,8 +370,8 @@
 <span class="co">## p-value adjustment method: Holm (1979)</span></code></pre></div>
 <p>However, if the <code>partial</code> argument is set to <code>FALSE</code>, it will try to convert the partial coefficient into regular ones.These can be <strong>converted back</strong> to full correlations:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">FALSE</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">FALSE</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">## Parameter    | Petal.Width | Petal.Length | Sepal.Width</span>
 <span class="co">## -------------------------------------------------------</span>

@@ -148,10 +148,8 @@
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking Changes</h2>
 <ul>
-<li>
-<code>simualte_simpson()</code>: The groups are now named after the pattern “G_” (can be altered with the <code>group_prefix</code> argument).</li>
-<li>
-<code>robust</code> argument deprecated in favour of <code>ranktransform</code>.</li>
+<li><p><code>simualte_simpson()</code>: The groups are now named after the pattern “G_” (can be altered with the <code>group_prefix</code> argument).</p></li>
+<li><p><code>robust</code> argument deprecated in favour of <code>ranktransform</code>.</p></li>
 </ul>
 </div>
 <div id="new-features" class="section level2">
@@ -160,6 +158,7 @@
 <ul>
 <li><p><code>correlation</code> gains two new arguments: <code>select</code> and <code>select2</code> to select specific variables from dataframes to compare (<a href='https://github.com/easystats/correlation/issues/146'>#146</a>).</p></li>
 <li><p><code>as.matrix</code> method works for grouped correlations (<a href='https://github.com/easystats/correlation/issues/148'>#148</a>).</p></li>
+<li><p>New <code>as.list</code> method returns a list of various matrices related to correlation analysis (correlation, number of observations, <em>p</em>-values, etc.).</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level2">
