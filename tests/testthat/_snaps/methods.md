@@ -1,7 +1,7 @@
 # summary.correlation - target column
 
     Code
-      summary(correlation(ggplot2::msleep), target_col = "t")
+      summary(correlation(ggplot2::msleep), target = "t")
     Output
       # Correlation Matrix (pearson-method)
       
@@ -18,7 +18,7 @@
 ---
 
     Code
-      summary(correlation(ggplot2::msleep), target_col = "df_error")
+      summary(correlation(ggplot2::msleep), target = "df_error")
     Output
       # Correlation Matrix (pearson-method)
       
@@ -35,7 +35,7 @@
 ---
 
     Code
-      summary(correlation(ggplot2::msleep), target_col = "p")
+      summary(correlation(ggplot2::msleep), target = "p")
     Output
       # Correlation Matrix (pearson-method)
       
