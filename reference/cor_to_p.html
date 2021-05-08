@@ -208,99 +208,111 @@ other methods. See <code><a href='https://rdrr.io/r/stats/cor.test.html'>stats::
   294-309.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Pearson's product-moment correlation
-#&gt; 
-#&gt; data:  iris$Sepal.Length and iris$Sepal.Width
-#&gt; t = -1.4403, df = 148, p-value = 0.1519
-#&gt; alternative hypothesis: true correlation is not equal to 0
-#&gt; 95 percent confidence interval:
-#&gt;  -0.27269325  0.04351158
-#&gt; sample estimates:
-#&gt;        cor 
-#&gt; -0.1175698 
-#&gt; </div><div class='input'><span class='fu'><a href='cor_to_p.html'>cor_to_p</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.1175698</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $p
-#&gt; [1] 0.1518982
-#&gt; 
-#&gt; $statistic
-#&gt; [1] -1.440287
-#&gt; </div><div class='input'><span class='fu'><a href='cor_to_p.html'>cor_to_p</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $p
-#&gt;              Sepal.Length  Sepal.Width Petal.Length  Petal.Width
-#&gt; Sepal.Length 0.000000e+00 1.518983e-01 1.038667e-47 2.325498e-37
-#&gt; Sepal.Width  1.518983e-01 0.000000e+00 4.513314e-08 4.073229e-06
-#&gt; Petal.Length 1.038667e-47 4.513314e-08 0.000000e+00 4.675004e-86
-#&gt; Petal.Width  2.325498e-37 4.073229e-06 4.675004e-86 0.000000e+00
-#&gt; 
-#&gt; $statistic
-#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length          Inf   -1.440287    21.646019   17.296454
-#&gt; Sepal.Width     -1.440287         Inf    -5.768449   -4.786461
-#&gt; Petal.Length    21.646019   -5.768449          Inf   43.387237
-#&gt; Petal.Width     17.296454   -4.786461    43.387237         Inf
-#&gt; </div><div class='input'><span class='fu'><a href='cor_to_p.html'>cor_to_ci</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.1175698</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $CI_low
-#&gt; [1] -0.2726933
-#&gt; 
-#&gt; $CI_high
-#&gt; [1] 0.04351157
-#&gt; </div><div class='input'><span class='fu'><a href='cor_to_p.html'>cor_to_ci</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $CI_low
-#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length    1.0000000  -0.2726932    0.8270363   0.7568971
-#&gt; Sepal.Width    -0.2726932   1.0000000   -0.5508771  -0.4972130
-#&gt; Petal.Length    0.8270363  -0.5508771    1.0000000   0.9490525
-#&gt; Petal.Width     0.7568971  -0.4972130    0.9490525   1.0000000
-#&gt; 
-#&gt; $CI_high
-#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length   1.00000000  0.04351158    0.9055080   0.8648361
-#&gt; Sepal.Width    0.04351158  1.00000000   -0.2879499  -0.2186966
-#&gt; Petal.Length   0.90550805 -0.28794993    1.0000000   0.9729853
-#&gt; Petal.Width    0.86483606 -0.21869663    0.9729853   1.0000000
-#&gt; </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Cannot compute exact p-value with ties</span></div><div class='output co'>#&gt; 
-#&gt; 	Spearman's rank correlation rho
-#&gt; 
-#&gt; data:  iris$Sepal.Length and iris$Sepal.Width
-#&gt; S = 656283, p-value = 0.04137
-#&gt; alternative hypothesis: true rho is not equal to 0
-#&gt; sample estimates:
-#&gt;        rho 
-#&gt; -0.1667777 
-#&gt; </div><div class='input'><span class='fu'><a href='cor_to_p.html'>cor_to_p</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.1667777</span>, n <span class='op'>=</span> <span class='fl'>150</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $p
-#&gt; [1] 0.04136794
-#&gt; 
-#&gt; $statistic
-#&gt; [1] -2.057758
-#&gt; </div><div class='input'><span class='fu'><a href='cor_to_p.html'>cor_to_ci</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.1667777</span>, ci <span class='op'>=</span> <span class='fl'>0.95</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $CI_low
-#&gt; [1] -0.3185257
-#&gt; 
-#&gt; $CI_high
-#&gt; [1] -0.006695121
-#&gt; </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Kendall's rank correlation tau
-#&gt; 
-#&gt; data:  iris$Sepal.Length and iris$Sepal.Width
-#&gt; z = -1.3318, p-value = 0.1829
-#&gt; alternative hypothesis: true tau is not equal to 0
-#&gt; sample estimates:
-#&gt;         tau 
-#&gt; -0.07699679 
-#&gt; </div><div class='input'><span class='fu'><a href='cor_to_p.html'>cor_to_p</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.07699679</span>, n <span class='op'>=</span> <span class='fl'>150</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Estimation for Kendall's correlation is not perfectly correct. Help us to improve it.</span></div><div class='output co'>#&gt; $p
-#&gt; [1] 0.1620545
-#&gt; 
-#&gt; $statistic
-#&gt; [1] -1.398195
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Pearson's product-moment correlation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data:  iris$Sepal.Length and iris$Sepal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> t = -1.4403, df = 148, p-value = 0.1519</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alternative hypothesis: true correlation is not equal to 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 95 percent confidence interval:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  -0.27269325  0.04351158</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample estimates:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        cor </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -0.1175698 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='cor_to_p.html'>cor_to_p</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.1175698</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1518982</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $statistic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -1.440287</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='cor_to_p.html'>cor_to_p</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length  Sepal.Width Petal.Length  Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length 0.000000e+00 1.518983e-01 1.038667e-47 2.325498e-37</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width  1.518983e-01 0.000000e+00 4.513314e-08 4.073229e-06</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length 1.038667e-47 4.513314e-08 0.000000e+00 4.675004e-86</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width  2.325498e-37 4.073229e-06 4.675004e-86 0.000000e+00</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $statistic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length          Inf   -1.440287    21.646019   17.296454</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width     -1.440287         Inf    -5.768449   -4.786461</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length    21.646019   -5.768449          Inf   43.387237</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width     17.296454   -4.786461    43.387237         Inf</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='cor_to_p.html'>cor_to_ci</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.1175698</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $CI_low</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.2726933</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $CI_high</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.04351157</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='cor_to_p.html'>cor_to_ci</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $CI_low</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length    1.0000000  -0.2726932    0.8270363   0.7568971</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width    -0.2726932   1.0000000   -0.5508771  -0.4972130</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length    0.8270363  -0.5508771    1.0000000   0.9490525</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width     0.7568971  -0.4972130    0.9490525   1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $CI_high</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length   1.00000000  0.04351158    0.9055080   0.8648361</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width    0.04351158  1.00000000   -0.2879499  -0.2186966</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length   0.90550805 -0.28794993    1.0000000   0.9729853</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width    0.86483606 -0.21869663    0.9729853   1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Cannot compute exact p-value with ties</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Spearman's rank correlation rho</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data:  iris$Sepal.Length and iris$Sepal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> S = 656283, p-value = 0.04137</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alternative hypothesis: true rho is not equal to 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample estimates:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        rho </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -0.1667777 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='cor_to_p.html'>cor_to_p</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.1667777</span>, n <span class='op'>=</span> <span class='fl'>150</span>, method <span class='op'>=</span> <span class='st'>"spearman"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.04136794</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $statistic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -2.057758</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='cor_to_p.html'>cor_to_ci</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.1667777</span>, ci <span class='op'>=</span> <span class='fl'>0.95</span>, n <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $CI_low</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.3185257</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $CI_high</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.006695121</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/stats/cor.test.html'>cor.test</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Length</span>, <span class='va'>iris</span><span class='op'>$</span><span class='va'>Sepal.Width</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Kendall's rank correlation tau</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data:  iris$Sepal.Length and iris$Sepal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> z = -1.3318, p-value = 0.1829</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alternative hypothesis: true tau is not equal to 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sample estimates:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         tau </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -0.07699679 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='cor_to_p.html'>cor_to_p</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.07699679</span>, n <span class='op'>=</span> <span class='fl'>150</span>, method <span class='op'>=</span> <span class='st'>"kendall"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Estimation for Kendall's correlation is not perfectly correct. Help us to improve it.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $p</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1620545</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $statistic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -1.398195</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

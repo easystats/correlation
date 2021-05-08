@@ -202,27 +202,30 @@ predictor, because it is scaled to (i.e., relative to) the total variability
 in the response variable.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
-
-<span class='co'># Partialize</span>
-<span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length    1.0000000   0.6285707    0.7190656  -0.3396174
-#&gt; Sepal.Width     0.6285707   1.0000000   -0.6152919   0.3526260
-#&gt; Petal.Length    0.7190656  -0.6152919    1.0000000   0.8707698
-#&gt; Petal.Width    -0.3396174   0.3526260    0.8707698   1.0000000</div><div class='input'><span class='fu'>cor_to_spcor</span><span class='op'>(</span><span class='va'>cor</span>, cov <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, <span class='va'>sd</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length   1.00000000  0.30389212    0.3890689  -0.1357714
-#&gt; Sepal.Width    0.55758743  1.00000000   -0.5385056   0.2599849
-#&gt; Petal.Length   0.18506103 -0.13959991    1.0000000   0.3167424
-#&gt; Petal.Width   -0.09001634  0.09394365    0.4415000   1.0000000</div><div class='input'>
-<span class='co'># Inverse</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'>pcor_to_cor</span><span class='op'>(</span><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>cor</span>, <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Should be 0</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length            0           0            0           0
-#&gt; Sepal.Width             0           0            0           0
-#&gt; Petal.Length            0           0            0           0
-#&gt; Petal.Width             0           0            0           0</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Partialize</span></span>
+<span class='r-in'><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length    1.0000000   0.6285707    0.7190656  -0.3396174</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width     0.6285707   1.0000000   -0.6152919   0.3526260</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length    0.7190656  -0.6152919    1.0000000   0.8707698</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width    -0.3396174   0.3526260    0.8707698   1.0000000</span>
+<span class='r-in'><span class='fu'>cor_to_spcor</span><span class='op'>(</span><span class='va'>cor</span>, cov <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, <span class='va'>sd</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length   1.00000000  0.30389212    0.3890689  -0.1357714</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width    0.55758743  1.00000000   -0.5385056   0.2599849</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length   0.18506103 -0.13959991    1.0000000   0.3167424</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width   -0.09001634  0.09394365    0.4415000   1.0000000</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Inverse</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'>pcor_to_cor</span><span class='op'>(</span><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>-</span> <span class='va'>cor</span>, <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Should be 0</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length            0           0            0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width             0           0            0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length            0           0            0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width             0           0            0           0</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -174,24 +174,27 @@ variance, of the variables in the correlation matrix.</p></td>
     <p>A covariance matrix.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
-#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
-#&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
-#&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</div><div class='input'>
-<span class='fu'>cor_to_cov</span><span class='op'>(</span><span class='va'>cor</span>, sd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, <span class='va'>sd</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
-#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
-#&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
-#&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</div><div class='input'><span class='fu'>cor_to_cov</span><span class='op'>(</span><span class='va'>cor</span>, variance <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, <span class='va'>var</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
-#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
-#&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
-#&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>cor_to_cov</span><span class='op'>(</span><span class='va'>cor</span>, sd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, <span class='va'>sd</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</span>
+<span class='r-in'><span class='fu'>cor_to_cov</span><span class='op'>(</span><span class='va'>cor</span>, variance <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span>, <span class='va'>var</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
