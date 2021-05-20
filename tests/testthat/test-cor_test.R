@@ -35,13 +35,10 @@ test_that("cor_test bayesian", {
     out3 <- cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE)
     expect_equal(out3$rho, 1.000, tolerance = 0.01)
 
-    out4 <- .cor_test_bayes_base(df$Petal.Length[1], df$Petal.Length2[1])
-    expect_equal(out4$rho, 1.000, tolerance = 0.01)
-
     if (getRversion() >= "3.6") {
       set.seed(123)
       out5 <- cor_test(mtcars, "wt", "mpg", method = "shepherd", bayesian = TRUE)
-      expect_equal(out5$rho, -0.7795719, tolerance = 0.01)
+      expect_equal(out5$rho, -0.7696856, tolerance = 0.01)
 
       set.seed(123)
       out6 <- cor_test(mtcars, "wt", "mpg", method = "gaussian", bayesian = TRUE)
@@ -97,8 +94,8 @@ test_that("cor_test tetrachoric", {
 
 
 test_that("cor_test robust", {
-  out1 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "pearson", robust = TRUE)
-  out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman", robust = FALSE)
+  out1 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "pearson", ranktransform = TRUE)
+  out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman", ranktransform = FALSE)
   expect_equal(out1$r, out2$rho, tolerance = 0.01)
 })
 
@@ -111,13 +108,6 @@ test_that("cor_test distance", {
     comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
     expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.001)
     expect_identical(out$Method, "Distance (Bias Corrected)")
-
-    # correction
-    df1 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance", corrected = FALSE)
-    df2 <- .cor_test_distance(iris, "Petal.Length", "Petal.Width", corrected = FALSE)
-
-    expect_equal(df1$r, df2$r, tolerance = 0.001)
-    expect_identical(df2$Method, "Distance")
   }
 })
 
@@ -201,8 +191,4 @@ test_that("cor_test one-sided p value", {
 test_that("cor_test 2 valid observations", {
   out <- correlation(data.frame(v2 = c(2, 1, 1, 2), v3 = c(1, 2, NA, NA)))
   expect_true(is.na(out$r))
-
-  out2 <- .cor_test_freq(mtcars[1:3, ], "wt", "mpg")
-  expect_true(is.na(out2$CI_low))
-  expect_true(is.na(out2$CI_high))
 })
