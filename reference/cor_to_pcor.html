@@ -74,8 +74,6 @@ unexplained variance of Y that cannot be accounted by the other variables." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -99,7 +97,7 @@ unexplained variance of Y that cannot be accounted by the other variables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.1</span>
       </span>
     </div>
 
@@ -164,11 +162,11 @@ of (unique) variance accounted for by X1 relative to the residual or
 unexplained variance of Y that cannot be accounted by the other variables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='fu'>pcor_to_cor</span><span class='op'>(</span><span class='va'>pcor</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>cor_to_spcor</span><span class='op'>(</span>cor <span class='op'>=</span> <span class='cn'>NULL</span>, cov <span class='op'>=</span> <span class='cn'>NULL</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>cor_to_spcor</span><span class='op'>(</span>cor <span class='op'>=</span> <span class='cn'>NULL</span>, cov <span class='op'>=</span> <span class='cn'>NULL</span>, tol <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,7 +200,7 @@ predictor, because it is scaled to (i.e., relative to) the total variability
 in the response variable.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>cor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># Partialize</span></span>
 <span class='r-in'><span class='fu'>cor_to_pcor</span><span class='op'>(</span><span class='va'>cor</span><span class='op'>)</span></span>
@@ -225,7 +223,7 @@ in the response variable.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Sepal.Width             0           0            0           0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Length            0           0            0           0</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Petal.Width             0           0            0           0</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
