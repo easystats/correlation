@@ -13,10 +13,10 @@ test_that("testing Winsorized correlation", {
     )
 
     set.seed(123)
-    params1 <- as.data.frame(correlation(df, winsorize = TRUE))
-    params2 <- as.data.frame(correlation(df, winsorize = 0.3))
-    params3 <- as.data.frame(correlation(df, winsorize = TRUE, bayesian = TRUE))
-    params4 <- as.data.frame(correlation(df, winsorize = 0.3, bayesian = TRUE, bayesian_prior = 0.8))
+    params1 <- as.data.frame(correlation(df, winsorize = TRUE, centrality = "median"))
+    params2 <- as.data.frame(correlation(df, winsorize = 0.3, centrality = "median"))
+    params3 <- as.data.frame(correlation(df, winsorize = TRUE, bayesian = TRUE, centrality = "median"))
+    params4 <- as.data.frame(correlation(df, winsorize = 0.3, bayesian = TRUE, bayesian_prior = 0.8, centrality = "median"))
 
     set.seed(123)
     mod1 <- WRS2::wincor(df$x, df$y, tr = 0.2)
