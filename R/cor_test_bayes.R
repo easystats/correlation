@@ -69,6 +69,7 @@
     rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale = bayesian_prior)
     params <- parameters::model_parameters(
       rez,
+      dispersion = FALSE,
       ci_method = bayesian_ci_method,
       test = bayesian_test,
       rope_range = c(-0.1, 0.1),
@@ -89,6 +90,7 @@
     rez <- BayesFactor::correlationBF(var_x, var_y, rscale = bayesian_prior)
     params <- parameters::model_parameters(
       rez,
+      dispersion = FALSE,
       ci_method = bayesian_ci_method,
       test = bayesian_test,
       rope_range = c(-0.1, 0.1),
