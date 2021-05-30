@@ -22,7 +22,16 @@ Authors@R:
              family = "Ben-Shachar",
              role = "aut",
              email = "matanshm@post.bgu.ac.il",
-             comment = c(ORCID = "0000-0002-4287-4801", Twitter = "@mattansb")))
+             comment = c(ORCID = "0000-0002-4287-4801", Twitter = "@mattansb")),
+      person(given = "Mark", 
+             family = "White", 
+             email = "markhwhiteii@gmail.com",
+             role = c("rev")),
+      person(given = "Maximilian M.", 
+             family = "Rabe", 
+             email = "maximilian.rabe@uni-potsdam.de", 
+             role = c("rev"), 
+             comment = c(ORCID = "0000-0002-2556-5644")))
 Maintainer: Indrajeet Patil <patilindrajeet.science@gmail.com>
 Description: Lightweight package for computing different kinds
     of correlations, such as partial correlations, Bayesian correlations,
