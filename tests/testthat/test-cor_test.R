@@ -38,7 +38,7 @@ test_that("cor_test bayesian", {
     if (getRversion() >= "3.6") {
       set.seed(123)
       out5 <- cor_test(mtcars, "wt", "mpg", method = "shepherd", bayesian = TRUE)
-      expect_equal(out5$rho, -0.7696856, tolerance = 0.01)
+      expect_equal(out5$rho, -0.7795719, tolerance = 0.01)
 
       set.seed(123)
       out6 <- cor_test(mtcars, "wt", "mpg", method = "gaussian", bayesian = TRUE)
