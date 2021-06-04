@@ -12,9 +12,7 @@
                             bayesian_ci_method = "hdi",
                             bayesian_test = c("pd", "rope", "bf"),
                             ...) {
-  if (!requireNamespace("BayesFactor")) {
-    stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
-  }
+  insight::check_if_installed("BayesFactor")
 
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
@@ -60,9 +58,7 @@
                                  bayesian_test = c("pd", "rope", "bf"),
                                  method = "pearson",
                                  ...) {
-  if (!requireNamespace("BayesFactor")) {
-    stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
-  }
+  insight::check_if_installed("BayesFactor")
 
   if (x == y) {
     # Avoid error in the case of perfect correlation

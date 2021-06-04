@@ -104,9 +104,7 @@ as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
 
 #' @export
 plot.easycormatrix <- function(x, ...) {
-  if (!requireNamespace("see", quietly = TRUE)) {
-    stop("Package 'see' needed to plot correlation graphs. Please install it by running `install.packages('see')`.")
-  }
+  insight::check_if_installed("see", "to plot correlation graphs")
 
   NextMethod()
 }

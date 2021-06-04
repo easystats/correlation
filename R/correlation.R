@@ -619,8 +619,7 @@ correlation <- function(data,
 
 #' @export
 plot.easycorrelation <- function(x, ...) {
-  if (!requireNamespace("see", quietly = TRUE)) {
-    stop("Package 'see' needed to plot correlation graphs. Please install it by running `install.packages('see')`.")
-  }
+  insight::check_if_installed("see", "to plot correlation graphs")
+
   NextMethod()
 }
