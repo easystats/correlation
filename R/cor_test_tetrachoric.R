@@ -2,9 +2,7 @@
 #' @importFrom utils capture.output
 #' @keywords internal
 .cor_test_tetrachoric <- function(data, x, y, ci = 0.95, ...) {
-  if (!requireNamespace("psych", quietly = TRUE)) {
-    stop("Package `psych` required for tetrachoric correlations. Please install it by running `install.packages('psych').", call. = FALSE)
-  }
+  insight::check_if_installed("psych", "for 'tetrachronic' correlations")
 
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
