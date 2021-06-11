@@ -16,7 +16,7 @@ bend** or **Sheperd’s Pi** correlations (types of robust correlation),
 also allowing for combinations between them (for instance, *Bayesian
 partial multilevel correlation*).
 
-## Citation
+# Citation
 
 You can reference the package and its documentation as follows:
 
@@ -24,15 +24,14 @@ Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019).
 Methods and Algorithms for Correlation Analysis in R. *Journal of Open
 Source Software*, *5*(51), 2306. <https://doi.org/10.21105/joss.02306>
 
-## Installation
+# Installation
 
 [![CRAN](http://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
 [![Build
 Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
 [![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://codecov.io/gh/easystats/correlation)
 
-Run the following to install the stable release of **correlation** from
-CRAN:
+Run the following to install the stable release from CRAN:
 
 ``` r
 install.packages("correlation")
@@ -45,43 +44,35 @@ install.packages("remotes")
 remotes::install_github("easystats/correlation")
 ```
 
-## Documentation
+# Documentation
 
 [![Documentation](https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
 [![Blog](https://img.shields.io/badge/blog-easystats-orange.svg?colorB=FF9800)](https://easystats.github.io/blog/posts/)
 [![Features](https://img.shields.io/badge/features-correlation-orange.svg?colorB=2196F3)](https://easystats.github.io/correlation/reference/index.html)
 
 Click on the buttons above to access the package
-[**documentation**](https://easystats.github.io/correlation/) and the
-[**easystats blog**](https://easystats.github.io/blog/posts/), and
-check-out these vignettes:
+[documentation](https://easystats.github.io/correlation/) and the
+[easystats blog](https://easystats.github.io/blog/posts/), and check-out
+these vignettes:
 
--   [**Types of
-    Correlation**](https://easystats.github.io/correlation/articles/types.html)
--   [**Multilevel
-    Correlations**](https://easystats.github.io/correlation/articles/multilevel.html)
+-   [Types of
+    Correlation](https://easystats.github.io/correlation/articles/types.html)
+-   [Multilevel
+    Correlations](https://easystats.github.io/correlation/articles/multilevel.html)
 
-## Features
+# Features
 
 The *correlation* package can compute many different types of
 correlation, including:
 
--   [x] **Pearson’s correlation**
--   [x] **Spearman’s rank correlation**
--   [x] **Kendall’s rank correlation**
--   [x] **Biweight midcorrelation**
--   [x] **Distance correlation**
--   [x] **Percentage bend correlation**
--   [x] **Shepherd’s Pi correlation**
--   [x] **Blomqvist’s coefficient**
--   [x] **Hoeffding’s D**
--   [x] **Gamma correlation**
--   [x] **Gaussian rank correlation**
--   [x] **Point-Biserial and biserial correlation**
--   [x] **Winsorized correlation**
--   [x] **Polychoric correlation**
--   [x] **Tetrachoric correlation**
--   [x] **Multilevel correlation**
+✅ **Pearson’s correlation**<br> ✅ **Spearman’s rank correlation**<br> ✅
+**Kendall’s rank correlation**<br> ✅ **Biweight midcorrelation**<br> ✅
+**Distance correlation**<br> ✅ **Percentage bend correlation**<br> ✅
+**Shepherd’s Pi correlation**<br> ✅ **Blomqvist’s coefficient**<br> ✅
+**Hoeffding’s D**<br> ✅ **Gamma correlation**<br> ✅ **Gaussian rank
+correlation**<br> ✅ **Point-Biserial and biserial correlation**<br> ✅
+**Winsorized correlation**<br> ✅ **Polychoric correlation**<br> ✅
+**Tetrachoric correlation**<br> ✅ **Multilevel correlation**<br>
 
 An overview and description of these correlations types is [**available
 here**](https://easystats.github.io/correlation/articles/types.html).
@@ -196,14 +187,14 @@ It is very easy to switch to a **Bayesian framework**.
 correlation(iris, bayesian = TRUE)
 ## # Correlation Matrix (pearson-method)
 ## 
-## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |        BF |         Prior
+## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |        BF
 ## ------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.01] |  91.57% |    42.88% |     0.509 | Beta (3 +- 3)
-## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.47, -0.24] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
-## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | > 1000*** | Beta (3 +- 3)
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.23,  0.02] |  91.80% |    43.85% | Beta (3 +- 3) |     0.509
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
+## Sepal.Length |  Petal.Width |  0.80 | [ 0.76,  0.85] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
+## Sepal.Width  | Petal.Length | -0.41 | [-0.53, -0.31] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
+## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
 ## 
 ## Observations: 150
 ```
@@ -323,3 +314,17 @@ iris %>%
 ## Sepal.Width  |     0.47*** |      0.38*** |            
 ## Petal.Length |     0.48*** |              |
 ```
+
+# Contributing and Support
+
+In case you want to file an issue or contribute in another way to the
+package, please follow [this
+guide](https://github.com/easystats/correlation/blob/master/.github/CONTRIBUTING.md).
+For questions about the functionality, you may either contact us via
+email or also file an issue.
+
+# Code of Conduct
+
+Please note that this project is released with a [Contributor Code of
+Conduct](https://easystats.github.io/correlation/CODE_OF_CONDUCT.html).
+By participating in this project you agree to abide by its terms.
