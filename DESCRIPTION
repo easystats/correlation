@@ -44,11 +44,11 @@ BugReports: https://github.com/easystats/correlation/issues
 Depends:
     R (>= 3.4)
 Imports:
-    bayestestR (>= 0.10.0),
+    bayestestR (>= 0.10.5),
     datasets,
     effectsize (>= 0.4.5),
-    insight (>= 0.14.1),
-    parameters (>= 0.14.0),
+    insight (>= 0.14.1.1),
+    parameters (>= 0.14.0.1),
     stats
 Suggests:
     BayesFactor,
@@ -73,10 +73,13 @@ Suggests:
     tidyr,
     wdm,
     WRS2
+Remotes:
+    easystats/insight,
+    easystats/bayestestR,
+    easystats/parameters
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
 Language: en-US
 RoxygenNote: 7.1.1.9001
-Remotes: easystats/parameters
 Config/testthat/edition: 3
