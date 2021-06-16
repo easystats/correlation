@@ -1,3 +1,9 @@
+# correlation 0.6.2
+
+## Minor Changes
+
+- `simualte_simpson()` function is now re-exported from `bayestestR` package.
+
 # correlation 0.6.1
 
 ## Breaking Changes
