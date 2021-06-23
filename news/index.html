@@ -145,8 +145,8 @@
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor" aria-hidden="true"></a>Minor Changes</h2>
-<ul><li>
-<code>simualte_simpson()</code> function is now re-exported from <code>bayestestR</code> package.</li>
+<ul><li><p><code><a href="../reference/correlation.html">correlation()</a></code> gains a new argument to rename variables.</p></li>
+<li><p><code>simualte_simpson()</code> function is now re-exported from <code>bayestestR</code> package.</p></li>
 </ul></div>
 </div>
     <div id="correlation-061" class="section level1">
@@ -155,8 +155,9 @@
 <div id="breaking-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking Changes</h2>
-<ul><li><p><code>simualte_simpson()</code>: The groups are now named after the pattern “G_” (can be altered with the <code>group_prefix</code> argument).</p></li>
+<ul><li><p><code>simualte_simpson()</code>: The groups are now named after the pattern <code>"G_"</code> (can be altered with the <code>group_prefix</code> argument).</p></li>
 <li><p><code>robust</code> argument deprecated in favour of <code>ranktransform</code>.</p></li>
+<li><p>Removes <code>winsorize()</code> function, which now lives in <code>datawizard</code> package.</p></li>
 </ul></div>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
@@ -198,7 +199,7 @@
 <div id="changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes" class="anchor" aria-hidden="true"></a>Changes</h2>
-<ul><li><p>Added <code><a href="https://easystats.github.io/datawizard/reference/winsorize.html" class="external-link">winsorize()</a></code> function.</p></li>
+<ul><li><p>Added <code>winsorize()</code> function.</p></li>
 <li><p>Added <code>winsorize</code> argument for Winsorized correlations.</p></li>
 <li><p>Added <code>method = "somers"</code> to <code><a href="../reference/correlation.html">correlation()</a></code>, to compute Somers’s Dxy rank correlation for binary outcomes.</p></li>
 <li><p>New function <code><a href="https://easystats.github.io/insight/reference/display.html" class="external-link">display()</a></code>, to print output into different formats. Currently, only markdown is supported. <code><a href="https://easystats.github.io/insight/reference/display.html" class="external-link">print_md()</a></code> is an alias for <code>display(format = "markdown")</code>.</p></li>
