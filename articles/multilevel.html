@@ -127,7 +127,7 @@
 <h2 class="hasAnchor">
 <a href="#data" class="anchor" aria-hidden="true"></a>Data</h2>
 <p>Imagine we have an experiment in which <strong>10 individuals</strong> completed a task with <strong>100 trials</strong>. For each trial - there will 1000 trials (10 * 1000) in total - we measured two things, <strong>V1</strong> and <strong>V2</strong>, and we are interested in <strong>investigating the link between these two variables</strong>.</p>
-<p>We will generate data using the <a href="https://easystats.github.io/correlation/reference/simulate_simpson.html" class="external-link"><code>simulate_simpson()</code></a> function from this package and look at its summary:</p>
+<p>We will generate data using the <a href="https://easystats.github.io/bayestestR/reference/simulate_simpson.html" class="external-link"><code>simulate_simpson()</code></a> function from this package and look at its summary:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/correlation/" class="external-link">correlation</a></span><span class="op">)</span>
 
@@ -135,12 +135,12 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>##        V1             V2           Group          
-##  Min.   :-1.3   Min.   :-12.4   Length:1000       
+##  Min.   :-1.0   Min.   :-12.1   Length:1000       
 ##  1st Qu.: 3.0   1st Qu.: -8.0   Class :character  
-##  Median : 5.4   Median : -5.5   Mode  :character  
+##  Median : 5.6   Median : -5.5   Mode  :character  
 ##  Mean   : 5.5   Mean   : -5.5                     
-##  3rd Qu.: 7.9   3rd Qu.: -3.0                     
-##  Max.   :11.8   Max.   :  1.0</code></pre>
+##  3rd Qu.: 8.1   3rd Qu.: -3.0                     
+##  Max.   :12.2   Max.   :  1.3</code></pre>
 <p>Now let’s visualize the two variables:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
@@ -200,7 +200,7 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
 ## ------------------------------------------------------------------
-## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.12 | &lt; .001***
+## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.04 | &lt; .001***
 ## 
 ## Observations: 1000</code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking the group into account seems to be super important.</p>
