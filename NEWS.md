@@ -2,9 +2,13 @@
 
 ## Minor Changes
 
-- `correlation()` gains a new argument to rename variables.
+- `correlation()` gains a new argument `rename` to rename variables.
 
 - `simualte_simpson()` function is now re-exported from `bayestestR` package.
+
+## Breaking Changes
+
+- Removes `winsorize()` function, which now lives in `datawizard` package.
 
 # correlation 0.6.1
 
@@ -14,8 +18,6 @@
   altered with the `group_prefix` argument).
 
 - `robust` argument deprecated in favour of `ranktransform`.
-
-- Removes `winsorize()` function, which now lives in `datawizard` package.
 
 ## New Features
 
