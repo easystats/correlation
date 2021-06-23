@@ -9,6 +9,7 @@ correlation(
   data2 = NULL,
   select = NULL,
   select2 = NULL,
+  rename = NULL,
   method = "pearson",
   p_adjust = "holm",
   ci = 0.95,
@@ -44,6 +45,11 @@ compute the correlation between \code{data[select]} and
 correlations between the \code{select} variables will be computed. This is
 a "pipe-friendly" alternative way of using \code{correlation()} (see
 'Examples').}
+
+\item{rename}{In case you wish to change the names of the variables in
+the output, these arguments can be used to specify these alternative names.
+Note that the number of names should be equal to the number of columns
+selected. Ignored if \code{data2} is specified.}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default),
@@ -289,10 +295,8 @@ summary(results, redundant = TRUE)
 if (require("dplyr")) {
   iris \%>\%
     correlation(select = "Petal.Width", select2 = "Sepal.Length")
-}
 
-# Grouped dataframe
-if (require("dplyr")) {
+  # Grouped dataframe
   # grouped correlations
   iris \%>\%
     group_by(Species) \%>\%
@@ -306,6 +310,9 @@ if (require("dplyr")) {
       select2 = c("hp")
     )
 }
+
+# supplying custom variable names
+correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
 
 # automatic selection of correlation method
 correlation(mtcars[-2], method = "auto")

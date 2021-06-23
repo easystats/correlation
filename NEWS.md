@@ -2,6 +2,8 @@
 
 ## Minor Changes
 
+- `correlation()` gains a new argument to rename variables.
+
 - `simualte_simpson()` function is now re-exported from `bayestestR` package.
 
 # correlation 0.6.1

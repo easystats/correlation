@@ -15,6 +15,10 @@
 #'   correlations between the \code{select} variables will be computed. This is
 #'   a "pipe-friendly" alternative way of using \code{correlation()} (see
 #'   'Examples').
+#' @param rename In case you wish to change the names of the variables in
+#'   the output, these arguments can be used to specify these alternative names.
+#'   Note that the number of names should be equal to the number of columns
+#'   selected. Ignored if \code{data2} is specified.
 #' @param p_adjust Correction method for frequentist correlations. Can be one of
 #'   \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"},
 #'   \code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"},
@@ -180,10 +184,8 @@
 #' if (require("dplyr")) {
 #'   iris %>%
 #'     correlation(select = "Petal.Width", select2 = "Sepal.Length")
-#' }
 #'
-#' # Grouped dataframe
-#' if (require("dplyr")) {
+#'   # Grouped dataframe
 #'   # grouped correlations
 #'   iris %>%
 #'     group_by(Species) %>%
@@ -198,10 +200,16 @@
 #'     )
 #' }
 #'
+#' # supplying custom variable names
+#' correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
+#'
 #' # automatic selection of correlation method
 #' correlation(mtcars[-2], method = "auto")
 #' @importFrom stats p.adjust
-#' @references \itemize{
+#'
+#' @references
+#'
+#' \itemize{
 #'   \item Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank
 #'   correlation estimator: robustness properties. Statistics and Computing,
 #'   22(2), 471-483.
@@ -233,6 +241,7 @@ correlation <- function(data,
                         data2 = NULL,
                         select = NULL,
                         select2 = NULL,
+                        rename = NULL,
                         method = "pearson",
                         p_adjust = "holm",
                         ci = 0.95,
@@ -299,6 +308,15 @@ correlation <- function(data,
 
     attr(data, "groups") <- grp_df
     attr(data2, "groups") <- if (!is.null(select2)) grp_df
+  }
+
+  # renaming the columns if so desired
+  if (!is.null(rename)) {
+    if (length(data) != length(rename)) {
+      stop("Mismatch between number of variables and names.")
+    } else {
+      colnames(data) <- rename
+    }
   }
 
   if (inherits(data, "grouped_df")) {

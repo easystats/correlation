@@ -1,6 +1,6 @@
 #' @importFrom stats complete.cases rnorm qnorm
 #' @importFrom utils install.packages
-#' @importFrom effectsize ranktransform
+#' @importFrom datawizard ranktransform
 #' @importFrom parameters model_parameters
 #' @keywords internal
 .cor_test_bayes <- function(data,
@@ -18,8 +18,8 @@
   var_y <- .complete_variable_y(data, x, y)
 
   if (tolower(method) %in% c("spearman", "spear", "s")) {
-    var_x <- effectsize::ranktransform(var_x, sign = TRUE, method = "average")
-    var_y <- effectsize::ranktransform(var_y, sign = TRUE, method = "average")
+    var_x <- datawizard::ranktransform(var_x, sign = TRUE, method = "average")
+    var_y <- datawizard::ranktransform(var_y, sign = TRUE, method = "average")
     method <- "Bayesian Spearman"
   } else if (tolower(method) %in% c("gaussian")) {
     var_x <- stats::qnorm(rank(var_x) / (length(var_x) + 1))
