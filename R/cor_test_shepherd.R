@@ -1,4 +1,3 @@
-#' @importFrom effectsize ranktransform
 #' @keywords internal
 .cor_test_shepherd <- function(data, x, y, ci = 0.95, bayesian = FALSE, ...) {
   var_x <- .complete_variable_x(data, x, y)
@@ -9,7 +8,7 @@
 
   if (bayesian) {
     data <- data[not_outliers, ]
-    data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = TRUE, method = "average")
+    data[c(x, y)] <- datawizard::ranktransform(data[c(x, y)], sign = TRUE, method = "average")
     out <- .cor_test_bayes(data, x, y, ci = ci)
   } else {
     out <- .cor_test_freq(data[not_outliers, ], x, y, ci = ci, method = "spearman")

@@ -29,7 +29,7 @@
 #'   \code{multilevel}). If \code{FALSE}, factors are removed upfront.
 #' @param partial Can be \code{TRUE} or \code{"semi"} for partial and
 #'   semi-partial correlations, respectively.
-#' @inheritParams effectsize::adjust
+#' @inheritParams datawizard::adjust
 #' @param bayesian_prior For the prior argument, several named values are
 #'   recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and
 #'   \code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)},
@@ -58,8 +58,6 @@
 #'
 #'
 #' @inherit correlation details
-#'
-#'
 #'
 #' @examples
 #' library(correlation)
@@ -114,8 +112,6 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
-#' @importFrom effectsize adjust ranktransform
-#' @importFrom parameters data_to_numeric
 #' @importFrom stats complete.cases na.omit sd
 #' @export
 cor_test <- function(data,
@@ -153,13 +149,13 @@ cor_test <- function(data,
 
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
-    data[c(x, y)] <- parameters::data_to_numeric(data[c(x, y)], dummy_factors = FALSE)
+    data[c(x, y)] <- datawizard::data_to_numeric(data[c(x, y)], dummy_factors = FALSE)
   }
 
   # Partial
   if (partial) {
-    data[[x]] <- effectsize::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
-    data[[y]] <- effectsize::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
+    data[[x]] <- datawizard::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
+    data[[y]] <- datawizard::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
   }
 
   # Winsorize
@@ -170,14 +166,15 @@ cor_test <- function(data,
     }
 
     # winsorization would otherwise fail in case of NAs present
-    # data <- stats::na.omit(data)
-
-    data <- as.data.frame(winsorize(stats::na.omit(data[c(x, y)]), threshold = winsorize, verbose = verbose))
+    data <- as.data.frame(
+      datawizard::winsorize(stats::na.omit(data[c(x, y)]),
+                threshold = winsorize,
+                verbose = verbose))
   }
 
   # Rank transform (i.e., "robust")
   if (ranktransform) {
-    data[c(x, y)] <- effectsize::ranktransform(data[c(x, y)], sign = FALSE, method = "average")
+    data[c(x, y)] <- datawizard::ranktransform(data[c(x, y)], sign = FALSE, method = "average")
   }
 
   n_obs <- length(.complete_variable_x(data, x, y))

@@ -19,7 +19,9 @@ print.easymatrixlist <- function(x, cols = "auto", ...) {
   if (cols == "auto") {
     cols <- c(names(x)[1], "n_Obs", "p")
   }
+
   cols <- cols[cols %in% names(x)]
+
   for (i in cols) {
     cat(" ", i, " ", "\n", rep("-", nchar(i) + 2), "\n", sep = "")
     print(x[[i]])

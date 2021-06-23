@@ -1,5 +1,5 @@
 
-if (require("lme4", quietly = TRUE) && require("effectsize", quietly = TRUE) && packageVersion("effectsize") > "0.4.3") {
+if (require("lme4", quietly = TRUE) && require("datawizard", quietly = TRUE)) {
   test_that("comparison rmcorr", {
     if (require("rmcorr", quietly = TRUE)) {
       set.seed(123)
