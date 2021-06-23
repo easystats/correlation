@@ -50,7 +50,7 @@ we measured two things, **V1** and **V2**, and we are interested in
 **investigating the link between these two variables**.
 
 We will generate data using the
-[`simulate_simpson()`](https://easystats.github.io/correlation/reference/simulate_simpson.html)
+[`simulate_simpson()`](https://easystats.github.io/bayestestR/reference/simulate_simpson.html)
 function from this package and look at its summary:
 
 ```{r}
