@@ -166,9 +166,10 @@ cor_test <- function(data,
     }
 
     # winsorization would otherwise fail in case of NAs present
-    # data <- stats::na.omit(data)
-
-    data <- as.data.frame(winsorize(stats::na.omit(data[c(x, y)]), threshold = winsorize, verbose = verbose))
+    data <- as.data.frame(
+      datawizard::winsorize(stats::na.omit(data[c(x, y)]),
+                threshold = winsorize,
+                verbose = verbose))
   }
 
   # Rank transform (i.e., "robust")
