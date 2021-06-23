@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -145,19 +145,23 @@
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor" aria-hidden="true"></a>Minor Changes</h2>
-<ul><li><p><code><a href="../reference/correlation.html">correlation()</a></code> gains a new argument to rename variables.</p></li>
+<ul><li><p><code><a href="../reference/correlation.html">correlation()</a></code> gains a new argument <code>rename</code> to rename variables.</p></li>
 <li><p><code>simualte_simpson()</code> function is now re-exported from <code>bayestestR</code> package.</p></li>
+</ul></div>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking Changes</h2>
+<ul><li>Removes <code>winsorize()</code> function, which now lives in <code>datawizard</code> package.</li>
 </ul></div>
 </div>
     <div id="correlation-061" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.1">
 <a href="#correlation-061" class="anchor" aria-hidden="true"></a>correlation 0.6.1<small> 2021-04-09 </small></h1>
-<div id="breaking-changes" class="section level2">
+<div id="breaking-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking Changes</h2>
+<a href="#breaking-changes-1" class="anchor" aria-hidden="true"></a>Breaking Changes</h2>
 <ul><li><p><code>simualte_simpson()</code>: The groups are now named after the pattern <code>"G_"</code> (can be altered with the <code>group_prefix</code> argument).</p></li>
 <li><p><code>robust</code> argument deprecated in favour of <code>ranktransform</code>.</p></li>
-<li><p>Removes <code>winsorize()</code> function, which now lives in <code>datawizard</code> package.</p></li>
 </ul></div>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
