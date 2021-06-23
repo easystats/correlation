@@ -7,7 +7,6 @@
 \alias{print_md}
 \alias{print_html}
 \alias{simulate_simpson}
-\alias{winsorize}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -16,8 +15,6 @@ below to see their documentation.
 
 \describe{
   \item{bayestestR}{\code{\link[bayestestR]{simulate_simpson}}}
-
-  \item{datawizard}{\code{\link[datawizard]{winsorize}}}
 
   \item{insight}{\code{\link[insight]{display}}, \code{\link[insight:display]{print_html}}, \code{\link[insight:display]{print_md}}}
 }}

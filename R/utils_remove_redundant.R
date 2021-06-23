@@ -17,8 +17,6 @@
 
 
 
-
-
 #' @keywords internal
 .add_redundant <- function(params, data = NULL) {
   # save in case of failure
@@ -36,6 +34,7 @@
   if (ncol(diagonal) != ncol(params)) {
     return(original_params)
   }
+
   params <- rbind(params, diagonal)
 
   # Reorder
@@ -45,9 +44,6 @@
 
   params
 }
-
-
-
 
 
 

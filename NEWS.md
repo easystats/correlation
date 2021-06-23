@@ -10,10 +10,12 @@
 
 ## Breaking Changes
 
-- `simualte_simpson()`: The groups are now named after the pattern "G_" (can be
+- `simualte_simpson()`: The groups are now named after the pattern `"G_"` (can be
   altered with the `group_prefix` argument).
 
 - `robust` argument deprecated in favour of `ranktransform`.
+
+- Removes `winsorize()` function, which now lives in `datawizard` package.
 
 ## New Features
 

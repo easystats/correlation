@@ -7,10 +7,7 @@
 
 0 errors | 0 warnings | 0 note
 
-* Maintainer changes from Dominique Makowski <dom.makowski@gmail.com> to
-  Indrajeet Patil <patilindrajeet.science@gmail.com>.
-
-* Fixes `NOTE`s and `WARNING`s in `R CMD CHECK` for the **last** released version.
+* Maintenance release.
 
 ## revdepcheck results
 

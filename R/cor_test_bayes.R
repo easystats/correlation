@@ -1,7 +1,5 @@
 #' @importFrom stats complete.cases rnorm qnorm
 #' @importFrom utils install.packages
-#' @importFrom datawizard ranktransform
-#' @importFrom parameters model_parameters
 #' @keywords internal
 .cor_test_bayes <- function(data,
                             x,

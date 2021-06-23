@@ -112,8 +112,6 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
-#' @importFrom datawizard adjust ranktransform
-#' @importFrom parameters data_to_numeric
 #' @importFrom stats complete.cases na.omit sd
 #' @export
 cor_test <- function(data,
@@ -151,7 +149,7 @@ cor_test <- function(data,
 
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
-    data[c(x, y)] <- parameters::data_to_numeric(data[c(x, y)], dummy_factors = FALSE)
+    data[c(x, y)] <- datawizard::data_to_numeric(data[c(x, y)], dummy_factors = FALSE)
   }
 
   # Partial
