@@ -313,7 +313,7 @@ correlation <- function(data,
   # renaming the columns if so desired
   if (!is.null(rename)) {
     if (length(data) != length(rename)) {
-      stop("Mismatch between number of variables and names.")
+      warning("Mismatch between number of variables and names.")
     } else {
       colnames(data) <- rename
     }
