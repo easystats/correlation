@@ -609,6 +609,12 @@ correlation <- function(data,
     }
   }
 
+  # Remove superfluous correlations when two variable sets provided
+  if (!is.null(data2)) {
+    params <- params[!params$Parameter1 %in% names(data2), ]
+    params <- params[params$Parameter2 %in% names(data2), ]
+  }
+
   # P-values adjustments
   if ("p" %in% names(params)) {
     params$p <- stats::p.adjust(params$p, method = p_adjust)
@@ -617,11 +623,6 @@ correlation <- function(data,
   # Redundant
   if (redundant) {
     params <- .add_redundant(params, data)
-  }
-
-  if (!is.null(data2)) {
-    params <- params[!params$Parameter1 %in% names(data2), ]
-    params <- params[params$Parameter2 %in% names(data2), ]
   }
 
   list(params = params, data = data)
