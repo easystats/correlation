@@ -182,7 +182,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   row.names(r) <- NULL
 
   # P-values adjustments
-  p$p <- stats::p.adjust(p$p, method = p_adjust, n = nrow(cor) * (ncol(cor) - 1))
+  p$p <- stats::p.adjust(p$p, method = p_adjust, n = nrow(cor) * (ncol(cor) - 1) / 2)
   attributes(cor)$p_adjust <- p_adjust
 
   # Statistic and p-value
