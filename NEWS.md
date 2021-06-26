@@ -1,4 +1,14 @@
-# correlation 0.6.2
+# correlation 0.7.0
+
+## Breaking Changes
+
+- Removes `winsorize()` function, which now lives in `datawizard` package.
+
+## Bug Fixes
+
+- When `data2` was specified `correlation()` was over-correcting for all of the
+  combinations of variables in the full x and y tables, rather than in just the
+  ones specified (#195).
 
 ## Minor Changes
 
@@ -6,16 +16,12 @@
 
 - `simualte_simpson()` function is now re-exported from `bayestestR` package.
 
-## Breaking Changes
-
-- Removes `winsorize()` function, which now lives in `datawizard` package.
-
 # correlation 0.6.1
 
 ## Breaking Changes
 
-- `simualte_simpson()`: The groups are now named after the pattern `"G_"` (can be
-  altered with the `group_prefix` argument).
+- `simualte_simpson()`: The groups are now named after the pattern `"G_"` (can
+  be altered with the `group_prefix` argument).
 
 - `robust` argument deprecated in favour of `ranktransform`.
 

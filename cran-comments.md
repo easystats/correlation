@@ -7,7 +7,9 @@
 
 0 errors | 0 warnings | 0 note
 
-* Maintenance release.
+* Maintainer changes from Indrajeet Patil to Brenton Wiernik.
+
+* Internal refactoring that leads to gain `datawizard` as an additional dependency.
 
 ## revdepcheck results
 
