@@ -1,7 +1,6 @@
 
 test_that("pcor_to_cor", {
-  if (requireNamespace("ppcor") &
-    requireNamespace("Hmisc")) {
+  if (requireNamespace("ppcor") && requireNamespace("Hmisc")) {
     set.seed(333)
 
     # easycormatrix
