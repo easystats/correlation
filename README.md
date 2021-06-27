@@ -171,8 +171,8 @@ iris %>%
 ## versicolor | Sepal.Length | Sepal.Width | 0.53 | [ 0.29, 0.70] |  4.28 | < .001***
 ## versicolor | Sepal.Length | Petal.Width | 0.55 | [ 0.32, 0.72] |  4.52 | < .001***
 ## versicolor |  Sepal.Width | Petal.Width | 0.66 | [ 0.47, 0.80] |  6.15 | < .001***
-## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | < .01**  
-## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | < .05*   
+## virginica  | Sepal.Length | Sepal.Width | 0.46 | [ 0.20, 0.65] |  3.56 | 0.002**  
+## virginica  | Sepal.Length | Petal.Width | 0.28 | [ 0.00, 0.52] |  2.03 | 0.048*   
 ## virginica  |  Sepal.Width | Petal.Width | 0.54 | [ 0.31, 0.71] |  4.42 | < .001***
 ## 
 ## p-value adjustment method: Holm (1979)
@@ -189,11 +189,11 @@ correlation(iris, bayesian = TRUE)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |        BF
 ## ------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.23,  0.02] |  91.80% |    43.85% | Beta (3 +- 3) |     0.509
-## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.89] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
-## Sepal.Length |  Petal.Width |  0.80 | [ 0.76,  0.85] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
-## Sepal.Width  | Petal.Length | -0.41 | [-0.53, -0.31] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.24,  0.02] |  91.03% |    43.55% | Beta (3 +- 3) |     0.509
+## Sepal.Length | Petal.Length |  0.86 | [ 0.83,  0.90] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.76,  0.85] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
+## Sepal.Width  | Petal.Length | -0.41 | [-0.51, -0.30] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.46, -0.24] | 100%*** |     0.10% | Beta (3 +- 3) | > 1000***
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | > 1000***
 ## 
 ## Observations: 150
@@ -319,9 +319,9 @@ iris %>%
 
 In case you want to file an issue or contribute in another way to the
 package, please follow [this
-guide](https://github.com/easystats/correlation/blob/master/.github/CONTRIBUTING.md).
-For questions about the functionality, you may either contact us via
-email or also file an issue.
+guide](https://easystats.github.io/correlation/CONTRIBUTING.html). For
+questions about the functionality, you may either contact us via email
+or also file an issue.
 
 # Code of Conduct
 
