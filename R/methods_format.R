@@ -8,6 +8,11 @@ format.easycorrelation <- function(x,
                                    stars = NULL,
                                    format = NULL,
                                    ...) {
+  if(nrow(x) == 0) {
+    warning("The table is empty, no rows left to print.")
+    return(as.data.frame(x))
+  }
+
   attri <- attributes(x)
 
   out <- insight::format_table(x,
