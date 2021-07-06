@@ -78,6 +78,10 @@ Suggests:
     tidyr,
     wdm,
     WRS2
+Remotes:
+    easystats/insight,
+    easystats/bayestestR,
+    easystats/parameters
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
