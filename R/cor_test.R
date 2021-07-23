@@ -153,9 +153,17 @@ cor_test <- function(data,
   }
 
   # Partial
-  if (partial) {
-    data[[x]] <- datawizard::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
-    data[[y]] <- datawizard::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
+  if (!isFALSE(partial)) {
+    # partial
+    if (isTRUE(partial)) {
+      data[[x]] <- datawizard::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
+      data[[y]] <- datawizard::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
+    }
+
+    # semi-partial
+    if (partial == "semi") {
+      stop("Semi-partial correlations are not supported yet. Get in touch if you want to contribute.")
+    }
   }
 
   # Winsorize
@@ -179,10 +187,12 @@ cor_test <- function(data,
     data[c(x, y)] <- datawizard::ranktransform(data[c(x, y)], sign = FALSE, method = "average")
   }
 
+  # check if enough no. of obs ------------------------------
+
+  # this is a trick in case the number of valid observations is lower than 3
   n_obs <- length(.complete_variable_x(data, x, y))
-  # This is a trick in case the number of valid observations is lower than 3
   invalid <- FALSE
-  if (n_obs < 3) {
+  if (n_obs < 3L) {
     if (isTRUE(verbose)) {
       warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."), call. = FALSE)
     }
