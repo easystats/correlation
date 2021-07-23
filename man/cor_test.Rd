@@ -44,7 +44,7 @@ factors involved, point-biserial if one dichotomous and one continuous and
 pearson otherwise).}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
-set to 0.95 (95\% CI).}
+set to 0.95 (95\\% CI).}
 
 \item{bayesian, partial_bayesian}{If TRUE, will run the correlations under a
 Bayesian framework. Note that for partial correlations, you will also need
@@ -60,7 +60,7 @@ recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and
 \code{BayesFactor::correlationBF} function.}
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in
-\code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.}
+\code{\link[=parameters]{model_parameters()}} for \code{BayesFactor} tests.}
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually
 converted to numeric or used as random effects (depending of
@@ -120,7 +120,7 @@ correlation is preferred than the Spearman correlation because of a smaller
 gross error sensitivity (GES) and a smaller asymptotic variance (AV), making
 it more robust and more efficient. However, the interpretation of Kendall's
 tau is less direct than that of Spearman's rho, in the sense that it
-quantifies the difference between the \% of concordant and discordant pairs
+quantifies the difference between the \\% of concordant and discordant pairs
 among all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
 Bishara and Hittner, 2017).
@@ -138,7 +138,7 @@ linear association between two random variables.
 
 \item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it
 is based on a down-weight of a specified percentage of marginal observations
-deviating from the median (by default, 20\%).
+deviating from the median (by default, 20\\%).
 
 \item \strong{Shepherd's Pi correlation}: Equivalent to a Spearman's rank
 correlation after outliers removal (by means of bootstrapped Mahalanobis
@@ -217,7 +217,7 @@ correlations). That said, there is an important difference between using
 \code{cor_test()} and \code{correlation()}: If you set \code{multilevel=TRUE}
 in \code{correlation()} but \code{partial} is set to \code{FALSE} (as per
 default), then a back-transformation from partial to non-partial correlation
-will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor}}). However,
+will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor()}}). However,
 this is not possible when using \code{cor_test()} so that if you set
 \code{multilevel=TRUE} in it, the resulting correlations are partial one.
 Note that for Bayesian multilevel correlations, if \code{partial = FALSE},
@@ -228,9 +228,9 @@ Bayesian scores, don't forget to set \code{partial = TRUE}.
 
 \subsection{Notes}{
 \itemize{
-  \item Kendall and Spearman correlations when \code{bayesian=TRUE}: These
-  are technically Pearson Bayesian correlations of rank transformed data,
-  rather than pure Bayesian rank correlations (which have different priors).
+\item Kendall and Spearman correlations when \code{bayesian=TRUE}: These
+are technically Pearson Bayesian correlations of rank transformed data,
+rather than pure Bayesian rank correlations (which have different priors).
 }}
 }
 \examples{

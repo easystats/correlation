@@ -4,57 +4,57 @@
 #'
 #' @param data A data frame.
 #' @param x,y Names of two variables present in the data.
-#' @param ci Confidence/Credible Interval level. If \code{"default"}, then it is
+#' @param ci Confidence/Credible Interval level. If `"default"`, then it is
 #'   set to 0.95 (95\% CI).
 #' @param method A character string indicating which correlation coefficient is
-#'   to be used for the test. One of \code{"pearson"} (default),
-#'   \code{"kendall"}, \code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
-#'   \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
-#'   \code{"distance"}, \code{"percentage"} (for percentage bend correlation),
-#'   \code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
-#'   Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank
-#'   correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
-#'   \code{"auto"} will attempt at selecting the most relevant method
+#'   to be used for the test. One of `"pearson"` (default),
+#'   `"kendall"`, `"spearman"` (but see also the `robust` argument), `"biserial"`,
+#'   `"polychoric"`, `"tetrachoric"`, `"biweight"`,
+#'   `"distance"`, `"percentage"` (for percentage bend correlation),
+#'   `"blomqvist"` (for Blomqvist's coefficient), `"hoeffding"` (for
+#'   Hoeffding's D), `"gamma"`, `"gaussian"` (for Gaussian Rank
+#'   correlation) or `"shepherd"` (for Shepherd's Pi correlation). Setting
+#'   `"auto"` will attempt at selecting the most relevant method
 #'   (polychoric when ordinal factors involved, tetrachoric when dichotomous
 #'   factors involved, point-biserial if one dichotomous and one continuous and
 #'   pearson otherwise).
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a
 #'   Bayesian framework. Note that for partial correlations, you will also need
-#'   to set \code{partial_bayesian} to \code{TRUE} to obtain "full" Bayesian
+#'   to set `partial_bayesian` to `TRUE` to obtain "full" Bayesian
 #'   partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
 #'   correlations (i.e., Bayesian correlation based on frequentist
 #'   partialization).
-#' @param include_factors If \code{TRUE}, the factors are kept and eventually
+#' @param include_factors If `TRUE`, the factors are kept and eventually
 #'   converted to numeric or used as random effects (depending of
-#'   \code{multilevel}). If \code{FALSE}, factors are removed upfront.
-#' @param partial Can be \code{TRUE} or \code{"semi"} for partial and
+#'   `multilevel`). If `FALSE`, factors are removed upfront.
+#' @param partial Can be `TRUE` or `"semi"` for partial and
 #'   semi-partial correlations, respectively.
 #' @inheritParams datawizard::adjust
 #' @param bayesian_prior For the prior argument, several named values are
-#'   recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and
-#'   \code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)},
-#'   \code{1/3}, \code{1/sqrt(3)} and \code{1}, respectively. See the
-#'   \code{BayesFactor::correlationBF} function.
+#'   recognized: `"medium.narrow"`, `"medium"`, `"wide"`, and
+#'   `"ultrawide"`. These correspond to scale values of `1/sqrt(27)`,
+#'   `1/3`, `1/sqrt(3)` and `1`, respectively. See the
+#'   `BayesFactor::correlationBF` function.
 #' @param bayesian_ci_method,bayesian_test See arguments in
-#'   \code{\link[=parameters]{model_parameters}} for \code{BayesFactor} tests.
-#' @param ranktransform If \code{TRUE}, will rank-transform the variables prior to
+#'   [`model_parameters()`][parameters] for `BayesFactor` tests.
+#' @param ranktransform If `TRUE`, will rank-transform the variables prior to
 #'   estimating the correlation, which is one way of making the analysis more
 #'   resistant to extreme values (outliers). Note that, for instance, a Pearson's
 #'   correlation on rank-transformed data is equivalent to a Spearman's rank
-#'   correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
+#'   correlation. Thus, using `robust=TRUE` and `method="spearman"` is
 #'   redundant. Nonetheless, it is an easy option to increase the robustness of the
 #'   correlation as well as flexible way to obtain Bayesian or multilevel
 #'   Spearman-like rank correlations.
-#' @param robust Old name for \code{ranktransform}. Will be removed in subsequent
-#'   versions, so better to use \code{ranktransform} which is more explicit about
+#' @param robust Old name for `ranktransform`. Will be removed in subsequent
+#'   versions, so better to use `ranktransform` which is more explicit about
 #'   what it does.
 #' @param winsorize Another way of making the correlation more "robust" (i.e.,
-#'   limiting the impact of extreme values). Can be either \code{FALSE} or a
-#'   number between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired
-#'   threshold. See the \code{\link[=winsorize]{winsorize()}} function for more details.
+#'   limiting the impact of extreme values). Can be either `FALSE` or a
+#'   number between 0 and 1 (e.g., `0.2`) that corresponds to the desired
+#'   threshold. See the [`winsorize()`][winsorize] function for more details.
 #' @param verbose Toggle warnings.
-#' @param ... Additional arguments (e.g., \code{alternative}) to be passed to
-#'   other methods. See \code{stats::cor.test} for further details.
+#' @param ... Additional arguments (e.g., `alternative`) to be passed to
+#'   other methods. See `stats::cor.test` for further details.
 #'
 #'
 #' @inherit correlation details

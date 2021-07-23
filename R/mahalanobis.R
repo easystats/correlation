@@ -7,8 +7,8 @@
 #'
 #' @inheritParams correlation
 #' @param iterations The number of draws to simulate/bootstrap (when
-#'   \code{robust} is \code{TRUE}).
-#' @param robust If \code{TRUE}, will run a bootstrapped version of the function
+#'   `robust` is `TRUE`).
+#' @param robust If `TRUE`, will run a bootstrapped version of the function
 #'   with i iterations.
 #'
 #' @references \itemize{
