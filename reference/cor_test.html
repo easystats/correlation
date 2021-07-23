@@ -195,7 +195,7 @@ pearson otherwise).</p></td>
     <tr>
       <th>ci</th>
       <td><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
-set to 0.95 (95% CI).</p></td>
+set to <code>0.95</code> (<code>95%</code> CI).</p></td>
     </tr>
     <tr>
       <th>bayesian, partial_bayesian</th>
@@ -217,7 +217,7 @@ recognized: <code>"medium.narrow"</code>, <code>"medium"</code>, <code>"wide"</c
     <tr>
       <th>bayesian_ci_method, bayesian_test</th>
       <td><p>See arguments in
-<code>model_parameters</code> for <code>BayesFactor</code> tests.</p></td>
+<code>model_parameters()</code> for <code>BayesFactor</code> tests.</p></td>
     </tr>
     <tr>
       <th>include_factors</th>
@@ -293,7 +293,7 @@ correlation is preferred than the Spearman correlation because of a smaller
 gross error sensitivity (GES) and a smaller asymptotic variance (AV), making
 it more robust and more efficient. However, the interpretation of Kendall's
 tau is less direct than that of Spearman's rho, in the sense that it
-quantifies the difference between the % of concordant and discordant pairs
+quantifies the difference between the percentage of concordant and discordant pairs
 among all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
 Bishara and Hittner, 2017).</p></li>
@@ -308,7 +308,7 @@ vectors. This is in contrast to Pearson's correlation, which can only detect
 linear association between two random variables.</p></li>
 <li><p><strong>Percentage bend correlation</strong>: Introduced by Wilcox (1994), it
 is based on a down-weight of a specified percentage of marginal observations
-deviating from the median (by default, 20%).</p></li>
+deviating from the median (by default, <code>20%</code>).</p></li>
 <li><p><strong>Shepherd's Pi correlation</strong>: Equivalent to a Spearman's rank
 correlation after outliers removal (by means of bootstrapped Mahalanobis
 distance).</p></li>
@@ -377,7 +377,7 @@ correlations). That said, there is an important difference between using
 <code>cor_test()</code> and <code><a href='correlation.html'>correlation()</a></code>: If you set <code>multilevel=TRUE</code>
 in <code><a href='correlation.html'>correlation()</a></code> but <code>partial</code> is set to <code>FALSE</code> (as per
 default), then a back-transformation from partial to non-partial correlation
-will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor</a></code>). However,
+will be attempted (through <code><a href='cor_to_pcor.html'>pcor_to_cor()</a></code>). However,
 this is not possible when using <code>cor_test()</code> so that if you set
 <code>multilevel=TRUE</code> in it, the resulting correlations are partial one.
 Note that for Bayesian multilevel correlations, if <code>partial = FALSE</code>,
@@ -389,8 +389,8 @@ Bayesian scores, don't forget to set <code>partial = TRUE</code>.</p>
 
 <ul>
 <li><p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These
-  are technically Pearson Bayesian correlations of rank transformed data,
-  rather than pure Bayesian rank correlations (which have different priors).</p></li>
+are technically Pearson Bayesian correlations of rank transformed data,
+rather than pure Bayesian rank correlations (which have different priors).</p></li>
 </ul>
 
 
