@@ -5,7 +5,7 @@
 #' @param data A data frame.
 #' @param x,y Names of two variables present in the data.
 #' @param ci Confidence/Credible Interval level. If `"default"`, then it is
-#'   set to 0.95 (95\% CI).
+#'   set to `0.95` (`95%` CI).
 #' @param method A character string indicating which correlation coefficient is
 #'   to be used for the test. One of `"pearson"` (default),
 #'   `"kendall"`, `"spearman"` (but see also the `robust` argument), `"biserial"`,

@@ -10,7 +10,7 @@ distance_mahalanobis(data, ci = 0.95, iterations = 1000, robust = TRUE, ...)
 \item{data}{A data frame.}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
-set to 0.95 (95\\% CI).}
+set to \code{0.95} (\verb{95\%} CI).}
 
 \item{iterations}{The number of draws to simulate/bootstrap (when
 \code{robust} is \code{TRUE}).}

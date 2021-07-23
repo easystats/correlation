@@ -44,7 +44,7 @@ factors involved, point-biserial if one dichotomous and one continuous and
 pearson otherwise).}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
-set to 0.95 (95\\% CI).}
+set to \code{0.95} (\verb{95\%} CI).}
 
 \item{bayesian, partial_bayesian}{If TRUE, will run the correlations under a
 Bayesian framework. Note that for partial correlations, you will also need
@@ -120,7 +120,7 @@ correlation is preferred than the Spearman correlation because of a smaller
 gross error sensitivity (GES) and a smaller asymptotic variance (AV), making
 it more robust and more efficient. However, the interpretation of Kendall's
 tau is less direct than that of Spearman's rho, in the sense that it
-quantifies the difference between the \\% of concordant and discordant pairs
+quantifies the difference between the percentage of concordant and discordant pairs
 among all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
 Bishara and Hittner, 2017).
@@ -138,7 +138,7 @@ linear association between two random variables.
 
 \item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it
 is based on a down-weight of a specified percentage of marginal observations
-deviating from the median (by default, 20\\%).
+deviating from the median (by default, \verb{20\%}).
 
 \item \strong{Shepherd's Pi correlation}: Equivalent to a Spearman's rank
 correlation after outliers removal (by means of bootstrapped Mahalanobis

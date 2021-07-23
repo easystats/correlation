@@ -15,7 +15,7 @@ cor_to_p(cor, n, method = "pearson")
 \item{n}{The sample size (number of observations).}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
-set to 0.95 (95\\% CI).}
+set to \code{0.95} (\verb{95\%} CI).}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default),

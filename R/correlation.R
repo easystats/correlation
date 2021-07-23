@@ -50,7 +50,7 @@
 #' gross error sensitivity (GES) and a smaller asymptotic variance (AV), making
 #' it more robust and more efficient. However, the interpretation of Kendall's
 #' tau is less direct than that of Spearman's rho, in the sense that it
-#' quantifies the difference between the \% of concordant and discordant pairs
+#' quantifies the difference between the percentage of concordant and discordant pairs
 #' among all possible pairwise events. Confidence Intervals (CI) for Kendall's
 #' correlations are computed using the Fieller et al. (1957) correction (see
 #' Bishara and Hittner, 2017).
@@ -68,7 +68,7 @@
 #'
 #' \item **Percentage bend correlation**: Introduced by Wilcox (1994), it
 #' is based on a down-weight of a specified percentage of marginal observations
-#' deviating from the median (by default, 20\%).
+#' deviating from the median (by default, `20%`).
 #'
 #' \item **Shepherd's Pi correlation**: Equivalent to a Spearman's rank
 #' correlation after outliers removal (by means of bootstrapped Mahalanobis
