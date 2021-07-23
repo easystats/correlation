@@ -15,7 +15,7 @@ cor_to_p(cor, n, method = "pearson")
 \item{n}{The sample size (number of observations).}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
-set to 0.95 (95\% CI).}
+set to \code{0.95} (\verb{95\%} CI).}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default),
@@ -61,6 +61,6 @@ cor_to_p(-0.07699679, n = 150, method = "kendall")
 }
 \references{
 Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
-  correlations when data are not normal. Behavior research methods, 49(1),
-  294-309.
+correlations when data are not normal. Behavior research methods, 49(1),
+294-309.
 }
