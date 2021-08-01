@@ -56,6 +56,15 @@ summary.easycorrelation <- function(object,
 
 
 #' @export
+as.data.frame.easycorrelation <- function(x, ..., redundant = FALSE) {
+  if (redundant) {
+    x <- .add_redundant(x)
+  }
+  as.data.frame.data.frame(x)
+}
+
+
+#' @export
 as.table.easycorrelation <- function(x, ...) {
   .Deprecated("summary(..., redundant = TRUE)")
   summary(x, redundant = TRUE)
