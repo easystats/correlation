@@ -27,6 +27,7 @@
 #' @param redundant Should the data include redundant rows (where each given
 #'   correlation is repeated two times).
 #' @param verbose Toggle warnings.
+#' @param standardize_names This option can be set to `TRUE` to run [insight::standardize_names()] on the output to get standardized column names. This option can also be set globally by running `options(easystats.standardize_names = TRUE)`.
 #' @inheritParams cor_test
 #'
 #' @details
@@ -258,6 +259,7 @@ correlation <- function(data,
                         robust = NULL,
                         winsorize = FALSE,
                         verbose = TRUE,
+                        standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
 
   # Deprecation warnings
@@ -392,6 +394,8 @@ correlation <- function(data,
   }
 
   if (convert_back_to_r) out <- pcor_to_cor(pcor = out) # Revert back to r if needed.
+
+  if(standardize_names) insight::standardize_names(out, ...)
   out
 }
 

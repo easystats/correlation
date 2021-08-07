@@ -66,6 +66,7 @@ Suggests:
     Hmisc,
     knitr,
     lme4,
+    mbend,
     polycor,
     ppcor,
     psych,

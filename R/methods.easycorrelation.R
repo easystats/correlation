@@ -109,6 +109,21 @@ as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
 }
 
 
+# @examples
+# insight::standardize_names(correlation(mtcars[1:4], method = "kendall"))
+# insight::standardize_names(correlation(mtcars[1:4], method = "kendall"), style = "broom")
+# correlation(mtcars[1:4], method = "kendall", standardize_names = T)
+#' @importFrom insight standardize_names
+#' @export
+standardize_names.easycorrelation <- function(data, ...) {
+  ori <- data
+  names(data)[names(data) == datawizard::data_findcols(data, "rho|tau")] <- "r"
+  data <- insight::standardize_names(as.data.frame(data), ...)
+  class(data) <- class(ori)
+  data
+}
+
+
 # plot ----------------------------
 
 #' @export
