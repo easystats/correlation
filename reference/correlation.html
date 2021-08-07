@@ -167,6 +167,7 @@
   robust <span class='op'>=</span> <span class='cn'>NULL</span>,
   winsorize <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  standardize_names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"easystats.standardize_names"</span>, <span class='cn'>FALSE</span><span class='op'>)</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></code></pre></div>
 
@@ -315,6 +316,10 @@ threshold. See the <code>winsorize()</code> function for more details.</p></td>
     <tr>
       <th>verbose</th>
       <td><p>Toggle warnings.</p></td>
+    </tr>
+    <tr>
+      <th>standardize_names</th>
+      <td><p>This option can be set to <code>TRUE</code> to run <code><a href='https://easystats.github.io/insight/reference/standardize_names.html'>insight::standardize_names()</a></code> on the output to get standardized column names. This option can also be set globally by running <code>options(easystats.standardize_names = TRUE)</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
