@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Objects exported from other packages — reexports • correlation</title>
+<title>Visualisation Recipe for 'correlation' Objects — visualisation_recipe.easycormatrix • correlation</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,17 +46,8 @@
 
 
 
-<meta property="og:title" content="Objects exported from other packages — reexports" />
-<meta property="og:description" content="These objects are imported from other packages. Follow the links
-below to see their documentation.
-
-  bayestestRsimulate_simpson
-
-  datawizardvisualisation_recipe
-
-  insightdisplay, print_html, print_md
-
-" />
+<meta property="og:title" content="Visualisation Recipe for 'correlation' Objects — visualisation_recipe.easycormatrix" />
+<meta property="og:description" content="Visualisation recipe for 'correlation' objects." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -145,27 +136,57 @@ below to see their documentation.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Objects exported from other packages</h1>
-    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/display.R'><code>R/display.R</code></a>, <a href='https://github.com/easystats/correlation/blob/master/R/methods_print.R'><code>R/methods_print.R</code></a>, <a href='https://github.com/easystats/correlation/blob/master/R/reexports.R'><code>R/reexports.R</code></a></small>
-    <div class="hidden name"><code>reexports.Rd</code></div>
+    <h1>Visualisation Recipe for 'correlation' Objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/easystats/correlation/blob/master/R/visualisation_recipe.easycormatrix.R'><code>R/visualisation_recipe.easycormatrix.R</code></a></small>
+    <div class="hidden name"><code>visualisation_recipe.easycormatrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These objects are imported from other packages. Follow the links
-below to see their documentation.</p>
-<dl>
-  <dt>bayestestR</dt><dd><p><code><a href='https://easystats.github.io/bayestestR/reference/simulate_simpson.html'>simulate_simpson</a></code></p></dd>
-
-  <dt>datawizard</dt><dd><p><code><a href='https://easystats.github.io/datawizard/reference/visualisation_recipe.html'>visualisation_recipe</a></code></p></dd>
-
-  <dt>insight</dt><dd><p><code><a href='https://easystats.github.io/insight/reference/display.html'>display</a></code>, <code><a href='https://easystats.github.io/insight/reference/display.html'>print_html</a></code>, <code><a href='https://easystats.github.io/insight/reference/display.html'>print_md</a></code></p></dd>
-
-</dl>
+    <p>Visualisation recipe for 'correlation' objects.</p>
     </div>
 
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='co'># S3 method for easycormatrix</span>
+<span class='fu'><a href='https://easystats.github.io/datawizard/reference/visualisation_recipe.html'>visualisation_recipe</a></span><span class='op'>(</span><span class='va'>x</span>, tile <span class='op'>=</span> <span class='cn'>NULL</span>, scale_fill <span class='op'>=</span> <span class='cn'>NULL</span>, labs <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>A correlation object.</p></td>
+    </tr>
+    <tr>
+      <th>tile, scale_fill, labs</th>
+      <td><p>Additional aesthetics and parameters for the geoms (see customization example).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments passed to other functions.</p></td>
+    </tr>
+    </table>
 
 
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># ==============================================</span></span>
+<span class='r-in'><span class='co'># Correlation Matrix</span></span>
+<span class='r-in'><span class='co'># ==============================================</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://ggplot2.tidyverse.org'>"ggplot2"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='va'>rez</span> <span class='op'>&lt;-</span> <span class='fu'><a href='correlation.html'>correlation</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cor_sort.html'>cor_sort</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>rez</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>layers</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://easystats.github.io/datawizard/reference/visualisation_recipe.html'>visualisation_recipe</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>layers</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>layers</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Customize</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>rez</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>layers</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://easystats.github.io/datawizard/reference/visualisation_recipe.html'>visualisation_recipe</a></span><span class='op'>(</span><span class='va'>x</span>,</span>
+<span class='r-in'>                               scale_fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"green"</span>, low <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                               labs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"My Plot"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>layers</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-plt'><img src='visualisation_recipe.easycormatrix-1.png' alt='' width='700' height='433' /></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
