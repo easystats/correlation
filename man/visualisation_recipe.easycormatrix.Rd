@@ -4,12 +4,26 @@
 \alias{visualisation_recipe.easycormatrix}
 \title{Visualisation Recipe for 'correlation' Objects}
 \usage{
-\method{visualisation_recipe}{easycormatrix}(x, tile = NULL, scale_fill = NULL, labs = NULL, ...)
+\method{visualisation_recipe}{easycormatrix}(
+  x,
+  show_data = "tile",
+  show_text = TRUE,
+  tile = NULL,
+  point = NULL,
+  text = NULL,
+  scale_fill = NULL,
+  labs = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A correlation object.}
 
-\item{tile, scale_fill, labs}{Additional aesthetics and parameters for the geoms (see customization example).}
+\item{show_data}{Show data. For correlation matrices, can be \code{"tile"} (default) or \code{"point"}.}
+
+\item{show_text}{Show labels with matrix values.}
+
+\item{tile, point, text, scale_fill, labs}{Additional aesthetics and parameters for the geoms (see customization example).}
 
 \item{...}{Other arguments passed to other functions.}
 }
@@ -28,11 +42,23 @@ layers <- visualisation_recipe(x)
 layers
 plot(layers)
 
+#' Get more details using `summary()`
+x <- summary(rez, redundant = TRUE, digits = 3)
+plot(visualisation_recipe(x))
+
 # Customize
 x <- summary(rez)
 layers <- visualisation_recipe(x,
-                               scale_fill = list(high = "green", low = "red"),
+                               show_data = "points",
+                               scale = list(range = c(10, 20)),
+                               scale_fill = list(high = "darkgreen",
+                                                 low = "red",
+                                                 name = "r"),
+                               text = list(color = "white"),
                                labs = list(title = "My Plot"))
 plot(layers) + theme_minimal()
+
+ggplot(iris, aes(Sepal.Length, Petal.Width)) +
+geom_point(aes(color = Species, size = Petal.Length) , show.legend = c("size" = FALSE))
 }
 }

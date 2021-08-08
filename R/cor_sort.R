@@ -27,7 +27,7 @@ cor_sort.easycorrelation <- function(x, distance = "correlation", ...) {
   reordered <- x[order(x$Parameter1, x$Parameter2), ]
 
   # Restore class and attributes
-  attributes(reordered) <- modifyList(attributes(x), attributes(reordered))
+  attributes(reordered) <- modifyList(attributes(x)[!names(attributes(x)) %in% c("names", "row.names")], attributes(reordered))
   reordered
 }
 
@@ -47,7 +47,7 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", ...) {
   reordered <- x[order(x$Parameter), c("Parameter", order)]
 
   # Restore class and attributes
-  attributes(reordered) <- modifyList(attributes(x), attributes(reordered))
+  attributes(reordered) <- modifyList(attributes(x)[!names(attributes(x)) %in% c("names", "row.names")], attributes(reordered))
   reordered
 }
 
@@ -58,7 +58,7 @@ cor_sort.matrix <- function(x, distance = "correlation", ...) {
   reordered <- x[order, order]
 
   # Restore class and attributes
-  attributes(reordered) <- modifyList(attributes(x), attributes(reordered))
+  attributes(reordered) <- modifyList(attributes(x)[names(attributes(x)) != "dimnames"], attributes(reordered))
   reordered
 }
 
