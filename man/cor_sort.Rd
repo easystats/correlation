@@ -21,4 +21,5 @@ x <- correlation(mtcars)
 
 cor_sort(as.matrix(x))
 cor_sort(x, hclust_method = "ward.D2") # It can also reorder the long form output
+cor_sort(summary(x, redundant = TRUE)) # As well as from the summary
 }

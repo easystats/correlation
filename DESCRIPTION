@@ -83,7 +83,8 @@ Remotes:
     easystats/insight,
     easystats/datawizard,
     easystats/bayestestR,
-    easystats/parameters
+    easystats/parameters,
+    easystats/see
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

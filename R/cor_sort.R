@@ -11,24 +11,55 @@
 #'
 #' cor_sort(as.matrix(x))
 #' cor_sort(x, hclust_method = "ward.D2") # It can also reorder the long form output
+#' cor_sort(summary(x, redundant = TRUE)) # As well as from the summary
 #' @importFrom stats as.dist hclust
 #' @export
 cor_sort <- function(x, distance = "correlation", ...) {
   UseMethod("cor_sort")
 }
 
+#' @importFrom utils modifyList
 #' @export
 cor_sort.easycorrelation <- function(x, distance = "correlation", ...) {
   order <- .cor_sort_order(as.matrix(x), distance = distance, ...)
   x$Parameter1 <- factor(x$Parameter1, levels = order)
   x$Parameter2 <- factor(x$Parameter2, levels = order)
-  x[order(x$Parameter1, x$Parameter2), ]
+  reordered <- x[order(x$Parameter1, x$Parameter2), ]
+
+  # Restore class and attributes
+  attributes(reordered) <- modifyList(attributes(x), attributes(reordered))
+  reordered
 }
+
+
+#' @export
+cor_sort.easycormatrix <- function(x, distance = "correlation", ...) {
+  if(!"Parameter" %in% colnames(x)) return(NextMethod())
+
+  # Get matrix
+  m <- x
+  row.names(m) <- x$Parameter
+  m <- as.matrix(m[names(m)[names(m) != "Parameter"]])
+  order <- .cor_sort_order(m, distance = distance, ...)
+
+  # Reorder
+  x$Parameter <- factor(x$Parameter, levels = order)
+  reordered <- x[order(x$Parameter), c("Parameter", order)]
+
+  # Restore class and attributes
+  attributes(reordered) <- modifyList(attributes(x), attributes(reordered))
+  reordered
+}
+
 
 #' @export
 cor_sort.matrix <- function(x, distance = "correlation", ...) {
   order <- .cor_sort_order(x, distance = distance, ...)
-  x[order, order]
+  reordered <- x[order, order]
+
+  # Restore class and attributes
+  attributes(reordered) <- modifyList(attributes(x), attributes(reordered))
+  reordered
 }
 
 # Utils -------------------------------------------------------------------
