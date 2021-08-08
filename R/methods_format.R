@@ -44,6 +44,12 @@ format.easycormatrix <- function(x,
                                  format = NULL,
                                  ...) {
 
+  # If it's a real matrix
+  if(!"Parameter" %in% colnames(x)) {
+    m <- as.data.frame(x)
+    return(cbind(data.frame("Variables" = row.names(x)), m))
+  }
+
   # Find attributes
   attri <- attributes(x)
 

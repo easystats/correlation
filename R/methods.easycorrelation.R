@@ -87,7 +87,9 @@ as.matrix.easycorrelation <- function(x, ...) {
     mat <- mat[-1]
   }
 
-  as.matrix(mat)
+  m <- as.matrix(mat)
+  class(m) <- c("easycormatrix", class(m))
+  m
 }
 
 # @examples
@@ -105,7 +107,7 @@ as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
     class(lx) <- c("grouped_easymatrixlist", "easymatrixlist")
   }
 
-  return(lx)
+  lx
 }
 
 
@@ -214,5 +216,5 @@ plot.easycormatrix <- function(x, ...) {
     attributes(sx)[!names(attributes(sx)) %in% c("names", "row.names", "class", "coefficient_name", names(lx))]
   )
 
-  return(lx)
+  lx
 }

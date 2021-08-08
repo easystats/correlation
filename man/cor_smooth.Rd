@@ -32,5 +32,5 @@ data <- cbind(mtcars,
 x <- correlation(data)
 is.positive_definite(x)
 
-cor_smooth(as.matrix(x))
+smoothed <- cor_smooth(x)
 }

@@ -36,6 +36,7 @@ display.easycormatrix <- function(object,
                                   stars = TRUE,
                                   include_significance = NULL,
                                   ...) {
+
   if (format == "markdown") {
     print_md(
       x = object,

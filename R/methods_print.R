@@ -5,13 +5,22 @@
 #' @importFrom insight export_table
 #' @export
 print.easycorrelation <- function(x, ...) {
-  formatted_table <- format(x, ...)
-  cat(insight::export_table(formatted_table, format = "text"))
+  cat(insight::export_table(format(x, ...), format = "text"))
   invisible(x)
 }
 
 #' @export
-print.easycormatrix <- print.easycorrelation
+print.easycormatrix <- function(x, ...) {
+  formatted <- format(x, ...)
+  # If real matrix, print as matrix
+  if(colnames(formatted)[1] == "Variables") {
+    formatted$Variables <- NULL
+    print(as.matrix(formatted))
+  } else {
+    cat(insight::export_table(format(x, ...), format = "text"))
+  }
+  invisible(x)
+}
 
 
 #' @export

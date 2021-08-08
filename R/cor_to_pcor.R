@@ -54,7 +54,11 @@ cor_to_pcor.matrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
 
 #' @export
 cor_to_pcor.easycormatrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
-  .cor_to_pcor_easycormatrix(cor = cor, tol = tol)
+  if(!inherits(cor, "matrix")) {
+    .cor_to_pcor_easycormatrix(cor = cor, tol = tol)
+  } else {
+    NextMethod()
+  }
 }
 
 
@@ -86,7 +90,11 @@ pcor_to_cor.matrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
 
 #' @export
 pcor_to_cor.easycormatrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
-  .cor_to_pcor_easycormatrix(pcor = pcor, tol = tol)
+  if(!inherits(pcor, "matrix")) {
+    .cor_to_pcor_easycormatrix(pcor = pcor, tol = tol)
+  } else {
+    NextMethod()
+  }
 }
 
 
@@ -173,6 +181,8 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   }
 
   # Extract info
+  if(inherits(cor, "matrix")) return(r)
+
   p_adjust <- attributes(cor)$p_adjust
   nobs <- as.matrix(attributes(cor)$n_Obs[-1])
 
@@ -182,7 +192,9 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   row.names(r) <- NULL
 
   # P-values adjustments
-  p$p <- stats::p.adjust(p$p, method = p_adjust, n = nrow(cor) * (ncol(cor) - 1) / 2)
+  n_comp <- sum(upper.tri(p$p))
+  p$p[upper.tri(p$p)] <- stats::p.adjust(p$p[upper.tri(p$p)], method = p_adjust, n = n_comp)
+  p$p[lower.tri(p$p)] <- stats::p.adjust(p$p[lower.tri(p$p)], method = p_adjust, n = n_comp)
   attributes(cor)$p_adjust <- p_adjust
 
   # Statistic and p-value
@@ -242,8 +254,10 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
     }
   } else {
     if (inherits(cor, "easycormatrix")) {
-      row.names(cor) <- cor$Parameter
-      cor <- as.matrix(cor[-1])
+      if(colnames(cor)[1] == "Parameter") {
+        row.names(cor) <- cor$Parameter
+        cor <- as.matrix(cor[-1])
+      }
     }
   }
   cor

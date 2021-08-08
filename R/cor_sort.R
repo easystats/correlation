@@ -1,0 +1,49 @@
+#' Sort a correlation matrix to improve readability of groups and clusters
+#'
+#' Sort a correlation matrix based on \code{hclust}.
+#'
+#' @param x A correlation matrix.
+#' @param distance How the distance between each variable should be calculated. If \code{correlation} (default; suited for correlation matrices), the matrix will be rescaled to 0-1 (distance=0 indicating correlation of 1; distance=1 indicating correlation of -1). If \code{raw}, then the matrix will be used as a distance matrix as-is. Can be others (\code{euclidean}, \code{manhattan}, ...), in which case it will be passed to \code{dist()} (see the arguments for it).
+#' @param ... Other arguments to be passed to or from other functions.
+#'
+#' @examples
+#' x <- correlation(mtcars)
+#'
+#' cor_sort(as.matrix(x))
+#' cor_sort(x, hclust_method = "ward.D2") # It can also reorder the long form output
+#' @importFrom stats as.dist hclust
+#' @export
+cor_sort <- function(x, distance = "correlation", ...) {
+  UseMethod("cor_sort")
+}
+
+#' @export
+cor_sort.easycorrelation <- function(x, distance = "correlation", ...) {
+  order <- .cor_sort_order(as.matrix(x), distance = distance, ...)
+  x$Parameter1 <- factor(x$Parameter1, levels = order)
+  x$Parameter2 <- factor(x$Parameter2, levels = order)
+  x[order(x$Parameter1, x$Parameter2), ]
+}
+
+#' @export
+cor_sort.matrix <- function(x, distance = "correlation", ...) {
+  order <- .cor_sort_order(x, distance = distance, ...)
+  x[order, order]
+}
+
+# Utils -------------------------------------------------------------------
+
+
+.cor_sort_order <- function(m, distance = "correlation", hclust_method = "complete", ...) {
+  if(distance == "correlation") {
+    d <- as.dist((1-m)/2) # r = -1 -> d = 1; r = 1 -> d = 0
+  } else if(distance == "raw") {
+    d <- m
+  } else {
+    d <- dist(m, method = distance, diag = TRUE, upper = TRUE)
+  }
+
+  hc <- hclust(d, method = hclust_method)
+  row.names(m)[hc$order]
+}
+
