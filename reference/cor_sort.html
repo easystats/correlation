@@ -169,30 +169,30 @@
     <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='correlation.html'>correlation</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'>cor_sort</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>              mpg        cyl       disp         hp       drat          wt</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> mpg   1.00000000  0.4276059  0.7498125  0.5269883  0.3949769 -0.65624923</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> cyl   0.42760594  1.0000000  0.6587479  0.7824958  0.8879799 -0.17471588</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> disp  0.74981247  0.6587479  1.0000000  0.8324475  0.7909486 -0.70822339</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> hp    0.52698829  0.7824958  0.8324475  1.0000000  0.9020329 -0.59124207</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> drat  0.39497686  0.8879799  0.7909486  0.9020329  1.0000000 -0.43369788</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> wt   -0.65624923 -0.1747159 -0.7082234 -0.5912421 -0.4336979  1.00000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> qsec -0.56960714 -0.5549157 -0.7230967 -0.8108118 -0.7104159  0.74453544</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> vs   -0.55092507 -0.8676594 -0.7761684 -0.8521620 -0.8475514  0.41868403</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> am   -0.09078980 -0.7124406 -0.4487591 -0.6999381 -0.7102139  0.09120476</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gear  0.05753435 -0.6924953 -0.2432043 -0.5226070 -0.5912270 -0.22986086</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> carb  0.27407284 -0.5832870 -0.1257043 -0.4926866 -0.5555692 -0.21268223</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>            qsec         vs          am        gear       carb</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> mpg  -0.5696071 -0.5509251 -0.09078980  0.05753435  0.2740728</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> cyl  -0.5549157 -0.8676594 -0.71244065 -0.69249526 -0.5832870</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> disp -0.7230967 -0.7761684 -0.44875912 -0.24320426 -0.1257043</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> hp   -0.8108118 -0.8521620 -0.69993811 -0.52260705 -0.4926866</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> drat -0.7104159 -0.8475514 -0.71021393 -0.59122704 -0.5555692</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> wt    0.7445354  0.4186840  0.09120476 -0.22986086 -0.2126822</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> qsec  1.0000000  0.6640389  0.44027846  0.16834512  0.2060233</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> vs    0.6640389  1.0000000  0.68117191  0.59983243  0.4802848</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> am    0.4402785  0.6811719  1.00000000  0.71271113  0.6996101</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> gear  0.1683451  0.5998324  0.71271113  1.00000000  0.7940588</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> carb  0.2060233  0.4802848  0.69961013  0.79405876  1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             carb         wt         hp        cyl       disp        qsec</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> carb  1.00000000  0.4276059  0.7498125  0.5269883  0.3949769 -0.65624923</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> wt    0.42760594  1.0000000  0.6587479  0.7824958  0.8879799 -0.17471588</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> hp    0.74981247  0.6587479  1.0000000  0.8324475  0.7909486 -0.70822339</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cyl   0.52698829  0.7824958  0.8324475  1.0000000  0.9020329 -0.59124207</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> disp  0.39497686  0.8879799  0.7909486  0.9020329  1.0000000 -0.43369788</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> qsec -0.65624923 -0.1747159 -0.7082234 -0.5912421 -0.4336979  1.00000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> vs   -0.56960714 -0.5549157 -0.7230967 -0.8108118 -0.7104159  0.74453544</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mpg  -0.55092507 -0.8676594 -0.7761684 -0.8521620 -0.8475514  0.41868403</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> drat -0.09078980 -0.7124406 -0.4487591 -0.6999381 -0.7102139  0.09120476</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> am    0.05753435 -0.6924953 -0.2432043 -0.5226070 -0.5912270 -0.22986086</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gear  0.27407284 -0.5832870 -0.1257043 -0.4926866 -0.5555692 -0.21268223</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              vs        mpg        drat          am       gear</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> carb -0.5696071 -0.5509251 -0.09078980  0.05753435  0.2740728</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> wt   -0.5549157 -0.8676594 -0.71244065 -0.69249526 -0.5832870</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> hp   -0.7230967 -0.7761684 -0.44875912 -0.24320426 -0.1257043</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> cyl  -0.8108118 -0.8521620 -0.69993811 -0.52260705 -0.4926866</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> disp -0.7104159 -0.8475514 -0.71021393 -0.59122704 -0.5555692</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> qsec  0.7445354  0.4186840  0.09120476 -0.22986086 -0.2126822</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> vs    1.0000000  0.6640389  0.44027846  0.16834512  0.2060233</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mpg   0.6640389  1.0000000  0.68117191  0.59983243  0.4802848</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> drat  0.4402785  0.6811719  1.00000000  0.71271113  0.6996101</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> am    0.1683451  0.5998324  0.71271113  1.00000000  0.7940588</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> gear  0.2060233  0.4802848  0.69961013  0.79405876  1.0000000</span>
 <span class='r-in'><span class='fu'>cor_sort</span><span class='op'>(</span><span class='va'>x</span>, hclust_method <span class='op'>=</span> <span class='st'>"ward.D2"</span><span class='op'>)</span> <span class='co'># It can also reorder the long form output</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #0000BB;'># Correlation Matrix (pearson-method)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
