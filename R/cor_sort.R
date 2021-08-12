@@ -69,7 +69,7 @@ cor_sort.matrix <- function(x, distance = "correlation", ...) {
   if(distance == "correlation") {
     d <- as.dist((1-m)/2) # r = -1 -> d = 1; r = 1 -> d = 0
   } else if(distance == "raw") {
-    d <- m
+    d <- as.dist(m)
   } else {
     d <- dist(m, method = distance, diag = TRUE, upper = TRUE)
   }
