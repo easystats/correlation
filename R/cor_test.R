@@ -297,7 +297,8 @@ cor_test <- function(data,
   # Output
   attr(out, "coefficient_name") <- c("rho", "r", "tau", "Dxy")[c("rho", "r", "tau", "Dxy") %in% names(out)][1]
   attr(out, "ci") <- ci
-  class(out) <- unique(c("easycorrelation", "parameters_model", class(out)))
+  attr(out, "data") <- data
+  class(out) <- unique(c("easycor_test", "easycorrelation", "parameters_model", class(out)))
   out
 }
 

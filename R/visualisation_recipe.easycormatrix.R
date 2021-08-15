@@ -5,7 +5,7 @@
 #' @param x A correlation object.
 #' @param show_text Show labels with matrix values.
 #' @param show_data Show data. For correlation matrices, can be \code{"tile"} (default) or \code{"point"}.
-#' @param tile,point,text,scale_fill,labs Additional aesthetics and parameters for the geoms (see customization example).
+#' @param tile,point,text,scale_fill,smooth,labs Additional aesthetics and parameters for the geoms (see customization example).
 #' @param ... Other arguments passed to other functions.
 #'
 #' @examples
@@ -42,7 +42,7 @@
 #' @export
 visualisation_recipe.easycormatrix <- function(x,
                                                show_data = "tile",
-                                               show_text = TRUE,
+                                               show_text = "text",
                                                tile = NULL,
                                                point = NULL,
                                                text = NULL,
@@ -105,7 +105,8 @@ visualisation_recipe.easycormatrix <- function(x,
 
 
   # Add text
-  if(!is.null(show_text) && show_text) {
+  if(!is.null(show_text) && show_text != FALSE) {
+    if(show_text == TRUE) show_text <- "text"
     layers[[paste0("l", l)]] <- .visualisation_easycormatrix_text(data, x = "Parameter2", y = "Parameter1", label = "Text", text = text)
     l <- l + 1
   }
@@ -192,9 +193,9 @@ visualisation_recipe.easycormatrix <- function(x,
 
 # Layer - Text -------------------------------------------------------------
 
-.visualisation_easycormatrix_text <- function(data, x, y, label, text = NULL) {
+.visualisation_easycormatrix_text <- function(data, x, y, label, show_text = "text", text = NULL) {
   out <- list(
-    geom = "text",
+    geom = show_text,
     data = data,
     aes = list(
       y = y,
