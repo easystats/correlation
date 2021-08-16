@@ -56,7 +56,7 @@ visualisation_recipe.easycor_test <- function(x,
     # Add text
     x$label <- cor_text(x, ...)
     x$label_x <- max(data[[x$Parameter1]], na.rm = TRUE)
-    x$label_y <- max(data[[x$Parameter2]], na.rm = TRUE) + 0.05 * diff(range(data[[x$Parameter2]]))
+    x$label_y <- max(data[[x$Parameter2]], na.rm = TRUE) + 0.05 * diff(range(data[[x$Parameter2]], na.rm = TRUE))
 
     l <- paste0("l", length(layers) + 1)
     layers[[l]] <- list(geom = show_text,
