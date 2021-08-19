@@ -1,3 +1,4 @@
+.runThisTest <- Sys.getenv("RunAllcorrelationTests") == "yes"
 
 test_that("comparison with other packages", {
   if (requireNamespace("ppcor") &&
@@ -63,9 +64,8 @@ test_that("comparison with other packages", {
     p <- as.matrix(attributes(rez)$p[2:ncol(rez)])
     expect_true(mean(abs(p - as.matrix(ppcor$p.value))) < 0.05)
 
-
     # Bayesian
-    if (requireNamespace("BayesFactor")) {
+    if (.runThisTest && requireNamespace("BayesFactor")) {
       out <- correlation(iris, include_factors = FALSE, bayesian = TRUE)
       rez <- as.data.frame(summary(out, redundant = TRUE))
 
@@ -150,7 +150,7 @@ test_that("format checks", {
   }
 
   # Bayesian full partial
-  if (requireNamespace("BayesFactor")) {
+  if (.runThisTest && requireNamespace("BayesFactor")) {
     out <- correlation(iris, include_factors = TRUE, multilevel = TRUE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
     expect_equal(c(nrow(out), ncol(out)), c(6, 15))
     expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4, 5))
@@ -159,16 +159,18 @@ test_that("format checks", {
 })
 
 
-test_that("specific types", {
-  data <- data.frame(
-    x = as.ordered(sample(1:5, 20, TRUE)),
-    y = as.ordered(sample(letters[1:5], 20, TRUE))
-  )
+if (.runThisTest) {
+  test_that("specific types", {
+    data <- data.frame(
+      x = as.ordered(sample(1:5, 20, TRUE)),
+      y = as.ordered(sample(letters[1:5], 20, TRUE))
+    )
 
-  correlation(data, method = "polychoric")
-})
+    correlation(data, method = "polychoric")
+  })
 
-test_that("as.data.frame for correlation output", {
-  set.seed(123)
-  expect_snapshot(as.data.frame(correlation(ggplot2::msleep)))
-})
+  test_that("as.data.frame for correlation output", {
+    set.seed(123)
+    expect_snapshot(as.data.frame(correlation(ggplot2::msleep)))
+  })
+}
