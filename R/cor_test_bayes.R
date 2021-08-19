@@ -1,5 +1,3 @@
-#' @importFrom stats complete.cases rnorm qnorm
-#' @importFrom utils install.packages
 #' @keywords internal
 .cor_test_bayes <- function(data,
                             x,

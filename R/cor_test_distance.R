@@ -40,11 +40,10 @@
 # Basis -------------------------------------------------------------------
 
 
-#' @importFrom stats dist pt
 #' @keywords internal
 .cor_test_distance_corrected <- function(x, y, ci = 0.95) {
-  x <- as.matrix(dist(x))
-  y <- as.matrix(dist(y))
+  x <- as.matrix(stats::dist(x))
+  y <- as.matrix(stats::dist(y))
   n <- nrow(x)
 
   A <- .A_star(x)
@@ -60,7 +59,7 @@
   dof <- M - 1
 
   t <- sqrt(M - 1) * r / sqrt(1 - r^2)
-  p <- 1 - pt(t, df = dof)
+  p <- 1 - stats::pt(t, df = dof)
 
   ci_vals <- cor_to_ci(r, n = n, ci = ci)
 
@@ -84,8 +83,8 @@
     index <- 1.0
   }
 
-  x <- as.matrix(dist(x))
-  y <- as.matrix(dist(y))
+  x <- as.matrix(stats::dist(x))
+  y <- as.matrix(stats::dist(y))
   n <- nrow(x)
 
   A <- .A_kl(x, index)

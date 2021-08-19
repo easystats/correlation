@@ -206,7 +206,6 @@
 #'
 #' # automatic selection of correlation method
 #' correlation(mtcars[-2], method = "auto")
-#' @importFrom stats p.adjust
 #'
 #' @references
 #'
@@ -395,7 +394,7 @@ correlation <- function(data,
 
   if (convert_back_to_r) out <- pcor_to_cor(pcor = out) # Revert back to r if needed.
 
-  if(standardize_names) insight::standardize_names(out, ...)
+  if (standardize_names) insight::standardize_names(out, ...)
   out
 }
 

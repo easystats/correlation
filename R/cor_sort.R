@@ -12,13 +12,11 @@
 #' cor_sort(as.matrix(x))
 #' cor_sort(x, hclust_method = "ward.D2") # It can also reorder the long form output
 #' cor_sort(summary(x, redundant = TRUE)) # As well as from the summary
-#' @importFrom stats as.dist hclust
 #' @export
 cor_sort <- function(x, distance = "correlation", ...) {
   UseMethod("cor_sort")
 }
 
-#' @importFrom utils modifyList
 #' @export
 cor_sort.easycorrelation <- function(x, distance = "correlation", ...) {
   order <- .cor_sort_order(as.matrix(x), distance = distance, ...)
@@ -27,14 +25,14 @@ cor_sort.easycorrelation <- function(x, distance = "correlation", ...) {
   reordered <- x[order(x$Parameter1, x$Parameter2), ]
 
   # Restore class and attributes
-  attributes(reordered) <- modifyList(attributes(x)[!names(attributes(x)) %in% c("names", "row.names")], attributes(reordered))
+  attributes(reordered) <- utils::modifyList(attributes(x)[!names(attributes(x)) %in% c("names", "row.names")], attributes(reordered))
   reordered
 }
 
 
 #' @export
 cor_sort.easycormatrix <- function(x, distance = "correlation", ...) {
-  if(!"Parameter" %in% colnames(x)) return(NextMethod())
+  if (!"Parameter" %in% colnames(x)) return(NextMethod())
 
   # Get matrix
   m <- x
@@ -47,7 +45,7 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", ...) {
   reordered <- x[order(x$Parameter), c("Parameter", order)]
 
   # Restore class and attributes
-  attributes(reordered) <- modifyList(attributes(x)[!names(attributes(x)) %in% c("names", "row.names")], attributes(reordered))
+  attributes(reordered) <- utils::modifyList(attributes(x)[!names(attributes(x)) %in% c("names", "row.names")], attributes(reordered))
   reordered
 }
 
@@ -58,7 +56,7 @@ cor_sort.matrix <- function(x, distance = "correlation", ...) {
   reordered <- x[order, order]
 
   # Restore class and attributes
-  attributes(reordered) <- modifyList(attributes(x)[names(attributes(x)) != "dimnames"], attributes(reordered))
+  attributes(reordered) <- utils::modifyList(attributes(x)[names(attributes(x)) != "dimnames"], attributes(reordered))
   reordered
 }
 
@@ -66,15 +64,15 @@ cor_sort.matrix <- function(x, distance = "correlation", ...) {
 
 
 .cor_sort_order <- function(m, distance = "correlation", hclust_method = "complete", ...) {
-  if(distance == "correlation") {
-    d <- as.dist((1-m)/2) # r = -1 -> d = 1; r = 1 -> d = 0
-  } else if(distance == "raw") {
-    d <- as.dist(m)
+  if (distance == "correlation") {
+    d <- stats::as.dist((1 - m)/2) # r = -1 -> d = 1; r = 1 -> d = 0
+  } else if (distance == "raw") {
+    d <- stats::as.dist(m)
   } else {
-    d <- dist(m, method = distance, diag = TRUE, upper = TRUE)
+    d <- stats::dist(m, method = distance, diag = TRUE, upper = TRUE)
   }
 
-  hc <- hclust(d, method = hclust_method)
+  hc <- stats::hclust(d, method = hclust_method)
   row.names(m)[hc$order]
 }
 

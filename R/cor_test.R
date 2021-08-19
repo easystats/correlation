@@ -112,7 +112,6 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
-#' @importFrom stats complete.cases na.omit sd
 #' @export
 cor_test <- function(data,
                      x,

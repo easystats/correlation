@@ -1,4 +1,3 @@
-#' @importFrom stats median mad
 #' @keywords internal
 .cor_test_biweight <- function(data, x, y, ci = 0.95, ...) {
   var_x <- .complete_variable_x(data, x, y)
