@@ -80,8 +80,6 @@ Suggests:
     wdm,
     WRS2
 Remotes:
-    easystats/insight,
-    easystats/datawizard,
     easystats/bayestestR,
     easystats/parameters,
     easystats/see
