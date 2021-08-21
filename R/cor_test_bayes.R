@@ -58,7 +58,7 @@
 
   if (x == y) {
     # Avoid error in the case of perfect correlation
-    rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale = bayesian_prior)
+    rez <- BayesFactor::correlationBF(stats::rnorm(1000), stats::rnorm(1000), rscale = bayesian_prior)
     params <- parameters::model_parameters(
       rez,
       dispersion = FALSE,

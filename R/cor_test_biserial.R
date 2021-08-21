@@ -55,7 +55,7 @@
   p <- 1 - q
   zp <- stats::dnorm(stats::qnorm(q))
 
-  r <- (((m1 - m0) * (p * q / zp)) / sd(var_x))
+  r <- (((m1 - m0) * (p * q / zp)) / stats::sd(var_x))
 
   p <- cor_to_p(r, n = length(var_x))
   ci_vals <- cor_to_ci(r, n = length(var_x), ci = ci)
