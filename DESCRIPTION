@@ -37,7 +37,7 @@ Authors@R:
              email = "maximilian.rabe@uni-potsdam.de", 
              role = "rev", 
              comment = c(ORCID = "0000-0002-2556-5644")))
-Maintainer: Indrajeet Patil <patilindrajeet.science@gmail.com>
+Maintainer: Brenton M. Wiernik <brenton@wiernik.org>
 Description: Lightweight package for computing different kinds
     of correlations, such as partial correlations, Bayesian correlations,
     multilevel correlations, polychoric correlations, biweight
