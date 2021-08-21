@@ -81,7 +81,7 @@ Suggests:
     WRS2
 Remotes:
     easystats/bayestestR,
-    easystats/parameters,
+    easystats/parameters@main,
     easystats/see
 VignetteBuilder: 
     knitr
