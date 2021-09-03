@@ -4,6 +4,10 @@
 
 - Removes `winsorize()` function, which now lives in `datawizard` package.
 
+## New Features
+
+- New `cor_smooth()` function for smoothing non-positive definite matrices.
+
 ## Bug Fixes
 
 - When `data2` was specified `correlation()` was over-correcting for all of the
@@ -15,6 +19,8 @@
 - `correlation()` gains a new argument `rename` to rename variables.
 
 - `simualte_simpson()` function is now re-exported from `bayestestR` package.
+
+- `plot()` for `"easycor_test"` objects now produces an annotated scatter plot.
 
 # correlation 0.6.1
 
