@@ -147,6 +147,11 @@
 <a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking Changes</h2>
 <ul><li>Removes <code>winsorize()</code> function, which now lives in <code>datawizard</code> package.</li>
 </ul></div>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor" aria-hidden="true"></a>New Features</h2>
+<ul><li>New <code><a href="../reference/cor_smooth.html">cor_smooth()</a></code> function for smoothing non-positive definite matrices.</li>
+</ul></div>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor" aria-hidden="true"></a>Bug Fixes</h2>
@@ -157,6 +162,7 @@
 <a href="#minor-changes" class="anchor" aria-hidden="true"></a>Minor Changes</h2>
 <ul><li><p><code><a href="../reference/correlation.html">correlation()</a></code> gains a new argument <code>rename</code> to rename variables.</p></li>
 <li><p><code>simualte_simpson()</code> function is now re-exported from <code>bayestestR</code> package.</p></li>
+<li><p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> for <code>"easycor_test"</code> objects now produces an annotated scatter plot.</p></li>
 </ul></div>
 </div>
     <div id="correlation-061" class="section level1">
@@ -168,9 +174,9 @@
 <ul><li><p><code>simualte_simpson()</code>: The groups are now named after the pattern <code>"G_"</code> (can be altered with the <code>group_prefix</code> argument).</p></li>
 <li><p><code>robust</code> argument deprecated in favour of <code>ranktransform</code>.</p></li>
 </ul></div>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor" aria-hidden="true"></a>New Features</h2>
+<a href="#new-features-1" class="anchor" aria-hidden="true"></a>New Features</h2>
 <ul><li><p><code>correlation</code> gains two new arguments: <code>select</code> and <code>select2</code> to select specific variables from dataframes to compare (<a href='https://github.com/easystats/correlation/issues/146'>#146</a>).</p></li>
 <li><p><code>as.matrix</code> method works for grouped correlations (<a href='https://github.com/easystats/correlation/issues/148'>#148</a>).</p></li>
 <li><p>New <code>as.list</code> method returns a list of various matrices related to correlation analysis (correlation, number of observations, <em>p</em>-values, etc.).</p></li>
@@ -184,9 +190,9 @@
     <div id="correlation-060" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.0">
 <a href="#correlation-060" class="anchor" aria-hidden="true"></a>correlation 0.6.0<small> 2021-02-12 </small></h1>
-<div id="new-features-1" class="section level2">
+<div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor" aria-hidden="true"></a>New Features</h2>
+<a href="#new-features-2" class="anchor" aria-hidden="true"></a>New Features</h2>
 <ul><li><p>Added <code>verbose</code> arguments to some functions, to toggle warnings on/off.</p></li>
 <li><p><code><a href="../reference/cor_test.html">cor_test()</a></code> (and hence, <code><a href="../reference/correlation.html">correlation()</a></code>) now default the <code>winsorize</code> argument to <code>.1</code> when it’s set to <code>TRUE</code>.</p></li>
 <li><p>The <code>Method</code> column in output dataframe is now more explicit about the correlation method used.</p></li>
