@@ -79,10 +79,6 @@ Suggests:
     tidyr,
     wdm,
     WRS2
-Remotes:
-    easystats/bayestestR,
-    easystats/parameters@main,
-    easystats/see
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
