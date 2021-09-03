@@ -12,7 +12,7 @@
 #' # ==============================================
 #' # Correlation Matrix
 #' # ==============================================
-#' if (require("ggplot2")) {
+#' if (require("see")) {
 #' rez <- correlation(mtcars)
 #'
 #' x <- cor_sort(as.matrix(rez))
@@ -29,15 +29,12 @@
 #' layers <- visualisation_recipe(x,
 #'                                show_data = "points",
 #'                                scale = list(range = c(10, 20)),
-#'                                scale_fill = list(high = "darkgreen",
-#'                                                  low = "red",
+#'                                scale_fill = list(high = "#FF5722",
+#'                                                  low = "#673AB7",
 #'                                                  name = "r"),
 #'                                text = list(color = "white"),
 #'                                labs = list(title = "My Plot"))
-#' plot(layers) + theme_minimal()
-#'
-#' ggplot(iris, aes(Sepal.Length, Petal.Width)) +
-#' geom_point(aes(color = Species, size = Petal.Length) , show.legend = c("size" = FALSE))
+#' plot(layers) + theme_modern()
 #' }
 #' @export
 visualisation_recipe.easycormatrix <- function(x,

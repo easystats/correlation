@@ -4,7 +4,7 @@
 #' # ==============================================
 #' # Correlation Test
 #' # ==============================================
-#' if (require("ggplot2")) {
+#' if (require("see")) {
 #' rez <- cor_test(mtcars, "mpg", "wt")
 #'
 #' layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
@@ -13,7 +13,7 @@
 #'
 #' plot(rez,
 #'      show_text = "label",
-#'      point = list(color = "red"),
+#'      point = list(color = "#f44336"),
 #'      text = list(fontface = "bold"),
 #'      show_statistic = FALSE, show_ci = FALSE, stars = TRUE)
 #' }

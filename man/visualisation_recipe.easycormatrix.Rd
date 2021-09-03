@@ -47,7 +47,7 @@ Visualisation recipe for 'correlation' objects.
 # ==============================================
 # Correlation Test
 # ==============================================
-if (require("ggplot2")) {
+if (require("see")) {
 rez <- cor_test(mtcars, "mpg", "wt")
 
 layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
@@ -56,14 +56,14 @@ plot(layers)
 
 plot(rez,
      show_text = "label",
-     point = list(color = "red"),
+     point = list(color = "#f44336"),
      text = list(fontface = "bold"),
      show_statistic = FALSE, show_ci = FALSE, stars = TRUE)
 }
 # ==============================================
 # Correlation Matrix
 # ==============================================
-if (require("ggplot2")) {
+if (require("see")) {
 rez <- correlation(mtcars)
 
 x <- cor_sort(as.matrix(rez))
@@ -80,14 +80,11 @@ x <- summary(rez)
 layers <- visualisation_recipe(x,
                                show_data = "points",
                                scale = list(range = c(10, 20)),
-                               scale_fill = list(high = "darkgreen",
-                                                 low = "red",
+                               scale_fill = list(high = "#FF5722",
+                                                 low = "#673AB7",
                                                  name = "r"),
                                text = list(color = "white"),
                                labs = list(title = "My Plot"))
-plot(layers) + theme_minimal()
-
-ggplot(iris, aes(Sepal.Length, Petal.Width)) +
-geom_point(aes(color = Species, size = Petal.Length) , show.legend = c("size" = FALSE))
+plot(layers) + theme_modern()
 }
 }
