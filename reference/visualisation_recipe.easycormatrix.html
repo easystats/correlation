@@ -200,7 +200,7 @@
     <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># ==============================================</span></span>
 <span class='r-in'><span class='co'># Correlation Test</span></span>
 <span class='r-in'><span class='co'># ==============================================</span></span>
-<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://ggplot2.tidyverse.org'>"ggplot2"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://easystats.github.io/see/'>"see"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'><span class='va'>rez</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cor_test.html'>cor_test</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='st'>"mpg"</span>, <span class='st'>"wt"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>layers</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://easystats.github.io/datawizard/reference/visualisation_recipe.html'>visualisation_recipe</a></span><span class='op'>(</span><span class='va'>rez</span>, labs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Miles per Gallon (mpg)"</span><span class='op'>)</span><span class='op'>)</span></span>
@@ -209,15 +209,16 @@
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>rez</span>,</span>
 <span class='r-in'>     show_text <span class='op'>=</span> <span class='st'>"label"</span>,</span>
-<span class='r-in'>     point <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>,</span>
+<span class='r-in'>     point <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"#f44336"</span><span class='op'>)</span>,</span>
 <span class='r-in'>     text <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>fontface <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,</span>
 <span class='r-in'>     show_statistic <span class='op'>=</span> <span class='cn'>FALSE</span>, show_ci <span class='op'>=</span> <span class='cn'>FALSE</span>, stars <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in geoms_from_list(x, ...)</span> could not find function "geoms_from_list"</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: see</span>
+<span class='r-plt'><img src='visualisation_recipe.easycormatrix-1.png' alt='' width='700' height='433' /></span>
 <span class='r-in'><span class='co'># ==============================================</span></span>
 <span class='r-in'><span class='co'># Correlation Matrix</span></span>
 <span class='r-in'><span class='co'># ==============================================</span></span>
-<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://ggplot2.tidyverse.org'>"ggplot2"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://easystats.github.io/see/'>"see"</a></span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'><span class='va'>rez</span> <span class='op'>&lt;-</span> <span class='fu'><a href='correlation.html'>correlation</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cor_sort.html'>cor_sort</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>rez</span><span class='op'>)</span><span class='op'>)</span></span>
@@ -234,17 +235,14 @@
 <span class='r-in'><span class='va'>layers</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://easystats.github.io/datawizard/reference/visualisation_recipe.html'>visualisation_recipe</a></span><span class='op'>(</span><span class='va'>x</span>,</span>
 <span class='r-in'>                               show_data <span class='op'>=</span> <span class='st'>"points"</span>,</span>
 <span class='r-in'>                               scale <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>range <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>,</span>
-<span class='r-in'>                               scale_fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"darkgreen"</span>,</span>
-<span class='r-in'>                                                 low <span class='op'>=</span> <span class='st'>"red"</span>,</span>
+<span class='r-in'>                               scale_fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"#FF5722"</span>,</span>
+<span class='r-in'>                                                 low <span class='op'>=</span> <span class='st'>"#673AB7"</span>,</span>
 <span class='r-in'>                                                 name <span class='op'>=</span> <span class='st'>"r"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                               text <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span>,</span>
 <span class='r-in'>                               labs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"My Plot"</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>layers</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>iris</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>Sepal.Length</span>, <span class='va'>Petal.Width</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span class='r-in'><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>Species</span>, size <span class='op'>=</span> <span class='va'>Petal.Length</span><span class='op'>)</span> , show.legend <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"size"</span> <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>layers</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://easystats.github.io/see/reference/theme_modern.html'>theme_modern</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in geoms_from_list(x, ...)</span> could not find function "geoms_from_list"</span>
+<span class='r-plt'><img src='visualisation_recipe.easycormatrix-2.png' alt='' width='700' height='433' /></span>
 </code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
