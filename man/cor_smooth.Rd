@@ -3,11 +3,14 @@
 \name{cor_smooth}
 \alias{cor_smooth}
 \alias{is.positive_definite}
+\alias{is_positive_definite}
 \title{Smooth a non-positive definite correlation matrix to make it positive definite}
 \usage{
 cor_smooth(x, method = "psych", verbose = TRUE, ...)
 
 is.positive_definite(x, tol = .Machine$double.eps, ...)
+
+is_positive_definite(x, tol = .Machine$double.eps, ...)
 }
 \arguments{
 \item{x}{A correlation matrix.}
@@ -21,14 +24,15 @@ is.positive_definite(x, tol = .Machine$double.eps, ...)
 \item{tol}{The minimum eigen values to be considered as acceptable.}
 }
 \description{
-Make correlations positive definite using \code{psych::cor.smooth}. Note that this modifies the correlation values, and does \strong{not} recompute the remaining indices (p-values, confidence intervals, etc.). Thus, once you used \code{cor_smooth()}, any other indices becomes irrelevant.
+Make correlations positive definite using \code{psych::cor.smooth}.
+If smoothing is done, inferential statistics (p-values, confidence intervals, etc.) are removed, as they are no longer valid.
 }
 \examples{
-set.seed(1)
-data <- cbind(mtcars,
-              mtcars * matrix(rnorm(32 * 11, sd = 0.05), ncol=11),
-              mtcars * matrix(rnorm(32 * 11, sd = 0.05), ncol=11),
-              mtcars * -matrix(rnorm(32 * 11, sd = 0.01), ncol=11))
+set.seed(123)
+data <- as.matrix(mtcars)
+# Make missing data so pairwise correlation matrix is non-positive definite
+data[sample(seq_len(352), size = 60)] <- NA
+data <- as.data.frame(data)
 x <- correlation(data)
 is.positive_definite(x)
 

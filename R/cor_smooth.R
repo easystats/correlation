@@ -1,6 +1,7 @@
 #' Smooth a non-positive definite correlation matrix to make it positive definite
 #'
-#' Make correlations positive definite using `psych::cor.smooth`. Note that this modifies the correlation values, and does **not** recompute the remaining indices (p-values, confidence intervals, etc.). Thus, once you used `cor_smooth()`, any other indices becomes irrelevant.
+#' Make correlations positive definite using `psych::cor.smooth`.
+#' If smoothing is done, inferential statistics (p-values, confidence intervals, etc.) are removed, as they are no longer valid.
 #'
 #' @param x A correlation matrix.
 #' @param method Smoothing method. Can be `psych` (will use `psych::cor.smooth()`), `hj` (Jorjani et al., 2003) or `lrs` (Schaeffer, 2014). For the two last, will use `mbend::bend()` (check its documentation for details).
@@ -9,11 +10,11 @@
 #' @param ... Other arguments to be passed to or from other functions.
 #'
 #' @examples
-#' set.seed(1)
-#' data <- cbind(mtcars,
-#'               mtcars * matrix(rnorm(32 * 11, sd = 0.05), ncol=11),
-#'               mtcars * matrix(rnorm(32 * 11, sd = 0.05), ncol=11),
-#'               mtcars * -matrix(rnorm(32 * 11, sd = 0.01), ncol=11))
+#' set.seed(123)
+#' data <- as.matrix(mtcars)
+#' # Make missing data so pairwise correlation matrix is non-positive definite
+#' data[sample(seq_len(352), size = 60)] <- NA
+#' data <- as.data.frame(data)
 #' x <- correlation(data)
 #' is.positive_definite(x)
 #'
@@ -27,37 +28,47 @@ cor_smooth <- function(x, method = "psych", verbose = TRUE, ...) {
 #' @export
 cor_smooth.easycorrelation <- function(x, method = "psych", verbose = TRUE, tol = .Machine$double.eps, ...) {
   m <- cor_smooth(as.matrix(x), method = method, verbose = verbose, tol = tol, ...)
-  estim <- names(x)[names(x) %in% c("r", "rho", "tau", "D")][1]
+  if (isTRUE(attributes(m)$smoothed)) {
+    estim <- names(x)[names(x) %in% c("r", "rho", "tau", "D")][1]
 
-  for(param1 in row.names(m)) {
-    for(param2 in colnames(m)) {
-      if(nrow(x[x$Parameter1 == param1 & x$Parameter2 == param2, ]) == 0) next
-      # Print changes
-      if(verbose) {
-        val1 <- x[x$Parameter1 == param1 & x$Parameter2 == param2, estim]
-        val2 <- m[param1, param2]
-        if(val1 == val2) {
-          insight::print_color(paste0(param1,
-                                      " - ",
-                                      param2,
-                                      ": no change (",
-                                      insight::format_value(val1),
-                                      ")\n"), "green")
-        } else {
-          insight::print_color(paste0(param1,
-                                      " - ",
-                                      param2,
-                                      ": ",
-                                      insight::format_value(val1),
-                                      " -> ",
-                                      insight::format_value(val2),
-                                      "\n"), "red")
+    for(param1 in row.names(m)) {
+      for(param2 in colnames(m)) {
+        if(nrow(x[x$Parameter1 == param1 & x$Parameter2 == param2, ]) == 0) next
+        # Print changes
+        if(verbose) {
+          val1 <- x[x$Parameter1 == param1 & x$Parameter2 == param2, estim]
+          val2 <- m[param1, param2]
+          if (round(val1 - val2, digits = 2) == 0) {
+            insight::print_color(paste0(param1,
+                                        " - ",
+                                        param2,
+                                        ": no change (",
+                                        insight::format_value(val1),
+                                        ")\n"), "green")
+          } else {
+            insight::print_color(paste0(param1,
+                                        " - ",
+                                        param2,
+                                        ": ",
+                                        insight::format_value(val1),
+                                        " -> ",
+                                        insight::format_value(val2),
+                                        "\n"), "red")
+          }
+          cat("\n")
         }
+        x[x$Parameter1 == param1 & x$Parameter2 == param2, estim] <- m[param1, param2]
       }
-      x[x$Parameter1 == param1 & x$Parameter2 == param2, estim] <- m[param1, param2]
     }
+    atts <- attributes(x)
+    x <- x[, c("Parameter1", "Parameter2", "r", "Method", "n_Obs")]
+    atts$names <- names(x)
+    atts$smoothed <- TRUE
+    attributes(x) <- atts
+    x
+  } else {
+    x
   }
-  x
 }
 
 
@@ -80,6 +91,7 @@ cor_smooth.matrix <- function(x, method = "psych", verbose = TRUE, tol = .Machin
     if(inherits(out, as.character("try-error"))) return(x)
     x <- out$bent
   }
+  attr(x, "smoothed") <- TRUE
   x
 }
 
@@ -92,6 +104,9 @@ is.positive_definite <- function(x, tol = .Machine$double.eps, ...) {
   UseMethod("is.positive_definite")
 }
 
+#' @rdname cor_smooth
+#' @export
+is_positive_definite <- is.positive_definite
 
 #' @export
 is.positive_definite.matrix <- function(x, tol = .Machine$double.eps, ...) {
