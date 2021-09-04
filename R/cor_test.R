@@ -64,6 +64,8 @@
 #'
 #' cor_test(iris, "Sepal.Length", "Sepal.Width")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
+#'
+#' \dontrun{
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
@@ -80,6 +82,13 @@
 #' if (require("BayesFactor", quietly = TRUE)) {
 #'   cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
 #' }
+#'
+#' # Robust (these two are equivalent)
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", ranktransform = TRUE)
+#'
+#' # Winsorized
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
 #'
 #' # Tetrachoric
 #' if (require("psych", quietly = TRUE)) {
@@ -100,13 +109,6 @@
 #'   cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
 #' }
 #'
-#' # Robust (these two are equivalent)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", ranktransform = TRUE)
-#'
-#' # Winsorized
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
-#' \dontrun{
 #' # Partial
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
@@ -138,7 +140,7 @@ cor_test <- function(data,
     ranktransform <- robust
   }
 
-  # Sanity checks
+  # valid matrix checks
   if (!x %in% names(data) | !y %in% names(data)) {
     stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
   }
