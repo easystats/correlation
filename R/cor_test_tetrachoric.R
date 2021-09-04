@@ -7,7 +7,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  # Sanity check
+  # valid matrix check
   if (length(unique(var_x)) > 2 & length(unique(var_y)) > 2) {
     stop("Tetrachoric correlations can only be ran on dichotomous data.")
   }

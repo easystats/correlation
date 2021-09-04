@@ -13,8 +13,8 @@
 #' @export
 matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {
 
-  # Sanity checks
-  # sanity checks
+  # valid matrix checks
+  # valid matrix checks
   if (!isSquare(m)) {
     stop("The matrix should be a square matrix.")
   }

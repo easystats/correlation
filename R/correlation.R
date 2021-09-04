@@ -267,7 +267,7 @@ correlation <- function(data,
     ranktransform <- robust
   }
 
-  # Sanity checks
+  # valid matrix checks
   if (partial == FALSE & multilevel) {
     partial <- TRUE
     convert_back_to_r <- TRUE
@@ -531,7 +531,7 @@ correlation <- function(data,
     include_factors <- TRUE
   }
 
-  # Sanity checks ----------------
+  # valid matrix checks ----------------
 
   # What if only factors
   if (sum(sapply(if (is.null(data2)) data else cbind(data, data2), is.numeric)) == 0) {

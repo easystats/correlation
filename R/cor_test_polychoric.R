@@ -7,7 +7,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  # Sanity check
+  # valid matrix check
   if (!is.factor(var_x) & !is.factor(var_y)) {
     stop("Polychoric correlations can only be ran on ordinal factors.")
   }

@@ -15,7 +15,7 @@
 #' @export
 cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2 / 3)) {
 
-  # sanity checks
+  # valid matrix checks
   if (!isSquare(cor)) {
     stop("The matrix should be a square matrix.")
   }
