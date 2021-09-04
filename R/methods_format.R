@@ -86,13 +86,15 @@ format.easycormatrix <- function(x,
         stars_only = stars_only
       )
     } else if (type == "pd") {
-      sig[, nums] <- sapply(sig[, nums],
+      sig[, nums] <- sapply(
+        sig[, nums],
         insight::format_pd,
         stars = stars,
         stars_only = stars_only
       )
     } else if (type == "BF") {
-      sig[, nums] <- sapply(sig[, nums],
+      sig[, nums] <- sapply(
+        sig[, nums],
         insight::format_bf,
         stars = stars,
         stars_only = stars_only
@@ -123,7 +125,7 @@ format.easycormatrix <- function(x,
   footer <- ""
 
   # P-adjust
-  if (isFALSE(attributes(x)$bayesian)) {
+  if (isFALSE(attributes(x)$bayesian) && ! isTRUE(attributes(x)$smoothed)) {
     footer <- paste0(
       "\np-value adjustment method: ",
       parameters::format_p_adjust(attributes(x)$p_adjust)
@@ -153,10 +155,15 @@ format.easycormatrix <- function(x,
 #' @keywords internal
 .format_easycorrelation_caption <- function(x, format = NULL) {
   if (!is.null(attributes(x)$method)) {
-    if (is.null(format) || format == "text") {
-      caption <- c(paste0("# Correlation Matrix (", unique(attributes(x)$method), "-method)"), "blue")
+    if (isTRUE(attributes(x)$smoothed)) {
+      prefix <- "Smoothed Correlation Matrix ("
     } else {
-      caption <- paste0("Correlation Matrix (", unique(attributes(x)$method), "-method)")
+      prefix <- "Correlation Matrix ("
+    }
+    if (is.null(format) || format == "text") {
+      caption <- c(paste0("# ", prefix, unique(attributes(x)$method), "-method)"), "blue")
+    } else {
+      caption <- paste0(prefix, unique(attributes(x)$method), "-method)")
     }
   } else {
     caption <- NULL
