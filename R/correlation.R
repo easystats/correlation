@@ -59,7 +59,7 @@
 #' \item **Biweight midcorrelation**: A measure of similarity that is
 #' median-based, instead of the traditional mean-based, thus being less
 #' sensitive to outliers. It can be used as a robust alternative to other
-#' similarity metrics, such as Pearson correlation (Langfelder \& Horvath,
+#' similarity metrics, such as Pearson correlation (Langfelder & Horvath,
 #' 2012).
 #'
 #' \item **Distance correlation**: Distance correlation measures both
@@ -78,7 +78,7 @@
 #' \item **Blomqvist’s coefficient**: The Blomqvist’s coefficient (also
 #' referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
 #' median-based non-parametric correlation that has some advantages over
-#' measures such as Spearman's or Kendall's estimates (see Shmid and Schimdt,
+#' measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
 #' 2006).
 #'
 #' \item **Hoeffding’s D**: The Hoeffding’s D statistics is a

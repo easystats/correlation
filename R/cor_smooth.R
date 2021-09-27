@@ -6,7 +6,7 @@
 #' @param x A correlation matrix.
 #' @param method Smoothing method. Can be `psych` (will use `psych::cor.smooth()`), `hj` (Jorjani et al., 2003) or `lrs` (Schaeffer, 2014). For the two last, will use `mbend::bend()` (check its documentation for details).
 #' @param verbose Set to `FALSE` to silence the function.
-#' @param tol The minimum eigen values to be considered as acceptable.
+#' @param tol The minimum eigenvalue to be considered as acceptable.
 #' @param ... Other arguments to be passed to or from other functions.
 #'
 #' @examples
@@ -26,7 +26,7 @@ cor_smooth <- function(x, method = "psych", verbose = TRUE, ...) {
 
 
 #' @export
-cor_smooth.easycorrelation <- function(x, method = "psych", verbose = TRUE, tol = .Machine$double.eps, ...) {
+cor_smooth.easycorrelation <- function(x, method = "psych", verbose = TRUE, tol = 10^-12, ...) {
   m <- cor_smooth(as.matrix(x), method = method, verbose = verbose, tol = tol, ...)
   if (isTRUE(attributes(m)$smoothed)) {
     estim <- names(x)[names(x) %in% c("r", "rho", "tau", "D")][1]
@@ -73,7 +73,7 @@ cor_smooth.easycorrelation <- function(x, method = "psych", verbose = TRUE, tol 
 
 
 #' @export
-cor_smooth.matrix <- function(x, method = "psych", verbose = TRUE, tol = .Machine$double.eps, ...) {
+cor_smooth.matrix <- function(x, method = "psych", verbose = TRUE, tol = 10^-12, ...) {
 
   method <- match.arg(method, choices = c("psych", "hj", "lrs"))
 
@@ -100,7 +100,7 @@ cor_smooth.matrix <- function(x, method = "psych", verbose = TRUE, tol = .Machin
 
 #' @rdname cor_smooth
 #' @export
-is.positive_definite <- function(x, tol = .Machine$double.eps, ...) {
+is.positive_definite <- function(x, tol = 10^-12, ...) {
   UseMethod("is.positive_definite")
 }
 
@@ -109,7 +109,7 @@ is.positive_definite <- function(x, tol = .Machine$double.eps, ...) {
 is_positive_definite <- is.positive_definite
 
 #' @export
-is.positive_definite.matrix <- function(x, tol = .Machine$double.eps, ...) {
+is.positive_definite.matrix <- function(x, tol = 10^-12, ...) {
   eigens <- try(eigen(x), silent = TRUE)
 
   # Sanity checks

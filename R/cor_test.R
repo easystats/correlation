@@ -17,7 +17,8 @@
 #'   `"auto"` will attempt at selecting the most relevant method
 #'   (polychoric when ordinal factors involved, tetrachoric when dichotomous
 #'   factors involved, point-biserial if one dichotomous and one continuous and
-#'   pearson otherwise).
+#'   pearson otherwise). See below the **details** section for a desription of
+#'   these indices.
 #' @param bayesian,partial_bayesian If TRUE, will run the correlations under a
 #'   Bayesian framework. Note that for partial correlations, you will also need
 #'   to set `partial_bayesian` to `TRUE` to obtain "full" Bayesian
