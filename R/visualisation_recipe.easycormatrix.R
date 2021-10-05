@@ -132,7 +132,7 @@ visualisation_recipe.easycormatrix <- function(x,
   layers[[paste0("l", l)]] <- .visualisation_easycormatrix_labs(labs)
 
   # Out
-  class(layers) <- c("visualisation_recipe", class(layers))
+  class(layers) <- c("visualisation_recipe", "see_visualisation_recipe", class(layers))
   attr(layers, "data") <- data
   layers
 

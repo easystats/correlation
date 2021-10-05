@@ -1,3 +1,9 @@
+# correlation 0.7.1
+
+## Bug Fixes
+
+- Bug fix in `plot()` methods
+
 # correlation 0.7.0
 
 ## Breaking Changes
