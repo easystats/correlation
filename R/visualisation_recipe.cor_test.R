@@ -70,7 +70,7 @@ visualisation_recipe.easycor_test <- function(x,
   }
 
   # Out
-  class(layers) <- c("visualisation_recipe", class(layers))
+  class(layers) <- c("visualisation_recipe", "see_visualisation_recipe", class(layers))
   attr(layers, "data") <- data
   layers
 }

@@ -28,7 +28,8 @@ correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
 \code{"auto"} will attempt at selecting the most relevant method
 (polychoric when ordinal factors involved, tetrachoric when dichotomous
 factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise).}
+pearson otherwise). See below the \strong{details} section for a desription of
+these indices.}
 
 \item{correction}{Only used if method is 'spearman' or 'kendall'. Can be
 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or

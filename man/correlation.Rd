@@ -63,7 +63,8 @@ correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
 \code{"auto"} will attempt at selecting the most relevant method
 (polychoric when ordinal factors involved, tetrachoric when dichotomous
 factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise).}
+pearson otherwise). See below the \strong{details} section for a desription of
+these indices.}
 
 \item{p_adjust}{Correction method for frequentist correlations. Can be one of
 \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"},
@@ -181,7 +182,7 @@ Bishara and Hittner, 2017).
 \item \strong{Biweight midcorrelation}: A measure of similarity that is
 median-based, instead of the traditional mean-based, thus being less
 sensitive to outliers. It can be used as a robust alternative to other
-similarity metrics, such as Pearson correlation (Langfelder \& Horvath,
+similarity metrics, such as Pearson correlation (Langfelder & Horvath,
 2012).
 
 \item \strong{Distance correlation}: Distance correlation measures both
@@ -200,7 +201,7 @@ distance).
 \item \strong{Blomqvist’s coefficient}: The Blomqvist’s coefficient (also
 referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
 median-based non-parametric correlation that has some advantages over
-measures such as Spearman's or Kendall's estimates (see Shmid and Schimdt,
+measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
 2006).
 
 \item \strong{Hoeffding’s D}: The Hoeffding’s D statistics is a

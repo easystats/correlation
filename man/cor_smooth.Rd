@@ -8,9 +8,9 @@
 \usage{
 cor_smooth(x, method = "psych", verbose = TRUE, ...)
 
-is.positive_definite(x, tol = .Machine$double.eps, ...)
+is.positive_definite(x, tol = 10^-12, ...)
 
-is_positive_definite(x, tol = .Machine$double.eps, ...)
+is_positive_definite(x, tol = 10^-12, ...)
 }
 \arguments{
 \item{x}{A correlation matrix.}
@@ -21,7 +21,7 @@ is_positive_definite(x, tol = .Machine$double.eps, ...)
 
 \item{...}{Other arguments to be passed to or from other functions.}
 
-\item{tol}{The minimum eigen values to be considered as acceptable.}
+\item{tol}{The minimum eigenvalue to be considered as acceptable.}
 }
 \description{
 Make correlations positive definite using \code{psych::cor.smooth}.
