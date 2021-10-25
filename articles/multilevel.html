@@ -123,9 +123,9 @@
 ##     url = {https://joss.theoj.org/papers/10.21105/joss.02306},
 ##   }</code></pre>
 <hr>
-<div id="data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data" class="anchor" aria-hidden="true"></a>Data</h2>
+<div class="section level2">
+<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h2>
 <p>Imagine we have an experiment in which <strong>10 individuals</strong> completed a task with <strong>100 trials</strong>. For each trial - there will 1000 trials (10 * 1000) in total - we measured two things, <strong>V1</strong> and <strong>V2</strong>, and we are interested in <strong>investigating the link between these two variables</strong>.</p>
 <p>We will generate data using the <a href="https://easystats.github.io/bayestestR/reference/simulate_simpson.html" class="external-link"><code>simulate_simpson()</code></a> function from this package and look at its summary:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -135,12 +135,12 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>##        V1             V2           Group          
-##  Min.   :-1.2   Min.   :-12.7   Length:1000       
+##  Min.   :-1.7   Min.   :-12.7   Length:1000       
 ##  1st Qu.: 3.0   1st Qu.: -8.0   Class :character  
 ##  Median : 5.5   Median : -5.5   Mode  :character  
 ##  Mean   : 5.5   Mean   : -5.5                     
-##  3rd Qu.: 8.1   3rd Qu.: -3.1                     
-##  Max.   :12.8   Max.   :  1.4</code></pre>
+##  3rd Qu.: 8.1   3rd Qu.: -3.0                     
+##  Max.   :12.7   Max.   :  1.6</code></pre>
 <p>Now let’s visualize the two variables:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
@@ -153,24 +153,11 @@
 <p><img src="multilevel_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <p>That seems pretty straightforward! It seems like there is a <strong>negative correlation</strong> between V1 and V2. Let’s test this.</p>
 </div>
-<div id="simple-correlation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simple-correlation" class="anchor" aria-hidden="true"></a>Simple correlation</h2>
+<div class="section level2">
+<h2 id="simple-correlation">Simple correlation<a class="anchor" aria-label="anchor" href="#simple-correlation"></a>
+</h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
-<pre><code>## Registered S3 methods overwritten by 'parameters':
-##   method                           from      
-##   as.double.parameters_kurtosis    datawizard
-##   as.double.parameters_skewness    datawizard
-##   as.double.parameters_smoothness  datawizard
-##   as.numeric.parameters_kurtosis   datawizard
-##   as.numeric.parameters_skewness   datawizard
-##   as.numeric.parameters_smoothness datawizard
-##   print.parameters_distribution    datawizard
-##   print.parameters_kurtosis        datawizard
-##   print.parameters_skewness        datawizard
-##   summary.parameters_kurtosis      datawizard
-##   summary.parameters_skewness      datawizard</code></pre>
 <pre><code>## # Correlation Matrix (pearson-method)
 ## 
 ## Parameter1 | Parameter2 |     r |         95% CI | t(998) |         p
@@ -182,12 +169,12 @@
 <p>Indeed, there is a <strong>strong, negative and significant correlation</strong> between V1 and V2.</p>
 <p>Great, can we go ahead and <strong>publish these results in <em>PNAS</em></strong>?</p>
 </div>
-<div id="the-simpsons-paradox" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-simpsons-paradox" class="anchor" aria-hidden="true"></a>The Simpson’s Paradox</h2>
+<div class="section level2">
+<h2 id="the-simpsons-paradox">The Simpson’s Paradox<a class="anchor" aria-label="anchor" href="#the-simpsons-paradox"></a>
+</h2>
 <p>Not so fast! Ever heard of the <a href="https://en.wikipedia.org/wiki/Simpson%27s_paradox" class="external-link"><strong>Simpson’s Paradox</strong></a>?</p>
 <p>Let’s colour our datapoints by group (by individuals):</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">V1</span>, y <span class="op">=</span> <span class="va">V2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -201,7 +188,7 @@
 <p>Mmh, interesting. It seems like, for each subject, the relationship is different. The (global) negative trend seems to be an artifact of <strong>differences between the groups</strong> and could be spurious!</p>
 <p><strong>Multilevel <em>(as in multi-group)</em> </strong> correlations allow us to account for <strong>differences between groups</strong>. It is based on a partialization of the group, entered as a random effect in a mixed linear regression.</p>
 <p>You can compute them with the <a href="https://github.com/easystats/correlation" class="external-link"><strong>correlations</strong></a> package by setting the <code>multilevel</code> argument to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
 ## ------------------------------------------------------------------
@@ -209,11 +196,11 @@
 ## 
 ## Observations: 1000</code></pre>
 <p>For completeness, let’s also see if its Bayesian cousin agrees with it:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
 ## ------------------------------------------------------------------
-## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.10 | &lt; .001***
+## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.09 | &lt; .001***
 ## 
 ## Observations: 1000</code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking the group into account seems to be super important.</p>
@@ -233,12 +220,12 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by <a href="https://dominiquemakowski.github.io/" class="external-link external-link">Dominique Makowski</a>, <a href="https://wiernik.org/" class="external-link external-link">Brenton M. Wiernik</a>, <a href="https://sites.google.com/site/indrajeetspatilmorality/" class="external-link external-link">Indrajeet Patil</a>, <a href="https://github.com/strengejacke" class="external-link external-link">Daniel Lüdecke</a>, <a href="https://github.com/mattansb" class="external-link external-link">Mattan S. Ben-Shachar</a>.</p>
+<p>Developed by <a href="https://dominiquemakowski.github.io/" class="external-link">Dominique Makowski</a>, <a href="https://wiernik.org/" class="external-link">Brenton M. Wiernik</a>, <a href="https://sites.google.com/site/indrajeetspatilmorality/" class="external-link">Indrajeet Patil</a>, <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>, <a href="https://github.com/mattansb" class="external-link">Mattan S. Ben-Shachar</a>.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
