@@ -4,7 +4,7 @@
 #' # ==============================================
 #' # Correlation Results (easycorrelation)
 #' # ==============================================
-#' if (require("see")) {
+#' if (require("see") && require("tidygraph")) {
 #' rez <- correlation(iris)
 #'
 #' layers <- visualisation_recipe(rez)

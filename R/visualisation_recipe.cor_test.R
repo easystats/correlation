@@ -32,8 +32,8 @@ visualisation_recipe.easycor_test <- function(x,
   # Text
   subtitle <- NULL
   title <- NULL
-  if(!is.null(show_text) && show_text == "subtitle") subtitle <- cor_text(x, ...)
-  if(!is.null(show_text) && show_text == "title") title <- cor_text(x, ...)
+  if (!is.null(show_text) && show_text == "subtitle") subtitle <- cor_text(x, ...)
+  if (!is.null(show_text) && show_text == "title") title <- cor_text(x, ...)
 
 
   # Get scatter plot
@@ -52,7 +52,7 @@ visualisation_recipe.easycor_test <- function(x,
                          ...)
 
   # Text
-  if(!is.null(show_text) && show_text != FALSE && show_text %in% c("text", "label")) {
+  if (!is.null(show_text) && show_text != FALSE && show_text %in% c("text", "label")) {
     # Add text
     x$label <- cor_text(x, ...)
     x$label_x <- max(data[[x$Parameter1]], na.rm = TRUE)
@@ -66,7 +66,7 @@ visualisation_recipe.easycor_test <- function(x,
                                    x = "label_x",
                                    y = "label_y")
                         )
-    if(!is.null(text)) layers[[l]] <- utils::modifyList(layers[[l]], text)
+    if (!is.null(text)) layers[[l]] <- utils::modifyList(layers[[l]], text)
   }
 
   # Out
@@ -96,7 +96,9 @@ visualisation_recipe.easycor_test <- function(x,
                                    aes = list(x = x,
                                               y = y)
   )
-  if(!is.null(smooth)) layers[[paste0("l", l)]] <- utils::modifyList(layers[[paste0("l", l)]], smooth)
+  if (!is.null(smooth)) {
+    layers[[paste0("l", l)]] <- utils::modifyList(layers[[paste0("l", l)]], smooth)
+  }
   l <- l + 1
 
   # Point
@@ -105,7 +107,9 @@ visualisation_recipe.easycor_test <- function(x,
                                    aes = list(x = x,
                                               y = y)
                                    )
-  if(!is.null(point)) layers[[paste0("l", l)]] <- utils::modifyList(layers[[paste0("l", l)]], point)
+  if (!is.null(point)) {
+    layers[[paste0("l", l)]] <- utils::modifyList(layers[[paste0("l", l)]], point)
+  }
   l <- l + 1
 
   # Side density
@@ -129,7 +133,9 @@ visualisation_recipe.easycor_test <- function(x,
 
   # Labs
   layers[[paste0("l", l)]] <- list(geom = "labs", subtitle = subtitle, title = title)
-  if(!is.null(labs)) layers[[paste0("l", l)]] <- utils::modifyList(layers[[paste0("l", l)]], labs)
+  if (!is.null(labs)) {
+    layers[[paste0("l", l)]] <- utils::modifyList(layers[[paste0("l", l)]], labs)
+  }
 
   layers
 }
