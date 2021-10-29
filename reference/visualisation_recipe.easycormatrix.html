@@ -160,7 +160,7 @@
 <span class="r-in"><span class="co"># ==============================================</span></span>
 <span class="r-in"><span class="co"># Correlation Results (easycorrelation)</span></span>
 <span class="r-in"><span class="co"># ==============================================</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://easystats.github.io/see/" class="external-link">"see"</a></span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://tidygraph.data-imaginist.com" class="external-link">"tidygraph"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://easystats.github.io/see/" class="external-link">"see"</a></span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://tidygraph.data-imaginist.com" class="external-link">"tidygraph"</a></span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://ggraph.data-imaginist.com" class="external-link">"ggraph"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"><span class="va">rez</span> <span class="op">&lt;-</span> <span class="fu"><a href="correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">layers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://easystats.github.io/datawizard/reference/visualisation_recipe.html" class="external-link">visualisation_recipe</a></span><span class="op">(</span><span class="va">rez</span><span class="op">)</span></span>
@@ -173,8 +173,9 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:stats’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     filter</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Package 'ggraph' is required for this function to work.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   Please install it by running install.packages('ggraph').</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ggraph</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ggplot2</span>
+<span class="r-plt"><img src="visualisation_recipe.easycormatrix-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
