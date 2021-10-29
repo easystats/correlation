@@ -94,7 +94,7 @@ plot(layers) + theme_modern()
 # ==============================================
 # Correlation Results (easycorrelation)
 # ==============================================
-if (require("see") && require("tidygraph")) {
+if (require("see") && require("tidygraph") && require("ggraph")) {
 rez <- correlation(iris)
 
 layers <- visualisation_recipe(rez)
