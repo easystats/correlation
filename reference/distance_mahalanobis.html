@@ -20,7 +20,7 @@ bootstrapped version is considered as more robust."><meta property="og:image" co
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1.1</span>
       </span>
     </div>
 
@@ -60,7 +60,7 @@ bootstrapped version is considered as more robust."><meta property="og:image" co
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Mahalanobis distance and confidence interval (CI)</h1>
-    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/master/R/mahalanobis.R" class="external-link"><code>R/mahalanobis.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/HEAD/R/mahalanobis.R" class="external-link"><code>R/mahalanobis.R</code></a></small>
     <div class="hidden name"><code>distance_mahalanobis.Rd</code></div>
     </div>
 
@@ -76,16 +76,19 @@ bootstrapped version is considered as more robust.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>data</dt><dd><p>A data frame.</p></dd>
-</dl><dl><dt>ci</dt><dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
+    <dl><dt>data</dt>
+<dd><p>A data frame.</p></dd>
+<dt>ci</dt>
+<dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
 set to <code>0.95</code> (<code>95%</code> CI).</p></dd>
-</dl><dl><dt>iterations</dt><dd><p>The number of draws to simulate/bootstrap (when
+<dt>iterations</dt>
+<dd><p>The number of draws to simulate/bootstrap (when
 <code>robust</code> is <code>TRUE</code>).</p></dd>
-</dl><dl><dt>robust</dt><dd><p>If <code>TRUE</code>, will run a bootstrapped version of the function
+<dt>robust</dt>
+<dd><p>If <code>TRUE</code>, will run a bootstrapped version of the function
 with i iterations.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
+<dt>...</dt>
+<dd><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
 other methods. See <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">stats::cor.test</a></code> for further details.</p></dd>
 </dl></div>
     <div id="value">

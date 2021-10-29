@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1.1</span>
       </span>
     </div>
 
@@ -57,7 +57,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convert correlation to p-values and CIs</h1>
-    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/master/R/cor_to_ci.R" class="external-link"><code>R/cor_to_ci.R</code></a>, <a href="https://github.com/easystats/correlation/blob/master/R/cor_to_p.R" class="external-link"><code>R/cor_to_p.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/HEAD/R/cor_to_ci.R" class="external-link"><code>R/cor_to_ci.R</code></a>, <a href="https://github.com/easystats/correlation/blob/HEAD/R/cor_to_p.R" class="external-link"><code>R/cor_to_p.R</code></a></small>
     <div class="hidden name"><code>cor_to_p.Rd</code></div>
     </div>
 
@@ -72,13 +72,15 @@
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>cor</dt><dd><p>A correlation matrix or coefficient.</p></dd>
-</dl><dl><dt>n</dt><dd><p>The sample size (number of observations).</p></dd>
-</dl><dl><dt>ci</dt><dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
+    <dl><dt>cor</dt>
+<dd><p>A correlation matrix or coefficient.</p></dd>
+<dt>n</dt>
+<dd><p>The sample size (number of observations).</p></dd>
+<dt>ci</dt>
+<dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
 set to <code>0.95</code> (<code>95%</code> CI).</p></dd>
-</dl><dl><dt>method</dt><dd><p>A character string indicating which correlation coefficient is
+<dt>method</dt>
+<dd><p>A character string indicating which correlation coefficient is
 to be used for the test. One of <code>"pearson"</code> (default),
 <code>"kendall"</code>, <code>"spearman"</code> (but see also the <code>robust</code> argument), <code>"biserial"</code>,
 <code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>,
@@ -91,12 +93,14 @@ correlation) or <code>"shepherd"</code> (for Shepherd's Pi correlation). Setting
 factors involved, point-biserial if one dichotomous and one continuous and
 pearson otherwise). See below the <strong>details</strong> section for a desription of
 these indices.</p></dd>
-</dl><dl><dt>correction</dt><dd><p>Only used if method is 'spearman' or 'kendall'. Can be
+<dt>correction</dt>
+<dd><p>Only used if method is 'spearman' or 'kendall'. Can be
 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or
 'none'. Bonett and Wright (2000) claim their correction ('bw') performs
 better, though the Bishara and Hittner (2017) paper favours the Fieller
 correction. Both are generally very similar.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
+<dt>...</dt>
+<dd><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
 other methods. See <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">stats::cor.test</a></code> for further details.</p></dd>
 </dl></div>
     <div id="value">

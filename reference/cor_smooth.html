@@ -18,7 +18,7 @@ If smoothing is done, inferential statistics (p-values, confidence intervals, et
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1.1</span>
       </span>
     </div>
 
@@ -58,7 +58,7 @@ If smoothing is done, inferential statistics (p-values, confidence intervals, et
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Smooth a non-positive definite correlation matrix to make it positive definite</h1>
-    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/master/R/cor_smooth.R" class="external-link"><code>R/cor_smooth.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/HEAD/R/cor_smooth.R" class="external-link"><code>R/cor_smooth.R</code></a></small>
     <div class="hidden name"><code>cor_smooth.Rd</code></div>
     </div>
 
@@ -76,13 +76,16 @@ If smoothing is done, inferential statistics (p-values, confidence intervals, et
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>x</dt><dd><p>A correlation matrix.</p></dd>
-</dl><dl><dt>method</dt><dd><p>Smoothing method. Can be <code>psych</code> (will use <code><a href="https://rdrr.io/pkg/psych/man/cor.smooth.html" class="external-link">psych::cor.smooth()</a></code>), <code>hj</code> (Jorjani et al., 2003) or <code>lrs</code> (Schaeffer, 2014). For the two last, will use <code><a href="https://rdrr.io/pkg/mbend/man/bend.html" class="external-link">mbend::bend()</a></code> (check its documentation for details).</p></dd>
-</dl><dl><dt>verbose</dt><dd><p>Set to <code>FALSE</code> to silence the function.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Other arguments to be passed to or from other functions.</p></dd>
-</dl><dl><dt>tol</dt><dd><p>The minimum eigenvalue to be considered as acceptable.</p></dd>
+    <dl><dt>x</dt>
+<dd><p>A correlation matrix.</p></dd>
+<dt>method</dt>
+<dd><p>Smoothing method. Can be <code>psych</code> (will use <code><a href="https://rdrr.io/pkg/psych/man/cor.smooth.html" class="external-link">psych::cor.smooth()</a></code>), <code>hj</code> (Jorjani et al., 2003) or <code>lrs</code> (Schaeffer, 2014). For the two last, will use <code><a href="https://rdrr.io/pkg/mbend/man/bend.html" class="external-link">mbend::bend()</a></code> (check its documentation for details).</p></dd>
+<dt>verbose</dt>
+<dd><p>Set to <code>FALSE</code> to silence the function.</p></dd>
+<dt>...</dt>
+<dd><p>Other arguments to be passed to or from other functions.</p></dd>
+<dt>tol</dt>
+<dd><p>The minimum eigenvalue to be considered as acceptable.</p></dd>
 </dl></div>
     </div>
 

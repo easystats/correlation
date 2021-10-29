@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1.1</span>
       </span>
     </div>
 
@@ -57,7 +57,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Correlation Analysis</h1>
-    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/master/R/correlation.R" class="external-link"><code>R/correlation.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/HEAD/R/correlation.R" class="external-link"><code>R/correlation.R</code></a></small>
     <div class="hidden name"><code>correlation.Rd</code></div>
     </div>
 
@@ -94,12 +94,13 @@
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>data</dt><dd><p>A data frame.</p></dd>
-</dl><dl><dt>data2</dt><dd><p>An optional data frame. If specified, all pair-wise correlations
+    <dl><dt>data</dt>
+<dd><p>A data frame.</p></dd>
+<dt>data2</dt>
+<dd><p>An optional data frame. If specified, all pair-wise correlations
 between the variables in <code>data</code> and <code>data2</code> will be computed.</p></dd>
-</dl><dl><dt>select, select2</dt><dd><p>(Ignored if <code>data2</code> is specified.) Optional names
+<dt>select, select2</dt>
+<dd><p>(Ignored if <code>data2</code> is specified.) Optional names
 of variables that should be selected for correlation. Instead of providing
 the data frames with those variables that should be correlated, <code>data</code>
 can be a data frame and <code>select</code> and <code>select2</code> are (quoted) names
@@ -109,11 +110,13 @@ compute the correlation between <code>data[select]</code> and
 correlations between the <code>select</code> variables will be computed. This is
 a "pipe-friendly" alternative way of using <code>correlation()</code> (see
 'Examples').</p></dd>
-</dl><dl><dt>rename</dt><dd><p>In case you wish to change the names of the variables in
+<dt>rename</dt>
+<dd><p>In case you wish to change the names of the variables in
 the output, these arguments can be used to specify these alternative names.
 Note that the number of names should be equal to the number of columns
 selected. Ignored if <code>data2</code> is specified.</p></dd>
-</dl><dl><dt>method</dt><dd><p>A character string indicating which correlation coefficient is
+<dt>method</dt>
+<dd><p>A character string indicating which correlation coefficient is
 to be used for the test. One of <code>"pearson"</code> (default),
 <code>"kendall"</code>, <code>"spearman"</code> (but see also the <code>robust</code> argument), <code>"biserial"</code>,
 <code>"polychoric"</code>, <code>"tetrachoric"</code>, <code>"biweight"</code>,
@@ -126,45 +129,57 @@ correlation) or <code>"shepherd"</code> (for Shepherd's Pi correlation). Setting
 factors involved, point-biserial if one dichotomous and one continuous and
 pearson otherwise). See below the <strong>details</strong> section for a desription of
 these indices.</p></dd>
-</dl><dl><dt>p_adjust</dt><dd><p>Correction method for frequentist correlations. Can be one of
+<dt>p_adjust</dt>
+<dd><p>Correction method for frequentist correlations. Can be one of
 <code>"holm"</code> (default), <code>"hochberg"</code>, <code>"hommel"</code>,
 <code>"bonferroni"</code>, <code>"BH"</code>, <code>"BY"</code>, <code>"fdr"</code>,
 <code>"somers"</code> or <code>"none"</code>. See
 <code><a href="https://rdrr.io/r/stats/p.adjust.html" class="external-link">stats::p.adjust()</a></code> for further details.</p></dd>
-</dl><dl><dt>ci</dt><dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
+<dt>ci</dt>
+<dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
 set to <code>0.95</code> (<code>95%</code> CI).</p></dd>
-</dl><dl><dt>bayesian</dt><dd><p>If TRUE, will run the correlations under a
+<dt>bayesian</dt>
+<dd><p>If TRUE, will run the correlations under a
 Bayesian framework. Note that for partial correlations, you will also need
 to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian
 partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
 correlations (i.e., Bayesian correlation based on frequentist
 partialization).</p></dd>
-</dl><dl><dt>bayesian_prior</dt><dd><p>For the prior argument, several named values are
+<dt>bayesian_prior</dt>
+<dd><p>For the prior argument, several named values are
 recognized: <code>"medium.narrow"</code>, <code>"medium"</code>, <code>"wide"</code>, and
 <code>"ultrawide"</code>. These correspond to scale values of <code>1/sqrt(27)</code>,
 <code>1/3</code>, <code>1/sqrt(3)</code> and <code>1</code>, respectively. See the
 <code><a href="https://rdrr.io/pkg/BayesFactor/man/correlationBF.html" class="external-link">BayesFactor::correlationBF</a></code> function.</p></dd>
-</dl><dl><dt>bayesian_ci_method</dt><dd><p>See arguments in
+<dt>bayesian_ci_method</dt>
+<dd><p>See arguments in
 <code>model_parameters()</code> for <code>BayesFactor</code> tests.</p></dd>
-</dl><dl><dt>bayesian_test</dt><dd><p>See arguments in
+<dt>bayesian_test</dt>
+<dd><p>See arguments in
 <code>model_parameters()</code> for <code>BayesFactor</code> tests.</p></dd>
-</dl><dl><dt>redundant</dt><dd><p>Should the data include redundant rows (where each given
+<dt>redundant</dt>
+<dd><p>Should the data include redundant rows (where each given
 correlation is repeated two times).</p></dd>
-</dl><dl><dt>include_factors</dt><dd><p>If <code>TRUE</code>, the factors are kept and eventually
+<dt>include_factors</dt>
+<dd><p>If <code>TRUE</code>, the factors are kept and eventually
 converted to numeric or used as random effects (depending of
 <code>multilevel</code>). If <code>FALSE</code>, factors are removed upfront.</p></dd>
-</dl><dl><dt>partial</dt><dd><p>Can be <code>TRUE</code> or <code>"semi"</code> for partial and
+<dt>partial</dt>
+<dd><p>Can be <code>TRUE</code> or <code>"semi"</code> for partial and
 semi-partial correlations, respectively.</p></dd>
-</dl><dl><dt>partial_bayesian</dt><dd><p>If TRUE, will run the correlations under a
+<dt>partial_bayesian</dt>
+<dd><p>If TRUE, will run the correlations under a
 Bayesian framework. Note that for partial correlations, you will also need
 to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian
 partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
 correlations (i.e., Bayesian correlation based on frequentist
 partialization).</p></dd>
-</dl><dl><dt>multilevel</dt><dd><p>If <code>TRUE</code>, the factors are included as random factors.
+<dt>multilevel</dt>
+<dd><p>If <code>TRUE</code>, the factors are included as random factors.
 Else, if <code>FALSE</code> (default), they are included as fixed effects in the
 simple regression model.</p></dd>
-</dl><dl><dt>ranktransform</dt><dd><p>If <code>TRUE</code>, will rank-transform the variables prior to
+<dt>ranktransform</dt>
+<dd><p>If <code>TRUE</code>, will rank-transform the variables prior to
 estimating the correlation, which is one way of making the analysis more
 resistant to extreme values (outliers). Note that, for instance, a Pearson's
 correlation on rank-transformed data is equivalent to a Spearman's rank
@@ -172,29 +187,32 @@ correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</c
 redundant. Nonetheless, it is an easy option to increase the robustness of the
 correlation as well as flexible way to obtain Bayesian or multilevel
 Spearman-like rank correlations.</p></dd>
-</dl><dl><dt>robust</dt><dd><p>Old name for <code>ranktransform</code>. Will be removed in subsequent
+<dt>robust</dt>
+<dd><p>Old name for <code>ranktransform</code>. Will be removed in subsequent
 versions, so better to use <code>ranktransform</code> which is more explicit about
 what it does.</p></dd>
-</dl><dl><dt>winsorize</dt><dd><p>Another way of making the correlation more "robust" (i.e.,
+<dt>winsorize</dt>
+<dd><p>Another way of making the correlation more "robust" (i.e.,
 limiting the impact of extreme values). Can be either <code>FALSE</code> or a
 number between 0 and 1 (e.g., <code>0.2</code>) that corresponds to the desired
 threshold. See the <code>winsorize()</code> function for more details.</p></dd>
-</dl><dl><dt>verbose</dt><dd><p>Toggle warnings.</p></dd>
-</dl><dl><dt>standardize_names</dt><dd><p>This option can be set to <code>TRUE</code> to run <code><a href="https://easystats.github.io/insight/reference/standardize_names.html" class="external-link">insight::standardize_names()</a></code> on the output to get standardized column names. This option can also be set globally by running <code>options(easystats.standardize_names = TRUE)</code>.</p></dd>
-</dl><dl><dt>...</dt><dd><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
+<dt>verbose</dt>
+<dd><p>Toggle warnings.</p></dd>
+<dt>standardize_names</dt>
+<dd><p>This option can be set to <code>TRUE</code> to run <code><a href="https://easystats.github.io/insight/reference/standardize_names.html" class="external-link">insight::standardize_names()</a></code> on the output to get standardized column names. This option can also be set globally by running <code>options(easystats.standardize_names = TRUE)</code>.</p></dd>
+<dt>...</dt>
+<dd><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
 other methods. See <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">stats::cor.test</a></code> for further details.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A correlation object that can be displayed using the <code>print</code>,
-<code>summary</code> or <code>table</code> methods.</p>
-<div class="section">
+<code>summary</code> or <code>table</code> methods.</p><div class="section">
 <h3 id="multiple-tests-correction">Multiple tests correction<a class="anchor" aria-label="anchor" href="#multiple-tests-correction"></a></h3>
 <p>The <code>p_adjust</code> argument can be used to adjust p-values for multiple
 comparisons. All adjustment methods available in <code>p.adjust</code> function
 <code>stats</code> package are supported.</p>
 </div>
-
     </div>
     <div id="details">
     <h2>Details</h2>

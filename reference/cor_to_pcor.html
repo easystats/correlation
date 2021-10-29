@@ -25,7 +25,7 @@ unexplained variance of Y that cannot be accounted by the other variables.'><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">correlation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.1.1</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@ unexplained variance of Y that cannot be accounted by the other variables.'><met
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Correlation Matrix to (Semi) Partial Correlations</h1>
-    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/master/R/cor_to_pcor.R" class="external-link"><code>R/cor_to_pcor.R</code></a>, <a href="https://github.com/easystats/correlation/blob/master/R/cor_to_spcor.R" class="external-link"><code>R/cor_to_spcor.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/HEAD/R/cor_to_pcor.R" class="external-link"><code>R/cor_to_pcor.R</code></a>, <a href="https://github.com/easystats/correlation/blob/HEAD/R/cor_to_spcor.R" class="external-link"><code>R/cor_to_spcor.R</code></a></small>
     <div class="hidden name"><code>cor_to_pcor.Rd</code></div>
     </div>
 
@@ -90,12 +90,13 @@ unexplained variance of Y that cannot be accounted by the other variables.</p>
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    
-
-<dl><dt>cor, pcor</dt><dd><p>A correlation matrix, or a partial or a semipartial
+    <dl><dt>cor, pcor</dt>
+<dd><p>A correlation matrix, or a partial or a semipartial
 correlation matrix.</p></dd>
-</dl><dl><dt>tol</dt><dd><p>Relative tolerance to detect zero singular values.</p></dd>
-</dl><dl><dt>cov</dt><dd><p>A covariance matrix (or a vector of the SD of the variables).
+<dt>tol</dt>
+<dd><p>Relative tolerance to detect zero singular values.</p></dd>
+<dt>cov</dt>
+<dd><p>A covariance matrix (or a vector of the SD of the variables).
 Required for semi-partial correlations.</p></dd>
 </dl></div>
     <div id="value">
