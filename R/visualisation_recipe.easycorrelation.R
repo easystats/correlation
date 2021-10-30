@@ -27,7 +27,7 @@ visualisation_recipe.easycorrelation <- function(x, ...) {
                          aes = list(edge_colour = "r", edge_width = "width"))
   layers[["l2"]] <- list(geom = "ggraph::geom_node_point", size = 22)
   layers[["l3"]] <- list(geom = "ggraph::geom_node_text",
-                         aes = list(label = "name"))
+                         aes = list(label = "name"), colour = "white")
   layers[["l4"]] <- list(geom = "ggraph::theme_graph")
   layers[["l5"]] <- list(geom = "guides", edge_width = "none")
 
