@@ -150,8 +150,15 @@ test_that("format checks", {
   }
 
   # Bayesian full partial
-  if (.runThisTest && requireNamespace("BayesFactor")) {
-    out <- correlation(iris, include_factors = TRUE, multilevel = TRUE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
+  if (.runThisTest && requireNamespace("BayesFactor") && requireNamespace("lme4")) {
+    out <- correlation(
+        iris,
+        include_factors = TRUE,
+        multilevel = TRUE,
+        bayesian = TRUE,
+        partial = TRUE,
+        partial_bayesian = TRUE
+      )
     expect_equal(c(nrow(out), ncol(out)), c(6, 14))
     expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4, 5))
     expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
