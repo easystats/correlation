@@ -1,15 +1,19 @@
 #' @rdname visualisation_recipe.easycormatrix
 #'
 #' @examples
-#' # ==============================================
-#' # Correlation Results (easycorrelation)
-#' # ==============================================
-#' if (require("see") && require("tidygraph") && require("ggraph")) {
-#'   rez <- correlation(iris)
+#' \donttest{
+#' if (FALSE) {
+#'   # ==============================================
+#'   # Correlation Results (easycorrelation)
+#'   # ==============================================
+#'   if (require("see") && require("tidygraph") && require("ggraph")) {
+#'     rez <- correlation(iris)
 #'
-#'   layers <- visualisation_recipe(rez)
-#'   layers
-#'   plot(layers)
+#'     layers <- visualisation_recipe(rez)
+#'     layers
+#'     plot(layers)
+#'   }
+#' }
 #' }
 #' @export
 visualisation_recipe.easycorrelation <- function(x, ...) {
