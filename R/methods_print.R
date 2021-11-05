@@ -13,7 +13,7 @@ print.easycorrelation <- function(x, ...) {
 print.easycormatrix <- function(x, ...) {
   formatted <- format(x, ...)
   # If real matrix, print as matrix
-  if(colnames(formatted)[1] == "Variables") {
+  if (colnames(formatted)[1] == "Variables") {
     formatted$Variables <- NULL
     print(as.matrix(formatted))
   } else {

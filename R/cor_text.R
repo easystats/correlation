@@ -24,21 +24,21 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
   text <- paste0(tolower(estimate), " = ", insight::format_value(x[[estimate]]))
 
   # CI
-  if(show_ci) {
-    if(all(c("CI_high", "CI_low") %in% names(x))) {
+  if (show_ci) {
+    if (all(c("CI_high", "CI_low") %in% names(x))) {
       if (!is.null(attributes(x$conf.int)$conf.level)) { # htest
         text <- paste0(
           text,
           ", ",
           insight::format_ci(x$CI_low, x$CI_high, ci = attributes(x$conf.int)$conf.level)
         )
-      } else if("CI" %in% names(x)) { # param
+      } else if ("CI" %in% names(x)) { # param
         text <- paste0(
           text,
           ", ",
           insight::format_ci(x$CI_low, x$CI_high, ci = x$CI)
         )
-      } else if("ci" %in% names(attributes(x))) { # param
+      } else if ("ci" %in% names(attributes(x))) { # param
         text <- paste0(
           text,
           ", ",
@@ -49,7 +49,7 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
   }
 
   # Statistic
-  if(show_statistic) {
+  if (show_statistic) {
     if ("t" %in% names(x)) {
       text <- paste0(
         text,
@@ -70,12 +70,12 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
   }
 
   # Significance
-  if(show_sig) {
-    if("p" %in% names(x)) {
+  if (show_sig) {
+    if ("p" %in% names(x)) {
       text <- paste0(text, ", ", insight::format_p(x$p, digits = "apa", ...))
-    } else if("BF" %in% names(x)) {
+    } else if ("BF" %in% names(x)) {
       text <- paste0(text, ", ", insight::format_bf(x$BF, ...))
-    }  else if("pd" %in% names(x)) {
+    } else if ("pd" %in% names(x)) {
       text <- paste0(text, ", ", insight::format_pd(x$pd, ...))
     }
   }

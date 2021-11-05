@@ -27,7 +27,10 @@
 #' @param redundant Should the data include redundant rows (where each given
 #'   correlation is repeated two times).
 #' @param verbose Toggle warnings.
-#' @param standardize_names This option can be set to `TRUE` to run [insight::standardize_names()] on the output to get standardized column names. This option can also be set globally by running `options(easystats.standardize_names = TRUE)`.
+#' @param standardize_names This option can be set to `TRUE` to run
+#'   [insight::standardize_names()] on the output to get standardized column
+#'   names. This option can also be set globally by running
+#'   `options(easystats.standardize_names = TRUE)`.
 #' @inheritParams cor_test
 #'
 #' @details
@@ -181,8 +184,8 @@
 #' summary(results)
 #' summary(results, redundant = TRUE)
 #'
-#' # pipe-friendly usage
-#' if (require("dplyr")) {
+#' # pipe-friendly usage with  grouped dataframes from {dplyr} package
+#' if (require("poorman")) {
 #'   iris %>%
 #'     correlation(select = "Petal.Width", select2 = "Sepal.Length")
 #'
@@ -206,7 +209,6 @@
 #'
 #' # automatic selection of correlation method
 #' correlation(mtcars[-2], method = "auto")
-#'
 #' @references
 #'
 #' \itemize{

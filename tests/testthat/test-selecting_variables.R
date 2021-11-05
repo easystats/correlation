@@ -1,6 +1,6 @@
 # select specific variables for correlation -----------------------------
 
-if (require("dplyr")) {
+if (require("poorman")) {
   test_that("selecting specific variables works", {
     set.seed(123)
     df1 <-

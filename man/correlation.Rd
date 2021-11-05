@@ -63,7 +63,7 @@ correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
 \code{"auto"} will attempt at selecting the most relevant method
 (polychoric when ordinal factors involved, tetrachoric when dichotomous
 factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise). See below the \strong{details} section for a desription of
+pearson otherwise). See below the \strong{details} section for a description of
 these indices.}
 
 \item{p_adjust}{Correction method for frequentist correlations. Can be one of
@@ -135,7 +135,10 @@ threshold. See the \code{\link[=winsorize]{winsorize()}} function for more detai
 
 \item{verbose}{Toggle warnings.}
 
-\item{standardize_names}{This option can be set to \code{TRUE} to run \code{\link[insight:standardize_names]{insight::standardize_names()}} on the output to get standardized column names. This option can also be set globally by running \code{options(easystats.standardize_names = TRUE)}.}
+\item{standardize_names}{This option can be set to \code{TRUE} to run
+\code{\link[insight:standardize_names]{insight::standardize_names()}} on the output to get standardized column
+names. This option can also be set globally by running
+\code{options(easystats.standardize_names = TRUE)}.}
 
 \item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
 other methods. See \code{stats::cor.test} for further details.}
@@ -295,8 +298,8 @@ results
 summary(results)
 summary(results, redundant = TRUE)
 
-# pipe-friendly usage
-if (require("dplyr")) {
+# pipe-friendly usage with  grouped dataframes from {dplyr} package
+if (require("poorman")) {
   iris \%>\%
     correlation(select = "Petal.Width", select2 = "Sepal.Length")
 
@@ -320,7 +323,6 @@ correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
 
 # automatic selection of correlation method
 correlation(mtcars[-2], method = "auto")
-
 }
 \references{
 \itemize{

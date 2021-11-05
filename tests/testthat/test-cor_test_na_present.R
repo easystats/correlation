@@ -55,7 +55,7 @@ test_that("cor_test robust", {
 test_that("cor_test distance", {
   if (require("energy", quietly = TRUE)) {
     out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "distance")
-    df <- dplyr::filter(ggplot2::msleep, !is.na(brainwt), !is.na(sleep_rem))
+    df <- filter(ggplot2::msleep, !is.na(brainwt), !is.na(sleep_rem))
     comparison <- energy::dcorT.test(df$brainwt, df$sleep_rem)
     expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.01)
   }

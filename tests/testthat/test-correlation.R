@@ -4,7 +4,7 @@ test_that("comparison with other packages", {
   if (requireNamespace("ppcor") &&
     requireNamespace("Hmisc") &&
     require("lme4", quietly = TRUE) &&
-    require("dplyr")) {
+    require("poorman")) {
     set.seed(333)
 
     # Pearson
@@ -125,9 +125,9 @@ test_that("format checks", {
   expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(2, 3))
 
   # Grouped
-  if (requireNamespace("dplyr")) {
+  if (requireNamespace("poorman")) {
     out <- iris %>%
-      dplyr::group_by(Species) %>%
+      group_by(Species) %>%
       correlation(include_factors = TRUE)
     expect_equal(c(nrow(out), ncol(out)), c(18, 12))
     expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(12, 6))
@@ -135,7 +135,7 @@ test_that("format checks", {
   }
 
   # pipe and select
-  if (requireNamespace("dplyr")) {
+  if (requireNamespace("poorman")) {
     out <- iris %>%
       correlation(
         select = "Petal.Width",
@@ -150,9 +150,16 @@ test_that("format checks", {
   }
 
   # Bayesian full partial
-  if (.runThisTest && requireNamespace("BayesFactor")) {
-    out <- correlation(iris, include_factors = TRUE, multilevel = TRUE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
-    expect_equal(c(nrow(out), ncol(out)), c(6, 15))
+  if (.runThisTest && requireNamespace("BayesFactor") && requireNamespace("lme4")) {
+    out <- correlation(
+        iris,
+        include_factors = TRUE,
+        multilevel = TRUE,
+        bayesian = TRUE,
+        partial = TRUE,
+        partial_bayesian = TRUE
+      )
+    expect_equal(c(nrow(out), ncol(out)), c(6, 14))
     expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4, 5))
     expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
   }

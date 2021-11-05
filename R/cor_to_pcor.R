@@ -54,7 +54,7 @@ cor_to_pcor.matrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
 
 #' @export
 cor_to_pcor.easycormatrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
-  if(!inherits(cor, "matrix")) {
+  if (!inherits(cor, "matrix")) {
     .cor_to_pcor_easycormatrix(cor = cor, tol = tol)
   } else {
     NextMethod()
@@ -90,7 +90,7 @@ pcor_to_cor.matrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
 
 #' @export
 pcor_to_cor.easycormatrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
-  if(!inherits(pcor, "matrix")) {
+  if (!inherits(pcor, "matrix")) {
     .cor_to_pcor_easycormatrix(pcor = pcor, tol = tol)
   } else {
     NextMethod()
@@ -181,7 +181,9 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   }
 
   # Extract info
-  if(inherits(cor, "matrix")) return(r)
+  if (inherits(cor, "matrix")) {
+    return(r)
+  }
 
   p_adjust <- attributes(cor)$p_adjust
   nobs <- as.matrix(attributes(cor)$n_Obs[-1])
@@ -254,7 +256,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
     }
   } else {
     if (inherits(cor, "easycormatrix")) {
-      if(colnames(cor)[1] == "Parameter") {
+      if (colnames(cor)[1] == "Parameter") {
         row.names(cor) <- cor$Parameter
         cor <- as.matrix(cor[-1])
       }

@@ -1,21 +1,26 @@
 #' @rdname visualisation_recipe.easycormatrix
 #'
 #' @examples
+#' \donttest{
 #' # ==============================================
 #' # Correlation Test
 #' # ==============================================
-#' if (require("see")) {
-#' rez <- cor_test(mtcars, "mpg", "wt")
+#' if (FALSE) {
+#'   if (require("see")) {
+#'     rez <- cor_test(mtcars, "mpg", "wt")
 #'
-#' layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
-#' layers
-#' plot(layers)
+#'     layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
+#'     layers
+#'     plot(layers)
 #'
-#' plot(rez,
-#'      show_text = "label",
-#'      point = list(color = "#f44336"),
-#'      text = list(fontface = "bold"),
-#'      show_statistic = FALSE, show_ci = FALSE, stars = TRUE)
+#'     plot(rez,
+#'       show_text = "label",
+#'       point = list(color = "#f44336"),
+#'       text = list(fontface = "bold"),
+#'       show_statistic = FALSE, show_ci = FALSE, stars = TRUE
+#'     )
+#'   }
+#' }
 #' }
 #' @export
 visualisation_recipe.easycor_test <- function(x,
@@ -26,7 +31,6 @@ visualisation_recipe.easycor_test <- function(x,
                                               text = NULL,
                                               labs = NULL,
                                               ...) {
-
   data <- attributes(x)$data
 
   # Text
@@ -38,18 +42,19 @@ visualisation_recipe.easycor_test <- function(x,
 
   # Get scatter plot
   layers <- .see_scatter(data,
-                         cor_results = x,
-                         x = x$Parameter1,
-                         y = x$Parameter2,
-                         show_data = show_data,
-                         show_text = show_text,
-                         smooth = smooth,
-                         point = point,
-                         text = text,
-                         labs = labs,
-                         title = title,
-                         subtitle = subtitle,
-                         ...)
+    cor_results = x,
+    x = x$Parameter1,
+    y = x$Parameter2,
+    show_data = show_data,
+    show_text = show_text,
+    smooth = smooth,
+    point = point,
+    text = text,
+    labs = labs,
+    title = title,
+    subtitle = subtitle,
+    ...
+  )
 
   # Text
   if (!is.null(show_text) && show_text != FALSE && show_text %in% c("text", "label")) {
@@ -59,13 +64,16 @@ visualisation_recipe.easycor_test <- function(x,
     x$label_y <- max(data[[x$Parameter2]], na.rm = TRUE) + 0.05 * diff(range(data[[x$Parameter2]], na.rm = TRUE))
 
     l <- paste0("l", length(layers) + 1)
-    layers[[l]] <- list(geom = show_text,
-                        data = x,
-                        hjust = 1,
-                        aes = list(label = "label",
-                                   x = "label_x",
-                                   y = "label_y")
-                        )
+    layers[[l]] <- list(
+      geom = show_text,
+      data = x,
+      hjust = 1,
+      aes = list(
+        label = "label",
+        x = "label_x",
+        y = "label_y"
+      )
+    )
     if (!is.null(text)) layers[[l]] <- utils::modifyList(layers[[l]], text)
   }
 
@@ -81,7 +89,20 @@ visualisation_recipe.easycor_test <- function(x,
 # see_scatter -------------------------------------------------------------
 
 
-.see_scatter <- function(data, cor_results, x, y, show_data = "point", show_text = "text", smooth = NULL, point = NULL, text = NULL, labs = NULL, title = NULL, subtitle = NULL, ...) {
+.see_scatter <- function(data,
+                         cor_results,
+                         x,
+                         y,
+                         show_data = "point",
+                         show_text = "text",
+                         smooth = NULL,
+                         point = NULL,
+                         text = NULL,
+                         labs = NULL,
+                         title = NULL,
+                         subtitle = NULL,
+                         ...) {
+
 
   # Initialize layers list
   layers <- list()
@@ -90,11 +111,14 @@ visualisation_recipe.easycor_test <- function(x,
   l <- 1
 
   # Smooth
-  layers[[paste0("l", l)]] <- list(geom = "smooth",
-                                   data = data,
-                                   method = "lm",
-                                   aes = list(x = x,
-                                              y = y)
+  layers[[paste0("l", l)]] <- list(
+    geom = "smooth",
+    data = data,
+    method = "lm",
+    aes = list(
+      x = x,
+      y = y
+    )
   )
   if (!is.null(smooth)) {
     layers[[paste0("l", l)]] <- utils::modifyList(layers[[paste0("l", l)]], smooth)
@@ -102,11 +126,14 @@ visualisation_recipe.easycor_test <- function(x,
   l <- l + 1
 
   # Point
-  layers[[paste0("l", l)]] <- list(geom = show_data,
-                                   data = data,
-                                   aes = list(x = x,
-                                              y = y)
-                                   )
+  layers[[paste0("l", l)]] <- list(
+    geom = show_data,
+    data = data,
+    aes = list(
+      x = x,
+      y = y
+    )
+  )
   if (!is.null(point)) {
     layers[[paste0("l", l)]] <- utils::modifyList(layers[[paste0("l", l)]], point)
   }
@@ -139,4 +166,3 @@ visualisation_recipe.easycor_test <- function(x,
 
   layers
 }
-

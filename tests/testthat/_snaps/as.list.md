@@ -52,7 +52,7 @@
 ---
 
     Code
-      as.list(correlation(group_by(msleep, vore), method = "spearman"))
+      suppressWarnings(as.list(msleep %>% group_by(vore) %>% correlation(method = "spearman")))
     Output
       =======
        carni 
@@ -198,8 +198,8 @@
 ---
 
     Code
-      as.list(mtcars %>% group_by(am) %>% correlation(select = c("cyl", "wt"),
-      select2 = c("hp"), method = "percentage"))
+      suppressWarnings(as.list(mtcars %>% group_by(am) %>% correlation(select = c(
+        "cyl", "wt"), select2 = c("hp"), method = "percentage")))
     Output
       ===
        0 
