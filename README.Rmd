@@ -116,7 +116,6 @@ summary(results, redundant = TRUE)
 
 
 ```{r README-7}
-library(poorman)
 library(see)
 
 results %>%
@@ -128,7 +127,7 @@ results %>%
 
 The `cor_test()` function, for pairwise correlations, is also very convenient for making quick scatter plots.
 
-```{r README-4}
+```{r README-corr}
 plot(cor_test(iris, "Sepal.Width", "Sepal.Length"))
 ```
 

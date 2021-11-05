@@ -127,7 +127,7 @@ test_that("format checks", {
   # Grouped
   if (requireNamespace("poorman")) {
     out <- iris %>%
-      poorman::group_by(Species) %>%
+      group_by(Species) %>%
       correlation(include_factors = TRUE)
     expect_equal(c(nrow(out), ncol(out)), c(18, 12))
     expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(12, 6))

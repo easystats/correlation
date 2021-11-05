@@ -135,7 +135,10 @@ threshold. See the \code{\link[=winsorize]{winsorize()}} function for more detai
 
 \item{verbose}{Toggle warnings.}
 
-\item{standardize_names}{This option can be set to \code{TRUE} to run \code{\link[insight:standardize_names]{insight::standardize_names()}} on the output to get standardized column names. This option can also be set globally by running \code{options(easystats.standardize_names = TRUE)}.}
+\item{standardize_names}{This option can be set to \code{TRUE} to run
+\code{\link[insight:standardize_names]{insight::standardize_names()}} on the output to get standardized column
+names. This option can also be set globally by running
+\code{options(easystats.standardize_names = TRUE)}.}
 
 \item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
 other methods. See \code{stats::cor.test} for further details.}
@@ -295,7 +298,7 @@ results
 summary(results)
 summary(results, redundant = TRUE)
 
-# pipe-friendly usage
+# pipe-friendly usage with  grouped dataframes from {dplyr} package
 if (require("poorman")) {
   iris \%>\%
     correlation(select = "Petal.Width", select2 = "Sepal.Length")

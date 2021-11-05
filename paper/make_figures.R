@@ -11,7 +11,7 @@ set.seed(333)
 data <- bayestestR::simulate_correlation(n = 200, r = 0.05)
 data$V2 <- data$V2 + datawizard::change_scale(data$V1, to = c(0, 2))^3
 
-data <- poorman::arrange(data, V2)
+data <- arrange(data, V2)
 
 # Outliers
 data$V2[c(150, 185)] <- c(max(data$V2) * 1, max(data$V2) * 1)

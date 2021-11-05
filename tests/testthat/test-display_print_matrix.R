@@ -41,12 +41,12 @@ if (require("testthat") && require("gt") && require("poorman")) {
 
   test_that("as.matrix works", {
     set.seed(123)
-    mat1 <- poorman::select(mtcars, am, wt, hp) %>%
+    mat1 <- select(mtcars, am, wt, hp) %>%
       correlation() %>%
       as.matrix()
 
     set.seed(123)
-    mat2 <- poorman::select(mtcars, am, wt, hp) %>%
+    mat2 <- select(mtcars, am, wt, hp) %>%
       group_by(am) %>%
       correlation() %>%
       as.matrix()

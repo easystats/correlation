@@ -52,19 +52,21 @@ Visualisation recipe for 'correlation' objects.
 # ==============================================
 # Correlation Test
 # ==============================================
-if (require("see")) {
-  rez <- cor_test(mtcars, "mpg", "wt")
+if (FALSE) {
+  if (require("see")) {
+    rez <- cor_test(mtcars, "mpg", "wt")
 
-  layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
-  layers
-  plot(layers)
+    layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
+    layers
+    plot(layers)
 
-  plot(rez,
-    show_text = "label",
-    point = list(color = "#f44336"),
-    text = list(fontface = "bold"),
-    show_statistic = FALSE, show_ci = FALSE, stars = TRUE
-  )
+    plot(rez,
+      show_text = "label",
+      point = list(color = "#f44336"),
+      text = list(fontface = "bold"),
+      show_statistic = FALSE, show_ci = FALSE, stars = TRUE
+    )
+  }
 }
 }
 # ==============================================
@@ -97,14 +99,18 @@ if (require("see")) {
   )
   plot(layers) + theme_modern()
 }
-# ==============================================
-# Correlation Results (easycorrelation)
-# ==============================================
-if (require("see") && require("tidygraph") && require("ggraph")) {
-  rez <- correlation(iris)
+\donttest{
+if (FALSE) {
+  # ==============================================
+  # Correlation Results (easycorrelation)
+  # ==============================================
+  if (require("see") && require("tidygraph") && require("ggraph")) {
+    rez <- correlation(iris)
 
-  layers <- visualisation_recipe(rez)
-  layers
-  plot(layers)
+    layers <- visualisation_recipe(rez)
+    layers
+    plot(layers)
+  }
+}
 }
 }

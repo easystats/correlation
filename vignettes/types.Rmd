@@ -228,7 +228,7 @@ data %>%
   tidyr::pivot_longer(-c(n, r, transformation),
                       names_to = "Type",
                       values_to = "Estimation") %>% 
-  poorman::mutate(Type = forcats::fct_relevel(Type, "Pearson", "Spearman", "Kendall", "Biweight", "Distance")) %>%
+  mutate(Type = forcats::fct_relevel(Type, "Pearson", "Spearman", "Kendall", "Biweight", "Distance")) %>%
   ggplot(aes(x = r, y = Estimation, fill = Type)) +
   geom_smooth(aes(color = Type), method = "loess", alpha = 0) +
   geom_vline(aes(xintercept = 0.5), linetype = "dashed") +
@@ -247,7 +247,7 @@ model <- data %>%
   lm(r ~ Type / Estimation, data = .) %>%
   parameters::parameters()
 
-poorman::arrange(model[6:10, ], desc(Coefficient))
+arrange(model[6:10, ], desc(Coefficient))
 ```
 
 As we can see, **distance** correlation is able to capture the strength even for
