@@ -41,7 +41,7 @@ correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
 \code{"auto"} will attempt at selecting the most relevant method
 (polychoric when ordinal factors involved, tetrachoric when dichotomous
 factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise). See below the \strong{details} section for a desription of
+pearson otherwise). See below the \strong{details} section for a description of
 these indices.}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
@@ -239,7 +239,6 @@ library(correlation)
 
 cor_test(iris, "Sepal.Length", "Sepal.Width")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
-
 \dontrun{
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")

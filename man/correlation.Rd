@@ -63,7 +63,7 @@ correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
 \code{"auto"} will attempt at selecting the most relevant method
 (polychoric when ordinal factors involved, tetrachoric when dichotomous
 factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise). See below the \strong{details} section for a desription of
+pearson otherwise). See below the \strong{details} section for a description of
 these indices.}
 
 \item{p_adjust}{Correction method for frequentist correlations. Can be one of
@@ -296,7 +296,7 @@ summary(results)
 summary(results, redundant = TRUE)
 
 # pipe-friendly usage
-if (require("dplyr")) {
+if (require("poorman")) {
   iris \%>\%
     correlation(select = "Petal.Width", select2 = "Sepal.Length")
 
@@ -320,7 +320,6 @@ correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
 
 # automatic selection of correlation method
 correlation(mtcars[-2], method = "auto")
-
 }
 \references{
 \itemize{

@@ -141,7 +141,7 @@ summary(results, redundant = TRUE)
 ```
 
 ``` r
-library(dplyr)
+library(poorman)
 library(see)
 
 results %>%

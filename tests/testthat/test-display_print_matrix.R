@@ -1,4 +1,4 @@
-if (require("testthat") && require("gt") && require("dplyr")) {
+if (require("testthat") && require("gt") && require("poorman")) {
 
   # display and print method works - markdown -----------------------------
 
@@ -41,12 +41,12 @@ if (require("testthat") && require("gt") && require("dplyr")) {
 
   test_that("as.matrix works", {
     set.seed(123)
-    mat1 <- dplyr::select(mtcars, am, wt, hp) %>%
+    mat1 <- poorman::select(mtcars, am, wt, hp) %>%
       correlation() %>%
       as.matrix()
 
     set.seed(123)
-    mat2 <- dplyr::select(mtcars, am, wt, hp) %>%
+    mat2 <- poorman::select(mtcars, am, wt, hp) %>%
       group_by(am) %>%
       correlation() %>%
       as.matrix()

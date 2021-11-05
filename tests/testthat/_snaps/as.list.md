@@ -53,6 +53,8 @@
 
     Code
       as.list(correlation(group_by(msleep, vore), method = "spearman"))
+    Warning <simpleWarning>
+      cannot xtfrm data frames
     Output
       =======
        carni 

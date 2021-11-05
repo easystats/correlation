@@ -1,4 +1,4 @@
-if (require("dplyr", quietly = TRUE) && require("ggplot2", quietly = TRUE)) {
+if (require("poorman", quietly = TRUE) && require("ggplot2", quietly = TRUE)) {
   test_that("as.list", {
 
     # no groups

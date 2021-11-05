@@ -182,7 +182,7 @@
 #' summary(results, redundant = TRUE)
 #'
 #' # pipe-friendly usage
-#' if (require("dplyr")) {
+#' if (require("poorman")) {
 #'   iris %>%
 #'     correlation(select = "Petal.Width", select2 = "Sepal.Length")
 #'
@@ -206,7 +206,6 @@
 #'
 #' # automatic selection of correlation method
 #' correlation(mtcars[-2], method = "auto")
-#'
 #' @references
 #'
 #' \itemize{

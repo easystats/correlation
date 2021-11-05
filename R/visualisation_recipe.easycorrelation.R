@@ -5,13 +5,12 @@
 #' # Correlation Results (easycorrelation)
 #' # ==============================================
 #' if (require("see") && require("tidygraph") && require("ggraph")) {
-#' rez <- correlation(iris)
+#'   rez <- correlation(iris)
 #'
-#' layers <- visualisation_recipe(rez)
-#' layers
-#' plot(layers)
+#'   layers <- visualisation_recipe(rez)
+#'   layers
+#'   plot(layers)
 #' }
-#'
 #' @export
 visualisation_recipe.easycorrelation <- function(x, ...) {
   insight::check_if_installed("tidygraph")
@@ -22,12 +21,16 @@ visualisation_recipe.easycorrelation <- function(x, ...) {
   # Initialize layers list
   layers <- list()
 
-  layers[["l1"]] <- list(geom = "ggraph::geom_edge_arc",
-                         strength = 0.1,
-                         aes = list(edge_colour = "r", edge_width = "width"))
+  layers[["l1"]] <- list(
+    geom = "ggraph::geom_edge_arc",
+    strength = 0.1,
+    aes = list(edge_colour = "r", edge_width = "width")
+  )
   layers[["l2"]] <- list(geom = "ggraph::geom_node_point", size = 22)
-  layers[["l3"]] <- list(geom = "ggraph::geom_node_text",
-                         aes = list(label = "name"), colour = "white")
+  layers[["l3"]] <- list(
+    geom = "ggraph::geom_node_text",
+    aes = list(label = "name"), colour = "white"
+  )
   layers[["l4"]] <- list(geom = "ggraph::theme_graph")
   layers[["l5"]] <- list(geom = "guides", edge_width = "none")
 
@@ -37,5 +40,4 @@ visualisation_recipe.easycorrelation <- function(x, ...) {
   attr(layers, "layout") <- "kk"
   attr(layers, "ggraph") <- TRUE
   layers
-
 }

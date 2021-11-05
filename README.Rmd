@@ -6,7 +6,7 @@ output: github_document
 
 ```{r README-1, warning=FALSE, message=FALSE, echo=FALSE}
 library(ggplot2)
-library(dplyr)
+library(poorman)
 library(correlation)
 
 options(digits = 2)
@@ -116,7 +116,7 @@ summary(results, redundant = TRUE)
 
 
 ```{r README-7}
-library(dplyr)
+library(poorman)
 library(see)
 
 results %>%

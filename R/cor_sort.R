@@ -32,7 +32,9 @@ cor_sort.easycorrelation <- function(x, distance = "correlation", ...) {
 
 #' @export
 cor_sort.easycormatrix <- function(x, distance = "correlation", ...) {
-  if (!"Parameter" %in% colnames(x)) return(NextMethod())
+  if (!"Parameter" %in% colnames(x)) {
+    return(NextMethod())
+  }
 
   # Get matrix
   m <- x
@@ -65,7 +67,7 @@ cor_sort.matrix <- function(x, distance = "correlation", ...) {
 
 .cor_sort_order <- function(m, distance = "correlation", hclust_method = "complete", ...) {
   if (distance == "correlation") {
-    d <- stats::as.dist((1 - m)/2) # r = -1 -> d = 1; r = 1 -> d = 0
+    d <- stats::as.dist((1 - m) / 2) # r = -1 -> d = 1; r = 1 -> d = 0
   } else if (distance == "raw") {
     d <- stats::as.dist(m)
   } else {
@@ -75,4 +77,3 @@ cor_sort.matrix <- function(x, distance = "correlation", ...) {
   hc <- stats::hclust(d, method = hclust_method)
   row.names(m)[hc$order]
 }
-
