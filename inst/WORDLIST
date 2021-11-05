@@ -26,6 +26,7 @@ Hoeffding's
 Hoeffding’s
 Horvath
 Jans
+Jorjani
 Langfelder
 Mmh
 Mohnert
@@ -34,6 +35,7 @@ Penrose
 Polychoric
 Pseudoinverse
 Rees
+Schaeffer
 Schimdt
 Shachar
 Sheperd's
@@ -46,10 +48,9 @@ Somers’
 StatsRef
 Steg
 Tetrachoric
+Visualisation
 Winsorization
-Winsorize
 Winsorized
-Winsorizing
 Zar
 al
 biserial
@@ -66,6 +67,7 @@ favour
 favours
 fieller
 frac
+geoms
 hoeffding
 https
 inversed
@@ -80,13 +82,12 @@ pearson
 pinv
 polychoric
 pracma
+rescaled
 ressembles
 rmarkdown
 semipartial
 spearman
 tetrachoric
-th
 theorised
 tidyverse
-winsorization
 xy
