@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02306/status.svg)](https://doi.org/10.21105/joss.02306)
 [![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
-[![total](https://cranlogs.r-pkg.org/badges/grand-total/correlation)](https://cranlogs.r-pkg.org/) 
+[![total](https://cranlogs.r-pkg.org/badges/grand-total/correlation)](https://cranlogs.r-pkg.org/) [![status](https://tinyverse.netlify.com/badge/correlation)](https://CRAN.R-project.org/package=correlation) 
 
 `correlation` is an [**easystats**](https://github.com/easystats/easystats) package focused on correlation analysis. It's lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as **partial** correlations, **Bayesian** correlations, **multilevel** correlations, **polychoric** correlations, **biweight**, **percentage bend** or **Sheperd's Pi** correlations (types of robust correlation), **distance** correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, *Bayesian partial multilevel correlation*).
 
