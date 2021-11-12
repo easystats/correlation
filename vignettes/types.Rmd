@@ -35,6 +35,11 @@ if (!requireNamespace("see", quietly = TRUE) ||
   !requireNamespace("poorman", quietly = TRUE) ||
   !requireNamespace("ggplot2", quietly = TRUE)) {
   knitr::opts_chunk$set(eval = FALSE)
+} else {
+  library(see)
+  library(tidyr)
+  library(poorman)
+  library(ggplot2)
 }
 ```
 
