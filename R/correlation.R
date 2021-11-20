@@ -162,7 +162,7 @@
 #'
 #' \subsection{Notes}{
 #' \itemize{
-#'   \item Kendall and Spearman correlations when `bayesian=TRUE`: These
+#' - Kendall and Spearman correlations when `bayesian=TRUE`: These
 #'   are technically Pearson Bayesian correlations of rank transformed data,
 #'   rather than pure Bayesian rank correlations (which have different priors).
 #' }}
@@ -209,35 +209,35 @@
 #'
 #' # automatic selection of correlation method
 #' correlation(mtcars[-2], method = "auto")
+#'
 #' @references
 #'
-#' \itemize{
-#'   \item Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank
+#' - Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank
 #'   correlation estimator: robustness properties. Statistics and Computing,
 #'   22(2), 471-483.
 #'
-#'   \item Bhushan, N., Mohnert, F., Sloot, D., Jans, L., Albers, C., & Steg, L.
+#' - Bhushan, N., Mohnert, F., Sloot, D., Jans, L., Albers, C., & Steg, L.
 #'   (2019). Using a Gaussian graphical model to explore relationships between
 #'   items and variables in environmental psychology research. Frontiers in
 #'   psychology, 10, 1050.
 #'
-#'   \item Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
+#' - Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
 #'   correlations when data are not normal. Behavior research methods, 49(1),
 #'   294-309.
 #'
-#'   \item Fieller, E. C., Hartley, H. O., & Pearson, E. S. (1957). Tests for
+#' - Fieller, E. C., Hartley, H. O., & Pearson, E. S. (1957). Tests for
 #'   rank correlation coefficients. I. Biometrika, 44(3/4), 470-481.
 #'
-#'   \item Langfelder, P., & Horvath, S. (2012). Fast R functions for robust
+#' - Langfelder, P., & Horvath, S. (2012). Fast R functions for robust
 #'   correlations and hierarchical clustering. Journal of statistical software,
 #'   46(11).
 #'
-#'   \item Blomqvist, N. (1950). On a measure of dependence between two random
+#' - Blomqvist, N. (1950). On a measure of dependence between two random
 #'   variables,Annals of Mathematical Statistics,21, 593–600
 #'
-#'   \item Somers, R. H. (1962). A new asymmetric measure of association for
+#' - Somers, R. H. (1962). A new asymmetric measure of association for
 #'   ordinal variables. American Sociological Review. 27 (6).
-#' }
+#'
 #' @export
 correlation <- function(data,
                         data2 = NULL,

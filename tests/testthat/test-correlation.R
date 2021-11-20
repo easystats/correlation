@@ -166,18 +166,21 @@ test_that("format checks", {
 })
 
 
-if (.runThisTest) {
-  test_that("specific types", {
-    data <- data.frame(
-      x = as.ordered(sample(1:5, 20, TRUE)),
-      y = as.ordered(sample(letters[1:5], 20, TRUE))
-    )
 
-    correlation(data, method = "polychoric")
-  })
+test_that("specific types", {
+  skip_on_cran()
+  data <- data.frame(
+    x = as.ordered(sample(1:5, 20, TRUE)),
+    y = as.ordered(sample(letters[1:5], 20, TRUE))
+  )
 
-  test_that("as.data.frame for correlation output", {
-    set.seed(123)
-    expect_snapshot(as.data.frame(correlation(ggplot2::msleep)))
-  })
-}
+  correlation(data, method = "polychoric")
+})
+
+test_that("as.data.frame for correlation output", {
+  skip_on_cran()
+  skip_if(getRversion() < "3.6")
+
+  set.seed(123)
+  expect_snapshot(as.data.frame(correlation(ggplot2::msleep)))
+})

@@ -229,10 +229,12 @@ Bayesian scores, don't forget to set \code{partial = TRUE}.
 
 \subsection{Notes}{
 \itemize{
+\itemize{
 \item Kendall and Spearman correlations when \code{bayesian=TRUE}: These
 are technically Pearson Bayesian correlations of rank transformed data,
 rather than pure Bayesian rank correlations (which have different priors).
 }}
+}
 }
 \examples{
 library(correlation)
