@@ -3,6 +3,7 @@
 if (require("gt") && packageVersion("insight") >= "0.12.0.1") {
   test_that("display and print method works - markdown", {
     skip_on_cran()
+    skip_if(getRversion() < "3.6")
 
     expect_equal(
       display(correlation(iris)),
