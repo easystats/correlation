@@ -209,7 +209,6 @@
 #'
 #' # automatic selection of correlation method
 #' correlation(mtcars[-2], method = "auto")
-#'
 #' @references
 #'
 #' - Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank

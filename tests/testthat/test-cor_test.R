@@ -59,37 +59,37 @@ test_that("cor_test bayesian", {
 })
 
 test_that("cor_test tetrachoric", {
-  if (require("psych", quietly = TRUE)) {
-    data <- iris
-    data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
-    data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
+  skip_if_not_installed("psych")
+  skip_if_not_installed("polycor")
+  data <- iris
+  data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
+  data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
 
-    # With Factors / Binary
-    out <- cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
-    expect_equal(out$rho, -0.526, tolerance = 0.01)
+  # With Factors / Binary
+  out <- cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
+  expect_equal(out$rho, -0.526, tolerance = 0.01)
 
-    data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
-    data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
-    out <- cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+  data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
+  data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
+  out <- cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
 
-    # Curently CRAN checks show two possible results for this:
-    if (isTRUE(all.equal(out$rho, 0.7507764, tolerance = 0.1))) {
-      expect_equal(out$rho, 0.7507764, tolerance = 0.1)
-    } else {
-      expect_equal(out$rho, 0.528, tolerance = 0.01)
-    }
-
-    out <- cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
-    expect_equal(out$rho, -0.144, tolerance = 0.01)
-
-    # Biserial
-    out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "pointbiserial")
-    expect_equal(out$rho, -0.3212561, tolerance = 0.01)
-
-    out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
-    expect_equal(out$rho, -0.403, tolerance = 0.01)
-    out_psych <- psych::biserial(data[["Sepal.Width"]], data[["Petal.Width_binary"]])[1]
+  # Curently CRAN checks show two possible results for this:
+  if (isTRUE(all.equal(out$rho, 0.7507764, tolerance = 0.1))) {
+    expect_equal(out$rho, 0.7507764, tolerance = 0.1)
+  } else {
+    expect_equal(out$rho, 0.528, tolerance = 0.01)
   }
+
+  out <- cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
+  expect_equal(out$rho, -0.144, tolerance = 0.01)
+
+  # Biserial
+  out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "pointbiserial")
+  expect_equal(out$rho, -0.3212561, tolerance = 0.01)
+
+  out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
+  expect_equal(out$rho, -0.403, tolerance = 0.01)
+  out_psych <- psych::biserial(data[["Sepal.Width"]], data[["Petal.Width_binary"]])[1]
 })
 
 

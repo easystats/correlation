@@ -23,25 +23,26 @@ test_that("cor_test bayesian", {
 })
 
 test_that("cor_test tetrachoric", {
-  if (require("psych", quietly = TRUE)) {
-    data <- ggplot2::msleep
-    data$brainwt_binary <- ifelse(data$brainwt > 3, 1, 0)
-    data$sleep_rem_binary <- ifelse(data$sleep_rem > 1.2, 1, 0)
+  skip_if_not_installed("psych")
+  skip_if_not_installed("polycor")
 
-    # With Factors / Binary
-    expect_error(cor_test(data, "brainwt_binary", "sleep_rem_binary", method = "tetrachoric"))
+  data <- ggplot2::msleep
+  data$brainwt_binary <- ifelse(data$brainwt > 3, 1, 0)
+  data$sleep_rem_binary <- ifelse(data$sleep_rem > 1.2, 1, 0)
 
-    data$sleep_rem_ordinal <- as.factor(round(data$sleep_rem))
-    data$brainwt_ordinal <- as.factor(round(data$brainwt))
+  # With Factors / Binary
+  expect_error(cor_test(data, "brainwt_binary", "sleep_rem_binary", method = "tetrachoric"))
 
-    out <- cor_test(data, "brainwt", "brainwt_ordinal", method = "polychoric")
-    expect_equal(out$rho, 0.9999, tolerance = 0.01)
+  data$sleep_rem_ordinal <- as.factor(round(data$sleep_rem))
+  data$brainwt_ordinal <- as.factor(round(data$brainwt))
 
-    # Biserial
-    expect_error(cor_test(data, "brainwt", "sleep_rem_binary", method = "pointbiserial"))
+  out <- cor_test(data, "brainwt", "brainwt_ordinal", method = "polychoric")
+  expect_equal(out$rho, 0.9999, tolerance = 0.01)
 
-    expect_error(cor_test(data, "brainwt", "sleep_rem_binary", method = "biserial"))
-  }
+  # Biserial
+  expect_error(cor_test(data, "brainwt", "sleep_rem_binary", method = "pointbiserial"))
+
+  expect_error(cor_test(data, "brainwt", "sleep_rem_binary", method = "biserial"))
 })
 
 
