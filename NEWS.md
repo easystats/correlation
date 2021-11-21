@@ -1,3 +1,10 @@
+# correlation 0.7.1.1
+
+## Breaking Changes
+
+- `robust` argument, which was deprecated in favour of `ranktransform` in
+  `0.6.1` release, has now been removed.
+
 # correlation 0.7.1
 
 ## Bug Fixes
