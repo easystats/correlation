@@ -325,7 +325,6 @@ correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
 
 # automatic selection of correlation method
 correlation(mtcars[-2], method = "auto")
-
 }
 \references{
 \itemize{

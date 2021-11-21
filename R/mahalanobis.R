@@ -11,11 +11,12 @@
 #' @param robust If `TRUE`, will run a bootstrapped version of the function
 #'   with i iterations.
 #'
-#' @references \itemize{
-#'   \item Schwarzkopf, D. S., De Haas, B., & Rees, G. (2012). Better ways to
+#' @references
+#'
+#' - Schwarzkopf, D. S., De Haas, B., & Rees, G. (2012). Better ways to
 #'   improve standards in brain-behavior correlation analysis. Frontiers in
 #'   human neuroscience, 6, 200.
-#' }
+#'
 #'
 #' @return Description of the Mahalanobis distance.
 #'
