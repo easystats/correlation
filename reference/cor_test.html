@@ -80,7 +80,6 @@
   partial_bayesian <span class="op">=</span> <span class="cn">FALSE</span>,
   multilevel <span class="op">=</span> <span class="cn">FALSE</span>,
   ranktransform <span class="op">=</span> <span class="cn">FALSE</span>,
-  robust <span class="op">=</span> <span class="cn">NULL</span>,
   winsorize <span class="op">=</span> <span class="cn">FALSE</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">...</span>
@@ -146,10 +145,6 @@ correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</c
 redundant. Nonetheless, it is an easy option to increase the robustness of the
 correlation as well as flexible way to obtain Bayesian or multilevel
 Spearman-like rank correlations.</p></dd>
-<dt>robust</dt>
-<dd><p>Old name for <code>ranktransform</code>. Will be removed in subsequent
-versions, so better to use <code>ranktransform</code> which is more explicit about
-what it does.</p></dd>
 <dt>winsorize</dt>
 <dd><p>Another way of making the correlation more "robust" (i.e.,
 limiting the impact of extreme values). Can be either <code>FALSE</code> or a
