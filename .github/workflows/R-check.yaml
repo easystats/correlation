@@ -54,7 +54,15 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, energy=?ignore
+          extra-packages: |
+            any::rcmdcheck
+            energy=?ignore
+            Hmisc=?ignore-before-r=3.6.0
+            poorman=?ignore-before-r=3.5.0
+            BayesFactor=?ignore-before-r=3.5.0
+            polycor=?ignore-before-r=3.5.0
+            rstanarm=?ignore-before-r=3.5.0
+            WRS2=?ignore-before-r=3.5.0
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
