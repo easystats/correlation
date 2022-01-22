@@ -36,14 +36,14 @@
     
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
@@ -83,6 +83,9 @@
   </div>
 </nav><div class="container template-article">
 
+
+
+
 <div class="row">
   <main id="main"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Correlation Types</h1>
@@ -119,9 +122,9 @@
 &gt;     url = {https://joss.theoj.org/papers/10.21105/joss.02306},
 &gt;   }</code></pre>
 <hr>
-<div class="section level2">
-<h2 id="different-methods-for-correlations">Different Methods for Correlations<a class="anchor" aria-label="anchor" href="#different-methods-for-correlations"></a>
-</h2>
+<div class="section level3">
+<h3 id="different-methods-for-correlations">Different Methods for Correlations<a class="anchor" aria-label="anchor" href="#different-methods-for-correlations"></a>
+</h3>
 <p>Correlations tests are arguably one of the most commonly used statistical procedures, and are used as a basis in many applications such as exploratory data analysis, structural modeling, data engineering, etc. In this context, we present <strong>correlation</strong>, a toolbox for the R language <span class="citation">(R Core Team 2019)</span> and part of the <a href="https://github.com/easystats/easystats" class="external-link"><strong>easystats</strong></a> collection, focused on correlation analysis. Its goal is to be lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as:</p>
 <ul>
 <li>
@@ -159,9 +162,9 @@
 <strong>Multilevel correlation</strong>: Multilevel correlations are a special case of partial correlations where the variable to be adjusted for is a factor and is included as a random effect in a mixed-effects model.</li>
 </ul>
 </div>
-<div class="section level2">
-<h2 id="comparison">Comparison<a class="anchor" aria-label="anchor" href="#comparison"></a>
-</h2>
+<div class="section level3">
+<h3 id="comparison">Comparison<a class="anchor" aria-label="anchor" href="#comparison"></a>
+</h3>
 <p>We will fit different types of correlations of generated data with different link strengths and link types.</p>
 <p>Let’s first load the required libraries for this analysis.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -171,9 +174,9 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nathaneastwood.github.io/poorman/" class="external-link">poorman</a></span><span class="op">)</span></code></pre></div>
-<div class="section level3">
-<h3 id="utility-functions">Utility functions<a class="anchor" aria-label="anchor" href="#utility-functions"></a>
-</h3>
+<div class="section level4">
+<h4 id="utility-functions">Utility functions<a class="anchor" aria-label="anchor" href="#utility-functions"></a>
+</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">generate_results</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">r</span>, <span class="va">n</span> <span class="op">=</span> <span class="fl">100</span>, <span class="va">transformation</span> <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">bayestestR</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/simulate_correlation.html" class="external-link">simulate_correlation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>, r <span class="op">=</span> <span class="va">r</span><span class="op">)</span>
@@ -196,9 +199,9 @@
   <span class="va">out</span>
 <span class="op">}</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="effect-of-relationship-type">Effect of Relationship Type<a class="anchor" aria-label="anchor" href="#effect-of-relationship-type"></a>
-</h3>
+<div class="section level4">
+<h4 id="effect-of-relationship-type">Effect of Relationship Type<a class="anchor" aria-label="anchor" href="#effect-of-relationship-type"></a>
+</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">r</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.999</span>, length.out <span class="op">=</span> <span class="fl">200</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -258,9 +261,9 @@
 <p>As we can see, <strong>distance</strong> correlation is able to capture the strength even for severely non-linear relationships.</p>
 </div>
 </div>
-<div class="section level1 unnumbered">
-<h1 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h1>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-bishara2017confidence" class="csl-entry">
 Bishara, Anthony J, and James B Hittner. 2017. <span>“Confidence Intervals for Correlations When Data Are Not Normal.”</span> <em>Behavior Research Methods</em> 49 (1): 294–309. <a href="https://doi.org/10.3758/s13428-016-0702-8" class="external-link">https://doi.org/10.3758/s13428-016-0702-8</a>.
@@ -289,7 +292,7 @@ R Core Team. 2019. <em>R: A Language and Environment for Statistical Computing</
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
     </footer>
