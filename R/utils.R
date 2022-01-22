@@ -3,6 +3,7 @@
 #' @param x A matrix.
 #' @return `TRUE` of the matrix is a correlation matrix or `FALSE` otherwise.
 #' @export
+
 is.cor <- function(x) {
   square <- isSquare(x)
   symetric <- isSymmetric(x)
@@ -17,21 +18,13 @@ is.cor <- function(x) {
 }
 
 
-
-
-
-
-
-
-
-
-
 #' Check if Square Matrix
 #'
 #' @param m A matrix.
 #'
 #' @return `TRUE` of the matrix is square or `FALSE` otherwise.
 #' @export
+
 isSquare <- function(m) {
   if (dim(m)[1] != dim(m)[2]) {
     FALSE

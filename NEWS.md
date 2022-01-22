@@ -1,4 +1,4 @@
-# correlation 0.7.1.1
+# correlation 0.8.0
 
 ## Breaking Changes
 
