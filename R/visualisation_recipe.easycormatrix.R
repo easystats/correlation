@@ -1,11 +1,11 @@
 #' Visualisation Recipe for 'correlation' Objects
 #'
-#' Visualisation recipe for 'correlation' objects.
-#'
 #' @param x A correlation object.
 #' @param show_text Show labels with matrix values.
-#' @param show_data Show data. For correlation matrices, can be \code{"tile"} (default) or \code{"point"}.
-#' @param tile,point,text,scale_fill,smooth,labs Additional aesthetics and parameters for the geoms (see customization example).
+#' @param show_data Show data. For correlation matrices, can be \code{"tile"}
+#'   (default) or \code{"point"}.
+#' @param tile,point,text,scale_fill,smooth,labs Additional aesthetics and
+#'   parameters for the geoms (see customization example).
 #' @param ... Other arguments passed to other functions.
 #'
 #' @examples
@@ -84,7 +84,8 @@ visualisation_recipe.easycormatrix <- function(x,
   # Format
   data$Parameter1 <- factor(data$Parameter1, levels = rev(x$Parameter1))
   data$Parameter2 <- factor(data$Parameter2, levels = colnames)
-  # filter NAns
+
+  # filter `NA`s
   data <- data[!is.na(data$r), ]
 
 
