@@ -17,7 +17,7 @@ Authors@R:
              family = "Patil",
              role = "aut",
              email = "patilindrajeet.science@gmail.com",
-             comment = c(ORCID = "0000-0003-1995-6531", Twitter = "@patilindrajeets")),       
+             comment = c(ORCID = "0000-0003-1995-6531", Twitter = "@patilindrajeets")),
       person(given = "Daniel",
              family = "Lüdecke",
              role = "aut",
