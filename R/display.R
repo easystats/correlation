@@ -83,10 +83,3 @@ display.easycorrelation <- function(object,
     )
   }
 }
-
-
-# Reexports models ------------------------
-
-#' @importFrom insight display
-#' @export
-insight::display

@@ -178,17 +178,3 @@ print_html.easycormatrix <- function(x,
     ...
   )
 }
-
-
-
-
-# Reexports functions ------------------------
-
-#' @importFrom insight print_md
-#' @export
-insight::print_md
-
-
-#' @importFrom insight print_html
-#' @export
-insight::print_html
