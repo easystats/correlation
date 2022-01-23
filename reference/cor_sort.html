@@ -72,7 +72,13 @@
     <dl><dt>x</dt>
 <dd><p>A correlation matrix.</p></dd>
 <dt>distance</dt>
-<dd><p>How the distance between each variable should be calculated. If <code>correlation</code> (default; suited for correlation matrices), the matrix will be rescaled to 0-1 (distance=0 indicating correlation of 1; distance=1 indicating correlation of -1). If <code>raw</code>, then the matrix will be used as a distance matrix as-is. Can be others (<code>euclidean</code>, <code>manhattan</code>, ...), in which case it will be passed to <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist()</a></code> (see the arguments for it).</p></dd>
+<dd><p>How the distance between each variable should be calculated.
+If <code>correlation</code> (default; suited for correlation matrices), the matrix
+will be rescaled to 0-1 (<code>distance = 0</code> indicating correlation of 1;
+<code>distance = 1</code> indicating correlation of -1). If <code>raw</code>, then the matrix
+will be used as a distance matrix as-is. Can be others (<code>euclidean</code>,
+<code>manhattan</code>, ...), in which case it will be passed to <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist()</a></code> (see the
+arguments for it).</p></dd>
 <dt>...</dt>
 <dd><p>Other arguments to be passed to or from other functions.</p></dd>
 </dl></div>
