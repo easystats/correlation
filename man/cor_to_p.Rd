@@ -41,10 +41,11 @@ correction. Both are generally very similar.}
 other methods. See \code{stats::cor.test} for further details.}
 }
 \value{
-A list containing a p-value and the statistic or the CI bounds.
+A list containing a \emph{p}-value and the statistic or the CI bounds.
 }
 \description{
-Get statistics, p-values and confidence intervals (CI) from correlation coefficients.
+Get statistics, \emph{p}-values and confidence intervals (CI) from correlation
+coefficients.
 }
 \examples{
 cor.test(iris$Sepal.Length, iris$Sepal.Width)

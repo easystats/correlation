@@ -2,8 +2,8 @@
 #'
 #' @param x A correlation object.
 #' @param show_text Show labels with matrix values.
-#' @param show_data Show data. For correlation matrices, can be \code{"tile"}
-#'   (default) or \code{"point"}.
+#' @param show_data Show data. For correlation matrices, can be `"tile"`
+#'   (default) or `"point"`.
 #' @param tile,point,text,scale_fill,smooth,labs Additional aesthetics and
 #'   parameters for the geoms (see customization example).
 #' @param ... Other arguments passed to other functions.

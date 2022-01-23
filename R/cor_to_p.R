@@ -1,12 +1,13 @@
 #' Convert correlation to p-values and CIs
 #'
-#' Get statistics, p-values and confidence intervals (CI) from correlation coefficients.
+#' Get statistics, *p*-values and confidence intervals (CI) from correlation
+#' coefficients.
 #'
 #' @param cor A correlation matrix or coefficient.
 #' @param n The sample size (number of observations).
 #' @inheritParams cor_test
 #'
-#' @return A list containing a p-value and the statistic or the CI bounds.
+#' @return A list containing a *p*-value and the statistic or the CI bounds.
 #'
 #' @examples
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width)

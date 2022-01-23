@@ -15,7 +15,10 @@ is_positive_definite(x, tol = 10^-12, ...)
 \arguments{
 \item{x}{A correlation matrix.}
 
-\item{method}{Smoothing method. Can be \code{psych} (will use \code{psych::cor.smooth()}), \code{hj} (Jorjani et al., 2003) or \code{lrs} (Schaeffer, 2014). For the two last, will use \code{mbend::bend()} (check its documentation for details).}
+\item{method}{Smoothing method. Can be \code{psych} (will use
+\code{psych::cor.smooth()}), \code{hj} (Jorjani et al., 2003) or \code{lrs} (Schaeffer,
+2014). For the two last, will use \code{mbend::bend()} (check its documentation
+for details).}
 
 \item{verbose}{Set to \code{FALSE} to silence the function.}
 
@@ -24,8 +27,9 @@ is_positive_definite(x, tol = 10^-12, ...)
 \item{tol}{The minimum eigenvalue to be considered as acceptable.}
 }
 \description{
-Make correlations positive definite using \code{psych::cor.smooth}.
-If smoothing is done, inferential statistics (p-values, confidence intervals, etc.) are removed, as they are no longer valid.
+Make correlations positive definite using \code{psych::cor.smooth}. If smoothing
+is done, inferential statistics (\emph{p}-values, confidence intervals, etc.) are
+removed, as they are no longer valid.
 }
 \examples{
 set.seed(123)

@@ -1,9 +1,15 @@
 #' Sort a correlation matrix to improve readability of groups and clusters
 #'
-#' Sort a correlation matrix based on \code{hclust}.
+#' Sort a correlation matrix based on `hclust`.
 #'
 #' @param x A correlation matrix.
-#' @param distance How the distance between each variable should be calculated. If \code{correlation} (default; suited for correlation matrices), the matrix will be rescaled to 0-1 (distance=0 indicating correlation of 1; distance=1 indicating correlation of -1). If \code{raw}, then the matrix will be used as a distance matrix as-is. Can be others (\code{euclidean}, \code{manhattan}, ...), in which case it will be passed to \code{dist()} (see the arguments for it).
+#' @param distance How the distance between each variable should be calculated.
+#'   If `correlation` (default; suited for correlation matrices), the matrix
+#'   will be rescaled to 0-1 (`distance = 0` indicating correlation of 1;
+#'   `distance = 1` indicating correlation of -1). If `raw`, then the matrix
+#'   will be used as a distance matrix as-is. Can be others (`euclidean`,
+#'   `manhattan`, ...), in which case it will be passed to `dist()` (see the
+#'   arguments for it).
 #' @param ... Other arguments to be passed to or from other functions.
 #'
 #' @examples

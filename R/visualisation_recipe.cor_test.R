@@ -5,20 +5,20 @@
 #' # ==============================================
 #' # Correlation Test
 #' # ==============================================
-#'   if (require("see")) {
-#'     rez <- cor_test(mtcars, "mpg", "wt")
+#' if (require("see")) {
+#'   rez <- cor_test(mtcars, "mpg", "wt")
 #'
-#'     layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
-#'     layers
-#'     plot(layers)
+#'   layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
+#'   layers
+#'   plot(layers)
 #'
-#'     plot(rez,
-#'       show_text = "label",
-#'       point = list(color = "#f44336"),
-#'       text = list(fontface = "bold"),
-#'       show_statistic = FALSE, show_ci = FALSE, stars = TRUE
-#'     )
-#'   }
+#'   plot(rez,
+#'     show_text = "label",
+#'     point = list(color = "#f44336"),
+#'     text = list(fontface = "bold"),
+#'     show_statistic = FALSE, show_ci = FALSE, stars = TRUE
+#'   )
+#' }
 #' }
 #' @export
 visualisation_recipe.easycor_test <- function(x,

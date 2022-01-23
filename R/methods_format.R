@@ -85,14 +85,18 @@ format.easycormatrix <- function(x,
         digits = p_digits,
         stars_only = stars_only
       )
-    } else if (type == "pd") {
+    }
+
+    if (type == "pd") {
       sig[, nums] <- sapply(
         sig[, nums],
         insight::format_pd,
         stars = stars,
         stars_only = stars_only
       )
-    } else if (type == "BF") {
+    }
+
+    if (type == "BF") {
       sig[, nums] <- sapply(
         sig[, nums],
         insight::format_bf,

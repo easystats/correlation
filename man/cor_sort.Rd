@@ -9,7 +9,13 @@ cor_sort(x, distance = "correlation", ...)
 \arguments{
 \item{x}{A correlation matrix.}
 
-\item{distance}{How the distance between each variable should be calculated. If \code{correlation} (default; suited for correlation matrices), the matrix will be rescaled to 0-1 (distance=0 indicating correlation of 1; distance=1 indicating correlation of -1). If \code{raw}, then the matrix will be used as a distance matrix as-is. Can be others (\code{euclidean}, \code{manhattan}, ...), in which case it will be passed to \code{dist()} (see the arguments for it).}
+\item{distance}{How the distance between each variable should be calculated.
+If \code{correlation} (default; suited for correlation matrices), the matrix
+will be rescaled to 0-1 (\code{distance = 0} indicating correlation of 1;
+\code{distance = 1} indicating correlation of -1). If \code{raw}, then the matrix
+will be used as a distance matrix as-is. Can be others (\code{euclidean},
+\code{manhattan}, ...), in which case it will be passed to \code{dist()} (see the
+arguments for it).}
 
 \item{...}{Other arguments to be passed to or from other functions.}
 }
