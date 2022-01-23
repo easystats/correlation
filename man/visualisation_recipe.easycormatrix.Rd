@@ -36,23 +36,24 @@
 \arguments{
 \item{x}{A correlation object.}
 
-\item{show_data}{Show data. For correlation matrices, can be \code{"tile"} (default) or \code{"point"}.}
+\item{show_data}{Show data. For correlation matrices, can be \code{"tile"}
+(default) or \code{"point"}.}
 
 \item{show_text}{Show labels with matrix values.}
 
 \item{...}{Other arguments passed to other functions.}
 
-\item{tile, point, text, scale_fill, smooth, labs}{Additional aesthetics and parameters for the geoms (see customization example).}
+\item{tile, point, text, scale_fill, smooth, labs}{Additional aesthetics and
+parameters for the geoms (see customization example).}
 }
 \description{
-Visualisation recipe for 'correlation' objects.
+Visualisation Recipe for 'correlation' Objects
 }
 \examples{
 \donttest{
 # ==============================================
 # Correlation Test
 # ==============================================
-if (FALSE) {
   if (require("see")) {
     rez <- cor_test(mtcars, "mpg", "wt")
 
@@ -67,7 +68,6 @@ if (FALSE) {
       show_statistic = FALSE, show_ci = FALSE, stars = TRUE
     )
   }
-}
 }
 # ==============================================
 # Correlation Matrix

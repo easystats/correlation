@@ -5,7 +5,6 @@
 #' # ==============================================
 #' # Correlation Test
 #' # ==============================================
-#' if (FALSE) {
 #'   if (require("see")) {
 #'     rez <- cor_test(mtcars, "mpg", "wt")
 #'
@@ -20,7 +19,6 @@
 #'       show_statistic = FALSE, show_ci = FALSE, stars = TRUE
 #'     )
 #'   }
-#' }
 #' }
 #' @export
 visualisation_recipe.easycor_test <- function(x,
