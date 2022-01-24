@@ -26,8 +26,10 @@
   tile = NULL,
   point = NULL,
   text = NULL,
+  scale = NULL,
   scale_fill = NULL,
   labs = NULL,
+  type = show_data,
   ...
 )
 
@@ -43,8 +45,10 @@
 
 \item{...}{Other arguments passed to other functions.}
 
-\item{tile, point, text, scale_fill, smooth, labs}{Additional aesthetics and
+\item{tile, point, text, scale, scale_fill, smooth, labs}{Additional aesthetics and
 parameters for the geoms (see customization example).}
+
+\item{type}{Alias for \code{show_data}, for backwards compatibility.}
 }
 \description{
 Visualisation Recipe for 'correlation' Objects

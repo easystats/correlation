@@ -99,11 +99,17 @@ visualisation_recipe.easycor_test <- function(x,
                          labs = NULL,
                          title = NULL,
                          subtitle = NULL,
+                         type = show_data,
                          ...) {
 
 
   # Initialize layers list
   layers <- list()
+
+  # handle alias
+  if (!missing(type)) {
+    show_data <- type
+  }
 
   # Layers -----------------------
   l <- 1

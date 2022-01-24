@@ -35,7 +35,7 @@ visualisation_recipe.easycorrelation <- function(x, ...) {
     geom = "ggraph::geom_node_text",
     aes = list(label = "name"), colour = "white"
   )
-  layers[["l4"]] <- list(geom = "ggraph::theme_graph", base_family='sans')
+  layers[["l4"]] <- list(geom = "ggraph::theme_graph", base_family = 'sans')
   layers[["l5"]] <- list(geom = "guides", edge_width = "none")
 
   # Out

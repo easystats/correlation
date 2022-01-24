@@ -4,7 +4,8 @@
 #' @param show_text Show labels with matrix values.
 #' @param show_data Show data. For correlation matrices, can be `"tile"`
 #'   (default) or `"point"`.
-#' @param tile,point,text,scale_fill,smooth,labs Additional aesthetics and
+#' @param type Alias for `show_data`, for backwards compatibility.
+#' @param tile,point,text,scale,scale_fill,smooth,labs Additional aesthetics and
 #'   parameters for the geoms (see customization example).
 #' @param ... Other arguments passed to other functions.
 #'
@@ -46,9 +47,20 @@ visualisation_recipe.easycormatrix <- function(x,
                                                tile = NULL,
                                                point = NULL,
                                                text = NULL,
+                                               scale = NULL,
                                                scale_fill = NULL,
                                                labs = NULL,
+                                               type = show_data,
                                                ...) {
+  # handle alias
+  if (!missing(type)) {
+    show_data <- type
+  }
+
+  # process dot-arguments ------------------------------
+  ellipses <- list(...)
+  show_text <- !isFALSE(ellipses$show_values)
+  show_p <- !isFALSE(ellipses$show_p)
 
   # Format as summary() if true matrix
   if (inherits(x, "matrix")) {
@@ -81,6 +93,11 @@ visualisation_recipe.easycormatrix <- function(x,
     data <- merge(data, temp, all.x = TRUE, all.y = FALSE)
   }
 
+  # remove p-values
+  if (!show_p) {
+    data$Text <- gsub("*", "", data$Text, fixed = TRUE)
+  }
+
   # Format
   data$Parameter1 <- factor(data$Parameter1, levels = rev(x$Parameter1))
   data$Parameter2 <- factor(data$Parameter2, levels = colnames)
@@ -97,10 +114,10 @@ visualisation_recipe.easycormatrix <- function(x,
 
   # Add tiles
   if (!is.null(show_data)) {
-    if (show_data == TRUE || show_data %in% c("tile", "tiles")) {
-      layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(type = "tile", data, x = "Parameter2", y = "Parameter1", fill = "r", args = tile)
+    if (isTRUE(show_data) || show_data %in% c("tile", "tiles")) {
+      layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(type = "tile", data, x = "Parameter2", y = "Parameter1", fill = "r", args = tile, dot_args = ellipses)
     } else {
-      layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(type = "point", data, x = "Parameter2", y = "Parameter1", fill = "r", args = point)
+      layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(type = "point", data, x = "Parameter2", y = "Parameter1", fill = "r", args = point, dot_args = ellipses)
     }
     l <- l + 1
   }
@@ -109,7 +126,6 @@ visualisation_recipe.easycormatrix <- function(x,
 
   # Add text
   if (!is.null(show_text) && show_text != FALSE) {
-    if (show_text == TRUE) show_text <- "text"
     layers[[paste0("l", l)]] <- .visualisation_easycormatrix_text(data, x = "Parameter2", y = "Parameter1", label = "Text", text = text)
     l <- l + 1
   }
@@ -125,12 +141,12 @@ visualisation_recipe.easycormatrix <- function(x,
 
   # Origin at 0
   if (!is.null(show_data) && show_data %in% c("tile", "tiles")) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "x_discrete", ...)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "x_discrete", scale = scale)
     l <- l + 1
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "y_discrete", ...)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "y_discrete", scale = scale)
     l <- l + 1
   } else if (show_data %in% c("point", "points")) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "size", ...)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "size", scale = scale)
     l <- l + 1
   }
 
@@ -147,7 +163,7 @@ visualisation_recipe.easycormatrix <- function(x,
 
 # Layer - Data -------------------------------------------------------------
 
-.visualisation_easycormatrix_data <- function(type = "tile", data, x, y, fill, args = NULL) {
+.visualisation_easycormatrix_data <- function(type = "tile", data, x, y, fill, args = NULL, dot_args = NULL) {
   out <- list(
     geom = type,
     data = data,
@@ -156,9 +172,17 @@ visualisation_recipe.easycormatrix <- function(x,
       x = x
     )
   )
+
   if (type == "point") {
     out$aes$colour <- fill
+    # point size?
+    if (!is.null(dot_args$point_size)) {
+      out$size <- dot_args$point_size
+    } else if (!is.null(dot_args$size_point)) {
+      out$size <- dot_args$size_point
+    } else {
     out$aes$size <- paste0("abs(", fill, ")")
+    }
     out$stroke <- 0
     out$shape <- 16
     out$show.legend <- c("size" = FALSE)
