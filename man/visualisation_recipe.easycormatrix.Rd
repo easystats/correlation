@@ -23,6 +23,7 @@
   x,
   show_data = "tile",
   show_text = "text",
+  show_legend = TRUE,
   tile = NULL,
   point = NULL,
   text = NULL,
@@ -44,6 +45,8 @@
 \item{show_text}{Show labels with matrix values.}
 
 \item{...}{Other arguments passed to other functions.}
+
+\item{show_legend}{Show legend. Can be set to \code{FALSE} to remove the legend.}
 
 \item{tile, point, text, scale, scale_fill, smooth, labs}{Additional aesthetics and
 parameters for the geoms (see customization example).}

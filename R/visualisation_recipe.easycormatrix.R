@@ -4,6 +4,7 @@
 #' @param show_text Show labels with matrix values.
 #' @param show_data Show data. For correlation matrices, can be `"tile"`
 #'   (default) or `"point"`.
+#' @param show_legend Show legend. Can be set to `FALSE` to remove the legend.
 #' @param type Alias for `show_data`, for backwards compatibility.
 #' @param tile,point,text,scale,scale_fill,smooth,labs Additional aesthetics and
 #'   parameters for the geoms (see customization example).
@@ -44,6 +45,7 @@
 visualisation_recipe.easycormatrix <- function(x,
                                                show_data = "tile",
                                                show_text = "text",
+                                               show_legend = TRUE,
                                                tile = NULL,
                                                point = NULL,
                                                text = NULL,
@@ -132,10 +134,10 @@ visualisation_recipe.easycormatrix <- function(x,
 
   # Color tiles
   if (!is.null(show_data) && show_data %in% c("tile", "tiles")) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale_fill(type = "fill", data, scale_fill = scale_fill)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale_fill(type = "fill", data, scale_fill = scale_fill, show_legend = show_legend)
     l <- l + 1
   } else if (show_data %in% c("point", "points")) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale_fill(type = "colour", data, scale_fill = scale_fill)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale_fill(type = "colour", data, scale_fill = scale_fill, show_legend = show_legend)
     l <- l + 1
   }
 
@@ -197,7 +199,7 @@ visualisation_recipe.easycormatrix <- function(x,
 
 # Layer - Scale Fill -------------------------------------------------------------
 
-.visualisation_easycormatrix_scale_fill <- function(type = "fill", data, scale_fill = NULL) {
+.visualisation_easycormatrix_scale_fill <- function(type = "fill", data, scale_fill = NULL, show_legend = TRUE) {
   low_lim <- ifelse(min(data$r) < 0, -1, 0)
   high_lim <- ifelse(max(data$r) > 0, 1, 0)
 
@@ -209,7 +211,8 @@ visualisation_recipe.easycormatrix <- function(x,
     midpoint = 0,
     limit = c(low_lim, high_lim),
     space = "Lab",
-    name = "Correlation"
+    name = "Correlation",
+    guide = ifelse(isFALSE(show_legend), "none", "legend")
   )
   if (!is.null(scale_fill)) out <- utils::modifyList(out, scale_fill) # Update with additional args
   out
