@@ -140,7 +140,7 @@ cor_test <- function(data,
 
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
-    data[c(x, y)] <- datawizard::data_to_numeric(data[c(x, y)], dummy_factors = FALSE)
+    data[c(x, y)] <- datawizard::convert_data_to_numeric(data[c(x, y)], dummy_factors = FALSE)
   }
 
   # Partial
