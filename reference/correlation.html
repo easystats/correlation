@@ -104,7 +104,7 @@ the data frames with those variables that should be correlated, <code>data</code
 can be a data frame and <code>select</code> and <code>select2</code> are (quoted) names
 of variables (columns) in <code>data</code>. <code>correlation()</code> will then
 compute the correlation between <code>data[select]</code> and
-<code>data[select2]</code>. If only <code>select</code> is specified, all pair-wise
+<code>data[select2]</code>. If only <code>select</code> is specified, all pairwise
 correlations between the <code>select</code> variables will be computed. This is
 a "pipe-friendly" alternative way of using <code>correlation()</code> (see
 'Examples').</p></dd>
@@ -203,8 +203,8 @@ other methods. See <code><a href="https://rdrr.io/r/stats/cor.test.html" class="
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A correlation object that can be displayed using the <code>print</code>,
-<code>summary</code> or <code>table</code> methods.</p><div class="section">
+    <p>A correlation object that can be displayed using the <code>print</code>, <code>summary</code> or
+<code>table</code> methods.</p><div class="section">
 <h3 id="multiple-tests-correction">Multiple tests correction<a class="anchor" aria-label="anchor" href="#multiple-tests-correction"></a></h3>
 <p>The <code>p_adjust</code> argument can be used to adjust p-values for multiple
 comparisons. All adjustment methods available in <code>p.adjust</code> function
@@ -228,13 +228,13 @@ correlation assesses linear relationships, Spearman's correlation assesses
 monotonic relationships (whether linear or not). Confidence Intervals (CI)
 for Spearman's correlations are computed using the Fieller et al. (1957)
 correction (see Bishara and Hittner, 2017).</p></li>
-<li><p><strong>Kendall's rank correlation</strong>: In the normal case, the Kendall
-correlation is preferred than the Spearman correlation because of a smaller
-gross error sensitivity (GES) and a smaller asymptotic variance (AV), making
-it more robust and more efficient. However, the interpretation of Kendall's
-tau is less direct than that of Spearman's rho, in the sense that it
-quantifies the difference between the percentage of concordant and discordant pairs
-among all possible pairwise events. Confidence Intervals (CI) for Kendall's
+<li><p><strong>Kendall's rank correlation</strong>: In the normal case, the Kendall correlation
+is preferred than the Spearman correlation because of a smaller gross error
+sensitivity (GES) and a smaller asymptotic variance (AV), making it more
+robust and more efficient. However, the interpretation of Kendall's tau is
+less direct than that of Spearman's rho, in the sense that it quantifies the
+difference between the percentage of concordant and discordant pairs among
+all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
 Bishara and Hittner, 2017).</p></li>
 <li><p><strong>Biweight midcorrelation</strong>: A measure of similarity that is
@@ -308,32 +308,29 @@ correlations can be represented as Gaussian Graphical Models (GGM), an
 increasingly popular tool in psychology. A GGM traditionally include a set of
 variables depicted as circles ("nodes"), and a set of lines that visualize
 relationships between them, which thickness represents the strength of
-association (see Bhushan et al., 2019).
-<br><br><strong>Multilevel correlations</strong> are a special case of partial correlations
-where the variable to be adjusted for is a factor and is included as a random
+association (see Bhushan et al., 2019).</p>
+<p><strong>Multilevel correlations</strong> are a special case of partial correlations where
+the variable to be adjusted for is a factor and is included as a random
 effect in a mixed model (note that the remaining continuous variables of the
 dataset will still be included as fixed effects, similarly to regular partial
 correlations). That said, there is an important difference between using
-<code><a href="cor_test.html">cor_test()</a></code> and <code>correlation()</code>: If you set <code>multilevel=TRUE</code>
-in <code>correlation()</code> but <code>partial</code> is set to <code>FALSE</code> (as per
-default), then a back-transformation from partial to non-partial correlation
-will be attempted (through <code><a href="cor_to_pcor.html">pcor_to_cor()</a></code>). However,
-this is not possible when using <code><a href="cor_test.html">cor_test()</a></code> so that if you set
-<code>multilevel=TRUE</code> in it, the resulting correlations are partial one.
-Note that for Bayesian multilevel correlations, if <code>partial = FALSE</code>,
-the back transformation will also recompute p-values based on the new r scores,
-and will drop the Bayes factors (as they are not relevant anymore). To keep
-Bayesian scores, don't forget to set <code>partial = TRUE</code>.</p>
+<code><a href="cor_test.html">cor_test()</a></code> and <code>correlation()</code>: If you set <code>multilevel=TRUE</code> in
+<code>correlation()</code> but <code>partial</code> is set to <code>FALSE</code> (as per default), then a
+back-transformation from partial to non-partial correlation will be attempted
+(through <code><a href="cor_to_pcor.html">pcor_to_cor()</a></code>). However, this is not possible when
+using <code><a href="cor_test.html">cor_test()</a></code> so that if you set <code>multilevel=TRUE</code> in it, the resulting
+correlations are partial one. Note that for Bayesian multilevel correlations,
+if <code>partial = FALSE</code>, the back transformation will also recompute <em>p</em>-values
+based on the new <em>r</em> scores, and will drop the Bayes factors (as they are not
+relevant anymore). To keep Bayesian scores, set <code>partial = TRUE</code>.</p>
 </div>
 
 <div class="section">
 <h3 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a></h3>
-
-<ul><li><ul><li><p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These
-are technically Pearson Bayesian correlations of rank transformed data,
-rather than pure Bayesian rank correlations (which have different priors).</p></li>
-</ul></li>
-</ul></div>
+<p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These are technically
+Pearson Bayesian correlations of rank transformed data, rather than pure
+Bayesian rank correlations (which have different priors).</p>
+</div>
 
     </div>
     <div class="section level2">
@@ -362,7 +359,8 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/correlation/" class="external-link">correlation</a></span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/correlation/" class="external-link">correlation</a></span><span class="op">)</span></span>
 <span class="r-in"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">correlation</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">results</span></span>
@@ -506,6 +504,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 32</span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

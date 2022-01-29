@@ -172,13 +172,13 @@ correlation assesses linear relationships, Spearman's correlation assesses
 monotonic relationships (whether linear or not). Confidence Intervals (CI)
 for Spearman's correlations are computed using the Fieller et al. (1957)
 correction (see Bishara and Hittner, 2017).</p></li>
-<li><p><strong>Kendall's rank correlation</strong>: In the normal case, the Kendall
-correlation is preferred than the Spearman correlation because of a smaller
-gross error sensitivity (GES) and a smaller asymptotic variance (AV), making
-it more robust and more efficient. However, the interpretation of Kendall's
-tau is less direct than that of Spearman's rho, in the sense that it
-quantifies the difference between the percentage of concordant and discordant pairs
-among all possible pairwise events. Confidence Intervals (CI) for Kendall's
+<li><p><strong>Kendall's rank correlation</strong>: In the normal case, the Kendall correlation
+is preferred than the Spearman correlation because of a smaller gross error
+sensitivity (GES) and a smaller asymptotic variance (AV), making it more
+robust and more efficient. However, the interpretation of Kendall's tau is
+less direct than that of Spearman's rho, in the sense that it quantifies the
+difference between the percentage of concordant and discordant pairs among
+all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
 Bishara and Hittner, 2017).</p></li>
 <li><p><strong>Biweight midcorrelation</strong>: A measure of similarity that is
@@ -252,32 +252,29 @@ correlations can be represented as Gaussian Graphical Models (GGM), an
 increasingly popular tool in psychology. A GGM traditionally include a set of
 variables depicted as circles ("nodes"), and a set of lines that visualize
 relationships between them, which thickness represents the strength of
-association (see Bhushan et al., 2019).
-<br><br><strong>Multilevel correlations</strong> are a special case of partial correlations
-where the variable to be adjusted for is a factor and is included as a random
+association (see Bhushan et al., 2019).</p>
+<p><strong>Multilevel correlations</strong> are a special case of partial correlations where
+the variable to be adjusted for is a factor and is included as a random
 effect in a mixed model (note that the remaining continuous variables of the
 dataset will still be included as fixed effects, similarly to regular partial
 correlations). That said, there is an important difference between using
-<code>cor_test()</code> and <code><a href="correlation.html">correlation()</a></code>: If you set <code>multilevel=TRUE</code>
-in <code><a href="correlation.html">correlation()</a></code> but <code>partial</code> is set to <code>FALSE</code> (as per
-default), then a back-transformation from partial to non-partial correlation
-will be attempted (through <code><a href="cor_to_pcor.html">pcor_to_cor()</a></code>). However,
-this is not possible when using <code>cor_test()</code> so that if you set
-<code>multilevel=TRUE</code> in it, the resulting correlations are partial one.
-Note that for Bayesian multilevel correlations, if <code>partial = FALSE</code>,
-the back transformation will also recompute p-values based on the new r scores,
-and will drop the Bayes factors (as they are not relevant anymore). To keep
-Bayesian scores, don't forget to set <code>partial = TRUE</code>.</p>
+<code>cor_test()</code> and <code><a href="correlation.html">correlation()</a></code>: If you set <code>multilevel=TRUE</code> in
+<code><a href="correlation.html">correlation()</a></code> but <code>partial</code> is set to <code>FALSE</code> (as per default), then a
+back-transformation from partial to non-partial correlation will be attempted
+(through <code><a href="cor_to_pcor.html">pcor_to_cor()</a></code>). However, this is not possible when
+using <code>cor_test()</code> so that if you set <code>multilevel=TRUE</code> in it, the resulting
+correlations are partial one. Note that for Bayesian multilevel correlations,
+if <code>partial = FALSE</code>, the back transformation will also recompute <em>p</em>-values
+based on the new <em>r</em> scores, and will drop the Bayes factors (as they are not
+relevant anymore). To keep Bayesian scores, set <code>partial = TRUE</code>.</p>
 </div>
 
 <div class="section">
 <h3 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a></h3>
-
-<ul><li><ul><li><p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These
-are technically Pearson Bayesian correlations of rank transformed data,
-rather than pure Bayesian rank correlations (which have different priors).</p></li>
-</ul></li>
-</ul></div>
+<p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These are technically
+Pearson Bayesian correlations of rank transformed data, rather than pure
+Bayesian rank correlations (which have different priors).</p>
+</div>
 
     </div>
 
