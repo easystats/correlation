@@ -183,7 +183,7 @@ visualisation_recipe.easycormatrix <- function(x,
     } else if (!is.null(dot_args$size_point)) {
       out$size <- dot_args$size_point
     } else {
-    out$aes$size <- paste0("abs(", fill, ")")
+      out$aes$size <- paste0("abs(", fill, ")")
     }
     out$stroke <- 0
     out$shape <- 16
