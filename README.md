@@ -66,14 +66,8 @@ these vignettes:
 The *correlation* package can compute many different types of
 correlation, including:
 
-✅ **Pearson’s correlation**<br> ✅ **Spearman’s rank correlation**<br>
-✅ **Kendall’s rank correlation**<br> ✅ **Biweight midcorrelation**<br>
-✅ **Distance correlation**<br> ✅ **Percentage bend correlation**<br>
-✅ **Shepherd’s Pi correlation**<br> ✅ **Blomqvist’s coefficient**<br>
-✅ **Hoeffding’s D**<br> ✅ **Gamma correlation**<br> ✅ **Gaussian rank
-correlation**<br> ✅ **Point-Biserial and biserial correlation**<br> ✅
-**Winsorized correlation**<br> ✅ **Polychoric correlation**<br> ✅
-**Tetrachoric correlation**<br> ✅ **Multilevel correlation**<br>
+✅ **Pearson’s correlation**<br> 
+✅ **Spearman’s rank correlation**<br>
 ✅ **Kendall’s rank correlation**<br> 
 ✅ **Biweight midcorrelation**<br> 
 ✅ **Distance correlation**<br> 
