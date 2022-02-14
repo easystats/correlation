@@ -108,14 +108,14 @@
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
-<p><a href="https://cran.r-project.org/package=correlation" class="external-link"><img src="http://www.r-pkg.org/badges/version/correlation" alt="CRAN"></a> <a href="https://travis-ci.org/easystats/correlation" class="external-link"><img src="https://travis-ci.org/easystats/correlation.svg?branch=master" alt="Build Status"></a> <a href="https://codecov.io/gh/easystats/correlation" class="external-link"><img src="https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg" alt="codecov"></a></p>
+<p><a href="https://cran.r-project.org/package=correlation" class="external-link"><img src="http://www.r-pkg.org/badges/version/correlation" alt="CRAN"></a> <a href="https://travis-ci.org/easystats/correlation" class="external-link"><img src="https://travis-ci.org/easystats/correlation.svg?branch=master" alt="Build Status"></a> <a href="https://app.codecov.io/gh/easystats/correlation" class="external-link"><img src="https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg" alt="codecov"></a></p>
 <p>Run the following to install the stable release from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
 <p>Or this one to install the latest development version:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"easystats/correlation"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"easystats/correlation"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
@@ -131,7 +131,7 @@
 <h1 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h1>
 <p>The <em>correlation</em> package can compute many different types of correlation, including:</p>
-<p>✅ <strong>Pearson’s correlation</strong><br> ✅ <strong>Spearman’s rank correlation</strong><br> ✅ <strong>Kendall’s rank correlation</strong><br> ✅ <strong>Biweight midcorrelation</strong><br> ✅ <strong>Distance correlation</strong><br> ✅ <strong>Percentage bend correlation</strong><br> ✅ <strong>Shepherd’s Pi correlation</strong><br> ✅ <strong>Blomqvist’s coefficient</strong><br> ✅ <strong>Hoeffding’s D</strong><br> ✅ <strong>Gamma correlation</strong><br> ✅ <strong>Gaussian rank correlation</strong><br> ✅ <strong>Point-Biserial and biserial correlation</strong><br> ✅ <strong>Winsorized correlation</strong><br> ✅ <strong>Polychoric correlation</strong><br> ✅ <strong>Tetrachoric correlation</strong><br> ✅ <strong>Multilevel correlation</strong><br></p>
+<p>✅ <strong>Pearson’s correlation</strong><br> ✅ <strong>Spearman’s rank correlation</strong><br> ✅ <strong>Kendall’s rank correlation</strong><br> ✅ <strong>Biweight midcorrelation</strong><br> ✅ <strong>Distance correlation</strong><br> ✅ <strong>Percentage bend correlation</strong><br> ✅ <strong>Shepherd’s Pi correlation</strong><br> ✅ <strong>Blomqvist’s coefficient</strong><br> ✅ <strong>Hoeffding’s D</strong><br> ✅ <strong>Gamma correlation</strong><br> ✅ <strong>Gaussian rank correlation</strong><br> ✅ <strong>Point-Biserial and biserial correlation</strong><br> ✅ <strong>Winsorized correlation</strong><br> ✅ <strong>Polychoric correlation</strong><br> ✅ <strong>Tetrachoric correlation</strong><br> ✅ <strong>Multilevel correlation</strong><br> ✅ <strong>Kendall’s rank correlation</strong><br> ✅ <strong>Biweight midcorrelation</strong><br> ✅ <strong>Distance correlation</strong><br> ✅ <strong>Percentage bend correlation</strong><br> ✅ <strong>Shepherd’s Pi correlation</strong><br> ✅ <strong>Blomqvist’s coefficient</strong><br> ✅ <strong>Hoeffding’s D</strong><br> ✅ <strong>Gamma correlation</strong><br> ✅ <strong>Gaussian rank correlation</strong><br> ✅ <strong>Point-Biserial and biserial correlation</strong><br> ✅ <strong>Winsorized correlation</strong><br> ✅ <strong>Polychoric correlation</strong><br> ✅ <strong>Tetrachoric correlation</strong><br> ✅ <strong>Multilevel correlation</strong><br></p>
 <p>An overview and description of these correlations types is <a href="https://easystats.github.io/correlation/articles/types.html" class="external-link"><strong>available here</strong></a>. Moreover, many of these correlation types are available as <strong>partial</strong> or within a <strong>Bayesian</strong> framework.</p>
 </div>
 <div class="section level1">
@@ -234,11 +234,11 @@
 <span class="co">## </span>
 <span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |        BF</span>
 <span class="co">## ------------------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.05] |  91.40% |    43.97% | Beta (3 +- 3) |     0.509</span>
+<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.04] |  92.35% |    42.90% | Beta (3 +- 3) |     0.509</span>
 <span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
 <span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
-<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
-<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.20] | 100%*** |     0.12% | Beta (3 +- 3) | &gt; 1000***</span>
+<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.55, -0.29] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
+<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.21] | 100%*** |     0.07% | Beta (3 +- 3) | &gt; 1000***</span>
 <span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
 <span class="co">## </span>
 <span class="co">## Observations: 150</span></code></pre></div>
