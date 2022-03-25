@@ -150,6 +150,7 @@ comparisons. All adjustment methods available in \code{p.adjust} function
 }
 \description{
 Performs a correlation analysis.
+You can easily visualize the result using \code{\link[=visualisation_recipe.easycormatrix]{plot()}} (see examples \href{https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples}{\strong{here}}).
 }
 \details{
 \subsection{Correlation Types}{

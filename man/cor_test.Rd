@@ -94,6 +94,7 @@ other methods. See \code{stats::cor.test} for further details.}
 }
 \description{
 This function performs a correlation test between two variables.
+You can easily visualize the result using \code{\link[=visualisation_recipe.easycormatrix]{plot()}} (see examples \href{https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples}{\strong{here}}).
 }
 \details{
 \subsection{Correlation Types}{

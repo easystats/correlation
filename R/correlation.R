@@ -1,6 +1,7 @@
 #' Correlation Analysis
 #'
 #' Performs a correlation analysis.
+#' You can easily visualize the result using [`plot()`][visualisation_recipe.easycormatrix()] (see examples [**here**](https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples)).
 #'
 #' @param data A data frame.
 #' @param data2 An optional data frame. If specified, all pair-wise correlations

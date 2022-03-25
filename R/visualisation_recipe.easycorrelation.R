@@ -2,17 +2,15 @@
 #'
 #' @examples
 #' \donttest{
-#' if (FALSE) {
-#'   # ==============================================
-#'   # Correlation Results (easycorrelation)
-#'   # ==============================================
-#'   if (require("see") && require("tidygraph") && require("ggraph")) {
-#'     rez <- correlation(iris)
+#' # ==============================================
+#' # Correlation Results (easycorrelation)
+#' # ==============================================
+#' if (require("see") && require("tidygraph") && require("ggraph")) {
+#'   rez <- correlation(iris)
 #'
-#'     layers <- visualisation_recipe(rez)
-#'     layers
-#'     plot(layers)
-#'   }
+#'   layers <- visualisation_recipe(rez)
+#'   layers
+#'   plot(layers)
 #' }
 #' }
 #' @export

@@ -1,6 +1,7 @@
 #' Correlation test
 #'
 #' This function performs a correlation test between two variables.
+#' You can easily visualize the result using [`plot()`][visualisation_recipe.easycormatrix()] (see examples [**here**](https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples)).
 #'
 #' @param data A data frame.
 #' @param x,y Names of two variables present in the data.

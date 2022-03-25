@@ -1,5 +1,10 @@
 #' Visualisation Recipe for 'correlation' Objects
 #'
+#' Objects from the `correlation` package can be easily visualized. You can
+#' simply run `plot()` on them, which will internally call the `visualisation_recipe()`
+#' method to produce a basic `ggplot`. You can customize this plot ad-hoc or via
+#' the arguments described below. See examples [**here**](https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples).
+#'
 #' @param x A correlation object.
 #' @param show_text Show labels with matrix values.
 #' @param show_data Show data. For correlation matrices, can be `"tile"`
