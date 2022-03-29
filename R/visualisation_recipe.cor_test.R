@@ -102,6 +102,8 @@ visualisation_recipe.easycor_test <- function(x,
                          type = show_data,
                          ...) {
 
+  # Keep only relevant variables (lighter) and complete cases
+  data <- data[complete.cases(data[c(x, y)]), ]
 
   # Initialize layers list
   layers <- list()
@@ -144,7 +146,7 @@ visualisation_recipe.easycor_test <- function(x,
   l <- l + 1
 
   # Side density
-  # TODO: fix once https://github.com/jtlandis/ggside/issues/24
+  # TODO: wait 'til https://github.com/jtlandis/ggside/issues/31 is fixed
   # insight::check_if_installed("ggside")
   # layers[[paste0("l", l)]] <- list(geom = "ggside::geom_xsidedensity",
   #                                  data = data,
@@ -156,7 +158,7 @@ visualisation_recipe.easycor_test <- function(x,
   #                                  aes = list(x = x)
   # )
   # l <- l + 1
-
+  #
   # layers[[paste0("l", l)]] <- list(geom = "ggside::scale_xsidey_continuous", breaks = NULL)
   # l <- l + 1
   # layers[[paste0("l", l)]] <- list(geom = "ggside::scale_ysidex_continuous", breaks = NULL)
