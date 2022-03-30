@@ -1,5 +1,3 @@
-#' @importFrom stats complete.cases
-#' @importFrom utils capture.output
 #' @keywords internal
 .cor_test_polychoric <- function(data, x, y, ci = 0.95, ...) {
   insight::check_if_installed("psych", "for 'tetrachronic' correlations")

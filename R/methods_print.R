@@ -2,7 +2,6 @@
 # Console -----------------------------------------------------------------
 
 
-#' @importFrom insight export_table
 #' @export
 print.easycorrelation <- function(x, ...) {
   cat(insight::export_table(format(x, ...), format = "text"))

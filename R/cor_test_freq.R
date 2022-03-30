@@ -1,4 +1,3 @@
-#' @importFrom stats cor.test
 #' @keywords internal
 .cor_test_freq <- function(data, x, y, ci = 0.95, method = "pearson", ...) {
   var_x <- .complete_variable_x(data, x, y)

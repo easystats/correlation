@@ -34,7 +34,6 @@
 #'
 #' # Inverse
 #' round(pcor_to_cor(cor_to_pcor(cor)) - cor, 2) # Should be 0
-#' @importFrom stats cov2cor
 #' @export
 
 cor_to_pcor <- function(cor, tol = .Machine$double.eps^(2 / 3)) {

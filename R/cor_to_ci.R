@@ -4,7 +4,6 @@
 #'   'none'. Bonett and Wright (2000) claim their correction ('bw') performs
 #'   better, though the Bishara and Hittner (2017) paper favours the Fieller
 #'   correction. Both are generally very similar.
-#' @importFrom stats qnorm
 #' @export
 cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fieller", ...) {
   method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
@@ -25,7 +24,6 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fiell
 
 
 # Kendall -----------------------------------------------------------------
-#' @importFrom stats qnorm
 .cor_to_ci_kendall <- function(cor, n, ci = 0.95, correction = "fieller", ...) {
   # by @tsbaguley (https://rpubs.com/seriousstats/616206)
 

@@ -26,7 +26,6 @@
 #'   correlations when data are not normal. Behavior research methods, 49(1),
 #'   294-309.
 #'
-#' @importFrom stats qnorm pt
 #' @export
 cor_to_p <- function(cor, n, method = "pearson") {
 

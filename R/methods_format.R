@@ -1,6 +1,5 @@
 # Correlation table ---------------------------------------------------------
 
-#' @importFrom insight format_table
 #' @export
 format.easycorrelation <- function(x,
                                    digits = NULL,
@@ -34,7 +33,6 @@ format.easycorrelation <- function(x,
 # Correlation matrix -----------------------------------------------------------
 
 
-#' @importFrom insight format_p format_pd format_bf format_value export_table
 #' @export
 format.easycormatrix <- function(x,
                                  digits = NULL,

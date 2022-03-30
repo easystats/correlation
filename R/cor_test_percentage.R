@@ -1,4 +1,3 @@
-#' @importFrom stats median
 #' @keywords internal
 .cor_test_percentage <- function(data, x, y, ci = 0.95, beta = 0.2, ...) {
   var_x <- .complete_variable_x(data, x, y)
