@@ -103,7 +103,7 @@ visualisation_recipe.easycor_test <- function(x,
                          ...) {
 
   # Keep only relevant variables (lighter) and complete cases
-  data <- data[complete.cases(data[c(x, y)]), ]
+  data <- data[stats::complete.cases(data[c(x, y)]), ]
 
   # Initialize layers list
   layers <- list()
