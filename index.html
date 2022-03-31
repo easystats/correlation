@@ -44,7 +44,7 @@
     
     <a class="navbar-brand me-2" href="index.html">correlation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,14 +108,35 @@
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
-<p><a href="https://cran.r-project.org/package=correlation" class="external-link"><img src="http://www.r-pkg.org/badges/version/correlation" alt="CRAN"></a> <a href="https://travis-ci.org/easystats/correlation" class="external-link"><img src="https://travis-ci.org/easystats/correlation.svg?branch=master" alt="Build Status"></a> <a href="https://app.codecov.io/gh/easystats/correlation" class="external-link"><img src="https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg" alt="codecov"></a></p>
-<p>Run the following to install the stable release from CRAN:</p>
+<p><a href="https://cran.r-project.org/package=correlation" class="external-link"><img src="http://www.r-pkg.org/badges/version/correlation" alt="CRAN"></a> <a href="https://easystats.r-universe.dev" class="external-link"><img src="https://easystats.r-universe.dev/badges/correlation" alt="correlation status badge"></a> <a href="https://travis-ci.org/easystats/correlation" class="external-link"><img src="https://travis-ci.org/easystats/correlation.svg?branch=master" alt="Build Status"></a> <a href="https://app.codecov.io/gh/easystats/correlation" class="external-link"><img src="https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg" alt="codecov"></a></p>
+<p>The <em>correlation</em> package is available on CRAN, while its latest development version is available on R-universe (from <em>rOpenSci</em>).</p>
+<table class="table">
+<colgroup>
+<col width="12%">
+<col width="11%">
+<col width="75%">
+</colgroup>
+<thead><tr class="header">
+<th>Type</th>
+<th>Source</th>
+<th>Command</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Release</td>
+<td>CRAN</td>
+<td><code>install.packages("correlation")</code></td>
+</tr>
+<tr class="even">
+<td>Development</td>
+<td>R-universe</td>
+<td><code>install.packages("correlation", repos = "https://easystats.r-universe.dev")</code></td>
+</tr>
+</tbody>
+</table>
+<p>Once you have downloaded the package, you can then load it using:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
-<p>Or this one to install the latest development version:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"easystats/correlation"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://easystats.github.io/correlation/" class="external-link">"correlation"</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
@@ -141,7 +162,7 @@
 <div class="section level2">
 <h2 id="correlation-details-and-matrix">Correlation details and matrix<a class="anchor" aria-label="anchor" href="#correlation-details-and-matrix"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 <span class="va">results</span>
 <span class="co">## # Correlation Matrix (pearson-method)</span>
@@ -158,7 +179,7 @@
 <span class="co">## p-value adjustment method: Holm (1979)</span>
 <span class="co">## Observations: 150</span></code></pre></div>
 <p>The output is not a square matrix, but a <strong>(tidy) dataframe with all correlations tests per row</strong>. One can also obtain a <strong>matrix</strong> using:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span>
 <span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
@@ -170,7 +191,7 @@
 <span class="co">## </span>
 <span class="co">## p-value adjustment method: Holm (1979)</span></code></pre></div>
 <p>Note that one can also obtain the full, <strong>square</strong> and redundant matrix using:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span>, redundant <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
@@ -182,7 +203,7 @@
 <span class="co">## Petal.Width  |      0.82*** |    -0.37*** |      0.96*** |     1.00***</span>
 <span class="co">## </span>
 <span class="co">## p-value adjustment method: Holm (1979)</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/see/" class="external-link">see</a></span><span class="op">)</span>
 
 <span class="va">results</span> <span class="op">%&gt;%</span>
@@ -194,7 +215,7 @@
 <h2 id="correlation-tests">Correlation tests<a class="anchor" aria-label="anchor" href="#correlation-tests"></a>
 </h2>
 <p>The <code><a href="reference/cor_test.html">cor_test()</a></code> function, for pairwise correlations, is also very convenient for making quick scatter plots.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/cor_test.html">cor_test</a></span><span class="op">(</span><span class="va">iris</span>, <span class="st">"Sepal.Width"</span>, <span class="st">"Sepal.Length"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-corr-1.png"><!-- --></p>
 </div>
@@ -202,7 +223,7 @@
 <h2 id="grouped-dataframes">Grouped dataframes<a class="anchor" aria-label="anchor" href="#grouped-dataframes"></a>
 </h2>
 <p>The <code><a href="reference/correlation.html">correlation()</a></code> function also supports <strong>stratified correlations</strong>, all within the <em>tidyverse</em> workflow!</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span>
   <span class="fu">select</span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Petal.Width</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -228,17 +249,17 @@
 <h2 id="bayesian-correlations">Bayesian Correlations<a class="anchor" aria-label="anchor" href="#bayesian-correlations"></a>
 </h2>
 <p>It is very easy to switch to a <strong>Bayesian framework</strong>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">## # Correlation Matrix (pearson-method)</span>
 <span class="co">## </span>
 <span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |        BF</span>
 <span class="co">## ------------------------------------------------------------------------------------------------------</span>
-<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.04] |  92.35% |    42.90% | Beta (3 +- 3) |     0.509</span>
+<span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.03] |  92.30% |    43.55% | Beta (3 +- 3) |     0.509</span>
 <span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
-<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
-<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.55, -0.29] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
-<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.21] | 100%*** |     0.07% | Beta (3 +- 3) | &gt; 1000***</span>
+<span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.74,  0.85] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
+<span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.27] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
+<span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.49, -0.21] | 100%*** |     0.02% | Beta (3 +- 3) | &gt; 1000***</span>
 <span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | &gt; 1000***</span>
 <span class="co">## </span>
 <span class="co">## Observations: 150</span></code></pre></div>
@@ -247,7 +268,7 @@
 <h2 id="tetrachoric-polychoric-biserial-biweight">Tetrachoric, Polychoric, Biserial, Biweight…<a class="anchor" aria-label="anchor" href="#tetrachoric-polychoric-biserial-biweight"></a>
 </h2>
 <p>The <code>correlation</code> package also supports different types of methods, which can deal with correlations <strong>between factors</strong>!</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span>, include_factors <span class="op">=</span> <span class="cn">TRUE</span>, method <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
 <span class="co">## # Correlation Matrix (auto-method)</span>
 <span class="co">## </span>
@@ -282,7 +303,7 @@
 <h2 id="partial-correlations">Partial Correlations<a class="anchor" aria-label="anchor" href="#partial-correlations"></a>
 </h2>
 <p>It also supports <strong>partial correlations</strong> (as well as Bayesian partial correlations).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span>
@@ -300,7 +321,7 @@
 <h2 id="gaussian-graphical-models-ggms">Gaussian Graphical Models (GGMs)<a class="anchor" aria-label="anchor" href="#gaussian-graphical-models-ggms"></a>
 </h2>
 <p>Such partial correlations can also be represented as <strong>Gaussian Graphical Models</strong> (GGM), an increasingly popular tool in psychology. A GGM traditionally include a set of variables depicted as circles (“nodes”), and a set of lines that visualize relationships between them, which thickness represents the strength of association (see <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2019.01050/full" class="external-link">Bhushan et al., 2019</a>).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/see/" class="external-link">see</a></span><span class="op">)</span> <span class="co"># for plotting</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggraph.data-imaginist.com" class="external-link">ggraph</a></span><span class="op">)</span> <span class="co"># needs to be loaded</span>
 
@@ -313,7 +334,7 @@
 <h2 id="multilevel-correlations">Multilevel Correlations<a class="anchor" aria-label="anchor" href="#multilevel-correlations"></a>
 </h2>
 <p>It also provide some cutting-edge methods, such as Multilevel (partial) correlations. These are are partial correlations based on linear mixed-effects models that include the factors as <strong>random effects</strong>. They can be see as correlations <em>adjusted</em> for some group (<em>hierarchical</em>) variability.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span>
@@ -327,7 +348,7 @@
 <span class="co">## </span>
 <span class="co">## p-value adjustment method: Holm (1979)</span></code></pre></div>
 <p>However, if the <code>partial</code> argument is set to <code>FALSE</code>, it will try to convert the partial coefficient into regular ones.These can be <strong>converted back</strong> to full correlations:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">FALSE</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span>
