@@ -14,7 +14,7 @@ cor_to_spcor <- function(cor = NULL, cov = NULL, tol = .Machine$double.eps^(2 / 
       cov <- cor_to_cov(cor, sd = cov)
     }
     inverted <- .invert_matrix(cov, tol = tol)
-    out <- -cov2cor(inverted) / sqrt(diag(cov)) / sqrt(abs(diag(inverted) - t(t(inverted^2) / diag(inverted))))
+    out <- -stats::cov2cor(inverted) / sqrt(diag(cov)) / sqrt(abs(diag(inverted) - t(t(inverted^2) / diag(inverted))))
   }
 
   diag(out) <- 1
