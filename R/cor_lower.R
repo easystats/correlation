@@ -33,7 +33,7 @@ cor_lower <- function(x, diag = FALSE, ...) {
 cor_lower.easycorrelation <- function(x, diag = FALSE, ...) {
   # Transform easycorrelation into matrix
   m <- as.matrix(x)
-  m <- m[rev(levels(as.factor(x$Parameter1))), levels(as.factor(x$Parameter2))]
+  m <- m[levels(as.factor(x$Parameter1)), levels(as.factor(x$Parameter2))]
 
   # Select upper triangular
   tri <- upper.tri(m, diag = diag)
@@ -44,7 +44,7 @@ cor_lower.easycorrelation <- function(x, diag = FALSE, ...) {
 
   for(param1 in rownames(m)) {
     for(param2 in colnames(m)) {
-      if(tri[param1, param2] == FALSE) {
+      if(tri[param1, param2] == TRUE) {
         tokeep <- c(tokeep, which(x$Parameter1 == param1 & x$Parameter2 == param2))
       }
     }
