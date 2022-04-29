@@ -51,10 +51,12 @@ Depends:
 Imports:
     bayestestR (>= 0.11.5),
     datasets,
-    datawizard (>= 0.2.2),
-    insight (>= 0.15.0),
-    parameters (>= 0.16.0),
+    datawizard (>= 0.4.0.16),
+    insight (>= 0.18.0),
+    parameters (>= 0.17.0),
     stats
+Remotes:
+    easystats/datawizard
 Suggests:
     BayesFactor,
     poorman,
