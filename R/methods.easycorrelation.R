@@ -119,7 +119,7 @@ as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
 #' @export
 standardize_names.easycorrelation <- function(data, ...) {
   ori <- data
-  names(data)[names(data) == datawizard::data_find(data, "rho|tau")] <- "r"
+  names(data)[names(data) == datawizard::data_find(data, "rho|tau", verbose = FALSE)] <- "r"
   data <- insight::standardize_names(as.data.frame(data), ...)
   class(data) <- class(ori)
   data
