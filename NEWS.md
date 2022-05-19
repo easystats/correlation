@@ -1,3 +1,7 @@
+# correlation 0.8.1
+
+- Maintenance release for *datawizard* package update.
+
 # correlation 0.8.0
 
 ## Breaking Changes
