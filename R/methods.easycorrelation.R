@@ -126,9 +126,6 @@ standardize_names.easycorrelation <- function(data, ...) {
 }
 
 
-
-
-
 # Internals ---------------------------------------------------------------
 
 #' @keywords internal

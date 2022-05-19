@@ -17,21 +17,21 @@ cor_lower(x, diag = FALSE, ...)
 Return the upper or lower triangular part of the correlation matrix.
 }
 \examples{
-x <- correlation(mtcars, redundant = TRUE)  # Generate full matrix
+x <- correlation(mtcars, redundant = TRUE) # Generate full matrix
 x <- cor_lower(x)
 
 if (require("ggplot2")) {
-  ggplot(x, aes(x = Parameter2, y=Parameter1, fill=r)) +
+  ggplot(x, aes(x = Parameter2, y = Parameter1, fill = r)) +
     geom_tile()
 }
 
 # Sorted
-x <- correlation(mtcars, redundant = TRUE)  # Generate full matrix
+x <- correlation(mtcars, redundant = TRUE) # Generate full matrix
 x <- cor_sort(x)
 x <- cor_lower(x)
 
 if (require("ggplot2")) {
-  ggplot(x, aes(x = Parameter2, y=Parameter1, fill=r)) +
+  ggplot(x, aes(x = Parameter2, y = Parameter1, fill = r)) +
     geom_tile()
 }
 }

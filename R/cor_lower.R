@@ -7,21 +7,21 @@
 #' @param ... Other arguments to be passed to or from other functions.
 #'
 #' @examples
-#' x <- correlation(mtcars, redundant = TRUE)  # Generate full matrix
+#' x <- correlation(mtcars, redundant = TRUE) # Generate full matrix
 #' x <- cor_lower(x)
 #'
 #' if (require("ggplot2")) {
-#'   ggplot(x, aes(x = Parameter2, y=Parameter1, fill=r)) +
+#'   ggplot(x, aes(x = Parameter2, y = Parameter1, fill = r)) +
 #'     geom_tile()
 #' }
 #'
 #' # Sorted
-#' x <- correlation(mtcars, redundant = TRUE)  # Generate full matrix
+#' x <- correlation(mtcars, redundant = TRUE) # Generate full matrix
 #' x <- cor_sort(x)
 #' x <- cor_lower(x)
 #'
 #' if (require("ggplot2")) {
-#'   ggplot(x, aes(x = Parameter2, y=Parameter1, fill=r)) +
+#'   ggplot(x, aes(x = Parameter2, y = Parameter1, fill = r)) +
 #'     geom_tile()
 #' }
 #' @export
@@ -42,9 +42,9 @@ cor_lower.easycorrelation <- function(x, diag = FALSE, ...) {
 
   tokeep <- c()
 
-  for(param1 in rownames(m)) {
-    for(param2 in colnames(m)) {
-      if(tri[param1, param2] == TRUE) {
+  for (param1 in rownames(m)) {
+    for (param2 in colnames(m)) {
+      if (tri[param1, param2] == TRUE) {
         tokeep <- c(tokeep, which(x$Parameter1 == param1 & x$Parameter2 == param2))
       }
     }

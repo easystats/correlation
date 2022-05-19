@@ -20,12 +20,13 @@
 #'   factors involved, point-biserial if one dichotomous and one continuous and
 #'   pearson otherwise). See below the **details** section for a description of
 #'   these indices.
-#' @param bayesian,partial_bayesian If TRUE, will run the correlations under a
-#'   Bayesian framework. Note that for partial correlations, you will also need
-#'   to set `partial_bayesian` to `TRUE` to obtain "full" Bayesian
-#'   partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
-#'   correlations (i.e., Bayesian correlation based on frequentist
-#'   partialization).
+#' @param bayesian If `TRUE`, will run the correlations under a Bayesian
+#'   framework.
+#' @param partial_bayesian If partial correlations under a Bayesian framework
+#'   are needed, you will also need to set `partial_bayesian` to `TRUE` to
+#'   obtain "full" Bayesian partial correlations. Otherwise, you will obtain
+#'   pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
+#'   frequentist partialization).
 #' @param include_factors If `TRUE`, the factors are kept and eventually
 #'   converted to numeric or used as random effects (depending of
 #'   `multilevel`). If `FALSE`, factors are removed upfront.
