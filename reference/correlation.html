@@ -140,22 +140,15 @@ these indices.</p></dd>
 <dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
 set to <code>0.95</code> (<code>95%</code> CI).</p></dd>
 <dt>bayesian</dt>
-<dd><p>If TRUE, will run the correlations under a
-Bayesian framework. Note that for partial correlations, you will also need
-to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian
-partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
-correlations (i.e., Bayesian correlation based on frequentist
-partialization).</p></dd>
+<dd><p>If <code>TRUE</code>, will run the correlations under a Bayesian
+framework.</p></dd>
 <dt>bayesian_prior</dt>
 <dd><p>For the prior argument, several named values are
 recognized: <code>"medium.narrow"</code>, <code>"medium"</code>, <code>"wide"</code>, and
 <code>"ultrawide"</code>. These correspond to scale values of <code>1/sqrt(27)</code>,
 <code>1/3</code>, <code>1/sqrt(3)</code> and <code>1</code>, respectively. See the
 <code><a href="https://rdrr.io/pkg/BayesFactor/man/correlationBF.html" class="external-link">BayesFactor::correlationBF</a></code> function.</p></dd>
-<dt>bayesian_ci_method</dt>
-<dd><p>See arguments in
-<code>model_parameters()</code> for <code>BayesFactor</code> tests.</p></dd>
-<dt>bayesian_test</dt>
+<dt>bayesian_ci_method, bayesian_test</dt>
 <dd><p>See arguments in
 <code>model_parameters()</code> for <code>BayesFactor</code> tests.</p></dd>
 <dt>redundant</dt>
@@ -169,12 +162,11 @@ converted to numeric or used as random effects (depending of
 <dd><p>Can be <code>TRUE</code> or <code>"semi"</code> for partial and
 semi-partial correlations, respectively.</p></dd>
 <dt>partial_bayesian</dt>
-<dd><p>If TRUE, will run the correlations under a
-Bayesian framework. Note that for partial correlations, you will also need
-to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian
-partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
-correlations (i.e., Bayesian correlation based on frequentist
-partialization).</p></dd>
+<dd><p>If partial correlations under a Bayesian framework
+are needed, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to
+obtain "full" Bayesian partial correlations. Otherwise, you will obtain
+pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
+frequentist partialization).</p></dd>
 <dt>multilevel</dt>
 <dd><p>If <code>TRUE</code>, the factors are included as random factors.
 Else, if <code>FALSE</code> (default), they are included as fixed effects in the

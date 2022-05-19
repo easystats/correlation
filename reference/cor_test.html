@@ -111,13 +111,9 @@ these indices.</p></dd>
 <dt>ci</dt>
 <dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
 set to <code>0.95</code> (<code>95%</code> CI).</p></dd>
-<dt>bayesian, partial_bayesian</dt>
-<dd><p>If TRUE, will run the correlations under a
-Bayesian framework. Note that for partial correlations, you will also need
-to set <code>partial_bayesian</code> to <code>TRUE</code> to obtain "full" Bayesian
-partial correlations. Otherwise, you will obtain pseudo-Bayesian partial
-correlations (i.e., Bayesian correlation based on frequentist
-partialization).</p></dd>
+<dt>bayesian</dt>
+<dd><p>If <code>TRUE</code>, will run the correlations under a Bayesian
+framework.</p></dd>
 <dt>bayesian_prior</dt>
 <dd><p>For the prior argument, several named values are
 recognized: <code>"medium.narrow"</code>, <code>"medium"</code>, <code>"wide"</code>, and
@@ -134,6 +130,12 @@ converted to numeric or used as random effects (depending of
 <dt>partial</dt>
 <dd><p>Can be <code>TRUE</code> or <code>"semi"</code> for partial and
 semi-partial correlations, respectively.</p></dd>
+<dt>partial_bayesian</dt>
+<dd><p>If partial correlations under a Bayesian framework
+are needed, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to
+obtain "full" Bayesian partial correlations. Otherwise, you will obtain
+pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
+frequentist partialization).</p></dd>
 <dt>multilevel</dt>
 <dd><p>If <code>TRUE</code>, the factors are included as random factors.
 Else, if <code>FALSE</code> (default), they are included as fixed effects in the
