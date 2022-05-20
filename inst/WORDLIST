@@ -59,6 +59,7 @@ bw
 codecov
 colour
 cov
+datawizard
 dichotomously
 doi
 easystats
@@ -82,6 +83,7 @@ pearson
 pinv
 polychoric
 pracma
+rOpenSci
 rescaled
 ressembles
 rmarkdown
