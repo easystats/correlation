@@ -59,7 +59,6 @@ Suggests:
     BayesFactor,
     poorman,
     energy,
-    forcats,
     ggcorrplot,
     ggplot2,
     ggraph,
@@ -77,7 +76,6 @@ Suggests:
     see,
     spelling,
     testthat (>= 3.0.1),
-    tidyr,
     tidygraph,
     wdm,
     WRS2
