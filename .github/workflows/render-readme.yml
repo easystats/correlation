@@ -28,6 +28,10 @@ jobs:
       - uses: r-lib/actions/setup-renv@v2
 
       - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            deps::.
+            any::correlation
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd")'
