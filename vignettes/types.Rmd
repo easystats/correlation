@@ -98,7 +98,7 @@ can be used as a robust alternative to other similarity metrics, such as Pearson
 correlation [@langfelder2012fast].
 
 - **Distance correlation**: Distance correlation measures both linear and
-non-linear association between two random variables or random vectors. This is
+non-linear association between two random variables or random vectors (for more, see @szekely2007measuring, @szekely2009brownian). This is
 in contrast to Pearson's correlation, which can only detect linear association
 between two random variables.
 
