@@ -1,8 +1,8 @@
 pandoc: 2.14.2
-pkgdown: 2.0.4
+pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   multilevel: multilevel.html
   types: types.html
-last_built: 2022-06-17T06:32Z
+last_built: 2022-06-26T07:17Z
 
