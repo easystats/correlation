@@ -88,11 +88,11 @@ unexplained variance of Y that cannot be accounted by the other variables.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cor_to_pcor</span><span class="op">(</span><span class="va">cor</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">pcor_to_cor</span><span class="op">(</span><span class="va">pcor</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">cor_to_spcor</span><span class="op">(</span>cor <span class="op">=</span> <span class="cn">NULL</span>, cov <span class="op">=</span> <span class="cn">NULL</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cor_to_pcor</span><span class="op">(</span><span class="va">cor</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pcor_to_cor</span><span class="op">(</span><span class="va">pcor</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cor_to_spcor</span><span class="op">(</span>cor <span class="op">=</span> <span class="cn">NULL</span>, cov <span class="op">=</span> <span class="cn">NULL</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -134,24 +134,24 @@ in the response variable.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Partialize</span></span>
-<span class="r-in"><span class="fu">cor_to_pcor</span><span class="op">(</span><span class="va">cor</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Partialize</span></span></span>
+<span class="r-in"><span><span class="fu">cor_to_pcor</span><span class="op">(</span><span class="va">cor</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length    1.0000000   0.6285707    0.7190656  -0.3396174</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width     0.6285707   1.0000000   -0.6152919   0.3526260</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length    0.7190656  -0.6152919    1.0000000   0.8707698</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Width    -0.3396174   0.3526260    0.8707698   1.0000000</span>
-<span class="r-in"><span class="fu">cor_to_spcor</span><span class="op">(</span><span class="va">cor</span>, cov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">sd</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">cor_to_spcor</span><span class="op">(</span><span class="va">cor</span>, cov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">sd</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length   1.00000000  0.30389212    0.3890689  -0.1357714</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width    0.55758743  1.00000000   -0.5385056   0.2599849</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length   0.18506103 -0.13959991    1.0000000   0.3167424</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Width   -0.09001634  0.09394365    0.4415000   1.0000000</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Inverse</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">pcor_to_cor</span><span class="op">(</span><span class="fu">cor_to_pcor</span><span class="op">(</span><span class="va">cor</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="va">cor</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Should be 0</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Inverse</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu">pcor_to_cor</span><span class="op">(</span><span class="fu">cor_to_pcor</span><span class="op">(</span><span class="va">cor</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="va">cor</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Should be 0</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length            0           0            0           0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width             0           0            0           0</span>

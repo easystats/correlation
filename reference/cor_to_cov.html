@@ -64,7 +64,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cor_to_cov</span><span class="op">(</span><span class="va">cor</span>, sd <span class="op">=</span> <span class="cn">NULL</span>, variance <span class="op">=</span> <span class="cn">NULL</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cor_to_cov</span><span class="op">(</span><span class="va">cor</span>, sd <span class="op">=</span> <span class="cn">NULL</span>, variance <span class="op">=</span> <span class="cn">NULL</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -92,21 +92,21 @@ variance, of the variables in the correlation matrix.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">cor_to_cov</span><span class="op">(</span><span class="va">cor</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">sd</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">cor_to_cov</span><span class="op">(</span><span class="va">cor</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">sd</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</span>
-<span class="r-in"><span class="fu">cor_to_cov</span><span class="op">(</span><span class="va">cor</span>, variance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">var</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">cor_to_cov</span><span class="op">(</span><span class="va">cor</span>, variance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="va">var</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Sepal.Length Sepal.Width Petal.Length Petal.Width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394</span>

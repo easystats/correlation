@@ -64,7 +64,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cor_sort</span><span class="op">(</span><span class="va">x</span>, distance <span class="op">=</span> <span class="st">"correlation"</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cor_sort</span><span class="op">(</span><span class="va">x</span>, distance <span class="op">=</span> <span class="st">"correlation"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,9 +90,9 @@ arguments for it).</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="correlation.html">correlation</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">cor_sort</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="correlation.html">correlation</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">cor_sort</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             carb         wt         hp        cyl       disp        qsec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> carb  1.00000000  0.4276059  0.7498125  0.5269883  0.3949769 -0.65624923</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt    0.42760594  1.0000000  0.6587479  0.7824958  0.8879799 -0.17471588</span>
@@ -117,7 +117,7 @@ arguments for it).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.4402785  0.6811719  1.00000000  0.71271113  0.6996101</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> am    0.1683451  0.5998324  0.71271113  1.00000000  0.7940588</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.2060233  0.4802848  0.69961013  0.79405876  1.0000000</span>
-<span class="r-in"><span class="fu">cor_sort</span><span class="op">(</span><span class="va">x</span>, hclust_method <span class="op">=</span> <span class="st">"ward.D2"</span><span class="op">)</span> <span class="co"># It can also reorder the long form output</span></span>
+<span class="r-in"><span><span class="fu">cor_sort</span><span class="op">(</span><span class="va">x</span>, hclust_method <span class="op">=</span> <span class="st">"ward.D2"</span><span class="op">)</span> <span class="co"># It can also reorder the long form output</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1 | Parameter2 |     r |         95% CI | t(30) |         p</span>
@@ -180,7 +180,7 @@ arguments for it).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 32</span>
-<span class="r-in"><span class="fu">cor_sort</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span>, redundant <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="co"># As well as from the summary</span></span>
+<span class="r-in"><span><span class="fu">cor_sort</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span>, redundant <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="co"># As well as from the summary</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter |     carb |       wt |       hp |      cyl |     disp |     qsec |       vs |      mpg |     drat |       am |     gear</span>

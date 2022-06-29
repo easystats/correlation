@@ -64,7 +64,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cor_text</span><span class="op">(</span><span class="va">x</span>, show_ci <span class="op">=</span> <span class="cn">TRUE</span>, show_statistic <span class="op">=</span> <span class="cn">TRUE</span>, show_sig <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cor_text</span><span class="op">(</span><span class="va">x</span>, show_ci <span class="op">=</span> <span class="cn">TRUE</span>, show_statistic <span class="op">=</span> <span class="cn">TRUE</span>, show_sig <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -84,16 +84,16 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">rez</span> <span class="op">&lt;-</span> <span class="fu"><a href="cor_test.html">cor_test</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="st">"mpg"</span>, <span class="st">"wt"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">cor_text</span><span class="op">(</span><span class="va">rez</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">rez</span> <span class="op">&lt;-</span> <span class="fu"><a href="cor_test.html">cor_test</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="st">"mpg"</span>, <span class="st">"wt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">cor_text</span><span class="op">(</span><span class="va">rez</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "r = -0.87, 95% CI [-0.93, -0.74], t(30) = -9.56, p &lt; .001"</span>
-<span class="r-in"><span class="fu">cor_text</span><span class="op">(</span><span class="va">rez</span>, show_statistic <span class="op">=</span> <span class="cn">FALSE</span>, show_ci <span class="op">=</span> <span class="cn">FALSE</span>, stars <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">cor_text</span><span class="op">(</span><span class="va">rez</span>, show_statistic <span class="op">=</span> <span class="cn">FALSE</span>, show_ci <span class="op">=</span> <span class="cn">FALSE</span>, stars <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "r = -0.87, p &lt; .001***"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rez</span> <span class="op">&lt;-</span> <span class="fu"><a href="correlation.html">correlation</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">cor_text</span><span class="op">(</span><span class="va">rez</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rez</span> <span class="op">&lt;-</span> <span class="fu"><a href="correlation.html">correlation</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">cor_text</span><span class="op">(</span><span class="va">rez</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "r = -0.85, 95% CI [-0.93, -0.72], t(30) = -8.92, p &lt; .001" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "r = -0.85, 95% CI [-0.92, -0.71], t(30) = -8.75, p &lt; .001" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "r = -0.78, 95% CI [-0.89, -0.59], t(30) = -6.74, p &lt; .001" </span>
