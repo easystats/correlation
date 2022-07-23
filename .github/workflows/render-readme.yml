@@ -32,7 +32,7 @@ jobs:
           extra-packages: |
             deps::.
             easystats/datawizard
-            any::correlation
+            easystats/correlation
 
       - name: Render README
         run: Rscript -e 'rmarkdown::render("README.Rmd")'
