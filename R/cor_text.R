@@ -74,7 +74,8 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
     if ("p" %in% names(x)) {
       text <- paste0(text, ", ", insight::format_p(x$p, digits = "apa", ...))
     } else if ("BF" %in% names(x)) {
-      text <- paste0(text, ", ", insight::format_bf(x$BF, ...))
+      if (is.null(exact <- match.call()[["exact"]])) exact <- TRUE
+      text <- paste0(text, ", ", insight::format_bf(x$BF, exact = exact, ...))
     } else if ("pd" %in% names(x)) {
       text <- paste0(text, ", ", insight::format_pd(x$pd, ...))
     }
