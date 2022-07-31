@@ -183,13 +183,13 @@ library(poorman)
 ```{r}
 generate_results <- function(r, n = 100, transformation = "none") {
   data <- bayestestR::simulate_correlation(round(n), r = r)
-  
+
   if (transformation != "none") {
     var <- ifelse(grepl("(", transformation, fixed = TRUE), "data$V2)", "data$V2")
     transformation <- paste0(transformation, var)
     data$V2 <- eval(parse(text = transformation))
   }
-  
+
   out <- data.frame(n = n, transformation = transformation, r = r)
 
   out$Pearson <- cor_test(data, "V1", "V2", method = "pearson")$r
@@ -198,7 +198,7 @@ generate_results <- function(r, n = 100, transformation = "none") {
   out$Biweight <- cor_test(data, "V1", "V2", method = "biweight")$r
   out$Distance <- cor_test(data, "V1", "V2", method = "distance")$r
   out$Distance <- cor_test(data, "V1", "V2", method = "distance")$r
-  
+
   out
 }
 ```
@@ -233,7 +233,7 @@ data %>%
     select = -c("n", "r", "transformation"),
     names_to = "Type",
     values_to = "Estimation"
-  ) %>% 
+  ) %>%
   mutate(Type = relevel(as.factor(Type), "Pearson", "Spearman", "Kendall", "Biweight", "Distance")) %>%
   ggplot(aes(x = r, y = Estimation, fill = Type)) +
   geom_smooth(aes(color = Type), method = "loess", alpha = 0) +
@@ -251,7 +251,7 @@ model <- data %>%
     select = -c("n", "r", "transformation"),
     names_to = "Type",
     values_to = "Estimation"
-  ) %>% 
+  ) %>%
   lm(r ~ Type / Estimation, data = .) %>%
   parameters::parameters()
 

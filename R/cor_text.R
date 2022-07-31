@@ -17,7 +17,6 @@
 #' cor_text(rez)
 #' @export
 cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, ...) {
-
   # Estimate
   candidates <- c("rho", "r", "tau", "Difference", "r_rank_biserial")
   estimate <- candidates[candidates %in% names(x)][1]
@@ -26,19 +25,22 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
   # CI
   if (show_ci) {
     if (all(c("CI_high", "CI_low") %in% names(x))) {
-      if (!is.null(attributes(x$conf.int)$conf.level)) { # htest
+      if (!is.null(attributes(x$conf.int)$conf.level)) {
+        # htest
         text <- paste0(
           text,
           ", ",
           insight::format_ci(x$CI_low, x$CI_high, ci = attributes(x$conf.int)$conf.level)
         )
-      } else if ("CI" %in% names(x)) { # param
+      } else if ("CI" %in% names(x)) {
+        # param
         text <- paste0(
           text,
           ", ",
           insight::format_ci(x$CI_low, x$CI_high, ci = x$CI)
         )
-      } else if ("ci" %in% names(attributes(x))) { # param
+      } else if ("ci" %in% names(attributes(x))) {
+        # param
         text <- paste0(
           text,
           ", ",

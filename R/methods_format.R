@@ -42,7 +42,6 @@ format.easycormatrix <- function(x,
                                  format = NULL,
                                  bf_exact = TRUE,
                                  ...) {
-
   # If it's a real matrix
   if (!"Parameter" %in% colnames(x)) {
     m <- as.data.frame(x)

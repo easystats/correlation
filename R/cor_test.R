@@ -131,7 +131,6 @@ cor_test <- function(data,
                      winsorize = FALSE,
                      verbose = TRUE,
                      ...) {
-
   # valid matrix checks
   if (!x %in% names(data) | !y %in% names(data)) {
     stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")

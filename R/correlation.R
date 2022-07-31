@@ -263,7 +263,6 @@ correlation <- function(data,
                         verbose = TRUE,
                         standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
-
   # valid matrix checks
   if (partial == FALSE & multilevel) {
     partial <- TRUE

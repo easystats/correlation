@@ -101,7 +101,6 @@ visualisation_recipe.easycor_test <- function(x,
                          subtitle = NULL,
                          type = show_data,
                          ...) {
-
   # Keep only relevant variables (lighter) and complete cases
   data <- data[stats::complete.cases(data[c(x, y)]), ]
 

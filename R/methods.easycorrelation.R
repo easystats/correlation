@@ -6,7 +6,6 @@ summary.easycorrelation <- function(object,
                                     redundant = FALSE,
                                     target = NULL,
                                     ...) {
-
   # If data2 is present
   if (!is.null(attributes(object)$data2)) {
     redundant <- FALSE

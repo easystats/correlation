@@ -28,7 +28,6 @@
 #'
 #' @export
 cor_to_p <- function(cor, n, method = "pearson") {
-
   # Statistic
   if (method == "kendall") {
     warning("Estimation for Kendall's correlation is not perfectly correct. Help us to improve it.")

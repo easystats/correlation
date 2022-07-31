@@ -1,5 +1,4 @@
 if (require("testthat") && require("gt") && require("poorman")) {
-
   # display and print method works - markdown -----------------------------
 
   test_that("display and print method works - markdown", {
