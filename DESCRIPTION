@@ -56,7 +56,9 @@ Imports:
     parameters (>= 0.18.1),
     stats
 Remotes:
-    easystats/datawizard
+    easystats/insight,
+    easystats/datawizard,
+    easystats/parameters
 Suggests:
     BayesFactor,
     poorman,
