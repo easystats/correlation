@@ -40,8 +40,8 @@ format.easycormatrix <- function(x,
                                  stars = NULL,
                                  include_significance = NULL,
                                  format = NULL,
+                                 bf_exact = TRUE,
                                  ...) {
-
   # If it's a real matrix
   if (!"Parameter" %in% colnames(x)) {
     m <- as.data.frame(x)
@@ -98,6 +98,7 @@ format.easycormatrix <- function(x,
       sig[, nums] <- sapply(
         sig[, nums],
         insight::format_bf,
+        exact = bf_exact,
         stars = stars,
         stars_only = stars_only
       )

@@ -12,7 +12,6 @@
 #' @seealso pinv from the pracma package
 #' @export
 matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {
-
   # valid matrix checks
   # valid matrix checks
   if (!isSquare(m)) {

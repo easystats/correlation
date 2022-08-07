@@ -1,6 +1,5 @@
 #' @keywords internal
 .cor_test_biserial <- function(data, x, y, ci = 0.95, method = "biserial", ...) {
-
   # valid matrix
   if (.vartype(data[[x]])$is_binary & .vartype(data[[y]])$is_binary == FALSE) {
     binary <- x

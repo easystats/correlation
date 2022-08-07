@@ -84,7 +84,7 @@ visualisation_recipe.easycormatrix <- function(x,
   # Reshape to long
   data <- datawizard::reshape_longer(x,
     cols = colnames,
-    colnames_to = "Parameter2",
+    names_to = "Parameter2",
     values_to = "r"
   )
 
@@ -94,7 +94,7 @@ visualisation_recipe.easycormatrix <- function(x,
   } else {
     temp <- datawizard::reshape_longer(data_text,
       cols = colnames,
-      colnames_to = "Parameter2",
+      names_to = "Parameter2",
       values_to = "Text"
     )
     data <- merge(data, temp, all.x = TRUE, all.y = FALSE)

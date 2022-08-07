@@ -14,7 +14,6 @@
 #' cor_to_cov(cor, variance = sapply(iris[1:4], var))
 #' @export
 cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2 / 3)) {
-
   # valid matrix checks
   if (!isSquare(cor)) {
     stop("The matrix should be a square matrix.")
