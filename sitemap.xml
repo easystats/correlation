@@ -1,87 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://easystats.github.io/correlation/404.html</loc>
   </url>
   <url>
-    <loc>/CODE_OF_CONDUCT.html</loc>
+    <loc>https://easystats.github.io/correlation/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>/CONTRIBUTING.html</loc>
+    <loc>https://easystats.github.io/correlation/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://easystats.github.io/correlation/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://easystats.github.io/correlation/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/multilevel.html</loc>
+    <loc>https://easystats.github.io/correlation/articles/multilevel.html</loc>
   </url>
   <url>
-    <loc>/articles/types.html</loc>
+    <loc>https://easystats.github.io/correlation/articles/types.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://easystats.github.io/correlation/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://easystats.github.io/correlation/index.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://easystats.github.io/correlation/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/cor_lower.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/cor_lower.html</loc>
   </url>
   <url>
-    <loc>/reference/cor_smooth.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/cor_smooth.html</loc>
   </url>
   <url>
-    <loc>/reference/cor_sort.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/cor_sort.html</loc>
   </url>
   <url>
-    <loc>/reference/cor_test.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/cor_test.html</loc>
   </url>
   <url>
-    <loc>/reference/cor_text.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/cor_text.html</loc>
   </url>
   <url>
-    <loc>/reference/cor_to_cov.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/cor_to_cov.html</loc>
   </url>
   <url>
-    <loc>/reference/cor_to_p.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/cor_to_p.html</loc>
   </url>
   <url>
-    <loc>/reference/cor_to_pcor.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/cor_to_pcor.html</loc>
   </url>
   <url>
-    <loc>/reference/correlation.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/correlation.html</loc>
   </url>
   <url>
-    <loc>/reference/display.easycormatrix.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/display.easycormatrix.html</loc>
   </url>
   <url>
-    <loc>/reference/distance_mahalanobis.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/distance_mahalanobis.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/is.cor.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/is.cor.html</loc>
   </url>
   <url>
-    <loc>/reference/isSquare.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/isSquare.html</loc>
   </url>
   <url>
-    <loc>/reference/matrix_inverse.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/matrix_inverse.html</loc>
   </url>
   <url>
-    <loc>/reference/reexports.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/reexports.html</loc>
   </url>
   <url>
-    <loc>/reference/visualisation_recipe.easycormatrix.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html</loc>
   </url>
   <url>
-    <loc>/reference/z_fisher.html</loc>
+    <loc>https://easystats.github.io/correlation/reference/z_fisher.html</loc>
   </url>
 </urlset>
