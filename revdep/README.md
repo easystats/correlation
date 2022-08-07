@@ -1,28 +1,35 @@
 # Platform
 
-|field    |value                                |
-|:--------|:------------------------------------|
-|version  |R version 4.1.2 (2021-11-01)         |
-|os       |Windows 10 x64 (build 22000)         |
-|system   |x86_64, mingw32                      |
-|ui       |RStudio                              |
-|language |(EN)                                 |
-|collate  |English_United States.1252           |
-|ctype    |English_United States.1252           |
-|tz       |America/New_York                     |
-|date     |2022-02-14                           |
-|rstudio  |2021.09.1+372 Ghost Orchid (desktop) |
-|pandoc   |NA                                   |
+|field    |value                                     |
+|:--------|:-----------------------------------------|
+|version  |R version 4.2.1 (2022-06-23)              |
+|os       |macOS Monterey 12.4                       |
+|system   |aarch64, darwin20                         |
+|ui       |RStudio                                   |
+|language |(EN)                                      |
+|collate  |en_US.UTF-8                               |
+|ctype    |en_US.UTF-8                               |
+|tz       |Europe/Berlin                             |
+|date     |2022-08-07                                |
+|rstudio  |2022.07.0+548 Spotted Wakerobin (desktop) |
+|pandoc   |2.19 @ /usr/local/bin/ (via rmarkdown)    |
 
 # Dependencies
 
-|package     |old    |new    |<U+0394>  |
-|:-----------|:------|:------|:--|
-|correlation |0.7.1  |0.8.0  |*  |
-|bayestestR  |0.11.5 |0.11.5 |   |
-|datawizard  |0.2.3  |0.2.3  |   |
-|insight     |0.15.0 |0.15.0 |   |
-|parameters  |0.16.0 |0.16.0 |   |
+|package     |old   |new      |Δ  |
+|:-----------|:-----|:--------|:--|
+|correlation |0.8.1 |0.8.2    |*  |
+|bayestestR  |NA    |0.12.1.2 |*  |
+|datawizard  |NA    |0.5.0    |*  |
+|insight     |NA    |0.18.0.4 |*  |
 
 # Revdeps
+
+## New problems (3)
+
+|package                                          |version |error  |warning |note |
+|:------------------------------------------------|:-------|:------|:-------|:----|
+|[effectsize](problems.md#effectsize)             |0.7.0   |__+1__ |        |     |
+|[see](problems.md#see)                           |0.7.1   |__+1__ |__+1__  |     |
+|[statsExpressions](problems.md#statsexpressions) |1.3.2   |__+1__ |        |     |
 

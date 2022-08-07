@@ -130,7 +130,6 @@ The `cor_test()` function, for pairwise correlations, is also very convenient fo
 plot(cor_test(iris, "Sepal.Width", "Sepal.Length"))
 ```
 
-
 ## Grouped dataframes
 
 The `correlation()` function also supports **stratified correlations**, all within the
