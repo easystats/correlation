@@ -148,16 +148,18 @@
 #' the variable to be adjusted for is a factor and is included as a random
 #' effect in a mixed model (note that the remaining continuous variables of the
 #' dataset will still be included as fixed effects, similarly to regular partial
-#' correlations). That said, there is an important difference between using
-#' `cor_test()` and `correlation()`: If you set `multilevel=TRUE` in
-#' `correlation()` but `partial` is set to `FALSE` (as per default), then a
-#' back-transformation from partial to non-partial correlation will be attempted
-#' (through [`pcor_to_cor()`][pcor_to_cor]). However, this is not possible when
-#' using `cor_test()` so that if you set `multilevel=TRUE` in it, the resulting
-#' correlations are partial one. Note that for Bayesian multilevel correlations,
-#' if `partial = FALSE`, the back transformation will also recompute *p*-values
-#' based on the new *r* scores, and will drop the Bayes factors (as they are not
-#' relevant anymore). To keep Bayesian scores, set `partial = TRUE`.
+#' correlations). The model is a random intercept model, i.e. the multilevel
+#' correlation is adjusted for `(1 | groupfactor)`.That said, there is an
+#' important difference between using `cor_test()` and `correlation()`: If you
+#' set `multilevel=TRUE` in `correlation()` but `partial` is set to `FALSE` (as
+#' per default), then a back-transformation from partial to non-partial
+#' correlation will be attempted (through [`pcor_to_cor()`][pcor_to_cor]).
+#' However, this is not possible when using `cor_test()` so that if you set
+#' `multilevel=TRUE` in it, the resulting correlations are partial one. Note
+#' that for Bayesian multilevel correlations, if `partial = FALSE`, the back
+#' transformation will also recompute *p*-values based on the new *r* scores,
+#' and will drop the Bayes factors (as they are not relevant anymore). To keep
+#' Bayesian scores, set `partial = TRUE`.
 #' }
 #'
 #' \subsection{Notes}{
