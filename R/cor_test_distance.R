@@ -85,7 +85,6 @@
 
   x <- as.matrix(stats::dist(x))
   y <- as.matrix(stats::dist(y))
-  n <- nrow(x)
 
   A <- .A_kl(x, index)
   B <- .A_kl(y, index)

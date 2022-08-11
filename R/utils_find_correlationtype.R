@@ -3,21 +3,21 @@
   type_x <- .vartype(data[[x]])
   type_y <- .vartype(data[[y]])
 
-  if (type_x$is_binary & type_y$is_continuous) {
+  if (type_x$is_binary && type_y$is_continuous) {
     if (type_x$is_factor) {
       method <- "biserial"
     } else {
       method <- "pointbiserial"
     }
-  } else if (type_x$is_continuous & type_y$is_binary) {
+  } else if (type_x$is_continuous && type_y$is_binary) {
     if (type_y$is_factor) {
       method <- "biserial"
     } else {
       method <- "pointbiserial"
     }
-  } else if (type_x$is_binary & type_y$is_binary) {
+  } else if (type_x$is_binary && type_y$is_binary) {
     method <- "tetrachoric"
-  } else if (type_x$is_factor | type_y$is_factor) {
+  } else if (type_x$is_factor || type_y$is_factor) {
     method <- "polychoric"
   } else {
     method <- "pearson"
@@ -54,7 +54,7 @@
     out$is_binary <- TRUE
   }
 
-  if (out$is_numeric & out$is_binary == FALSE) {
+  if (out$is_numeric && out$is_binary == FALSE) {
     out$is_continuous <- TRUE
   }
 

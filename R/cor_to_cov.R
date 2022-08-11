@@ -49,7 +49,7 @@ cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.ep
   } else {
     is_triangular <- FALSE
   }
-  if (!is_symmetric & !is_triangular) {
+  if (!is_symmetric && !is_triangular) {
     stop("'cor' should be either a symmetric or a triangular matrix")
   }
 

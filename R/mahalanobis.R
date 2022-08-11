@@ -35,7 +35,7 @@ distance_mahalanobis <- function(data,
     Ms <- matrix(data = NA, nrow = iterations, ncol = nrow(data))
     for (i in 1:iterations) {
       # Draw random numbers from 1:n with replacement
-      x <- sample(1:nrow(data), nrow(data), replace = TRUE)
+      x <- sample(seq_len(nrow(data)), nrow(data), replace = TRUE)
       # Resample data
       dat <- data[x, ]
       # Calculating the Mahalanobis distance for each actual observation using resampled data

@@ -122,7 +122,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
   # Replace
   newdata <- data.frame()
-  for (i in 1:nrow(cor)) {
+  for (i in seq_len(nrow(cor))) {
     row <- row.names(r) == cor[i, "Parameter1"]
     col <- colnames(r) == cor[i, "Parameter2"]
     newdata <- rbind(
@@ -154,7 +154,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
   # Format
   newdata <- cbind(cor[1:2], newdata)
-  cor <- cor[, 1:ncol(newdata)]
+  cor <- cor[, seq_len(ncol(newdata))]
   cor[, ] <- newdata
   names(cor) <- names(newdata)
 

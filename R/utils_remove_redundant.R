@@ -53,7 +53,7 @@
   cols <- c()
 
   for (col in colnames(m)) {
-    for (row in 1:nrow(m)) {
+    for (row in seq_len(nrow(m))) {
       if (!is.na(m[row, col])) {
         rows <- c(rows, row.names(m)[row])
         cols <- c(cols, col)

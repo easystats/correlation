@@ -6,12 +6,12 @@
   var_y <- .complete_variable_y(data, x, y)
 
   # valid matrix check
-  if (!is.factor(var_x) & !is.factor(var_y)) {
+  if (!is.factor(var_x) && !is.factor(var_y)) {
     stop("Polychoric correlations can only be ran on ordinal factors.")
   }
 
 
-  if (!is.factor(var_x) | !is.factor(var_y)) {
+  if (!is.factor(var_x) || !is.factor(var_y)) {
     insight::check_if_installed("polycor", "for 'polyserial' correlations")
 
     r <- polycor::polyserial(

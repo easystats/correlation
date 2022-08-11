@@ -266,7 +266,7 @@ correlation <- function(data,
                         standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
   # valid matrix checks
-  if (partial == FALSE & multilevel) {
+  if (partial == FALSE && multilevel) {
     partial <- TRUE
     convert_back_to_r <- TRUE
   } else {
@@ -522,9 +522,9 @@ correlation <- function(data,
     data <- cbind(data, data2)
   }
 
-  if (ncol(data) <= 2 & any(sapply(data, is.factor)) & include_factors == FALSE) {
+  if (ncol(data) <= 2 && any(sapply(data, is.factor)) && include_factors == FALSE) {
     if (isTRUE(verbose)) {
-      warning("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you.", call. = FALSE)
+      warning(insight::format_message("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you."), call. = FALSE)
     }
     include_factors <- TRUE
   }
@@ -552,7 +552,7 @@ correlation <- function(data,
 
   # LOOP ----------------
 
-  for (i in 1:nrow(combinations)) {
+  for (i in seq_len(nrow(combinations))) {
     x <- as.character(combinations[i, "Parameter1"])
     y <- as.character(combinations[i, "Parameter2"])
 
@@ -584,13 +584,13 @@ correlation <- function(data,
       params <- result
     } else {
       if (!all(names(result) %in% names(params))) {
-        if ("r" %in% names(params) & !"r" %in% names(result)) {
+        if ("r" %in% names(params) && !"r" %in% names(result)) {
           names(result)[names(result) %in% c("rho", "tau")] <- "r"
         }
-        if ("r" %in% names(result) & !"r" %in% names(params)) {
+        if ("r" %in% names(result) && !"r" %in% names(params)) {
           names(params)[names(params) %in% c("rho", "tau")] <- "r"
         }
-        if (!"r" %in% names(params) & any(c("rho", "tau") %in% names(result))) {
+        if (!"r" %in% names(params) && any(c("rho", "tau") %in% names(result))) {
           names(params)[names(params) %in% c("rho", "tau")] <- "r"
           names(result)[names(result) %in% c("rho", "tau")] <- "r"
         }
