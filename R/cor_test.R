@@ -132,12 +132,12 @@ cor_test <- function(data,
                      verbose = TRUE,
                      ...) {
   # valid matrix checks
-  if (!x %in% names(data) | !y %in% names(data)) {
+  if (!all(x %in% names(data)) || !all(y %in% names(data))) {
     stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
   }
 
   if (ci == "default") ci <- 0.95
-  if (partial == FALSE & (partial_bayesian | multilevel)) partial <- TRUE
+  if (partial == FALSE && (partial_bayesian || multilevel)) partial <- TRUE
 
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
@@ -198,8 +198,8 @@ cor_test <- function(data,
 
   # Find method
   method <- tolower(method)
-  if (method == "auto" & bayesian == FALSE) method <- .find_correlationtype(data, x, y)
-  if (method == "auto" & bayesian == TRUE) method <- "pearson"
+  if (method == "auto" && bayesian == FALSE) method <- .find_correlationtype(data, x, y)
+  if (method == "auto" && bayesian == TRUE) method <- "pearson"
 
   # Frequentist
   if (bayesian == FALSE) {
