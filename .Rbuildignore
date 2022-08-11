@@ -9,7 +9,6 @@
 ^README-.*\.png$
 ^CONDUCT\.md$
 ^SECURITY\.md$
-^cran-comments\.md$
 ^CODE_OF_CONDUCT\.md$
 ^SUPPORT\.md$
 ^\.github$
@@ -29,7 +28,6 @@ publication/*
 ^CRAN-RELEASE$
 tests\^spelling
 ^LICENSE
-^\.lintr$
 ^\.circleci$
 ^tests/manual$
 ^revdep$
@@ -43,9 +41,14 @@ references.bib
 ^tests/testmanual$
 ^\.pre-commit-config\.yaml$
 ^brew\-log$
-^\.github/workflows/R\.yaml$
-^\.github/workflows/pr-commands\.yaml$
-hextools
 ^paper/.
 ^WIP/.
+^.github$
+^\.github$
+
+\.code-workspace$
+\.lintr$
+
+^cran-comments\.md$
+^revdep$
 ^CRAN-SUBMISSION$
