@@ -14,7 +14,7 @@
   dat <- data.frame(var_x, var_y)
   names(dat) <- c(x, y)
 
-  junk <- utils::capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
+  junk <- utils::capture.output(r <- psych::tetrachoric(dat)$rho[2, 1]) # nolint
 
   p <- cor_to_p(r, n = nrow(data))
   ci_vals <- cor_to_ci(r, n = nrow(data), ci = ci)

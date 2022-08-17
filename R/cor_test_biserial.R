@@ -8,7 +8,9 @@
     binary <- y
     continuous <- x
   } else {
-    stop("Biserial and point-biserial correlations can only be applied for one dichotomous and one continuous variables.")
+    stop(insight::format_message(
+      "Biserial and point-biserial correlations can only be applied for one dichotomous and one continuous variables."
+    ), call. = FALSE)
   }
 
   # Rescale to 0-1

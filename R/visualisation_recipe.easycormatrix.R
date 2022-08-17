@@ -69,6 +69,18 @@ visualisation_recipe.easycormatrix <- function(x,
   show_text <- !isFALSE(ellipses$show_values)
   show_p <- !isFALSE(ellipses$show_p)
 
+  # default style for tiles
+  if (is.null(tile)) {
+    tile <- list(color = "white", size = 0.5)
+  } else {
+    if (is.null(tile$color)) {
+      tile$color <- "white"
+    }
+    if (is.null(tile$size)) {
+      tile$size <- 0.5
+    }
+  }
+
   # Format as summary() if true matrix
   if (inherits(x, "matrix")) {
     data_text <- NULL
@@ -122,9 +134,24 @@ visualisation_recipe.easycormatrix <- function(x,
   # Add tiles
   if (!is.null(show_data)) {
     if (isTRUE(show_data) || show_data %in% c("tile", "tiles")) {
-      layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(type = "tile", data, x = "Parameter2", y = "Parameter1", fill = "r", args = tile, dot_args = ellipses)
+      layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(
+        type = "tile",
+        data, x = "Parameter2",
+        y = "Parameter1",
+        fill = "r",
+        args = tile,
+        dot_args = ellipses
+      )
     } else {
-      layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(type = "point", data, x = "Parameter2", y = "Parameter1", fill = "r", args = point, dot_args = ellipses)
+      layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(
+        type = "point",
+        data,
+        x = "Parameter2",
+        y = "Parameter1",
+        fill = "r",
+        args = point,
+        dot_args = ellipses
+      )
     }
     l <- l + 1
   }
@@ -133,16 +160,32 @@ visualisation_recipe.easycormatrix <- function(x,
 
   # Add text
   if (!is.null(show_text) && show_text != FALSE) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_text(data, x = "Parameter2", y = "Parameter1", label = "Text", text = text)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_text(
+      data,
+      x = "Parameter2",
+      y = "Parameter1",
+      label = "Text",
+      text = text
+    )
     l <- l + 1
   }
 
   # Color tiles
   if (!is.null(show_data) && show_data %in% c("tile", "tiles")) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale_fill(type = "fill", data, scale_fill = scale_fill, show_legend = show_legend)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale_fill(
+      type = "fill",
+      data,
+      scale_fill = scale_fill,
+      show_legend = show_legend
+    )
     l <- l + 1
   } else if (show_data %in% c("point", "points")) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale_fill(type = "colour", data, scale_fill = scale_fill, show_legend = show_legend)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale_fill(
+      type = "colour",
+      data,
+      scale_fill = scale_fill,
+      show_legend = show_legend
+    )
     l <- l + 1
   }
 
