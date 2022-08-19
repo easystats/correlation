@@ -18,6 +18,7 @@
       am        |  0.06 |  0.79 |       |       |       |       |       |       |       |      
       gear      |  0.27 |       |       |       |       |       |       |       |       |      
       
+      
        n_Obs 
       -------
       Parameter |  carb |  gear |    am |    vs |  qsec |    wt |  drat |    hp |  disp |   cyl
@@ -33,6 +34,7 @@
       am        | 32.00 | 32.00 |       |       |       |       |       |       |       |      
       gear      | 32.00 |       |       |       |       |       |       |       |       |      
       
+      
        p 
       ---
       Parameter |     carb |     gear |       am |       vs |     qsec |       wt |     drat |       hp |     disp |      cyl
@@ -47,6 +49,7 @@
       vs        |     0.02 |     1.00 |     1.00 |          |          |          |          |          |          |         
       am        |     1.00 | 2.80e-06 |          |          |          |          |          |          |          |         
       gear      |     1.00 |          |          |          |          |          |          |          |          |         
+      
       
 
 ---
@@ -68,6 +71,7 @@
       carni |       awake |   0.48 |    0.59 |       |             |          
       carni |     brainwt |   0.82 |         |       |             |          
       
+      
        n_Obs 
       -------
       Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
@@ -78,6 +82,7 @@
       carni |       awake |  19.00 |    9.00 |       |             |          
       carni |     brainwt |   9.00 |         |       |             |          
       
+      
        p 
       ---
       Group |   Parameter | bodywt | brainwt |    awake | sleep_cycle | sleep_rem
@@ -87,6 +92,7 @@
       carni | sleep_cycle |   1.00 |    1.00 |     1.00 |             |          
       carni |       awake |   0.37 |    0.73 |          |             |          
       carni |     brainwt |   0.09 |         |          |             |          
+      
       
       
       =======
@@ -103,6 +109,7 @@
       herbi |       awake |   0.77 |    0.86 |       |             |          
       herbi |     brainwt |   0.98 |         |       |             |          
       
+      
        n_Obs 
       -------
       Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
@@ -113,6 +120,7 @@
       herbi |       awake |  32.00 |   20.00 |       |             |          
       herbi |     brainwt |  20.00 |         |       |             |          
       
+      
        p 
       ---
       Group |   Parameter |   bodywt |  brainwt |    awake | sleep_cycle | sleep_rem
@@ -122,6 +130,7 @@
       herbi | sleep_cycle |     0.03 |     0.04 |     0.35 |             |          
       herbi |       awake | 3.42e-06 | 8.71e-06 |          |             |          
       herbi |     brainwt | 5.17e-13 |          |          |             |          
+      
       
       
       =========
@@ -138,6 +147,7 @@
       insecti |       awake |   0.60 |    0.60 |       |             |          
       insecti |     brainwt |   1.00 |         |       |             |          
       
+      
        n_Obs 
       -------
       Group   |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
@@ -148,6 +158,7 @@
       insecti |       awake |   5.00 |    5.00 |       |             |          
       insecti |     brainwt |   5.00 |         |       |             |          
       
+      
        p 
       ---
       Group   |   Parameter |   bodywt | brainwt |    awake | sleep_cycle | sleep_rem
@@ -157,6 +168,7 @@
       insecti | sleep_cycle |     1.00 |    1.00 |     1.00 |             |          
       insecti |       awake |     1.00 |    1.00 |          |             |          
       insecti |     brainwt | 5.56e-23 |         |          |             |          
+      
       
       
       ======
@@ -173,6 +185,7 @@
       omni  |       awake |   0.10 |    0.28 |       |             |          
       omni  |     brainwt |   0.91 |         |       |             |          
       
+      
        n_Obs 
       -------
       Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
@@ -183,6 +196,7 @@
       omni  |       awake |  20.00 |   17.00 |       |             |          
       omni  |     brainwt |  17.00 |         |       |             |          
       
+      
        p 
       ---
       Group |   Parameter |   bodywt |  brainwt | awake | sleep_cycle | sleep_rem
@@ -192,6 +206,7 @@
       omni  | sleep_cycle |     0.04 | 7.73e-04 |  1.00 |             |          
       omni  |       awake |     1.00 |     1.00 |       |             |          
       omni  |     brainwt | 7.64e-06 |          |       |             |          
+      
       
       
 
@@ -212,6 +227,7 @@
       0     |       cyl | 0.87
       0     |        wt | 0.83
       
+      
        n_Obs 
       -------
       Group | Parameter |    hp
@@ -219,12 +235,14 @@
       0     |       cyl | 19.00
       0     |        wt | 19.00
       
+      
        p 
       ---
       Group | Parameter |       hp
       ----------------------------
       0     |       cyl | 2.11e-06
       0     |        wt | 1.11e-05
+      
       
       
       ===
@@ -238,6 +256,7 @@
       1     |       cyl | 0.83
       1     |        wt | 0.80
       
+      
        n_Obs 
       -------
       Group | Parameter |    hp
@@ -245,12 +264,14 @@
       1     |       cyl | 13.00
       1     |        wt | 13.00
       
+      
        p 
       ---
       Group | Parameter |       hp
       ----------------------------
       1     |       cyl | 9.58e-04
       1     |        wt | 1.04e-03
+      
       
       
 
