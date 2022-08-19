@@ -115,6 +115,14 @@ format.easycormatrix <- function(x,
 
   # Prepare output
   out <- as.data.frame(x)
+
+  # remove redundant diagonal
+  if (isTRUE(attri$redundant)) {
+    for (i in colnames(out)) {
+      out[[i]][out$Parameter == i] <- ""
+    }
+  }
+
   attr(out, "table_footer") <- .format_easycorrelation_footer(x, format = format)
   attr(out, "table_caption") <- .format_easycorrelation_caption(x, format = format)
   out
@@ -142,8 +150,11 @@ format.easycormatrix <- function(x,
     } else {
       nobs <- paste0(min(x$n_Obs), "-", max(x$n_Obs))
     }
-    footer <- paste0(footer, "\nObservations: ", nobs, "\n")
+    footer <- paste0(footer, "\nObservations: ", nobs)
   }
+
+  # final new line
+  footer <- paste0(footer, "\n")
 
   # for html/markdown, create list
   if (!is.null(format) && format != "text") {

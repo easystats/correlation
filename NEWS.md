@@ -4,6 +4,9 @@
   improved, so self-correlations will no longer be labelled and get a neutral
   color.
 
+- The `print()` method redundant correlation matrices no longer shows the
+  diagonal with self-correlations.
+
 # correlation 0.8.2
 
 - Maintenance release for *datawizard* package update.
