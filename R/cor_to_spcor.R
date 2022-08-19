@@ -6,7 +6,7 @@ cor_to_spcor <- function(cor = NULL, cov = NULL, tol = .Machine$double.eps^(2 / 
 
   # Semi-partial
   if (is.null(cov)) {
-    stop("Covariance matrix (or vector of SD of variables) needs to be passed for semi-partial correlations.")
+    stop("Covariance matrix (or vector of SD of variables) needs to be passed for semi-partial correlations.", call. = FALSE)
   } else {
     if (!is.matrix(cov)) {
       cov <- cor_to_cov(cor, sd = cov)

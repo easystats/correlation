@@ -8,7 +8,7 @@ format.easycorrelation <- function(x,
                                    format = NULL,
                                    ...) {
   if (nrow(x) == 0) {
-    warning("The table is empty, no rows left to print.")
+    warning("The table is empty, no rows left to print.", call. = FALSE)
     return(as.data.frame(x))
   }
 

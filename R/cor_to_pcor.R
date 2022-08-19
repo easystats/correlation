@@ -246,7 +246,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   # Get Cormatrix
   if (is.null(cor)) {
     if (is.null(cov)) {
-      stop("A correlation or covariance matrix is required.")
+      stop("A correlation or covariance matrix is required.", call. = FALSE)
     } else {
       cor <- stats::cov2cor(cov)
     }
