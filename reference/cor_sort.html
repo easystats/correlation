@@ -209,21 +209,23 @@ arguments for it).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 32</span>
 <span class="r-in"><span><span class="fu">cor_sort</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span>, redundant <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="co"># As well as from the summary</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>invalid factor level, NA generated</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>invalid factor level, NA generated</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (pearson-method)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter |     carb |       wt |       hp |      cyl |     disp |     qsec |       vs |      mpg |     drat |       am |     gear</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------------------------------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> carb      |  1.00*** |  0.43*** |  0.75*** |  0.53*** |  0.39*** | -0.66*** |    -0.57 |  -0.55** |  -0.09** |     0.06 |    0.27*</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> wt        |  0.43*** |  1.00*** |  0.66*** |  0.78*** |  0.89*** | -0.17*** |   -0.55* | -0.87*** |   -0.71* |    -0.69 |   -0.58*</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hp        |  0.75*** |  0.66*** |  1.00*** |  0.83*** |  0.79*** | -0.71*** |    -0.72 | -0.78*** |   -0.45* |   -0.24* |    -0.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cyl       |  0.53*** |  0.78*** |  0.83*** |  1.00*** |     0.90 |  -0.59** | -0.81*** | -0.85*** |    -0.70 |    -0.52 | -0.49***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> disp      |  0.39*** |  0.89*** |  0.79*** |     0.90 |  1.00*** | -0.43*** |    -0.71 |    -0.85 | -0.71*** | -0.59*** |    -0.56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> qsec      | -0.66*** | -0.17*** | -0.71*** |  -0.59** | -0.43*** |  1.00*** |     0.74 |    0.42* |  0.09*** |   -0.23* |    -0.21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> vs        |    -0.57 |   -0.55* |    -0.72 | -0.81*** |    -0.71 |     0.74 |  1.00*** |  0.66*** |     0.44 |     0.17 |   0.21**</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mpg       |  -0.55** | -0.87*** | -0.78*** | -0.85*** |    -0.85 |    0.42* |  0.66*** |  1.00*** |     0.68 |     0.60 |    0.48*</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drat      |  -0.09** |   -0.71* |   -0.45* |    -0.70 | -0.71*** |  0.09*** |     0.44 |     0.68 |  1.00*** |  0.71*** |     0.70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> am        |     0.06 |    -0.69 |   -0.24* |    -0.52 | -0.59*** |   -0.23* |     0.17 |     0.60 |  0.71*** |  1.00*** |     0.79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> gear      |    0.27* |   -0.58* |    -0.13 | -0.49*** |    -0.56 |    -0.21 |   0.21** |    0.48* |     0.70 |     0.79 |  1.00***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> carb      |          |  0.43*** |  0.75*** |  0.53*** |  0.39*** | -0.66*** |    -0.57 |  -0.55** |  -0.09** |     0.06 |    0.27*</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> wt        |  0.43*** |          |  0.66*** |  0.78*** |  0.89*** | -0.17*** |   -0.55* | -0.87*** |   -0.71* |    -0.69 |   -0.58*</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp        |  0.75*** |  0.66*** |          |  0.83*** |  0.79*** | -0.71*** |    -0.72 | -0.78*** |   -0.45* |   -0.24* |    -0.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl       |  0.53*** |  0.78*** |  0.83*** |          |     0.90 |  -0.59** | -0.81*** | -0.85*** |    -0.70 |    -0.52 | -0.49***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp      |  0.39*** |  0.89*** |  0.79*** |     0.90 |          | -0.43*** |    -0.71 |    -0.85 | -0.71*** | -0.59*** |    -0.56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec      | -0.66*** | -0.17*** | -0.71*** |  -0.59** | -0.43*** |          |     0.74 |    0.42* |  0.09*** |   -0.23* |    -0.21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vs        |    -0.57 |   -0.55* |    -0.72 | -0.81*** |    -0.71 |     0.74 |          |  0.66*** |     0.44 |     0.17 |   0.21**</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mpg       |  -0.55** | -0.87*** | -0.78*** | -0.85*** |    -0.85 |    0.42* |  0.66*** |          |     0.68 |     0.60 |    0.48*</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drat      |  -0.09** |   -0.71* |   -0.45* |    -0.70 | -0.71*** |  0.09*** |     0.44 |     0.68 |          |  0.71*** |     0.70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> am        |     0.06 |    -0.69 |   -0.24* |    -0.52 | -0.59*** |   -0.23* |     0.17 |     0.60 |  0.71*** |          |     0.79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> gear      |    0.27* |   -0.58* |    -0.13 | -0.49*** |    -0.56 |    -0.21 |   0.21** |    0.48* |     0.70 |     0.79 |         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 </code></pre></div>
