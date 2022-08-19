@@ -7,7 +7,7 @@
 
   # valid matrix check
   if (!is.factor(var_x) && !is.factor(var_y)) {
-    stop("Polychoric correlations can only be ran on ordinal factors.")
+    stop("Polychoric correlations can only be ran on ordinal factors.", call. = FALSE)
   }
 
 

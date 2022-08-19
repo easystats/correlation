@@ -30,7 +30,7 @@
 cor_to_p <- function(cor, n, method = "pearson") {
   # Statistic
   if (method == "kendall") {
-    warning("Estimation for Kendall's correlation is not perfectly correct. Help us to improve it.")
+    warning("Estimation for Kendall's correlation is not perfectly correct. Help us to improve it.", call. = FALSE)
     statistic <- (3 * cor * sqrt(n * (n - 1))) / sqrt(2 * (2 * n + 5))
   } else {
     statistic <- cor * sqrt((n - 2) / (1 - cor^2))

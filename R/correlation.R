@@ -288,7 +288,7 @@ correlation <- function(data,
     all_selected <- c(select, select2)
     not_in_data <- !all_selected %in% colnames(data)
     if (any(not_in_data)) {
-      stop(paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", "))
+      stop(paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", "), call. = FALSE)
     }
 
     # for grouped df, add group variables to both data frames
@@ -312,7 +312,7 @@ correlation <- function(data,
   # renaming the columns if so desired
   if (!is.null(rename)) {
     if (length(data) != length(rename)) {
-      warning("Mismatch between number of variables and names.")
+      warning("Mismatch between number of variables and names.", call. = FALSE)
     } else {
       colnames(data) <- rename
     }
@@ -458,7 +458,7 @@ correlation <- function(data,
           modelframe <- rbind(modelframe, modelframe_current)
         }
       } else {
-        stop("'data2' should have the same grouping characteristics as data.")
+        stop("'data2' should have the same grouping characteristics as data.", call. = FALSE)
       }
     }
     # else
