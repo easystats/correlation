@@ -1,5 +1,9 @@
 # correlation 0.8.x
 
+- The visualization recipe (plots) for redundant correlation matrices was
+  improved, so self-correlations will no longer be labelled and get a neutral
+  color.
+
 # correlation 0.8.2
 
 - Maintenance release for *datawizard* package update.

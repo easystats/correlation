@@ -71,15 +71,18 @@ visualisation_recipe.easycormatrix <- function(x,
 
   # default style for tiles
   if (is.null(tile)) {
-    tile <- list(color = "white", size = 0.5)
+    tile <- list(color = "white", size = 0.6)
   } else {
     if (is.null(tile$color)) {
       tile$color <- "white"
     }
     if (is.null(tile$size)) {
-      tile$size <- 0.5
+      tile$size <- 0.6
     }
   }
+
+  # remember if full matrix
+  is_redundant <- attributes(x)$redundant
 
   # Format as summary() if true matrix
   if (inherits(x, "matrix")) {
@@ -124,6 +127,12 @@ visualisation_recipe.easycormatrix <- function(x,
   # filter `NA`s
   data <- data[!is.na(data$r), ]
 
+  # if redundant, remove diagonal self-correlation, and fill with NA again
+  if (isTRUE(is_redundant)) {
+    self_cor <- which(data$Parameter1 == data$Parameter2)
+    data$r[self_cor] <- NA
+    data$Text[self_cor] <- ""
+  }
 
   # Initialize layers list
   layers <- list()
@@ -248,8 +257,8 @@ visualisation_recipe.easycormatrix <- function(x,
 # Layer - Scale Fill -------------------------------------------------------------
 
 .visualisation_easycormatrix_scale_fill <- function(type = "fill", data, scale_fill = NULL, show_legend = TRUE) {
-  low_lim <- ifelse(min(data$r) < 0, -1, 0)
-  high_lim <- ifelse(max(data$r) > 0, 1, 0)
+  low_lim <- ifelse(min(data$r, na.rm = TRUE) < 0, -1, 0)
+  high_lim <- ifelse(max(data$r, na.rm = TRUE) > 0, 1, 0)
 
   out <- list(
     geom = paste0("scale_", type, "_gradient2"),
@@ -257,6 +266,7 @@ visualisation_recipe.easycormatrix <- function(x,
     mid = "white",
     high = "#F44336",
     midpoint = 0,
+    na.value = "grey85",
     limit = c(low_lim, high_lim),
     space = "Lab",
     name = "Correlation",
