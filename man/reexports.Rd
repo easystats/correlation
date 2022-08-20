@@ -5,6 +5,7 @@
 \alias{reexports}
 \alias{simulate_simpson}
 \alias{visualisation_recipe}
+\alias{standardize_names}
 \alias{print_md}
 \alias{print_html}
 \alias{display}
@@ -20,5 +21,7 @@ below to see their documentation.
   \item{datawizard}{\code{\link[datawizard]{visualisation_recipe}}}
 
   \item{insight}{\code{\link[insight]{display}}, \code{\link[insight:display]{print_html}}, \code{\link[insight:display]{print_md}}}
+
+  \item{parameters}{\code{\link[parameters:reexports]{standardize_names}}}
 }}
 
