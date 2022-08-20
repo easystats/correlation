@@ -7,8 +7,8 @@ bayestestR::simulate_simpson
 datawizard::visualisation_recipe
 
 #' @export
-#' @importFrom parameters standardize_names
-parameters::standardize_names
+#' @importFrom insight standardize_names
+insight::standardize_names
 
 #' @importFrom insight print_md
 #' @export
