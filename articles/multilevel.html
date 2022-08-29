@@ -170,12 +170,12 @@ function from this package and look at its summary:</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        V1             V2           Group          </span></span>
-<span><span class="co">##  Min.   :-1.6   Min.   :-12.4   Length:1000       </span></span>
-<span><span class="co">##  1st Qu.: 2.9   1st Qu.: -8.1   Class :character  </span></span>
-<span><span class="co">##  Median : 5.5   Median : -5.4   Mode  :character  </span></span>
+<span><span class="co">##  Min.   :-1.5   Min.   :-12.7   Length:1000       </span></span>
+<span><span class="co">##  1st Qu.: 3.0   1st Qu.: -8.0   Class :character  </span></span>
+<span><span class="co">##  Median : 5.4   Median : -5.5   Mode  :character  </span></span>
 <span><span class="co">##  Mean   : 5.5   Mean   : -5.5                     </span></span>
 <span><span class="co">##  3rd Qu.: 8.0   3rd Qu.: -3.0                     </span></span>
-<span><span class="co">##  Max.   :12.7   Max.   :  1.8</span></span></code></pre>
+<span><span class="co">##  Max.   :12.5   Max.   :  1.3</span></span></code></pre>
 <p>Now let’s visualize the two variables:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -249,7 +249,7 @@ it:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Parameter1 | Parameter2 |    r |           CI | t(998) |         p</span></span>
 <span><span class="co">## ------------------------------------------------------------------</span></span>
-<span><span class="co">## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.13 | &lt; .001***</span></span>
+<span><span class="co">## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.16 | &lt; .001***</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Observations: 1000</span></span></code></pre>
 <p><strong>Dayum!</strong> We were too hasty in our conclusions! Taking
