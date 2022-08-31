@@ -58,7 +58,6 @@ jobs:
         with:
           extra-packages: |
             any::rcmdcheck
-            energy=?ignore
             Hmisc=?ignore-before-r=3.6.0
             poorman=?ignore-before-r=3.5.0
             BayesFactor=?ignore-before-r=3.5.0

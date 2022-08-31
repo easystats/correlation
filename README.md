@@ -30,8 +30,7 @@ Source Software*, *5*(51), 2306. <https://doi.org/10.21105/joss.02306>
 [![CRAN](http://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
 [![correlation status
 badge](https://easystats.r-universe.dev/badges/correlation)](https://easystats.r-universe.dev)
-[![Build
-Status](https://travis-ci.org/easystats/correlation.svg?branch=master)](https://travis-ci.org/easystats/correlation)
+[![R-CMD-check](https://github.com/easystats/correlation/workflows/R-CMD-check/badge.svg?branch=main)](https://github.com/easystats/correlation/actions)
 [![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://app.codecov.io/gh/easystats/correlation)
 
 The *correlation* package is available on CRAN, while its latest
@@ -136,10 +135,10 @@ summary(results, redundant = TRUE)
 ## 
 ## Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width
 ## ----------------------------------------------------------------------
-## Sepal.Length |      1.00*** |       -0.12 |      0.87*** |     0.82***
-## Sepal.Width  |        -0.12 |     1.00*** |     -0.43*** |    -0.37***
-## Petal.Length |      0.87*** |    -0.43*** |      1.00*** |     0.96***
-## Petal.Width  |      0.82*** |    -0.37*** |      0.96*** |     1.00***
+## Sepal.Length |              |       -0.12 |      0.87*** |     0.82***
+## Sepal.Width  |        -0.12 |             |     -0.43*** |    -0.37***
+## Petal.Length |      0.87*** |    -0.43*** |              |     0.96***
+## Petal.Width  |      0.82*** |    -0.37*** |      0.96*** |            
 ## 
 ## p-value adjustment method: Holm (1979)
 ```
@@ -203,11 +202,11 @@ correlation(iris, bayesian = TRUE)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF
 ## --------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.05] |  91.88% |    43.20% | Beta (3 +- 3) |       0.509
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.04] |  91.85% |    43.92% | Beta (3 +- 3) |       0.509
 ## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
-## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.27] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.22] | 100%*** |        0% | Beta (3 +- 3) | 5.29e+03***
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.74,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
+## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.49, -0.22] | 100%*** |     0.12% | Beta (3 +- 3) | 5.29e+03***
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
 ## 
 ## Observations: 150
