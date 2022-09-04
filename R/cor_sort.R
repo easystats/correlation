@@ -32,6 +32,11 @@ cor_sort.easycorrelation <- function(x, distance = "correlation", ...) {
 
   # Restore class and attributes
   attributes(reordered) <- utils::modifyList(attributes(x)[!names(attributes(x)) %in% c("names", "row.names")], attributes(reordered))
+
+  # make sure Parameter columns are character
+  reordered$Parameter1 <- as.character(reordered$Parameter1)
+  reordered$Parameter2 <- as.character(reordered$Parameter2)
+
   reordered
 }
 
