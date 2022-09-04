@@ -58,7 +58,10 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", ...) {
   reordered <- x[order(x$Parameter), c("Parameter", order)]
 
   # Restore class and attributes
-  attributes(reordered) <- utils::modifyList(attributes(x)[!names(attributes(x)) %in% c("names", "row.names")], attributes(reordered))
+  attributes(reordered) <- utils::modifyList(
+    attributes(x)[!names(attributes(x)) %in% c("names", "row.names")],
+    attributes(reordered)
+  )
 
   # make sure Parameter columns are character
   reordered$Parameter <- as.character(reordered$Parameter)
@@ -73,7 +76,11 @@ cor_sort.matrix <- function(x, distance = "correlation", ...) {
   reordered <- x[order, order]
 
   # Restore class and attributes
-  attributes(reordered) <- utils::modifyList(attributes(x)[names(attributes(x)) != "dimnames"], attributes(reordered))
+  attributes(reordered) <- utils::modifyList(
+    attributes(x)[names(attributes(x)) != "dimnames"],
+    attributes(reordered)
+  )
+
   reordered
 }
 
