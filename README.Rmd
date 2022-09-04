@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 # Citation
 
-You can reference the package and its documentation as follows:
+You can cite the package as follows:
 
 Makowski, D., Ben-Shachar, M. S., Patil, I., \& Lüdecke, D. (2019). Methods and Algorithms for Correlation Analysis in R. _Journal of Open Source Software_,
 *5*(51), 2306. https://doi.org/10.21105/joss.02306

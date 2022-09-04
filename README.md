@@ -19,7 +19,7 @@ partial multilevel correlation*).
 
 # Citation
 
-You can reference the package and its documentation as follows:
+You can cite the package as follows:
 
 Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019).
 Methods and Algorithms for Correlation Analysis in R. *Journal of Open
@@ -202,11 +202,11 @@ correlation(iris, bayesian = TRUE)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF
 ## --------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.05] |  91.30% |    45.67% | Beta (3 +- 3) |       0.509
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.03] |  92.47% |    43.00% | Beta (3 +- 3) |       0.509
 ## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.74,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
-## Sepal.Width  | Petal.Length | -0.41 | [-0.55, -0.29] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.21] | 100%*** |     0.03% | Beta (3 +- 3) | 5.29e+03***
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
+## Sepal.Width  | Petal.Length | -0.42 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.20] | 100%*** |     0.18% | Beta (3 +- 3) | 5.29e+03***
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
 ## 
 ## Observations: 150
