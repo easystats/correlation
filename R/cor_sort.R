@@ -5,8 +5,8 @@
 #' @param x A correlation matrix.
 #' @param distance How the distance between each variable should be calculated.
 #'   If `correlation` (default; suited for correlation matrices), the matrix
-#'   will be rescaled to 0-1 (`distance = 0` indicating correlation of 1;
-#'   `distance = 1` indicating correlation of -1). If `raw`, then the matrix
+#'   will be rescaled to 0-1 (`distance = 0` indicating correlation of `1`;
+#'   `distance = 1` indicating correlation of `-1`). If `raw`, then the matrix
 #'   will be used as a distance matrix as-is. Can be others (`euclidean`,
 #'   `manhattan`, ...), in which case it will be passed to `dist()` (see the
 #'   arguments for it).
