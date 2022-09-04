@@ -7,8 +7,8 @@ on:
   pull_request:
     branches: [main, master]
 
-name: render-readme
+name: check-readme
 
 jobs:
-  render-readme:
-    uses: easystats/workflows/.github/workflows/render-readme.yaml@main
+  check-readme:
+    uses: easystats/workflows/.github/workflows/check-readme.yaml@main
