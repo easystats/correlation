@@ -1,4 +1,4 @@
-#' Depricated functions
+#' Deprecated functions
 #'
 #' @param ... Args.
 #'

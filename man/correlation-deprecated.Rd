@@ -3,7 +3,7 @@
 \name{correlation-deprecated}
 \alias{correlation-deprecated}
 \alias{distance_mahalanobis}
-\title{Depricated functions}
+\title{Deprecated functions}
 \usage{
 distance_mahalanobis(...)
 }
@@ -11,5 +11,5 @@ distance_mahalanobis(...)
 \item{...}{Args.}
 }
 \description{
-Depricated functions
+Deprecated functions
 }
