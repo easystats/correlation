@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.3</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,9 +87,17 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8" id="correlation-08x">correlation 0.8.x<a class="anchor" aria-label="anchor" href="#correlation-08x"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-8">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-8"></a></h3>
+<ul><li>
+<code><a href="../reference/correlation-deprecated.html">distance_mahalanobis()</a></code> is deprecated. Use <code>performance::check_outliers(method = "mahalanobis_robust")</code> instead.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-changes-0-8">Minor Changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-8"></a></h3>
 <ul><li><p>The visualization recipe (plots) for redundant correlation matrices was improved, so self-correlations will no longer be labelled and get a neutral color.</p></li>
 <li><p>The <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method redundant correlation matrices no longer shows the diagonal with self-correlations.</p></li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8.2" id="correlation-082">correlation 0.8.2<a class="anchor" aria-label="anchor" href="#correlation-082"></a></h2><p class="text-muted">CRAN release: 2022-08-09</p>
 <ul><li>Maintenance release for <em>datawizard</em> package update.</li>
@@ -217,7 +225,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-2-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-1"></a></h3>
-<ul><li><p>Removed CI threshold column from <code><a href="../reference/distance_mahalanobis.html">distance_mahalanobis()</a></code></p></li>
+<ul><li><p>Removed CI threshold column from <code><a href="../reference/correlation-deprecated.html">distance_mahalanobis()</a></code></p></li>
 <li><p>Fixed bug (<a href="https://github.com/easystats/correlation/issues/76" class="external-link">#76</a>)</p></li>
 </ul></div>
 </div>
