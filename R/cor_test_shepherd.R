@@ -31,5 +31,5 @@
     stats::mahalanobis(data, center = colMeans(dat), cov = stats::cov(dat))
   })
 
-  apply(Ms, 1, median)
+  apply(Ms, 1, stats::median)
 }
