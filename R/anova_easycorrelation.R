@@ -36,6 +36,7 @@ anova.easycorrelation <- function(object, ...) {
   out
 }
 
+#' @export
 print.easycorrelation_anova <- function(x, ...) {
   insight::export_table(insight::format_table(x))
 }
