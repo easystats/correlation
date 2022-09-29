@@ -49,19 +49,8 @@ library("correlation")
 
 # Documentation
 
-[![Documentation](https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
-[![Blog](https://img.shields.io/badge/blog-easystats-orange.svg?colorB=FF9800)](https://easystats.github.io/blog/posts/)
-[![Features](https://img.shields.io/badge/features-correlation-orange.svg?colorB=2196F3)](https://easystats.github.io/correlation/reference/index.html)
-
-Click on the buttons above to access the package
-[documentation](https://easystats.github.io/correlation/) and the
-[easystats blog](https://easystats.github.io/blog/posts/), and check-out
-these vignettes:
-
-- [Types of
-  Correlation](https://easystats.github.io/correlation/articles/types.html)
-- [Multilevel
-  Correlations](https://easystats.github.io/correlation/articles/multilevel.html)
+Check out package [website](https://easystats.github.io/correlation/)
+for documentation.
 
 # Features
 
@@ -202,12 +191,12 @@ correlation(iris, bayesian = TRUE)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF
 ## --------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.03] |  92.47% |    43.00% | Beta (3 +- 3) |       0.509
-## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.04] |  91.85% |    43.73% | Beta (3 +- 3) |       0.509
+## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.91] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
 ## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
-## Sepal.Width  | Petal.Length | -0.42 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.20] | 100%*** |     0.18% | Beta (3 +- 3) | 5.29e+03***
-## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
+## Sepal.Width  | Petal.Length | -0.41 | [-0.55, -0.29] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.50, -0.22] | 100%*** |     0.22% | Beta (3 +- 3) | 5.29e+03***
+## Petal.Length |  Petal.Width |  0.96 | [ 0.94,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
 ## 
 ## Observations: 150
 ```
@@ -283,9 +272,8 @@ al.,
 library(see) # for plotting
 library(ggraph) # needs to be loaded
 
-mtcars %>%
-  correlation(partial = TRUE) %>%
-  plot()
+plot(correlation(mtcars, partial = TRUE)) +
+  scale_edge_color_continuous(low = "#000004FF", high = "#FCFDBFFF")
 ```
 
 ![](man/figures/README-12-1.png)<!-- -->

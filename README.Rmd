@@ -54,15 +54,7 @@ library("correlation")
 
 # Documentation
 
-[![Documentation](https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
-[![Blog](https://img.shields.io/badge/blog-easystats-orange.svg?colorB=FF9800)](https://easystats.github.io/blog/posts/)
-[![Features](https://img.shields.io/badge/features-correlation-orange.svg?colorB=2196F3)](https://easystats.github.io/correlation/reference/index.html)
-
-Click on the buttons above to access the package [documentation](https://easystats.github.io/correlation/) and the [easystats blog](https://easystats.github.io/blog/posts/), and check-out these vignettes:
-
-
-- [Types of Correlation](https://easystats.github.io/correlation/articles/types.html)
-- [Multilevel Correlations](https://easystats.github.io/correlation/articles/multilevel.html)
+Check out package [website](https://easystats.github.io/correlation/) for documentation.
 
 # Features
 
@@ -183,9 +175,8 @@ strength of association (see [Bhushan et al., 2019](https://www.frontiersin.org/
 library(see) # for plotting
 library(ggraph) # needs to be loaded
 
-mtcars %>%
-  correlation(partial = TRUE) %>%
-  plot()
+plot(correlation(mtcars, partial = TRUE)) +
+  scale_edge_color_continuous(low = "#000004FF", high = "#FCFDBFFF")
 ```
 
 ## Multilevel Correlations
