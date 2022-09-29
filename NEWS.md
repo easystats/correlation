@@ -1,8 +1,10 @@
-# correlation 0.8.x
+# correlation (development version)
 
 ## Breaking Changes
 
 - `distance_mahalanobis()` is deprecated. Use `performance::check_outliers(method = "mahalanobis_robust")` instead.
+
+- The minimum needed R version has been bumped to `3.6`.
 
 ## Minor Changes
 
