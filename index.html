@@ -172,12 +172,7 @@
 <div class="section level1">
 <h1 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h1>
-<p><a href="https://easystats.github.io/correlation/"><img src="https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63" alt="Documentation"></a> <a href="https://easystats.github.io/blog/posts/" class="external-link"><img src="https://img.shields.io/badge/blog-easystats-orange.svg?colorB=FF9800" alt="Blog"></a> <a href="https://easystats.github.io/correlation/reference/index.html"><img src="https://img.shields.io/badge/features-correlation-orange.svg?colorB=2196F3" alt="Features"></a></p>
-<p>Click on the buttons above to access the package <a href="https://easystats.github.io/correlation/">documentation</a> and the <a href="https://easystats.github.io/blog/posts/" class="external-link">easystats blog</a>, and check-out these vignettes:</p>
-<ul>
-<li><a href="https://easystats.github.io/correlation/articles/types.html">Types of Correlation</a></li>
-<li><a href="https://easystats.github.io/correlation/articles/multilevel.html">Multilevel Correlations</a></li>
-</ul>
+<p>Check out package <a href="https://easystats.github.io/correlation/">website</a> for documentation.</p>
 </div>
 <div class="section level1">
 <h1 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -286,12 +281,12 @@
 <span><span class="co">## </span></span>
 <span><span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF</span></span>
 <span><span class="co">## --------------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.03] |  92.47% |    43.00% | Beta (3 +- 3) |       0.509</span></span>
-<span><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***</span></span>
+<span><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.04] |  91.85% |    43.73% | Beta (3 +- 3) |       0.509</span></span>
+<span><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.91] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***</span></span>
 <span><span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***</span></span>
-<span><span class="co">## Sepal.Width  | Petal.Length | -0.42 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***</span></span>
-<span><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.20] | 100%*** |     0.18% | Beta (3 +- 3) | 5.29e+03***</span></span>
-<span><span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***</span></span>
+<span><span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.55, -0.29] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***</span></span>
+<span><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.50, -0.22] | 100%*** |     0.22% | Beta (3 +- 3) | 5.29e+03***</span></span>
+<span><span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.94,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Observations: 150</span></span></code></pre></div>
 </div>
@@ -356,9 +351,8 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/see/" class="external-link">see</a></span><span class="op">)</span> <span class="co"># for plotting</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggraph.data-imaginist.com" class="external-link">ggraph</a></span><span class="op">)</span> <span class="co"># needs to be loaded</span></span>
 <span></span>
-<span><span class="va">mtcars</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span>partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">mtcars</span>, partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/scale_edge_colour.html" class="external-link">scale_edge_color_continuous</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"#000004FF"</span>, high <span class="op">=</span> <span class="st">"#FCFDBFFF"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-12-1.png"><!-- --></p>
 </div>
 <div class="section level2">
