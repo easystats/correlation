@@ -52,6 +52,13 @@ Once you have downloaded the package, you can then load it using:
 library("correlation")
 ```
 
+> **Tip**
+>
+> **Instead of `library(datawizard)`, use `library(easystats)`.**
+> **This will make all features of the  easystats-ecosystem available.**
+>
+> **To stay updated, use `easystats::install_latest()`.**
+
 # Documentation
 
 Check out package [website](https://easystats.github.io/correlation/) for documentation.

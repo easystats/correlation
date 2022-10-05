@@ -47,6 +47,13 @@ Once you have downloaded the package, you can then load it using:
 library("correlation")
 ```
 
+> **Tip**
+>
+> **Instead of `library(datawizard)`, use `library(easystats)`.** **This
+> will make all features of the easystats-ecosystem available.**
+>
+> **To stay updated, use `easystats::install_latest()`.**
+
 # Documentation
 
 Check out package [website](https://easystats.github.io/correlation/)
@@ -191,12 +198,12 @@ correlation(iris, bayesian = TRUE)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF
 ## --------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.04] |  91.85% |    43.73% | Beta (3 +- 3) |       0.509
-## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.91] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
-## Sepal.Width  | Petal.Length | -0.41 | [-0.55, -0.29] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.50, -0.22] | 100%*** |     0.22% | Beta (3 +- 3) | 5.29e+03***
-## Petal.Length |  Petal.Width |  0.96 | [ 0.94,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.28,  0.04] |  91.75% |    43.62% | Beta (3 +- 3) |       0.509
+## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.85] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
+## Sepal.Width  | Petal.Length | -0.41 | [-0.53, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.21] | 100%*** |        0% | Beta (3 +- 3) | 5.29e+03***
+## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
 ## 
 ## Observations: 150
 ```
