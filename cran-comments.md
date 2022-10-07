@@ -2,6 +2,8 @@
 
 0 errors | 0 warnings | 0 notes
 
+- Fixes breakages caused by updates to *parameters* package.
+
 ## revdepcheck results
 
 We checked 8 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
