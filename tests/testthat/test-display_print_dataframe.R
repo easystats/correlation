@@ -3,7 +3,7 @@
 if (require("gt") && packageVersion("insight") >= "0.12.0.1") {
   test_that("display and print method works - markdown", {
     skip_on_cran()
-    skip_if(getRversion() < "3.6")
+
 
     expect_equal(
       display(correlation(iris)),
@@ -29,7 +29,6 @@ if (require("gt") && packageVersion("insight") >= "0.12.0.1") {
   # display and print method works - HTML -----------------------------
 
   test_that("display and print method works - HTML", {
-    skip_if(getRversion() < "3.6")
     skip_on_cran()
 
     expect_output(display(print(correlation(subset(mtcars, select = c("wt", "mpg"))), format = "html")))
