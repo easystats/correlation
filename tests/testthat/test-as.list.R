@@ -1,7 +1,5 @@
 if (require("poorman", quietly = TRUE) && require("ggplot2", quietly = TRUE)) {
   test_that("as.list", {
-    skip_if(getRversion() < "3.6")
-
     # no groups
     set.seed(123)
     expect_snapshot(as.list(correlation(mtcars)))

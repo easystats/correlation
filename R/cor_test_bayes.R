@@ -89,6 +89,10 @@
       rope_ci = 1,
       ...
     )
+    # validation check: do we have a BF column?
+    if (is.null(params$BF)) {
+      params$BF <- NA
+    }
   }
 
   # Rename coef

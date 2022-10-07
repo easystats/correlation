@@ -1,4 +1,4 @@
-# correlation (development version)
+# correlation 0.8.3
 
 ## Breaking Changes
 
@@ -7,6 +7,8 @@
 - The minimum needed R version has been bumped to `3.6`.
 
 ## Minor Changes
+
+- Fixes breakages caused by updates to *parameters* package (#269).
 
 - The visualization recipe (plots) for redundant correlation matrices was
   improved, so self-correlations will no longer be labelled and get a neutral

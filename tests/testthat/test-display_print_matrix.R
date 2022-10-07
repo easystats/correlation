@@ -3,7 +3,7 @@ if (require("testthat") && require("gt") && require("poorman")) {
 
   test_that("display and print method works - markdown", {
     skip_on_cran()
-    skip_if(getRversion() < "3.6")
+
 
     expect_equal(
       display(summary(correlation(iris))),
@@ -32,7 +32,7 @@ if (require("testthat") && require("gt") && require("poorman")) {
 
   test_that("display and print method works - html", {
     skip_on_cran()
-    skip_if(getRversion() < "3.6")
+
 
     expect_snapshot(print(summary(correlation(iris)), format = "html"), cran = FALSE)
   })

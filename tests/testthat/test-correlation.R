@@ -177,9 +177,18 @@ test_that("specific types", {
   correlation(data, method = "polychoric")
 })
 
+test_that("correlation doesn't fail when BFs are NA", {
+  skip_if_not_installed("BayesFactor")
+  loadNamespace("BayesFactor")
+  df <- ggplot2::msleep
+
+  set.seed(123)
+  df_corr <- correlation(subset(df, vore == "carni"), bayesian = TRUE)
+  expect_equal(nrow(df_corr), 15L)
+})
+
 test_that("as.data.frame for correlation output", {
   skip_on_cran()
-  skip_if(getRversion() < "3.6")
 
   set.seed(123)
   expect_snapshot(as.data.frame(correlation(ggplot2::msleep)))
