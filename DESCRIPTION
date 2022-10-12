@@ -42,7 +42,7 @@ Description: Lightweight package for computing different kinds
     of correlations, such as partial correlations, Bayesian correlations,
     multilevel correlations, polychoric correlations, biweight
     correlations, distance correlations and more. Part of the 'easystats'
-    ecosystem.
+    ecosystem. References: Makowski et al. (2020) <doi:10.21105/joss.02306>.
 License: GPL-3
 URL: https://easystats.github.io/correlation/
 BugReports: https://github.com/easystats/correlation/issues
