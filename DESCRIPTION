@@ -71,7 +71,6 @@ Suggests:
     psych,
     rmarkdown,
     rmcorr,
-    rstanarm,
     see,
     testthat (>= 3.1.0),
     tidygraph,
