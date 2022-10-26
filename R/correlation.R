@@ -266,7 +266,7 @@ correlation <- function(data,
                         standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
   # valid matrix checks
-  if (partial == FALSE && multilevel) {
+  if (!partial && multilevel) {
     partial <- TRUE
     convert_back_to_r <- TRUE
   } else {
@@ -274,7 +274,7 @@ correlation <- function(data,
   }
 
   # p-adjustment
-  if (bayesian == TRUE) {
+  if (bayesian) {
     p_adjust <- "none"
   }
 
@@ -522,7 +522,7 @@ correlation <- function(data,
     data <- cbind(data, data2)
   }
 
-  if (ncol(data) <= 2 && any(sapply(data, is.factor)) && include_factors == FALSE) {
+  if (ncol(data) <= 2 && any(sapply(data, is.factor)) && !include_factors) {
     if (isTRUE(verbose)) {
       warning(insight::format_message("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you."), call. = FALSE)
     }

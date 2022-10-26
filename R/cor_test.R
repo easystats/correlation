@@ -137,7 +137,7 @@ cor_test <- function(data,
   }
 
   if (ci == "default") ci <- 0.95
-  if (partial == FALSE && (partial_bayesian || multilevel)) partial <- TRUE
+  if (!partial && (partial_bayesian || multilevel)) partial <- TRUE
 
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
@@ -198,11 +198,11 @@ cor_test <- function(data,
 
   # Find method
   method <- tolower(method)
-  if (method == "auto" && bayesian == FALSE) method <- .find_correlationtype(data, x, y)
-  if (method == "auto" && bayesian == TRUE) method <- "pearson"
+  if (method == "auto" && !bayesian) method <- .find_correlationtype(data, x, y)
+  if (method == "auto" && bayesian) method <- "pearson"
 
   # Frequentist
-  if (bayesian == FALSE) {
+  if (!bayesian) {
     if (method %in% c("tetra", "tetrachoric")) {
       out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
     } else if (method %in% c("poly", "polychoric")) {

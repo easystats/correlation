@@ -32,7 +32,7 @@
   row.names(combinations) <- NULL
   names(combinations) <- c("Parameter1", "Parameter2")
 
-  if (redundant == FALSE) {
+  if (!redundant) {
     combinations <- .remove_redundant(combinations)
   }
 

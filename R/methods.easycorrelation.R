@@ -161,7 +161,7 @@ standardize_names.easycorrelation <- function(data, ...) {
   row.names(frame) <- NULL
 
   # Remove upper triangular
-  if (redundant == FALSE && is.null(attributes(object)$data2)) {
+  if (!redundant && is.null(attributes(object)$data2)) {
     frame[-1][lower.tri(frame[-1])] <- NA
     frame <- frame[c(1, ncol(frame):2)]
   }

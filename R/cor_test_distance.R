@@ -3,7 +3,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  if (corrected == FALSE) {
+  if (!corrected) {
     rez <- .cor_test_distance_raw(var_x, var_y, index = 1)
     rez <- data.frame(
       Parameter1 = x,

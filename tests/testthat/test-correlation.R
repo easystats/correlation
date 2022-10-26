@@ -132,9 +132,9 @@ test_that("format checks", {
   out <- iris %>%
     group_by(Species) %>%
     correlation(include_factors = TRUE)
-      expect_equal(c(nrow(out), ncol(out)), c(18, 12))
-      expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(12, 6))
-      expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(9, 5))
+  expect_equal(c(nrow(out), ncol(out)), c(18, 12))
+  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(12, 6))
+  expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(9, 5))
 
   # pipe and select
   out <- iris %>%

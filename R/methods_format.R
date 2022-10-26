@@ -65,7 +65,7 @@ format.easycormatrix <- function(x,
 
   # Deduct if stars only
   stars_only <- FALSE
-  if (include_significance == FALSE && stars == TRUE) {
+  if (!include_significance && stars) {
     stars_only <- TRUE
   }
 
@@ -104,7 +104,7 @@ format.easycormatrix <- function(x,
       )
     }
 
-    if (stars_only == FALSE) {
+    if (!stars_only) {
       sig[, nums] <- sapply(sig[, nums], function(x) ifelse(x != "", paste0(" (", x, ")"), ""))
     }
 

@@ -95,7 +95,7 @@ cor_smooth.matrix <- function(x,
   method <- match.arg(method, choices = c("psych", "hj", "lrs"))
 
   # Already positive definite
-  if (is.positive_definite(x, tol = tol, ...) == TRUE) {
+  if (is.positive_definite(x, tol = tol, ...)) {
     if (verbose) message("Matrix is positive definite, smoothing was not needed.")
     return(x)
   }

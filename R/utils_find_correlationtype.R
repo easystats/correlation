@@ -54,7 +54,7 @@
     out$is_binary <- TRUE
   }
 
-  if (out$is_numeric && out$is_binary == FALSE) {
+  if (out$is_numeric && !out$is_binary) {
     out$is_continuous <- TRUE
   }
 
