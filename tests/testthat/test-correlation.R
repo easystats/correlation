@@ -184,6 +184,7 @@ test_that("specific types", {
 
 test_that("correlation doesn't fail when BFs are NA", {
   skip_if_not_installed("ggplot2")
+  skip_if_not_installed("BayesFactor")
 
   df <- ggplot2::msleep
 
