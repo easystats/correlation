@@ -57,7 +57,6 @@ Imports:
     stats
 Suggests:
     BayesFactor,
-    poorman,
     energy,
     ggplot2,
     ggraph,
@@ -67,6 +66,7 @@ Suggests:
     lme4,
     mbend,
     polycor,
+    poorman,
     ppcor,
     psych,
     rmarkdown,

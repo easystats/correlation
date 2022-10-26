@@ -13,7 +13,7 @@
 #' @param tol The minimum eigenvalue to be considered as acceptable.
 #' @param ... Other arguments to be passed to or from other functions.
 #'
-#' @examples
+#' @examplesIf requireNamespace("psych", quietly = TRUE)
 #' set.seed(123)
 #' data <- as.matrix(mtcars)
 #' # Make missing data so pairwise correlation matrix is non-positive definite

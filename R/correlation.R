@@ -179,9 +179,11 @@
 #' `stats` package are supported.
 #' }
 #'
-#' @examples
+#' @examplesIf requireNamespace("poorman", quietly = TRUE) && requireNamespace("psych", quietly = TRUE)
 #'
 #' library(correlation)
+#' library(poorman)
+#'
 #' results <- correlation(iris)
 #'
 #' results
@@ -189,24 +191,22 @@
 #' summary(results, redundant = TRUE)
 #'
 #' # pipe-friendly usage with  grouped dataframes from {dplyr} package
-#' if (require("poorman")) {
-#'   iris %>%
-#'     correlation(select = "Petal.Width", select2 = "Sepal.Length")
+#' iris %>%
+#'   correlation(select = "Petal.Width", select2 = "Sepal.Length")
 #'
-#'   # Grouped dataframe
-#'   # grouped correlations
-#'   iris %>%
-#'     group_by(Species) %>%
-#'     correlation()
+#' # Grouped dataframe
+#' # grouped correlations
+#' iris %>%
+#'   group_by(Species) %>%
+#'   correlation()
 #'
-#'   # selecting specific variables for correlation
-#'   mtcars %>%
-#'     group_by(am) %>%
-#'     correlation(
-#'       select = c("cyl", "wt"),
-#'       select2 = c("hp")
-#'     )
-#' }
+#' # selecting specific variables for correlation
+#' mtcars %>%
+#'   group_by(am) %>%
+#'   correlation(
+#'     select = c("cyl", "wt"),
+#'     select2 = c("hp")
+#'   )
 #'
 #' # supplying custom variable names
 #' correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
