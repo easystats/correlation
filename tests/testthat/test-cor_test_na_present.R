@@ -1,5 +1,7 @@
 
 test_that("cor_test frequentist", {
+  skip_if_not_installed("ggplot2")
+
   expect_error(cor_test(ggplot2::msleep, brainwt, sleep_rem))
 
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem")
@@ -7,6 +9,8 @@ test_that("cor_test frequentist", {
 })
 
 test_that("cor_test kendall", {
+  skip_if_not_installed("ggplot2")
+
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "kendall")
   out2 <- stats::cor.test(ggplot2::msleep$brainwt, ggplot2::msleep$sleep_rem, method = "kendall")
 
@@ -79,42 +83,47 @@ test_that("cor_test percentage", {
 
 
 test_that("cor_test shepherd", {
+  skip_if_not_installed("ggplot2")
+
   set.seed(333)
   expect_error(cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "shepherd"))
 })
 
 
 test_that("cor_test blomqvist", {
-  if (require("wdm", quietly = TRUE)) {
-    set.seed(333)
-    out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "blomqvist")
-    expect_equal(out$r, -0.4583333, tolerance = 0.01)
-  }
+  skip_if_not_installed("wdm")
+
+  set.seed(333)
+  out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "blomqvist")
+  expect_equal(out$r, -0.4583333, tolerance = 0.01)
 })
 
 test_that("cor_test hoeffding", {
-  if (require("Hmisc", quietly = TRUE)) {
-    set.seed(333)
-    out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "hoeffding")
-    expect_equal(out$r, 0.04427718, tolerance = 0.01)
-  }
+  skip_if_not_installed("Hmisc")
+
+  set.seed(333)
+  out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "hoeffding")
+  expect_equal(out$r, 0.04427718, tolerance = 0.01)
 })
 
 test_that("cor_test gamma", {
+  skip_if_not_installed("ggplot2")
+
   set.seed(333)
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "gamma")
   expect_equal(out$r, -0.2675799, tolerance = 0.01)
 })
 
 test_that("cor_test gaussian", {
+  skip_if_not_installed("ggplot2")
+
   set.seed(333)
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "gaussian")
   expect_equal(out$r, -0.3679795, tolerance = 0.01)
 
-  if (requireNamespace("BayesFactor")) {
-    out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "gaussian", bayesian = TRUE)
-    expect_equal(out$r, -0.3269572, tolerance = 0.01)
-  }
+  skip_if_not_installed("BayesFactor")
+  out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "gaussian", bayesian = TRUE)
+  expect_equal(out$r, -0.3269572, tolerance = 0.01)
 })
 
 
@@ -123,6 +132,8 @@ test_that("cor_test gaussian", {
 
 
 test_that("cor_test one-sided p value", {
+  skip_if_not_installed("ggplot2")
+
   baseline <- cor.test(ggplot2::msleep$brainwt, ggplot2::msleep$sleep_rem, alternative = "greater")
 
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", alternative = "greater")

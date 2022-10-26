@@ -32,6 +32,7 @@ is done, inferential statistics (\emph{p}-values, confidence intervals, etc.) ar
 removed, as they are no longer valid.
 }
 \examples{
+\dontshow{if (requireNamespace("psych", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 set.seed(123)
 data <- as.matrix(mtcars)
 # Make missing data so pairwise correlation matrix is non-positive definite
@@ -41,4 +42,5 @@ x <- correlation(data)
 is.positive_definite(x)
 
 smoothed <- cor_smooth(x)
+\dontshow{\}) # examplesIf}
 }
