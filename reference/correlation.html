@@ -445,7 +445,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">correlation</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">results</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (pearson-method)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |   Parameter2 |     r |         95% CI | t(148) |         p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------------------------------</span>
@@ -459,7 +459,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 150</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (pearson-method)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter    | Petal.Width | Petal.Length | Sepal.Width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------------</span>
@@ -469,7 +469,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">results</span>, redundant <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (pearson-method)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter    | Sepal.Length | Sepal.Width | Petal.Length | Petal.Width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------------------------------------</span>
@@ -483,7 +483,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-in"><span><span class="co"># pipe-friendly usage with  grouped dataframes from {dplyr} package</span></span></span>
 <span class="r-in"><span><span class="va">iris</span> <span class="op"><a href="https://nathaneastwood.github.io/poorman/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">correlation</span><span class="op">(</span>select <span class="op">=</span> <span class="st">"Petal.Width"</span>, select2 <span class="op">=</span> <span class="st">"Sepal.Length"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (pearson-method)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1  |   Parameter2 |    r |       95% CI | t(148) |         p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------------------------------------</span>
@@ -497,7 +497,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-in"><span><span class="va">iris</span> <span class="op"><a href="https://nathaneastwood.github.io/poorman/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://nathaneastwood.github.io/poorman/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://nathaneastwood.github.io/poorman/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">correlation</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (pearson-method)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Group      |   Parameter1 |   Parameter2 |    r |        95% CI | t(48) |         p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -----------------------------------------------------------------------------------</span>
@@ -530,7 +530,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-in"><span>    select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"wt"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    select2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hp"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (pearson-method)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Group | Parameter1 | Parameter2 |    r |       95% CI |    t | df |         p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -----------------------------------------------------------------------------</span>
@@ -544,7 +544,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># supplying custom variable names</span></span></span>
 <span class="r-in"><span><span class="fu">correlation</span><span class="op">(</span><span class="va">anscombe</span>, select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x1"</span>, <span class="st">"x2"</span><span class="op">)</span>, rename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"var1"</span>, <span class="st">"var2"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (pearson-method)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1 | Parameter2 |    r |       95% CI | t(9) |         p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------------------------------</span>
@@ -555,7 +555,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># automatic selection of correlation method</span></span></span>
 <span class="r-in"><span><span class="fu">correlation</span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span><span class="op">-</span><span class="fl">2</span><span class="op">]</span>, method <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Correlation Matrix (auto-method)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (auto-method)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1 | Parameter2 |     r |         95% CI | t(30) |         p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --------------------------------------------------------------------</span>
