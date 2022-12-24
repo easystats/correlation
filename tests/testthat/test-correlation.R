@@ -1,5 +1,3 @@
-.runThisTest <- Sys.getenv("RunAllcorrelationTests") == "yes"
-
 test_that("comparison with other packages", {
   skip_if_not_installed("ppcor")
   skip_if_not_installed("Hmisc")
@@ -65,42 +63,40 @@ test_that("comparison with other packages", {
   expect_true(mean(abs(p - as.matrix(ppcor$p.value))) < 0.05)
 
   # Bayesian
-  if (.runThisTest) {
-    out <- correlation(iris, include_factors = FALSE, bayesian = TRUE)
-    rez <- as.data.frame(summary(out, redundant = TRUE))
+  out <- correlation(iris, include_factors = FALSE, bayesian = TRUE)
+  rez <- as.data.frame(summary(out, redundant = TRUE))
 
-    r <- as.matrix(rez[2:5])
-    expect_equal(mean(r - cor(iris[1:4])), 0, tolerance = 0.01)
+  r <- as.matrix(rez[2:5])
+  expect_equal(mean(r - cor(iris[1:4])), 0, tolerance = 0.01)
 
-    hmisc <- Hmisc::rcorr(as.matrix(iris[1:4]), type = c("pearson"))
-    expect_equal(mean(r - hmisc$r), 0, tolerance = 0.01)
+  hmisc <- Hmisc::rcorr(as.matrix(iris[1:4]), type = c("pearson"))
+  expect_equal(mean(r - hmisc$r), 0, tolerance = 0.01)
 
-    pd <- as.matrix(attributes(rez)$pd[2:5])
-    p <- bayestestR::pd_to_p(pd)
-    expect_equal(mean(p - hmisc$P, na.rm = TRUE), 0, tolerance = 0.01)
-
-
-    # Bayesian - Partial
-    out <- correlation(iris, include_factors = FALSE, bayesian = TRUE, partial = TRUE)
-    rez <- as.data.frame(summary(out, redundant = TRUE))
-
-    r <- as.matrix(rez[2:5])
-    ppcor <- ppcor::pcor(iris[1:4])
-    expect_equal(max(r - as.matrix(ppcor$estimate)), 0, tolerance = 0.02)
-
-    pd <- as.matrix(attributes(rez)$pd[2:ncol(rez)])
-    p <- bayestestR::pd_to_p(pd)
-    expect_equal(mean(abs(p - as.matrix(ppcor$p.value))), 0, tolerance = 0.001)
+  pd <- as.matrix(attributes(rez)$pd[2:5])
+  p <- bayestestR::pd_to_p(pd)
+  expect_equal(mean(p - hmisc$P, na.rm = TRUE), 0, tolerance = 0.01)
 
 
-    # Bayesian (Full) - Partial
-    out <- correlation(iris, include_factors = FALSE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
-    rez <- as.data.frame(summary(out, redundant = TRUE))
+  # Bayesian - Partial
+  out <- correlation(iris, include_factors = FALSE, bayesian = TRUE, partial = TRUE)
+  rez <- as.data.frame(summary(out, redundant = TRUE))
 
-    r <- as.matrix(rez[2:5])
-    ppcor <- ppcor::pcor(iris[1:4])
-    expect_equal(max(r - as.matrix(ppcor$estimate)), 0, tolerance = 0.02)
-  }
+  r <- as.matrix(rez[2:5])
+  ppcor <- ppcor::pcor(iris[1:4])
+  expect_equal(max(r - as.matrix(ppcor$estimate)), 0, tolerance = 0.02)
+
+  pd <- as.matrix(attributes(rez)$pd[2:ncol(rez)])
+  p <- bayestestR::pd_to_p(pd)
+  expect_equal(mean(abs(p - as.matrix(ppcor$p.value))), 0, tolerance = 0.001)
+
+
+  # Bayesian (Full) - Partial
+  out <- correlation(iris, include_factors = FALSE, bayesian = TRUE, partial = TRUE, partial_bayesian = TRUE)
+  rez <- as.data.frame(summary(out, redundant = TRUE))
+
+  r <- as.matrix(rez[2:5])
+  ppcor <- ppcor::pcor(iris[1:4])
+  expect_equal(max(r - as.matrix(ppcor$estimate)), 0, tolerance = 0.02)
 })
 
 
@@ -153,21 +149,19 @@ test_that("format checks", {
   skip_if_not_installed("BayesFactor")
   skip_if_not_installed("lme4")
 
-  if (.runThisTest) {
-    out <- correlation(
-      iris,
-      include_factors = TRUE,
-      multilevel = TRUE,
-      bayesian = TRUE,
-      partial = TRUE,
-      partial_bayesian = TRUE
-    )
-    expect_equal(c(nrow(out), ncol(out)), c(6, 14))
-    expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4, 5))
-    expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
-  }
-})
 
+  out <- correlation(
+    iris,
+    include_factors = TRUE,
+    multilevel = TRUE,
+    bayesian = TRUE,
+    partial = TRUE,
+    partial_bayesian = TRUE
+  )
+  expect_equal(c(nrow(out), ncol(out)), c(6, 14))
+  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4, 5))
+  expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
+})
 
 
 test_that("specific types", {
