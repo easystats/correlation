@@ -19,7 +19,7 @@ test_that("cor_test kendall", {
 })
 
 test_that("cor_test bayesian", {
-  if (require("BayesFactor", quietly = TRUE)) {
+  if (requiet("BayesFactor")) {
     set.seed(123)
     out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", bayesian = TRUE)
     expect_equal(out$r, -0.1947696, tolerance = 0.01)

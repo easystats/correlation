@@ -16,7 +16,7 @@ test_that("cor_test kendall", {
 
 
 test_that("cor_test bayesian", {
-  if (require("BayesFactor", quietly = TRUE)) {
+  if (requiet("BayesFactor")) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
     expect_equal(out$r, 0.9591191, tolerance = 0.01)
 
@@ -103,7 +103,7 @@ test_that("cor_test robust", {
 test_that("cor_test distance", {
   skip_if(getRversion() < "4.0")
 
-  if (require("energy", quietly = TRUE)) {
+  if (requiet("energy")) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
     comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
     expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.001)
@@ -113,7 +113,7 @@ test_that("cor_test distance", {
 
 
 test_that("cor_test percentage", {
-  if (require("WRS2", quietly = TRUE)) {
+  if (requiet("WRS2")) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "percentage")
     comparison <- WRS2::pbcor(iris$Petal.Length, iris$Petal.Width)
     expect_equal(out$r, as.numeric(comparison$cor), tolerance = 0.01)
@@ -126,7 +126,7 @@ test_that("cor_test shepherd", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd")
   expect_equal(out$r, as.numeric(0.94762), tolerance = 0.01)
 
-  if (require("BayesFactor", quietly = TRUE)) {
+  if (requiet("BayesFactor")) {
     set.seed(333)
     out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd", bayesian = TRUE)
     expect_equal(out2$rho, as.numeric(0.9429992), tolerance = 0.01)
@@ -135,7 +135,7 @@ test_that("cor_test shepherd", {
 
 
 test_that("cor_test blomqvist", {
-  if (require("wdm", quietly = TRUE)) {
+  if (requiet("wdm")) {
     set.seed(333)
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "blomqvist")
     expect_equal(out$r, as.numeric(0.9066667), tolerance = 0.01)
@@ -143,7 +143,7 @@ test_that("cor_test blomqvist", {
 })
 
 test_that("cor_test hoeffding and somers", {
-  if (require("Hmisc", quietly = TRUE)) {
+  if (requiet("Hmisc")) {
     set.seed(333)
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "hoeffding")
     expect_equal(out$r, as.numeric(0.5629277), tolerance = 0.01)
@@ -166,7 +166,7 @@ test_that("cor_test gaussian", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian")
   expect_equal(out$r, as.numeric(0.87137), tolerance = 0.01)
 
-  if (requireNamespace("BayesFactor")) {
+  if (requiet("BayesFactor")) {
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
     expect_equal(out$r, as.numeric(0.8620878), tolerance = 0.01)
   }

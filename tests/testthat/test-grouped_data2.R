@@ -1,5 +1,5 @@
 
-if (require("poorman")) {
+if (requiet("poorman")) {
   df <- subset(mtcars, select = c("am", "mpg", "wt")) %>% group_by(am)
 
   expect_error(
