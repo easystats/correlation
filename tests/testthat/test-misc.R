@@ -1,4 +1,3 @@
-
 test_that("cor_to_cov", {
   cor <- cor(iris[1:4])
   cov <- cov(iris[1:4])

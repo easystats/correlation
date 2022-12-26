@@ -1,4 +1,3 @@
-
 test_that("cor_test frequentist", {
   expect_error(cor_test(iris, Petal.Length, Petal.Width))
 
