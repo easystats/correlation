@@ -2,6 +2,7 @@ test_that("comparison with other packages", {
   skip_if_not_installed("ppcor")
   skip_if_not_installed("Hmisc")
   skip_if_not_installed("lme4")
+  skip_if_not_installed("BayesFactor")
 
   set.seed(333)
 
