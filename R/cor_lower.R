@@ -40,7 +40,7 @@ cor_lower.easycorrelation <- function(x, diag = FALSE, ...) {
   rownames(tri) <- rownames(m)
   colnames(tri) <- colnames(m)
 
-  tokeep <- c()
+  tokeep <- NULL
 
   for (param1 in rownames(m)) {
     for (param2 in colnames(m)) {

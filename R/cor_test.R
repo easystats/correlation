@@ -162,7 +162,7 @@ cor_test <- function(data,
   if (!isFALSE(winsorize) && !is.null(winsorize)) {
     # set default (if not specified)
     if (isTRUE(winsorize)) {
-      winsorize <- .2
+      winsorize <- 0.2
     }
 
     # winsorization would otherwise fail in case of NAs present

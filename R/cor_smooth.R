@@ -105,7 +105,7 @@ cor_smooth.matrix <- function(x,
     x <- suppressWarnings(psych::cor.smooth(x, eig.tol = tol, ...))
   } else {
     out <- try(suppressMessages(mbend::bend(x, method = method, ...)), silent = TRUE)
-    if (inherits(out, as.character("try-error"))) {
+    if (inherits(out, "try-error")) {
       return(x)
     }
     x <- out$bent
@@ -133,7 +133,7 @@ is.positive_definite.matrix <- function(x, tol = 10^-12, ...) {
   eigens <- try(eigen(x), silent = TRUE)
 
   # validation checks
-  if (inherits(eigens, as.character("try-error"))) {
+  if (inherits(eigens, "try-error")) {
     stop(insight::format_message(
       "There is something seriously wrong with the correlation matrix, as some of the eigen values are NA."
     ), call. = FALSE)

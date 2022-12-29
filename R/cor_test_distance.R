@@ -14,7 +14,8 @@
       t = NA,
       df_error = NA,
       p = NA,
-      Method = "Distance"
+      Method = "Distance",
+      stringsAsFactors = FALSE
     )
   } else {
     rez <- .cor_test_distance_corrected(var_x, var_y, ci = ci)
@@ -27,7 +28,8 @@
       t = rez$t,
       df_error = rez$df,
       p = rez$p,
-      Method = "Distance (Bias Corrected)"
+      Method = "Distance (Bias Corrected)",
+      stringsAsFactors = FALSE
     )
   }
 

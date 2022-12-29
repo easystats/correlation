@@ -17,7 +17,11 @@
   if (.vartype(data[[binary]])$is_factor || .vartype(data[[binary]])$is_character) {
     data[[binary]] <- as.numeric(as.factor(data[[binary]]))
   }
-  data[[binary]] <- as.vector((data[[binary]] - min(data[[binary]], na.rm = TRUE)) / diff(range(data[[binary]], na.rm = TRUE), na.rm = TRUE))
+
+  data[[binary]] <- as.vector(
+    (data[[binary]] - min(data[[binary]], na.rm = TRUE)) /
+      (diff(range(data[[binary]], na.rm = TRUE), na.rm = TRUE))
+  )
 
   # Get biserial or point-biserial correlation
   if (method == "biserial") {

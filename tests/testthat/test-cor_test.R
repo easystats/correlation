@@ -123,12 +123,12 @@ test_that("cor_test percentage", {
 test_that("cor_test shepherd", {
   set.seed(333)
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd")
-  expect_equal(out$r, as.numeric(0.94762), tolerance = 0.01)
+  expect_equal(out$r, 0.94762, tolerance = 0.01)
 
   if (requiet("BayesFactor")) {
     set.seed(333)
     out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd", bayesian = TRUE)
-    expect_equal(out2$rho, as.numeric(0.9429992), tolerance = 0.01)
+    expect_equal(out2$rho, 0.9429992, tolerance = 0.01)
   }
 })
 
@@ -137,7 +137,7 @@ test_that("cor_test blomqvist", {
   if (requiet("wdm")) {
     set.seed(333)
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "blomqvist")
-    expect_equal(out$r, as.numeric(0.9066667), tolerance = 0.01)
+    expect_equal(out$r, 0.9066667, tolerance = 0.01)
   }
 })
 
@@ -145,30 +145,29 @@ test_that("cor_test hoeffding and somers", {
   if (requiet("Hmisc")) {
     set.seed(333)
     out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "hoeffding")
-    expect_equal(out$r, as.numeric(0.5629277), tolerance = 0.01)
+    expect_equal(out$r, 0.5629277, tolerance = 0.01)
 
     set.seed(333)
     df <- data.frame(x = 1:6, y = c(0, 0, 1, 0, 1, 1))
     out2 <- cor_test(df, "y", "x", method = "somers")
-    expect_equal(out2$Dxy, as.numeric(0.7777778), tolerance = 0.01)
+    expect_equal(out2$Dxy, 0.7777778, tolerance = 0.01)
   }
 })
 
 test_that("cor_test gamma", {
   set.seed(333)
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gamma")
-  expect_equal(out$r, as.numeric(0.8453925), tolerance = 0.01)
+  expect_equal(out$r, 0.8453925, tolerance = 0.01)
 })
 
 test_that("cor_test gaussian", {
+  requiet("BayesFactor")
   set.seed(333)
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian")
-  expect_equal(out$r, as.numeric(0.87137), tolerance = 0.01)
+  expect_equal(out$r, 0.87137, tolerance = 0.01)
 
-  if (requiet("BayesFactor")) {
-    out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
-    expect_equal(out$r, as.numeric(0.8620878), tolerance = 0.01)
-  }
+  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
+  expect_equal(out$r, 0.8620878, tolerance = 0.01)
 })
 
 

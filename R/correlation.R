@@ -522,9 +522,12 @@ correlation <- function(data,
     data <- cbind(data, data2)
   }
 
-  if (ncol(data) <= 2 && any(sapply(data, is.factor)) && !include_factors) {
+  if (ncol(data) <= 2L && any(sapply(data, is.factor)) && !include_factors) {
     if (isTRUE(verbose)) {
-      warning(insight::format_message("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you."), call. = FALSE)
+      warning(
+        insight::format_message("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you."),
+        call. = FALSE
+      )
     }
     include_factors <- TRUE
   }

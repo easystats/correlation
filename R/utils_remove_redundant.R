@@ -49,8 +49,8 @@
 
 #' @keywords internal
 .get_rows_non_NA <- function(m) {
-  rows <- c()
-  cols <- c()
+  rows <- NULL
+  cols <- NULL
 
   for (col in colnames(m)) {
     for (row in seq_len(nrow(m))) {

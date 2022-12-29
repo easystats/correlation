@@ -107,20 +107,20 @@ test_that("format checks", {
   skip_if_not_installed("psych")
 
   out <- correlation(iris, include_factors = TRUE)
-  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7, 8))
-  expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(6, 7))
+  expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7L, 8L))
+  expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(6L, 7L))
 
   out <- correlation(iris, method = "auto", include_factors = TRUE)
-  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7, 8))
-  expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(6, 7))
+  expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7L, 8L))
+  expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(6L, 7L))
 
   expect_true(all(c("Pearson correlation", "Point-biserial correlation", "Tetrachoric correlation") %in% out$Method))
 
   # X and Y
   out <- correlation(iris[1:2], iris[3:4])
-  expect_equal(c(nrow(out), ncol(out)), c(4, 11))
-  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(2, 3))
-  expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(2, 3))
+  expect_identical(c(nrow(out), ncol(out)), c(4L, 11L))
+  expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(2L, 3L))
+  expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(2L, 3L))
 
   # Grouped
   skip_if_not_installed("poorman")
@@ -129,9 +129,9 @@ test_that("format checks", {
   out <- iris %>%
     group_by(Species) %>%
     correlation(include_factors = TRUE)
-  expect_equal(c(nrow(out), ncol(out)), c(18, 12))
-  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(12, 6))
-  expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(9, 5))
+  expect_identical(c(nrow(out), ncol(out)), c(18L, 12L))
+  expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(12L, 6L))
+  expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(9L, 5L))
 
   # pipe and select
   out <- iris %>%
@@ -139,12 +139,12 @@ test_that("format checks", {
       select = "Petal.Width",
       select2 = c("Sepal.Length", "Sepal.Width")
     )
-  expect_equal(c(nrow(out), ncol(out)), c(2, 11))
-  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(1, 3))
-  expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(1, 3))
+  expect_identical(c(nrow(out), ncol(out)), c(2L, 11L))
+  expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(1L, 3L))
+  expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(1L, 3L))
   expect_equal(out[["r"]], c(0.8179, -0.3661), tolerance = 1e-2)
-  expect_equal(out$Parameter1, c("Petal.Width", "Petal.Width"))
-  expect_equal(out$Parameter2, c("Sepal.Length", "Sepal.Width"))
+  expect_identical(out$Parameter1, c("Petal.Width", "Petal.Width"))
+  expect_identical(out$Parameter2, c("Sepal.Length", "Sepal.Width"))
 
   # Bayesian full partial
   skip_if_not_installed("BayesFactor")
@@ -159,9 +159,9 @@ test_that("format checks", {
     partial = TRUE,
     partial_bayesian = TRUE
   )
-  expect_equal(c(nrow(out), ncol(out)), c(6, 14))
-  expect_equal(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4, 5))
-  expect_equal(c(nrow(summary(out)), ncol(summary(out))), c(3, 4))
+  expect_identical(c(nrow(out), ncol(out)), c(6L, 14L))
+  expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(4L, 5L))
+  expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(3L, 4L))
 })
 
 
@@ -185,7 +185,7 @@ test_that("correlation doesn't fail when BFs are NA", {
 
   set.seed(123)
   df_corr <- correlation(subset(df, vore == "carni"), bayesian = TRUE)
-  expect_equal(nrow(df_corr), 15L)
+  expect_identical(nrow(df_corr), 15L)
 })
 
 test_that("as.data.frame for correlation output", {
