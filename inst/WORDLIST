@@ -1,4 +1,5 @@
 Albers
+Args
 BFs
 Bhushan
 Biometrika
@@ -9,11 +10,12 @@ Blomqvist's
 Blomqvist’s
 Bonett
 Boudt
+CMD
 Cornelissen
 Croux
 DOI
 Dayum
-De
+Dom
 Dxy
 Fieller
 GES
@@ -28,13 +30,14 @@ Horvath
 Jans
 Jorjani
 Langfelder
+Mattan
 Mmh
 Mohnert
+ORCID
 PNAS
 Penrose
 Polychoric
 Pseudoinverse
-Rees
 Schaeffer
 Schimdt
 Shachar
@@ -55,6 +58,7 @@ Zar
 al
 biserial
 blomqvist
+bmwiernik
 bw
 codecov
 colour
@@ -74,11 +78,14 @@ https
 inversed
 joss
 kendall
+labelled
+mattansb
 midcorrelation
 partialization
 partialized
 partialled
 partialling
+patilindrajeets
 pearson
 pinv
 polychoric
@@ -89,6 +96,7 @@ ressembles
 rmarkdown
 semipartial
 spearman
+strengejacke
 tetrachoric
 theorised
 tidyverse
