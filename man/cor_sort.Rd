@@ -4,7 +4,7 @@
 \alias{cor_sort}
 \title{Sort a correlation matrix to improve readability of groups and clusters}
 \usage{
-cor_sort(x, distance = "correlation", ...)
+cor_sort(x, distance = "correlation", hclust_method = "complete", ...)
 }
 \arguments{
 \item{x}{A correlation matrix.}
@@ -14,13 +14,15 @@ If \code{correlation} (default; suited for correlation matrices), the matrix
 will be rescaled to 0-1 (\code{distance = 0} indicating correlation of \code{1};
 \code{distance = 1} indicating correlation of \code{-1}). If \code{raw}, then the matrix
 will be used as a distance matrix as-is. Can be others (\code{euclidean},
-\code{manhattan}, ...), in which case it will be passed to \code{dist()} (see the
+\code{manhattan}, ...), in which case it will be passed to \code{\link[=dist]{dist()}} (see the
 arguments for it).}
+
+\item{hclust_method}{Argument passed down into the \code{method} arg of \code{\link[=hclust]{hclust()}}.}
 
 \item{...}{Other arguments to be passed to or from other functions.}
 }
 \description{
-Sort a correlation matrix based on \code{hclust}.
+Sort a correlation matrix based on \code{\link[=hclust]{hclust()}}.
 }
 \examples{
 x <- correlation(mtcars)
