@@ -10,7 +10,7 @@
 #'   will be used as a distance matrix as-is. Can be others (`euclidean`,
 #'   `manhattan`, ...), in which case it will be passed to [`dist()`] (see the
 #'   arguments for it).
-#' @param hclust_method Argument passed down into the `method` arg of [`hclust()`].
+#' @param hclust_method Argument passed down into the `method` argument of [`hclust()`].
 #' @param ... Other arguments to be passed to or from other functions.
 #'
 #' @examples

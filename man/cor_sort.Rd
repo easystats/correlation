@@ -17,7 +17,7 @@ will be used as a distance matrix as-is. Can be others (\code{euclidean},
 \code{manhattan}, ...), in which case it will be passed to \code{\link[=dist]{dist()}} (see the
 arguments for it).}
 
-\item{hclust_method}{Argument passed down into the \code{method} arg of \code{\link[=hclust]{hclust()}}.}
+\item{hclust_method}{Argument passed down into the \code{method} argument of \code{\link[=hclust]{hclust()}}.}
 
 \item{...}{Other arguments to be passed to or from other functions.}
 }
