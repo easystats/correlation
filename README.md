@@ -2,9 +2,9 @@
 # correlation <img src='man/figures/logo.png' align="right" height="139" />
 
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02306/status.svg)](https://doi.org/10.21105/joss.02306)
-[![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
 [![total](https://cranlogs.r-pkg.org/badges/grand-total/correlation)](https://cranlogs.r-pkg.org/)
 [![status](https://tinyverse.netlify.com/badge/correlation)](https://CRAN.R-project.org/package=correlation)
+<!-- [![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation) -->
 
 `correlation` is an
 [**easystats**](https://github.com/easystats/easystats) package focused
@@ -21,14 +21,14 @@ partial multilevel correlation*).
 
 You can cite the package as follows:
 
+Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2020).
+Methods and algorithms for correlation analysis in R. *Journal of Open
+Source Software*, *5*(51), 2306. <https://doi.org/10.21105/joss.02306>
+
 Makowski, D., Wiernik, B. M., Patil, I., Lüdecke, D., & Ben-Shachar, M.
 S. (2022). *correlation*: Methods for correlation analysis \[R
 package\]. <https://CRAN.R-project.org/package=correlation> (Original
 work published 2020)
-
-Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2020).
-Methods and algorithms for correlation analysis in R. *Journal of Open
-Source Software*, *5*(51), 2306. <https://doi.org/10.21105/joss.02306>
 
 # Installation
 
@@ -203,11 +203,11 @@ correlation(iris, bayesian = TRUE)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF
 ## --------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.04] |  92.07% |    44.15% | Beta (3 +- 3) |       0.509
-## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.74,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.04] |  91.83% |    44.02% | Beta (3 +- 3) |       0.509
+## Sepal.Length | Petal.Length |  0.86 | [ 0.81,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
 ## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.49, -0.21] | 100%*** |     0.03% | Beta (3 +- 3) | 5.29e+03***
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.49, -0.21] | 100%*** |     0.07% | Beta (3 +- 3) | 5.29e+03***
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
 ## 
 ## Observations: 150

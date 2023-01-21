@@ -13,17 +13,15 @@ options(digits = 2)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
-  dpi = 450,
+  dpi = 300,
   message = FALSE,
   warning = FALSE,
   fig.path = "man/figures/"
 )
 ```
 
-
-[![DOI](https://joss.theoj.org/papers/10.21105/joss.02306/status.svg)](https://doi.org/10.21105/joss.02306)
-[![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
-[![total](https://cranlogs.r-pkg.org/badges/grand-total/correlation)](https://cranlogs.r-pkg.org/) [![status](https://tinyverse.netlify.com/badge/correlation)](https://CRAN.R-project.org/package=correlation) 
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.02306/status.svg)](https://doi.org/10.21105/joss.02306) [![total](https://cranlogs.r-pkg.org/badges/grand-total/correlation)](https://cranlogs.r-pkg.org/) [![status](https://tinyverse.netlify.com/badge/correlation)](https://CRAN.R-project.org/package=correlation) 
+<!-- [![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation) -->
 
 `correlation` is an [**easystats**](https://github.com/easystats/easystats) package focused on correlation analysis. It's lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as **partial** correlations, **Bayesian** correlations, **multilevel** correlations, **polychoric** correlations, **biweight**, **percentage bend** or **Sheperd's Pi** correlations (types of robust correlation), **distance** correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, *Bayesian partial multilevel correlation*).
 
@@ -31,10 +29,10 @@ knitr::opts_chunk$set(
 
 You can cite the package as follows:
 
-Makowski, D., Wiernik, B. M., Patil, I., Lüdecke, D., \& Ben-Shachar, M. S. (2022). *correlation*: Methods for correlation analysis [R package]. https://CRAN.R-project.org/package=correlation (Original work published 2020)
-
 Makowski, D., Ben-Shachar, M. S., Patil, I., \& Lüdecke, D. (2020). Methods and algorithms for correlation analysis in R. _Journal of Open Source Software_,
 *5*(51), 2306. https://doi.org/10.21105/joss.02306
+
+Makowski, D., Wiernik, B. M., Patil, I., Lüdecke, D., \& Ben-Shachar, M. S. (2022). *correlation*: Methods for correlation analysis [R package]. https://CRAN.R-project.org/package=correlation (Original work published 2020)
 
 # Installation
 
@@ -143,7 +141,6 @@ iris %>%
   correlation()
 ```
 
-
 ## Bayesian Correlations
 
 It is very easy to switch to a **Bayesian framework**.
@@ -160,7 +157,6 @@ deal with correlations **between factors**!
 ```{r README-10}
 correlation(iris, include_factors = TRUE, method = "auto")
 ```
-
 
 ## Partial Correlations
 
@@ -219,4 +215,3 @@ In case you want to file an issue or contribute in another way to the package, p
 
 Please note that this project is released with a 
 [Contributor Code of Conduct](https://easystats.github.io/correlation/CODE_OF_CONDUCT.html). By participating in this project you agree to abide by its terms.
-
