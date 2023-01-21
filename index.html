@@ -127,15 +127,15 @@
 <img src="logo.png" class="logo" alt=""><h1 id="correlation-">correlation <a class="anchor" aria-label="anchor" href="#correlation-"></a>
 </h1>
 </div>
-<p><a href="https://doi.org/10.21105/joss.02306" class="external-link"><img src="https://joss.theoj.org/papers/10.21105/joss.02306/status.svg" alt="DOI"></a> <a href="https://cran.r-project.org/package=correlation" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/correlation" alt="downloads"></a> <a href="https://cranlogs.r-pkg.org/" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/correlation" alt="total"></a> <a href="https://CRAN.R-project.org/package=correlation" class="external-link"><img src="https://tinyverse.netlify.com/badge/correlation" alt="status"></a></p>
+<p><a href="https://doi.org/10.21105/joss.02306" class="external-link"><img src="https://joss.theoj.org/papers/10.21105/joss.02306/status.svg" alt="DOI"></a> <a href="https://cranlogs.r-pkg.org/" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/correlation" alt="total"></a> <a href="https://CRAN.R-project.org/package=correlation" class="external-link"><img src="https://tinyverse.netlify.com/badge/correlation" alt="status"></a> <!-- [![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation) --></p>
 <p><code>correlation</code> is an <a href="https://github.com/easystats/easystats" class="external-link"><strong>easystats</strong></a> package focused on correlation analysis. It’s lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as <strong>partial</strong> correlations, <strong>Bayesian</strong> correlations, <strong>multilevel</strong> correlations, <strong>polychoric</strong> correlations, <strong>biweight</strong>, <strong>percentage bend</strong> or <strong>Sheperd’s Pi</strong> correlations (types of robust correlation), <strong>distance</strong> correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, <em>Bayesian partial multilevel correlation</em>).</p>
 </div>
 <div class="section level1">
 <h1 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h1>
 <p>You can cite the package as follows:</p>
-<p>Makowski, D., Wiernik, B. M., Patil, I., Lüdecke, D., &amp; Ben-Shachar, M. S. (2022). <em>correlation</em>: Methods for correlation analysis [R package]. <a href="https://CRAN.R-project.org/package=correlation" class="external-link uri">https://CRAN.R-project.org/package=correlation</a> (Original work published 2020)</p>
 <p>Makowski, D., Ben-Shachar, M. S., Patil, I., &amp; Lüdecke, D. (2020). Methods and algorithms for correlation analysis in R. <em>Journal of Open Source Software</em>, <em>5</em>(51), 2306. <a href="https://doi.org/10.21105/joss.02306" class="external-link uri">https://doi.org/10.21105/joss.02306</a></p>
+<p>Makowski, D., Wiernik, B. M., Patil, I., Lüdecke, D., &amp; Ben-Shachar, M. S. (2022). <em>correlation</em>: Methods for correlation analysis [R package]. <a href="https://CRAN.R-project.org/package=correlation" class="external-link uri">https://CRAN.R-project.org/package=correlation</a> (Original work published 2020)</p>
 </div>
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -287,11 +287,11 @@
 <span><span class="co">## </span></span>
 <span><span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF</span></span>
 <span><span class="co">## --------------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.04] |  92.07% |    44.15% | Beta (3 +- 3) |       0.509</span></span>
-<span><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***</span></span>
-<span><span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.74,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***</span></span>
+<span><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.25,  0.04] |  91.83% |    44.02% | Beta (3 +- 3) |       0.509</span></span>
+<span><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.81,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***</span></span>
+<span><span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***</span></span>
 <span><span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***</span></span>
-<span><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.49, -0.21] | 100%*** |     0.03% | Beta (3 +- 3) | 5.29e+03***</span></span>
+<span><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.49, -0.21] | 100%*** |     0.07% | Beta (3 +- 3) | 5.29e+03***</span></span>
 <span><span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Observations: 150</span></span></code></pre></div>
