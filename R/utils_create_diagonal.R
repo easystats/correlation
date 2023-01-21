@@ -37,7 +37,10 @@
 
   for (var in names(params)[!names(params) %in% names(diagonal)]) {
     if (length(unique(params[[var]])) > 1) {
-      stop(insight::format_message("Something's unexpected happened when creating the diagonal data. Please open an issue at https://github.com/easystats/correlation/issues"), call. = FALSE)
+      stop(
+        insight::format_message("Something's unexpected happened when creating the diagonal data. Please open an issue at https://github.com/easystats/correlation/issues"),
+        call. = FALSE
+      )
     }
     diagonal[[var]] <- unique(params[[var]])[1]
   }

@@ -39,7 +39,10 @@ summary.easycorrelation <- function(object,
   }
 
   # Transfer attributes
-  attributes(out) <- c(attributes(out), attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))])
+  attributes(out) <- c(
+    attributes(out),
+    attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))]
+  )
   attributes(out) <- c(attributes(out), list(...))
   attr(out, "redundant") <- redundant
   attr(out, "coefficient_name") <- target
