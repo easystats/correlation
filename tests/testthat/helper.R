@@ -6,7 +6,7 @@ requiet <- function(package) {
 }
 
 # load all hard dependencies
-library(bayestestR)
-library(insight)
-library(datawizard)
-library(parameters)
+requiet("bayestestR")
+requiet("insight")
+requiet("datawizard")
+requiet("parameters")
