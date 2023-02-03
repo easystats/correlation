@@ -127,6 +127,9 @@ visualisation_recipe.easycormatrix <- function(x,
   # filter `NA`s
   data <- data[!is.na(data$r), ]
 
+  # add absolute r-value, required as aes for point size
+  data$abs_r <- abs(data$r)
+
   # if redundant, remove diagonal self-correlation, and fill with NA again
   if (isTRUE(is_redundant)) {
     self_cor <- which(data$Parameter1 == data$Parameter2)
@@ -159,7 +162,8 @@ visualisation_recipe.easycormatrix <- function(x,
         y = "Parameter1",
         fill = "r",
         args = point,
-        dot_args = ellipses
+        dot_args = ellipses,
+        abs_fill = "abs_r"
       )
     }
     l <- l + 1
@@ -168,7 +172,7 @@ visualisation_recipe.easycormatrix <- function(x,
 
 
   # Add text
-  if (!is.null(show_text) && show_text != FALSE) {
+  if (!is.null(show_text) && !isFALSE(show_text)) {
     layers[[paste0("l", l)]] <- .visualisation_easycormatrix_text(
       data,
       x = "Parameter2",
@@ -222,7 +226,14 @@ visualisation_recipe.easycormatrix <- function(x,
 
 # Layer - Data -------------------------------------------------------------
 
-.visualisation_easycormatrix_data <- function(type = "tile", data, x, y, fill, args = NULL, dot_args = NULL) {
+.visualisation_easycormatrix_data <- function(type = "tile",
+                                              data,
+                                              x,
+                                              y,
+                                              fill,
+                                              args = NULL,
+                                              dot_args = NULL,
+                                              abs_fill = NULL) {
   out <- list(
     geom = type,
     data = data,
@@ -239,6 +250,9 @@ visualisation_recipe.easycormatrix <- function(x,
       out$size <- dot_args$point_size
     } else if (!is.null(dot_args$size_point)) {
       out$size <- dot_args$size_point
+    } else if (!is.null(abs_fill)) {
+      # hack needed for size-aes for point-geoms
+      out$aes$size <- abs_fill
     } else {
       out$aes$size <- paste0("abs(", fill, ")")
     }
