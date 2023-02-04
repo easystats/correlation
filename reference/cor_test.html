@@ -12,7 +12,7 @@ You can easily visualize the result using plot() (see examples here)."><meta pro
     
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -506,8 +506,11 @@ Bayesian rank correlations (which have different priors).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 150</span>
 <span class="r-in"><span><span class="fu">cor_test</span><span class="op">(</span><span class="va">iris</span>, <span class="st">"Sepal.Length"</span>, <span class="st">"Sepal.Width"</span>, partial_bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Package `rstanarm` required for this function to work.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   Please install it by running `install.packages(`rstanarm`)`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |  Parameter2 |    r |       95% CI | t(148) |         p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Sepal.Width | 0.43 | [0.29, 0.55] |   5.84 | &lt; .001***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 150</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
