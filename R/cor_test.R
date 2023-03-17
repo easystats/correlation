@@ -133,7 +133,7 @@ cor_test <- function(data,
                      ...) {
   # valid matrix checks
   if (!all(x %in% names(data)) || !all(y %in% names(data))) {
-    stop("The names you entered for x and y are not available in the dataset. Make sure there are no typos!", call. = FALSE)
+    insight::format_error("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
   }
 
   if (ci == "default") ci <- 0.95
@@ -154,7 +154,7 @@ cor_test <- function(data,
 
     # semi-partial
     if (partial == "semi") {
-      stop("Semi-partial correlations are not supported yet. Get in touch if you want to contribute.", call. = FALSE)
+      insight::format_error("Semi-partial correlations are not supported yet. Get in touch if you want to contribute.")
     }
   }
 
@@ -186,7 +186,7 @@ cor_test <- function(data,
   invalid <- FALSE
   if (n_obs < 3L) {
     if (isTRUE(verbose)) {
-      warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."), call. = FALSE)
+      warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."))
     }
     invalid <- TRUE
     original_info <- list(data = data, x = x, y = y)
@@ -234,23 +234,23 @@ cor_test <- function(data,
     # Bayesian
   } else {
     if (method %in% c("tetra", "tetrachoric")) {
-      stop("Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.", call. = FALSE)
+      insight::format_error("Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("poly", "polychoric")) {
-      stop("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.", call. = FALSE)
+      insight::format_error("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
-      stop("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.", call. = FALSE)
+      insight::format_error("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("biweight")) {
-      stop("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.", call. = FALSE)
+      insight::format_error("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("distance")) {
-      stop("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.", call. = FALSE)
+      insight::format_error("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
-      stop("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.", call. = FALSE)
+      insight::format_error("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("blomqvist", "median", "medial")) {
-      stop("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).", call. = FALSE)
+      insight::format_error("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
     } else if (method %in% c("hoeffding")) {
-      stop("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).", call. = FALSE)
+      insight::format_error("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
     } else if (method %in% c("gamma")) {
-      stop("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.", call. = FALSE)
+      insight::format_error("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
     } else {
