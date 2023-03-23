@@ -1,7 +1,7 @@
 Type: Package
 Package: correlation
 Title: Methods for Correlation Analysis
-Version: 0.8.3.2
+Version: 0.8.3.3
 Authors@R: 
     c(person(given = "Dominique",
              family = "Makowski",
@@ -51,8 +51,8 @@ Depends:
 Imports:
     bayestestR (>= 0.13.0),
     datasets,
-    datawizard (>= 0.6.5),
-    insight (>= 0.19.0),
+    datawizard (>= 0.7.0),
+    insight (>= 0.19.1),
     parameters (>= 0.20.2),
     stats
 Suggests:
@@ -71,8 +71,9 @@ Suggests:
     psych,
     rmarkdown,
     rmcorr,
+    rstanarm,
     see,
-    testthat (>= 3.1.0),
+    testthat (>= 3.1.6),
     tidygraph,
     wdm,
     WRS2

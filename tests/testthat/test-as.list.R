@@ -8,15 +8,19 @@ test_that("as.list", {
 
   # with groups
   set.seed(123)
-  expect_snapshot(suppressWarnings(as.list(msleep %>%
-    group_by(vore) %>%
-    correlation(method = "spearman"))))
+  expect_snapshot(suppressWarnings(
+    as.list(msleep %>%
+      group_by(vore) %>%
+      correlation(method = "spearman"))
+  ))
 
-  expect_snapshot(suppressWarnings(as.list(mtcars %>%
-    group_by(am) %>%
-    correlation(
-      select = c("cyl", "wt"),
-      select2 = c("hp"),
-      method = "percentage"
-    ))))
+  expect_snapshot(suppressWarnings(
+    as.list(mtcars %>%
+      group_by(am) %>%
+      correlation(
+        select = c("cyl", "wt"),
+        select2 = c("hp"),
+        method = "percentage"
+      ))
+  ))
 })

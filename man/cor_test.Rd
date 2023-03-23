@@ -228,9 +228,11 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
+
 if (require("wdm", quietly = TRUE)) {
   cor_test(iris, "Sepal.Length", "Sepal.Width", method = "blomqvist")
 }
+
 if (require("Hmisc", quietly = TRUE)) {
   cor_test(iris, "Sepal.Length", "Sepal.Width", method = "hoeffding")
 }
@@ -249,7 +251,7 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", ranktransform 
 cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
 
 # Tetrachoric
-if (require("psych", quietly = TRUE)) {
+if (require("psych", quietly = TRUE) && require("rstanarm", quietly = TRUE)) {
   data <- iris
   data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
   data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
