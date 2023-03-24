@@ -22,6 +22,7 @@ test_that("z_fisher works", {
 })
 
 test_that("simulate_simpson works", {
+  skip_if_not_or_load_if_installed("MASS")
   set.seed(123)
   df <- bayestestR::simulate_simpson(n = 100, groups = 5, r = 0.5)
   expect_equal(dim(df), c(500L, 3L))
