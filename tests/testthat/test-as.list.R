@@ -1,7 +1,7 @@
-requiet("poorman")
-requiet("ggplot2")
-
 test_that("as.list", {
+  skip_if_not_or_load_if_installed("poorman")
+  skip_if_not_or_load_if_installed("ggplot2")
+
   # no groups
   set.seed(123)
   expect_snapshot(as.list(correlation(mtcars)))

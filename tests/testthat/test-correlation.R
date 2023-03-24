@@ -1,8 +1,8 @@
 test_that("comparison with other packages", {
-  skip_if_not_installed("ppcor")
-  skip_if_not_installed("Hmisc")
-  skip_if_not_installed("lme4")
-  skip_if_not_installed("BayesFactor")
+  skip_if_not_or_load_if_installed("ppcor")
+  skip_if_not_or_load_if_installed("Hmisc")
+  skip_if_not_or_load_if_installed("lme4")
+  skip_if_not_or_load_if_installed("BayesFactor")
 
   set.seed(333)
 
@@ -104,13 +104,16 @@ test_that("comparison with other packages", {
 
 # Size
 test_that("format checks", {
-  skip_if_not_installed("psych")
+  skip_if_not_or_load_if_installed("psych")
 
   out <- correlation(iris, include_factors = TRUE)
   expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7L, 8L))
   expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(6L, 7L))
 
-  out <- correlation(iris, method = "auto", include_factors = TRUE)
+  expect_message(
+    out <- correlation(iris, method = "auto", include_factors = TRUE),
+    "Check your data"
+  )
   expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7L, 8L))
   expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(6L, 7L))
 
@@ -123,7 +126,7 @@ test_that("format checks", {
   expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(2L, 3L))
 
   # Grouped
-  skip_if_not_installed("poorman")
+  skip_if_not_or_load_if_installed("poorman")
   library(poorman)
 
   out <- iris %>%
@@ -147,8 +150,8 @@ test_that("format checks", {
   expect_identical(out$Parameter2, c("Sepal.Length", "Sepal.Width"))
 
   # Bayesian full partial
-  skip_if_not_installed("BayesFactor")
-  skip_if_not_installed("lme4")
+  skip_if_not_or_load_if_installed("BayesFactor")
+  skip_if_not_or_load_if_installed("lme4")
 
 
   out <- correlation(
@@ -167,7 +170,7 @@ test_that("format checks", {
 
 test_that("specific types", {
   skip_on_cran()
-  skip_if_not_installed("psych")
+  skip_if_not_or_load_if_installed("psych")
 
   data <- data.frame(
     x = as.ordered(sample(1:5, 20, TRUE)),
@@ -178,8 +181,8 @@ test_that("specific types", {
 })
 
 test_that("correlation doesn't fail when BFs are NA", {
-  skip_if_not_installed("ggplot2")
-  skip_if_not_installed("BayesFactor")
+  skip_if_not_or_load_if_installed("ggplot2")
+  skip_if_not_or_load_if_installed("BayesFactor")
 
   df <- ggplot2::msleep
 
@@ -190,7 +193,7 @@ test_that("correlation doesn't fail when BFs are NA", {
 
 test_that("as.data.frame for correlation output", {
   skip_on_cran()
-  skip_if_not_installed("ggplot2")
+  skip_if_not_or_load_if_installed("ggplot2")
 
   set.seed(123)
   expect_snapshot(as.data.frame(correlation(ggplot2::msleep)))

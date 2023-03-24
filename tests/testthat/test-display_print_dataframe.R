@@ -1,7 +1,6 @@
-requiet("gt")
-
 test_that("display and print method works - markdown", {
   skip_on_cran()
+  skip_if_not_or_load_if_installed("gt")
 
   expect_snapshot(print(correlation(iris)))
 
@@ -12,6 +11,7 @@ test_that("display and print method works - markdown", {
 
 test_that("display and print method works - HTML", {
   skip_on_cran()
+  skip_if_not_or_load_if_installed("gt")
 
   expect_snapshot(display(print(correlation(subset(mtcars, select = c("wt", "mpg"))), format = "html")))
 

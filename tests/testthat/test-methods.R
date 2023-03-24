@@ -5,7 +5,7 @@ test_that("as.matrix.correlation", {
 })
 
 test_that("summary.correlation - target column", {
-  skip_if_not_installed("ggplot2")
+  skip_if_not_or_load_if_installed("ggplot2")
   expect_snapshot(summary(correlation(ggplot2::msleep), target = "t"))
   expect_snapshot(summary(correlation(ggplot2::msleep), target = "df_error"))
   expect_snapshot(summary(correlation(ggplot2::msleep), target = "p"))

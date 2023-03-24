@@ -1,7 +1,7 @@
-requiet("ppcor")
-requiet("Hmisc")
-
 test_that("pcor_to_cor", {
+  skip_if_not_or_load_if_installed("ppcor")
+  skip_if_not_or_load_if_installed("Hmisc")
+
   set.seed(333)
 
   # easycormatrix
@@ -35,6 +35,8 @@ test_that("pcor_to_cor", {
 
 
 test_that("spcor_to_cor", {
+  skip_if_not_or_load_if_installed("ppcor")
+
   set.seed(333)
 
   # easycormatrix
