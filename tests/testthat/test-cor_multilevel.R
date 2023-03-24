@@ -1,7 +1,6 @@
-requiet("lme4")
-
 test_that("comparison rmcorr", {
-  requiet("rmcorr")
+  skip_if_not_or_load_if_installed("lme4")
+  skip_if_not_or_load_if_installed("rmcorr")
   set.seed(123)
   rez_rmcorr <- rmcorr::rmcorr(Species, Sepal.Length, Sepal.Width, dataset = iris)
 
@@ -17,6 +16,7 @@ test_that("comparison rmcorr", {
 
 
 test_that("Reductio ad absurdum", {
+  skip_if_not_or_load_if_installed("lme4")
   cormatrix <- matrix(
     c(
       1.0, 0.3, 0.6,
