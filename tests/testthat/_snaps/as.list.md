@@ -214,7 +214,7 @@
 
     Code
       suppressWarnings(as.list(mtcars %>% group_by(am) %>% correlation(select = c(
-        "cyl", "wt"), select2 = c("hp"), method = "percentage")))
+        "cyl", "wt"), select2 = "hp", method = "percentage")))
     Output
       ===
        0 

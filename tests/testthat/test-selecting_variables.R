@@ -6,7 +6,7 @@ test_that("selecting specific variables works", {
   df1 <- mtcars %>%
     correlation(
       select = c("cyl", "wt"),
-      select2 = c("hp")
+      select2 = "hp"
     )
 
   set.seed(123)
@@ -14,7 +14,7 @@ test_that("selecting specific variables works", {
     group_by(am) %>%
     correlation(
       select = c("cyl", "wt"),
-      select2 = c("hp")
+      select2 = "hp"
     )
 
   set.seed(123)

@@ -55,7 +55,7 @@ visualisation_recipe.easycor_test <- function(x,
   )
 
   # Text
-  if (!is.null(show_text) && show_text != FALSE && show_text %in% c("text", "label")) {
+  if (!is.null(show_text) && show_text && show_text %in% c("text", "label")) {
     # Add text
     x$label <- cor_text(x, ...)
     x$label_x <- max(data[[x$Parameter1]], na.rm = TRUE)

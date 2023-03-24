@@ -208,7 +208,7 @@ generate_results <- function(r, n = 100, transformation = "none") {
 ```{r}
 data <- data.frame()
 for (r in seq(0, 0.999, length.out = 200)) {
-  for (n in c(100)) {
+  for (n in 100) {
     for (transformation in c(
       "none",
       "exp(",

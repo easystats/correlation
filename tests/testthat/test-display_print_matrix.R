@@ -23,10 +23,10 @@ test_that("as.matrix works", {
   mat1 <- select(mtcars, am, wt, hp) %>%
     correlation() %>%
     as.matrix()
-    set.seed(123)
+  set.seed(123)
   mat2 <- select(mtcars, am, wt, hp) %>%
     group_by(am) %>%
     correlation() %>%
     as.matrix()
-    expect_snapshot(list(mat1, mat2))
+  expect_snapshot(list(mat1, mat2))
 })

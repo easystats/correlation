@@ -57,7 +57,8 @@ parameters for the geoms (see customization example).}
 Objects from the \code{correlation} package can be easily visualized. You can
 simply run \code{plot()} on them, which will internally call the \code{visualisation_recipe()}
 method to produce a basic \code{ggplot}. You can customize this plot ad-hoc or via
-the arguments described below. See examples \href{https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples}{\strong{here}}.
+the arguments described below.
+See examples \href{https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples}{\strong{here}}.
 }
 \examples{
 \donttest{

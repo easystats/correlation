@@ -36,7 +36,7 @@
   if ("Prior_Scale" %in% names(params)) diagonal$Prior_Scale <- unique(params$Prior_Scale)[1]
 
   for (var in names(params)[!names(params) %in% names(diagonal)]) {
-    if (length(unique(params[[var]])) > 1) {
+    if (length(unique(params[[var]])) > 1L) {
       stop(
         insight::format_message("Something's unexpected happened when creating the diagonal data. Please open an issue at https://github.com/easystats/correlation/issues"),
         call. = FALSE

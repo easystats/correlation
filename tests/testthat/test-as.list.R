@@ -19,7 +19,7 @@ test_that("as.list", {
       group_by(am) %>%
       correlation(
         select = c("cyl", "wt"),
-        select2 = c("hp"),
+        select2 = "hp",
         method = "percentage"
       ))
   ))
