@@ -289,7 +289,9 @@ correlation <- function(data,
     all_selected <- c(select, select2)
     not_in_data <- !all_selected %in% colnames(data)
     if (any(not_in_data)) {
-      stop(paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", "), call. = FALSE)
+      insight::format_error(
+        paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", ")
+      )
     }
 
     # for grouped df, add group variables to both data frames
@@ -313,7 +315,7 @@ correlation <- function(data,
   # renaming the columns if so desired
   if (!is.null(rename)) {
     if (length(data) != length(rename)) {
-      warning("Mismatch between number of variables and names.", call. = FALSE)
+      insight::format_warning("Mismatch between number of variables and names.")
     } else {
       colnames(data) <- rename
     }
@@ -525,10 +527,7 @@ correlation <- function(data,
 
   if (ncol(data) <= 2L && any(sapply(data, is.factor)) && !include_factors) {
     if (isTRUE(verbose)) {
-      warning(
-        insight::format_message("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you."),
-        call. = FALSE
-      )
+      insight::format_warning("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you.")
     }
     include_factors <- TRUE
   }

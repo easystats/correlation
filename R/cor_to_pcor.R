@@ -135,7 +135,8 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
         df_error = nobs[row, col] - 2,
         p = p$p[row, col],
         Method = "Pearson",
-        n_Obs = nobs[row, col]
+        n_Obs = nobs[row, col],
+        stringsAsFactors = FALSE
       )
     )
   }
@@ -251,11 +252,9 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
       cor <- stats::cov2cor(cov)
     }
   } else {
-    if (inherits(cor, "easycormatrix")) {
-      if (colnames(cor)[1] == "Parameter") {
-        row.names(cor) <- cor$Parameter
-        cor <- as.matrix(cor[-1])
-      }
+    if (inherits(cor, "easycormatrix") && colnames(cor)[1] == "Parameter") {
+      row.names(cor) <- cor$Parameter
+      cor <- as.matrix(cor[-1])
     }
   }
   cor

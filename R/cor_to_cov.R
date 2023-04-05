@@ -16,12 +16,12 @@
 cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.eps^(2 / 3)) {
   # valid matrix checks
   if (!isSquare(cor)) {
-    stop("The matrix should be a square matrix.", call. = FALSE)
+    insight::format_error("The matrix should be a square matrix.")
   }
 
   if (is.null(sd)) {
     if (is.null(variance)) {
-      stop("SD or variance of variables needs to be provided.", call. = FALSE)
+      insight::format_error("SD or variance of variables needs to be provided.")
     } else {
       sd <- sqrt(variance)
     }
@@ -30,11 +30,11 @@ cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.ep
   n <- nrow(cor)
 
   if (n != length(sd)) {
-    stop("The length of 'sd' or 'variance' should be the same as the number of rows of the matrix.", call. = FALSE)
+    insight::format_error("The length of 'sd' or 'variance' should be the same as the number of rows of the matrix.")
   }
 
   if (length(sd[sd > 0]) != n) {
-    stop("The elements in 'sd' or 'variance' should all be non-negative.", call. = FALSE)
+    insight::format_error("The elements in 'sd' or 'variance' should all be non-negative.")
   }
 
   if (isSymmetric(cor)) {
@@ -50,7 +50,7 @@ cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.ep
     is_triangular <- FALSE
   }
   if (!is_symmetric && !is_triangular) {
-    stop("'cor' should be either a symmetric or a triangular matrix", call. = FALSE)
+    insight::format_error("'cor' should be either a symmetric or a triangular matrix")
   }
 
   cov <- diag(sd) %*% cor %*% diag(sd)
