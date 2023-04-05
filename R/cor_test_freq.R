@@ -54,7 +54,7 @@
     out$df_error <- model$parameter
     out$p <- model$p.value
     out$Method <- "Pearson"
-  } else if (grepl("Pearson", model$method)) {
+  } else if (grepl("Pearson", model$method, fixed = TRUE)) {
     out$r <- model$estimate
     out$t <- model$statistic
     out$df_error <- model$parameter
@@ -62,7 +62,7 @@
     out$CI_low <- model$conf.int[1]
     out$CI_high <- model$conf.int[2]
     out$Method <- "Pearson"
-  } else if (grepl("Spearman", model$method)) {
+  } else if (grepl("Spearman", model$method, fixed = TRUE)) {
     out$rho <- model$estimate
     out$S <- model$statistic
     out$df_error <- model$parameter

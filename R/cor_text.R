@@ -23,30 +23,28 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
   text <- paste0(tolower(estimate), " = ", insight::format_value(x[[estimate]]))
 
   # CI
-  if (show_ci) {
-    if (all(c("CI_high", "CI_low") %in% names(x))) {
-      if (!is.null(attributes(x$conf.int)$conf.level)) {
-        # htest
-        text <- paste0(
-          text,
-          ", ",
-          insight::format_ci(x$CI_low, x$CI_high, ci = attributes(x$conf.int)$conf.level)
-        )
-      } else if ("CI" %in% names(x)) {
-        # param
-        text <- paste0(
-          text,
-          ", ",
-          insight::format_ci(x$CI_low, x$CI_high, ci = x$CI)
-        )
-      } else if ("ci" %in% names(attributes(x))) {
-        # param
-        text <- paste0(
-          text,
-          ", ",
-          insight::format_ci(x$CI_low, x$CI_high, ci = attributes(x)$ci)
-        )
-      }
+  if (show_ci && all(c("CI_high", "CI_low") %in% names(x))) {
+    if (!is.null(attributes(x$conf.int)$conf.level)) {
+      # htest
+      text <- paste0(
+        text,
+        ", ",
+        insight::format_ci(x$CI_low, x$CI_high, ci = attributes(x$conf.int)$conf.level)
+      )
+    } else if ("CI" %in% names(x)) {
+      # param
+      text <- paste0(
+        text,
+        ", ",
+        insight::format_ci(x$CI_low, x$CI_high, ci = x$CI)
+      )
+    } else if ("ci" %in% names(attributes(x))) {
+      # param
+      text <- paste0(
+        text,
+        ", ",
+        insight::format_ci(x$CI_low, x$CI_high, ci = attributes(x)$ci)
+      )
     }
   }
 
@@ -76,7 +74,8 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
     if ("p" %in% names(x)) {
       text <- paste0(text, ", ", insight::format_p(x$p, digits = "apa", ...))
     } else if ("BF" %in% names(x)) {
-      if (is.null(exact <- match.call()[["exact"]])) exact <- TRUE
+      exact <- match.call()[["exact"]]
+      if (is.null(exact)) exact <- TRUE
       text <- paste0(text, ", ", insight::format_bf(x$BF, exact = exact, ...))
     } else if ("pd" %in% names(x)) {
       text <- paste0(text, ", ", insight::format_pd(x$pd, ...))

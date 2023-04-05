@@ -7,7 +7,7 @@
 
   # valid matrix check
   if (length(unique(var_x)) > 2 && length(unique(var_y)) > 2) {
-    stop("Tetrachoric correlations can only be ran on dichotomous data.", call. = FALSE)
+    insight::format_error("Tetrachoric correlations can only be ran on dichotomous data.")
   }
 
   # Reconstruct dataframe

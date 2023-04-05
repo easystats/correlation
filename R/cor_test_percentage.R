@@ -9,10 +9,10 @@
   omhaty <- temp[floor((1 - beta) * length(var_y))]
   a <- (var_x - .pbos(var_x, beta)) / omhatx
   b <- (var_y - .pbos(var_y, beta)) / omhaty
-  a <- ifelse(a <= -1, -1, a)
-  a <- ifelse(a >= 1, 1, a)
-  b <- ifelse(b <= -1, -1, b)
-  b <- ifelse(b >= 1, 1, b)
+  a <- pmax(a, -1)
+  a <- pmin(a, 1)
+  b <- pmax(b, -1)
+  b <- pmin(b, 1)
 
   # Result
   r <- sum(a * b) / sqrt(sum(a^2) * sum(b^2))

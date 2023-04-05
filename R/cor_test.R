@@ -188,7 +188,7 @@ cor_test <- function(data,
   invalid <- FALSE
   if (n_obs < 3L) {
     if (isTRUE(verbose)) {
-      warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."))
+      insight::format_warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."))
     }
     invalid <- TRUE
     original_info <- list(data = data, x = x, y = y)
@@ -211,21 +211,21 @@ cor_test <- function(data,
       out <- .cor_test_polychoric(data, x, y, ci = ci, ...)
     } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
       out <- .cor_test_biserial(data, x, y, ci = ci, method = method, ...)
-    } else if (method %in% c("biweight")) {
+    } else if (method == "biweight") {
       out <- .cor_test_biweight(data, x, y, ci = ci, ...)
-    } else if (method %in% c("distance")) {
+    } else if (method == "distance") {
       out <- .cor_test_distance(data, x, y, ci = ci, ...)
     } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       out <- .cor_test_percentage(data, x, y, ci = ci, ...)
     } else if (method %in% c("blomqvist", "median", "medial")) {
       out <- .cor_test_blomqvist(data, x, y, ci = ci, ...)
-    } else if (method %in% c("hoeffding")) {
+    } else if (method == "hoeffding") {
       out <- .cor_test_hoeffding(data, x, y, ci = ci, ...)
-    } else if (method %in% c("somers")) {
+    } else if (method == "somers") {
       out <- .cor_test_somers(data, x, y, ci = ci, ...)
-    } else if (method %in% c("gamma")) {
+    } else if (method == "gamma") {
       out <- .cor_test_gamma(data, x, y, ci = ci, ...)
-    } else if (method %in% c("gaussian")) {
+    } else if (method == "gaussian") {
       out <- .cor_test_gaussian(data, x, y, ci = ci, ...)
     } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
@@ -241,17 +241,17 @@ cor_test <- function(data,
       insight::format_error("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
       insight::format_error("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("biweight")) {
+    } else if (method == "biweight") {
       insight::format_error("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("distance")) {
+    } else if (method == "distance") {
       insight::format_error("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
       insight::format_error("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("blomqvist", "median", "medial")) {
       insight::format_error("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
-    } else if (method %in% c("hoeffding")) {
+    } else if (method == "hoeffding") {
       insight::format_error("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
-    } else if (method %in% c("gamma")) {
+    } else if (method == "gamma") {
       insight::format_error("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
     } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
       out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)

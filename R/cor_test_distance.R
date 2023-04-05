@@ -81,7 +81,7 @@
 #' @keywords internal
 .cor_test_distance_raw <- function(x, y, index = 1) {
   if (index < 0 || index > 2) {
-    stop("`index` must be between 0 and 2.", call. = FALSE)
+    insight::format_error("`index` must be between 0 and 2.")
     index <- 1.0
   }
 
