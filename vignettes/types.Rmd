@@ -236,7 +236,7 @@ data %>%
   ) %>%
   mutate(Type = relevel(as.factor(Type), "Pearson", "Spearman", "Kendall", "Biweight", "Distance")) %>%
   ggplot(aes(x = r, y = Estimation, fill = Type)) +
-  geom_smooth(aes(color = Type), method = "loess", alpha = 0) +
+  geom_smooth(aes(color = Type), method = "loess", alpha = 0, na.rm = TRUE) +
   geom_vline(aes(xintercept = 0.5), linetype = "dashed") +
   geom_hline(aes(yintercept = 0.5), linetype = "dashed") +
   guides(colour = guide_legend(override.aes = list(alpha = 1))) +

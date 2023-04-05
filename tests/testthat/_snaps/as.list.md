@@ -55,7 +55,7 @@
 ---
 
     Code
-      suppressWarnings(as.list(msleep %>% group_by(vore) %>% correlation(method = "spearman")))
+      as.list(correlation(datawizard::data_group(msleep, "vore"), method = "spearman"))
     Output
       =======
        carni 
@@ -213,8 +213,8 @@
 ---
 
     Code
-      suppressWarnings(as.list(mtcars %>% group_by(am) %>% correlation(select = c(
-        "cyl", "wt"), select2 = "hp", method = "percentage")))
+      as.list(correlation(datawizard::data_group(mtcars, "am"), select = c("cyl",
+        "wt"), select2 = "hp", method = "percentage"))
     Output
       ===
        0 
