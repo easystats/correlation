@@ -55,8 +55,166 @@
 ---
 
     Code
-      suppressWarnings(as.list(mtcars %>% group_by(am) %>% correlation(select = c(
-        "cyl", "wt"), select2 = "hp", method = "percentage")))
+      as.list(correlation(datawizard::data_group(msleep, "vore"), method = "spearman"))
+    Output
+      =======
+       carni 
+      =======
+      
+       rho 
+      -----
+      Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      ------------------------------------------------------------------------
+      carni | sleep_total |  -0.48 |   -0.59 | -1.00 |        0.31 |      0.95
+      carni |   sleep_rem |  -0.72 |   -0.26 | -0.95 |        0.46 |          
+      carni | sleep_cycle |  -0.56 |   -0.80 | -0.31 |             |          
+      carni |       awake |   0.48 |    0.59 |       |             |          
+      carni |     brainwt |   0.82 |         |       |             |          
+      
+      
+       n_Obs 
+      -------
+      Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      ------------------------------------------------------------------------
+      carni | sleep_total |  19.00 |    9.00 | 19.00 |        5.00 |     10.00
+      carni |   sleep_rem |  10.00 |    6.00 | 10.00 |        5.00 |          
+      carni | sleep_cycle |   5.00 |    4.00 |  5.00 |             |          
+      carni |       awake |  19.00 |    9.00 |       |             |          
+      carni |     brainwt |   9.00 |         |       |             |          
+      
+      
+       p 
+      ---
+      Group |   Parameter | bodywt | brainwt |    awake | sleep_cycle | sleep_rem
+      ---------------------------------------------------------------------------
+      carni | sleep_total |   0.37 |    0.73 |     0.00 |        1.00 |  3.19e-04
+      carni |   sleep_rem |   0.20 |    1.00 | 3.19e-04 |        1.00 |          
+      carni | sleep_cycle |   1.00 |    1.00 |     1.00 |             |          
+      carni |       awake |   0.37 |    0.73 |          |             |          
+      carni |     brainwt |   0.09 |         |          |             |          
+      
+      
+      
+      =======
+       herbi 
+      =======
+      
+       rho 
+      -----
+      Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      ------------------------------------------------------------------------
+      herbi | sleep_total |  -0.77 |   -0.86 | -1.00 |       -0.44 |      0.92
+      herbi |   sleep_rem |  -0.72 |   -0.75 | -0.92 |       -0.48 |          
+      herbi | sleep_cycle |   0.74 |    0.74 |  0.44 |             |          
+      herbi |       awake |   0.77 |    0.86 |       |             |          
+      herbi |     brainwt |   0.98 |         |       |             |          
+      
+      
+       n_Obs 
+      -------
+      Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      ------------------------------------------------------------------------
+      herbi | sleep_total |  32.00 |   20.00 | 32.00 |       12.00 |     24.00
+      herbi |   sleep_rem |  24.00 |   16.00 | 24.00 |       12.00 |          
+      herbi | sleep_cycle |  12.00 |   11.00 | 12.00 |             |          
+      herbi |       awake |  32.00 |   20.00 |       |             |          
+      herbi |     brainwt |  20.00 |         |       |             |          
+      
+      
+       p 
+      ---
+      Group |   Parameter |   bodywt |  brainwt |    awake | sleep_cycle | sleep_rem
+      ------------------------------------------------------------------------------
+      herbi | sleep_total | 3.42e-06 | 8.71e-06 |     0.00 |        0.35 |  5.00e-09
+      herbi |   sleep_rem | 4.65e-04 | 4.43e-03 | 5.00e-09 |        0.35 |          
+      herbi | sleep_cycle |     0.03 |     0.04 |     0.35 |             |          
+      herbi |       awake | 3.42e-06 | 8.71e-06 |          |             |          
+      herbi |     brainwt | 5.17e-13 |          |          |             |          
+      
+      
+      
+      =========
+       insecti 
+      =========
+      
+       rho 
+      -----
+      Group   |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      --------------------------------------------------------------------------
+      insecti | sleep_total |  -0.60 |   -0.60 | -1.00 |        0.50 |     -0.40
+      insecti |   sleep_rem |   0.80 |    0.80 |  0.40 |       -1.00 |          
+      insecti | sleep_cycle |  -0.50 |   -0.50 | -0.50 |             |          
+      insecti |       awake |   0.60 |    0.60 |       |             |          
+      insecti |     brainwt |   1.00 |         |       |             |          
+      
+      
+       n_Obs 
+      -------
+      Group   |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      --------------------------------------------------------------------------
+      insecti | sleep_total |   5.00 |    5.00 |  5.00 |        3.00 |      4.00
+      insecti |   sleep_rem |   4.00 |    4.00 |  4.00 |        3.00 |          
+      insecti | sleep_cycle |   3.00 |    3.00 |  3.00 |             |          
+      insecti |       awake |   5.00 |    5.00 |       |             |          
+      insecti |     brainwt |   5.00 |         |       |             |          
+      
+      
+       p 
+      ---
+      Group   |   Parameter |   bodywt | brainwt |    awake | sleep_cycle | sleep_rem
+      -------------------------------------------------------------------------------
+      insecti | sleep_total |     1.00 |    1.00 | 1.46e-22 |        1.00 |      1.00
+      insecti |   sleep_rem |     1.00 |    1.00 |     1.00 |        0.00 |          
+      insecti | sleep_cycle |     1.00 |    1.00 |     1.00 |             |          
+      insecti |       awake |     1.00 |    1.00 |          |             |          
+      insecti |     brainwt | 5.56e-23 |         |          |             |          
+      
+      
+      
+      ======
+       omni 
+      ======
+      
+       rho 
+      -----
+      Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      ------------------------------------------------------------------------
+      omni  | sleep_total |  -0.10 |   -0.28 | -1.00 |       -0.24 |      0.14
+      omni  |   sleep_rem |  -0.20 |   -0.39 | -0.14 |       -0.46 |          
+      omni  | sleep_cycle |   0.80 |    0.92 |  0.24 |             |          
+      omni  |       awake |   0.10 |    0.28 |       |             |          
+      omni  |     brainwt |   0.91 |         |       |             |          
+      
+      
+       n_Obs 
+      -------
+      Group |   Parameter | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      ------------------------------------------------------------------------
+      omni  | sleep_total |  20.00 |   17.00 | 20.00 |       11.00 |     18.00
+      omni  |   sleep_rem |  18.00 |   17.00 | 18.00 |       11.00 |          
+      omni  | sleep_cycle |  11.00 |   11.00 | 11.00 |             |          
+      omni  |       awake |  20.00 |   17.00 |       |             |          
+      omni  |     brainwt |  17.00 |         |       |             |          
+      
+      
+       p 
+      ---
+      Group |   Parameter |   bodywt |  brainwt | awake | sleep_cycle | sleep_rem
+      ---------------------------------------------------------------------------
+      omni  | sleep_total |     1.00 |     1.00 |  0.00 |        1.00 |      1.00
+      omni  |   sleep_rem |     1.00 |     1.00 |  1.00 |        1.00 |          
+      omni  | sleep_cycle |     0.04 | 7.73e-04 |  1.00 |             |          
+      omni  |       awake |     1.00 |     1.00 |       |             |          
+      omni  |     brainwt | 7.64e-06 |          |       |             |          
+      
+      
+      
+
+---
+
+    Code
+      as.list(correlation(datawizard::data_group(mtcars, "am"), select = c("cyl",
+        "wt"), select2 = "hp", method = "percentage"))
     Output
       ===
        0 
