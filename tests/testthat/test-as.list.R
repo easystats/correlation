@@ -8,6 +8,7 @@ test_that("as.list", {
 
   # with groups
   set.seed(123)
+  data(msleep, package = "ggplot2")
   expect_snapshot(as.list(
     correlation(datawizard::data_group(msleep, "vore"), method = "spearman")
   ))
