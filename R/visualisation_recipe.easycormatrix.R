@@ -277,9 +277,9 @@ visualisation_recipe.easycormatrix <- function(x,
 
   out <- list(
     geom = paste0("scale_", type, "_gradient2"),
-    low = "#2196F3",
+    low = "#F44336",
     mid = "white",
-    high = "#F44336",
+    high = "#2196F3",
     midpoint = 0,
     na.value = "grey85",
     limit = c(low_lim, high_lim),
