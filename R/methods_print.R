@@ -64,12 +64,12 @@ print.grouped_easymatrixlist <- function(x, cols = "auto", ...) {
     ...
   )
 
-  insight::export_table(
+  cat(insight::export_table(
     formatted_table,
     format = format,
     align = "firstleft",
     ...
-  )
+  ))
 }
 
 
@@ -129,12 +129,12 @@ print_html.easycorrelation <- function(x,
     ...
   )
 
-  insight::export_table(
+  cat(insight::export_table(
     formatted_table,
     format = format,
     align = "firstleft",
     ...
-  )
+  ))
 }
 
 
