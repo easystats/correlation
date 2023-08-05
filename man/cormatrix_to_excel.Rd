@@ -48,9 +48,12 @@ for small (.10), medium (.30), and large (.50) correlation sizes.
 .old_wd <- setwd(tempdir())
 }
 # Basic example
-cormatrix_to_excel(mtcars, select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1")
-cormatrix_to_excel(iris, p_adjust = "none", filename = "cormatrix2")
-cormatrix_to_excel(airquality, method = "spearman", filename = "cormatrix3")
+suppressWarnings(cormatrix_to_excel(mtcars,
+  select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1")
+suppressWarnings(cormatrix_to_excel(iris, p_adjust = "none",
+  filename = "cormatrix2")
+suppressWarnings(cormatrix_to_excel(airquality, method = "spearman",
+  filename = "cormatrix3")
 \dontshow{
 setwd(.old_wd)
 }
