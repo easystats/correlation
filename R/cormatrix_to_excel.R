@@ -29,9 +29,12 @@
 #' .old_wd <- setwd(tempdir())
 #' }
 #' # Basic example
-#' cormatrix_to_excel(mtcars, select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1")
-#' cormatrix_to_excel(iris, p_adjust = "none", filename = "cormatrix2")
-#' cormatrix_to_excel(airquality, method = "spearman", filename = "cormatrix3")
+#' suppressWarnings(cormatrix_to_excel(mtcars,
+#'   select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1")
+#' suppressWarnings(cormatrix_to_excel(iris, p_adjust = "none",
+#'   filename = "cormatrix2")
+#' suppressWarnings(cormatrix_to_excel(airquality, method = "spearman",
+#'   filename = "cormatrix3")
 #' \dontshow{
 #' setwd(.old_wd)
 #' }
@@ -228,8 +231,8 @@ cormatrix_to_excel <- function(data,
   wb$add_style(p_style1)
   wb$add_style(p_style2)
   wb$add_style(p_style3)
-  wb$styles_mgr$styles$dxfs
-  wb$styles_mgr$dxf
+  # wb$styles_mgr$styles$dxfs
+  # wb$styles_mgr$dxf
 
   # create the worksheets and write the data to the worksheets.
   wb$add_worksheet("r_values")$add_data(x = cm)
