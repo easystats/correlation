@@ -1,22 +1,23 @@
 test_that("cormatrix_to_excel select", {
-  .old_wd <- setwd(tempdir())
+  skip_if_not_or_load_if_installed("openxlsx2")
   expect_snapshot(cormatrix_to_excel(mtcars,
-                                     filename = "cormatrix1",
-                                     overwrite = TRUE,
-                                     p_adjust = "none",
-                                     print.mat = TRUE,
-                                     select = c("mpg", "cyl", "disp", "hp", "carb")))
-  setwd(.old_wd)
+    filename = "cormatrix1",
+    overwrite = TRUE,
+    p_adjust = "none",
+    print.mat = TRUE,
+    select = c("mpg", "cyl", "disp", "hp", "carb")
+  ))
+  unlink("cormatrix1.xlsx")
 })
 
 test_that("cormatrix_to_excel p_adjust", {
-  .old_wd <- setwd(tempdir())
+  skip_if_not_or_load_if_installed("openxlsx2")
   expect_snapshot(cormatrix_to_excel(airquality,
-                                     filename = "cormatrix1",
-                                     overwrite = FALSE,
-                                     p_adjust = "holm",
-                                     print.mat = FALSE,
-                                     method = "spearman"))
-  setwd(.old_wd)
+    filename = "cormatrix1",
+    overwrite = FALSE,
+    p_adjust = "holm",
+    print.mat = FALSE,
+    method = "spearman"
+  ))
+  unlink("cormatrix1.xlsx")
 })
-
