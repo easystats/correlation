@@ -30,11 +30,11 @@
 #' }
 #' # Basic example
 #' suppressWarnings(cormatrix_to_excel(mtcars,
-#'   select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1")
+#'   select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1"))
 #' suppressWarnings(cormatrix_to_excel(iris, p_adjust = "none",
-#'   filename = "cormatrix2")
+#'   filename = "cormatrix2"))
 #' suppressWarnings(cormatrix_to_excel(airquality, method = "spearman",
-#'   filename = "cormatrix3")
+#'   filename = "cormatrix3"))
 #' \dontshow{
 #' setwd(.old_wd)
 #' }
