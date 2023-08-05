@@ -1,8 +1,9 @@
 # cormatrix_to_excel select
 
     Code
-      cormatrix_to_excel(mtcars, filename = "cormatrix1", overwrite = TRUE, p_adjust = "none",
-        print.mat = TRUE, select = c("mpg", "cyl", "disp", "hp", "carb"))
+      suppressWarnings(cormatrix_to_excel(mtcars, filename = "cormatrix1", overwrite = TRUE,
+        p_adjust = "none", print.mat = TRUE, select = c("mpg", "cyl", "disp", "hp",
+          "carb"), verbose = FALSE))
     Output
       # Correlation Matrix (pearson-method)
       
@@ -18,22 +19,17 @@
       
       
        [Correlation matrix 'cormatrix1.xlsx' has been saved to working directory (or where specified).]
-    Warning <simpleWarning>
-      will not open file when not interactive
-    Output
       NULL
 
 # cormatrix_to_excel p_adjust
 
     Code
-      cormatrix_to_excel(airquality, filename = "cormatrix1", overwrite = FALSE,
-        p_adjust = "holm", print.mat = FALSE, method = "spearman")
+      suppressWarnings(cormatrix_to_excel(airquality, filename = "cormatrix1",
+        overwrite = FALSE, p_adjust = "holm", print.mat = FALSE, method = "spearman",
+        verbose = FALSE))
     Output
       
       
        [Correlation matrix 'cormatrix1.xlsx' has been saved to working directory (or where specified).]
-    Warning <simpleWarning>
-      will not open file when not interactive
-    Output
       NULL
 
