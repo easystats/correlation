@@ -11,8 +11,6 @@
 #' @param filename Desired filename (path can be added before hand
 #' but no need to specify extension).
 #' @param overwrite Whether to allow overwriting previous file.
-#' @param p_adjust Default p-value adjustment method (default is "none",
-#' although [correlation::correlation()]'s default is "holm")
 #' @param print.mat Logical, whether to also print the correlation matrix
 #'                  to console.
 #' @param ... Parameters to be passed to [correlation::correlation()]
@@ -30,18 +28,22 @@
 #' }
 #' # Basic example
 #' suppressWarnings(cormatrix_to_excel(mtcars,
-#'   select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1"))
-#' suppressWarnings(cormatrix_to_excel(iris, p_adjust = "none",
-#'   filename = "cormatrix2"))
-#' suppressWarnings(cormatrix_to_excel(airquality, method = "spearman",
-#'   filename = "cormatrix3"))
+#'   select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1"
+#' ))
+#' suppressWarnings(cormatrix_to_excel(iris,
+#'   p_adjust = "none",
+#'   filename = "cormatrix2"
+#' ))
+#' suppressWarnings(cormatrix_to_excel(airquality,
+#'   method = "spearman",
+#'   filename = "cormatrix3"
+#' ))
 #' \dontshow{
 #' setwd(.old_wd)
 #' }
 cormatrix_to_excel <- function(data,
                                filename,
                                overwrite = TRUE,
-                               p_adjust = "none",
                                print.mat = TRUE,
                                ...) {
   if (missing(filename)) {
@@ -51,7 +53,7 @@ cormatrix_to_excel <- function(data,
   insight::check_if_installed("openxlsx2")
 
   # create correlation matrix with p values
-  cm <- correlation::correlation(data, p_adjust = p_adjust, ...)
+  cm <- correlation::correlation(data, ...)
   cm <- summary(cm, redundant = TRUE)
   all.columns <- 2:(ncol(cm))
   if (isTRUE(print.mat)) {
