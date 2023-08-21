@@ -52,7 +52,7 @@ Imports:
     bayestestR (>= 0.13.0),
     datasets,
     datawizard (>= 0.7.0),
-    insight (>= 0.19.1),
+    insight (>= 0.19.3.2),
     parameters (>= 0.20.2),
     stats
 Suggests:
@@ -89,3 +89,4 @@ Config/Needs/website:
     rstudio/bslib,
     r-lib/pkgdown,
     easystats/easystatstemplate
+Remotes: easystats/insight
