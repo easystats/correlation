@@ -127,7 +127,7 @@ test_that("format checks", {
 
   # Grouped
   skip_if_not_or_load_if_installed("poorman")
-  library(poorman)
+  library(poorman) # loading the library is necessary to use the pipe operator
 
   out <- iris %>%
     group_by(Species) %>%
