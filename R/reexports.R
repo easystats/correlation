@@ -6,6 +6,10 @@ bayestestR::simulate_simpson
 #' @importFrom datawizard visualisation_recipe
 datawizard::visualisation_recipe
 
+#' @export
+#' @importFrom insight standardize_names
+insight::standardize_names
+
 #' @importFrom insight print_md
 #' @export
 insight::print_md

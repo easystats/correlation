@@ -117,6 +117,7 @@ as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
 # insight::standardize_names(correlation(mtcars[1:4], method = "kendall"))
 # insight::standardize_names(correlation(mtcars[1:4], method = "kendall"), style = "broom")
 # correlation(mtcars[1:4], method = "kendall", standardize_names = TRUE)
+#' @importFrom insight standardize_names
 #' @export
 standardize_names.easycorrelation <- function(data, ...) {
   ori <- data
