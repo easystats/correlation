@@ -60,6 +60,7 @@ cor_to_ci(-0.1667777, ci = 0.95, n = 150)
 
 cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall", exact = FALSE)
 cor_to_p(-0.07699679, n = 150, method = "kendall")
+
 }
 \references{
 Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for

@@ -13,7 +13,6 @@
 #' z_fisher(z = 0.867)
 #'
 #' @references
-#'
 #' Zar, J.H., (2014). Spearman Rank Correlation: Overview. Wiley StatsRef:
 #' Statistics Reference Online. doi:10.1002/9781118445112.stat05964
 #'

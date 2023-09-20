@@ -16,36 +16,33 @@
 #'   parameters for the geoms (see customization example).
 #' @param ... Other arguments passed to other functions.
 #'
-#' @examples
-#' # ==============================================
-#' # Correlation Matrix
-#' # ==============================================
-#' if (require("see")) {
-#'   rez <- correlation(mtcars)
+#' @examplesIf require("see")
+#' \donttest{
+#' rez <- correlation(mtcars)
 #'
-#'   x <- cor_sort(as.matrix(rez))
-#'   layers <- visualisation_recipe(x)
-#'   layers
-#'   plot(layers)
+#' x <- cor_sort(as.matrix(rez))
+#' layers <- visualisation_recipe(x)
+#' layers
+#' plot(layers)
 #'
-#'   #' Get more details using `summary()`
-#'   x <- summary(rez, redundant = TRUE, digits = 3)
-#'   plot(visualisation_recipe(x))
+#' #' Get more details using `summary()`
+#' x <- summary(rez, redundant = TRUE, digits = 3)
+#' plot(visualisation_recipe(x))
 #'
-#'   # Customize
-#'   x <- summary(rez)
-#'   layers <- visualisation_recipe(x,
-#'     show_data = "points",
-#'     scale = list(range = c(10, 20)),
-#'     scale_fill = list(
-#'       high = "#FF5722",
-#'       low = "#673AB7",
-#'       name = "r"
-#'     ),
-#'     text = list(color = "white"),
-#'     labs = list(title = "My Plot")
-#'   )
-#'   plot(layers) + theme_modern()
+#' # Customize
+#' x <- summary(rez)
+#' layers <- visualisation_recipe(x,
+#'   show_data = "points",
+#'   scale = list(range = c(10, 20)),
+#'   scale_fill = list(
+#'     high = "#FF5722",
+#'     low = "#673AB7",
+#'     name = "r"
+#'   ),
+#'   text = list(color = "white"),
+#'   labs = list(title = "My Plot")
+#' )
+#' plot(layers) + theme_modern()
 #' }
 #' @export
 visualisation_recipe.easycormatrix <- function(x,

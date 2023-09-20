@@ -61,65 +61,58 @@ the arguments described below.
 See examples \href{https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples}{\strong{here}}.
 }
 \examples{
+\dontshow{if (require("see")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
-# ==============================================
-# Correlation Test
-# ==============================================
-if (require("see")) {
-  rez <- cor_test(mtcars, "mpg", "wt")
+rez <- cor_test(mtcars, "mpg", "wt")
 
-  layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
-  layers
-  plot(layers)
+layers <- visualisation_recipe(rez, labs = list(x = "Miles per Gallon (mpg)"))
+layers
+plot(layers)
 
-  plot(rez,
-    show_text = "label",
-    point = list(color = "#f44336"),
-    text = list(fontface = "bold"),
-    show_statistic = FALSE, show_ci = FALSE, stars = TRUE
-  )
+plot(rez,
+  show_text = "label",
+  point = list(color = "#f44336"),
+  text = list(fontface = "bold"),
+  show_statistic = FALSE, show_ci = FALSE, stars = TRUE
+)
 }
-}
-# ==============================================
-# Correlation Matrix
-# ==============================================
-if (require("see")) {
-  rez <- correlation(mtcars)
-
-  x <- cor_sort(as.matrix(rez))
-  layers <- visualisation_recipe(x)
-  layers
-  plot(layers)
-
-  #' Get more details using `summary()`
-  x <- summary(rez, redundant = TRUE, digits = 3)
-  plot(visualisation_recipe(x))
-
-  # Customize
-  x <- summary(rez)
-  layers <- visualisation_recipe(x,
-    show_data = "points",
-    scale = list(range = c(10, 20)),
-    scale_fill = list(
-      high = "#FF5722",
-      low = "#673AB7",
-      name = "r"
-    ),
-    text = list(color = "white"),
-    labs = list(title = "My Plot")
-  )
-  plot(layers) + theme_modern()
-}
+\dontshow{\}) # examplesIf}
+\dontshow{if (require("see")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
-# ==============================================
-# Correlation Results (easycorrelation)
-# ==============================================
-if (require("see") && require("tidygraph") && require("ggraph")) {
-  rez <- correlation(iris)
+rez <- correlation(mtcars)
 
-  layers <- visualisation_recipe(rez)
-  layers
-  plot(layers)
+x <- cor_sort(as.matrix(rez))
+layers <- visualisation_recipe(x)
+layers
+plot(layers)
+
+#' Get more details using `summary()`
+x <- summary(rez, redundant = TRUE, digits = 3)
+plot(visualisation_recipe(x))
+
+# Customize
+x <- summary(rez)
+layers <- visualisation_recipe(x,
+  show_data = "points",
+  scale = list(range = c(10, 20)),
+  scale_fill = list(
+    high = "#FF5722",
+    low = "#673AB7",
+    name = "r"
+  ),
+  text = list(color = "white"),
+  labs = list(title = "My Plot")
+)
+plot(layers) + theme_modern()
 }
+\dontshow{\}) # examplesIf}
+\dontshow{if (require("see") && require("tidygraph") && require("ggraph")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
+rez <- correlation(iris)
+
+layers <- visualisation_recipe(rez)
+layers
+plot(layers)
 }
+\dontshow{\}) # examplesIf}
 }
