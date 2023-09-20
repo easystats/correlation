@@ -27,7 +27,6 @@ publication/*
 ^\.httr-oauth$
 ^CRAN-RELEASE$
 tests\^spelling
-^LICENSE
 ^\.circleci$
 ^tests/manual$
 ^revdep$
@@ -52,3 +51,4 @@ references.bib
 ^cran-comments\.md$
 ^revdep$
 ^CRAN-SUBMISSION$
+^LICENSE\.md$
