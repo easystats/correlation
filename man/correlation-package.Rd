@@ -3,7 +3,6 @@
 \docType{package}
 \name{correlation-package}
 \alias{correlation-package}
-\alias{_PACKAGE}
 \title{correlation: Methods for correlation analysis}
 \description{
 Lightweight package for computing different kinds of correlations,
