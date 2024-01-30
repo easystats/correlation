@@ -2,7 +2,8 @@
 
     Code
       correlation(anscombe, select = c("x1", "x2"), rename = c("var1"))
-    Warning <simpleWarning>
+    Condition
+      Warning:
       Mismatch between number of variables and names.
     Output
       # Correlation Matrix (pearson-method)
