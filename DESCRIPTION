@@ -57,7 +57,7 @@ Imports:
     bayestestR (>= 0.13.1),
     datasets,
     datawizard (>= 0.9.1),
-    insight (>= 0.19.7),
+    insight (>= 0.19.8),
     parameters (>= 0.21.3),
     stats
 Suggests:
