@@ -8,7 +8,7 @@ You can easily visualize the result using plot() (see examples here)."><meta pro
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
@@ -401,11 +401,7 @@ Bayesian rank correlations (which have different priors).</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     format.pval, units</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |  Parameter2 |    r | 95% CI | t(148) |      p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Sepal.Width | 0.01 |        |        | 0.011*</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 150</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("format_ci"):</span> no applicable method for 'format_ci' applied to an object of class "logical"</span>
 <span class="r-in"><span><span class="fu">cor_test</span><span class="op">(</span><span class="va">iris</span>, <span class="st">"Sepal.Length"</span>, <span class="st">"Sepal.Width"</span>, method <span class="op">=</span> <span class="st">"gamma"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |  Parameter2 |     r |        95% CI | t(148) |     p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------------------------</span>

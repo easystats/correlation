@@ -1,10 +1,10 @@
-pandoc: 3.1.11
+pandoc: 3.1.12.1
 pkgdown: 2.0.7.9000
-pkgdown_sha: 548a9493b72ff93d3ed8392d4ad30b77d8b15fa5
+pkgdown_sha: 3979e7c0afbba4503248dc8a6d04fe0a2e03f26f
 articles:
   multilevel: multilevel.html
   types: types.html
-last_built: 2024-01-30T07:33Z
+last_built: 2024-03-02T11:19Z
 urls:
   reference: https://easystats.github.io/correlation/reference
   article: https://easystats.github.io/correlation/articles
