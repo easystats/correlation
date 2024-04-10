@@ -22,42 +22,104 @@
 #'   these indices.
 #' @param bayesian If `TRUE`, will run the correlations under a Bayesian
 #'   framework.
-#' @param partial_bayesian If partial correlations under a Bayesian framework
-#'   are needed, you will also need to set `partial_bayesian` to `TRUE` to
-#'   obtain "full" Bayesian partial correlations. Otherwise, you will obtain
-#'   pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
-#'   frequentist partialization).
-#' @param include_factors If `TRUE`, the factors are kept and eventually
-#'   converted to numeric or used as random effects (depending of
-#'   `multilevel`). If `FALSE`, factors are removed upfront.
-#' @param partial Can be `TRUE` or `"semi"` for partial and
-#'   semi-partial correlations, respectively.
-#' @inheritParams datawizard::adjust
-#' @param bayesian_prior For the prior argument, several named values are
-#'   recognized: `"medium.narrow"`, `"medium"`, `"wide"`, and
-#'   `"ultrawide"`. These correspond to scale values of `1/sqrt(27)`,
-#'   `1/3`, `1/sqrt(3)` and `1`, respectively. See the
-#'   `BayesFactor::correlationBF` function.
-#' @param bayesian_ci_method,bayesian_test See arguments in
-#'   [`model_parameters()`][parameters] for `BayesFactor` tests.
-#' @param ranktransform If `TRUE`, will rank-transform the variables prior to
-#'   estimating the correlation, which is one way of making the analysis more
-#'   resistant to extreme values (outliers). Note that, for instance, a Pearson's
-#'   correlation on rank-transformed data is equivalent to a Spearman's rank
-#'   correlation. Thus, using `robust=TRUE` and `method="spearman"` is
-#'   redundant. Nonetheless, it is an easy option to increase the robustness of the
-#'   correlation as well as flexible way to obtain Bayesian or multilevel
-#'   Spearman-like rank correlations.
-#' @param winsorize Another way of making the correlation more "robust" (i.e.,
-#'   limiting the impact of extreme values). Can be either `FALSE` or a
-#'   number between 0 and 1 (e.g., `0.2`) that corresponds to the desired
-#'   threshold. See the [`winsorize()`][winsorize] function for more details.
 #' @param verbose Toggle warnings.
-#' @param ... Additional arguments (e.g., `alternative`) to be passed to
-#'   other methods. See `stats::cor.test` for further details.
+#' @param ... Additional arguments depending on `method`.
+#'  - `"percentage"`: `beta` (default is `0.2`).
+#'  - `"bayes"`: `bayesian_prior` = "medium", `bayesian_ci_method` (default: "hdi"), `bayesian_test` (default: `c("pd", "rope", "bf")`)
 #'
 #'
-#' @inherit correlation details
+#' @details
+#'
+#' ## Correlation Types
+#' - **Pearson's correlation**: This is the most common correlation
+#' method. It corresponds to the covariance of the two variables normalized
+#' (i.e., divided) by the product of their standard deviations.
+#'
+#' - **Spearman's rank correlation**: A non-parametric measure of rank
+#' correlation (statistical dependence between the rankings of two variables).
+#' The Spearman correlation between two variables is equal to the Pearson
+#' correlation between the rank values of those two variables; while Pearson's
+#' correlation assesses linear relationships, Spearman's correlation assesses
+#' monotonic relationships (whether linear or not). Confidence Intervals (CI)
+#' for Spearman's correlations are computed using the Fieller et al. (1957)
+#' correction (see Bishara and Hittner, 2017).
+#'
+#' - **Kendall's rank correlation**: In the normal case, the Kendall correlation
+#' is preferred than the Spearman correlation because of a smaller gross error
+#' sensitivity (GES) and a smaller asymptotic variance (AV), making it more
+#' robust and more efficient. However, the interpretation of Kendall's tau is
+#' less direct than that of Spearman's rho, in the sense that it quantifies the
+#' difference between the percentage of concordant and discordant pairs among
+#' all possible pairwise events. Confidence Intervals (CI) for Kendall's
+#' correlations are computed using the Fieller et al. (1957) correction (see
+#' Bishara and Hittner, 2017).
+#'
+#' - **Biweight midcorrelation**: A measure of similarity that is
+#' median-based, instead of the traditional mean-based, thus being less
+#' sensitive to outliers. It can be used as a robust alternative to other
+#' similarity metrics, such as Pearson correlation (Langfelder & Horvath,
+#' 2012).
+#'
+#' - **Distance correlation**: Distance correlation measures both
+#' linear and non-linear association between two random variables or random
+#' vectors. This is in contrast to Pearson's correlation, which can only detect
+#' linear association between two random variables.
+#'
+#' - **Percentage bend correlation**: Introduced by Wilcox (1994), it
+#' is based on a down-weight of a specified percentage of marginal observations
+#' deviating from the median (by default, `20%`).
+#'
+#' - **Shepherd's Pi correlation**: Equivalent to a Spearman's rank
+#' correlation after outliers removal (by means of bootstrapped Mahalanobis
+#' distance).
+#'
+#' - **Blomqvist’s coefficient**: The Blomqvist’s coefficient (also
+#' referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
+#' median-based non-parametric correlation that has some advantages over
+#' measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
+#' 2006).
+#'
+#' - **Hoeffding’s D**: The Hoeffding’s D statistics is a
+#' non-parametric rank based measure of association that detects more general
+#' departures from independence (Hoeffding 1948), including non-linear
+#' associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied
+#' ranks, otherwise it can have lower values), with larger values indicating a
+#' stronger relationship between the variables.
+#'
+#' - **Somers’ D**: The Somers’ D statistics is a non-parametric rank
+#' based measure of association between a binary variable and a continuous
+#' variable, for instance, in the context of logistic regression the binary
+#' outcome and the predicted probabilities for each outcome. Usually, Somers' D
+#' is a measure of ordinal association, however, this implementation it is
+#' limited to the case of a binary outcome.
+#'
+#' - **Point-Biserial and biserial correlation**: Correlation
+#' coefficient used when one variable is continuous and the other is dichotomous
+#' (binary). Point-Biserial is equivalent to a Pearson's correlation, while
+#' Biserial should be used when the binary variable is assumed to have an
+#' underlying continuity. For example, anxiety level can be measured on a
+#' continuous scale, but can be classified dichotomously as high/low.
+#'
+#' - **Gamma correlation**: The Goodman-Kruskal gamma statistic is
+#' similar to Kendall's Tau coefficient. It is relatively robust to outliers and
+#' deals well with data that have many ties.
+#'
+#' - **Winsorized correlation**: Correlation of variables that have
+#' been formerly Winsorized, i.e., transformed by limiting extreme values to
+#' reduce the effect of possibly spurious outliers.
+#'
+#' - **Gaussian rank Correlation**: The Gaussian rank correlation
+#' estimator is a simple and well-performing alternative for robust rank
+#' correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of
+#' the ranks.
+#'
+#' - **Polychoric correlation**: Correlation between two theorized
+#' normally distributed continuous latent variables, from two observed ordinal
+#' variables.
+#'
+#' - **Tetrachoric correlation**: Special case of the polychoric
+#' correlation applicable when both observed variables are dichotomous.
+#'
 #'
 #' @examples
 #' library(correlation)
@@ -116,200 +178,805 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
 #' @export
-cor_test <- function(data,
-                     x,
-                     y,
+cor_test <- function(data, x, y,
                      method = "pearson",
                      ci = 0.95,
+                     alternative = "two.sided",
                      bayesian = FALSE,
-                     bayesian_prior = "medium",
-                     bayesian_ci_method = "hdi",
-                     bayesian_test = c("pd", "rope", "bf"),
-                     include_factors = FALSE,
-                     partial = FALSE,
-                     partial_bayesian = FALSE,
-                     multilevel = FALSE,
-                     ranktransform = FALSE,
-                     winsorize = FALSE,
                      verbose = TRUE,
                      ...) {
-  # valid matrix checks
-  if (!all(x %in% names(data)) || !all(y %in% names(data))) {
-    insight::format_error("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
-  }
+  # +======+
+  #  checks
+  # +======+
 
-  if (ci == "default") ci <- 0.95
-  if (!partial && (partial_bayesian || multilevel)) partial <- TRUE
+  #   check value of method
+  method <- match.arg(tolower(method), c("pearson", "spearman", "spear", "s",
+                                         "kendall", "biserial", "pointbiserial",
+                                         "point-biserial", "rankbiserial",
+                                         "rank-biserial", "biweight", "distance",
+                                         "percentage", "percentage_bend",
+                                         "percentagebend", "pb", "blomqvist",
+                                         "median", "medial", "hoeffding", "gamma",
+                                         "gaussian", "shepherd", "sheperd",
+                                         "shepherdspi", "pi",  "somers", "poly",
+                                         "polychoric", "tetra", "tetrachoric"))
+  methodUse <- ifelse(method %in% c("pearson", "spearman", "spear", "s"), "frequantive", method)
+  methodUse <- ifelse(method %in% c("pointbiserial", "point-biserial"), "point-biserial", methodUse)
+  methodUse <- ifelse(method %in% c("rankbiserial", "rank-biserial"), "rank-biserial", methodUse)
+  methodUse <- ifelse(method %in% c("percentage", "percentage_bend", "percentagebend", "pb"), "percentage", methodUse)
+  methodUse <- ifelse(method %in% c("blomqvist", "median", "medial"), "blomqvist", methodUse)
+  methodUse <- ifelse(method %in% c("shepherd", "sheperd", "shepherdspi", "pi"), "shepherd", methodUse)
+  methodUse <- ifelse(method %in% c("poly", "polychoric"), "polychoric", methodUse)
+  methodUse <- ifelse(method %in% c("tetra", "tetrachoric"), "tetrachoric", methodUse)
+
 
   # Make sure factor is no factor
-  if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
+  if (!methodUse %in% c("tetrachoric", "polychoric")) {
     data[c(x, y)] <- datawizard::to_numeric(data[c(x, y)], dummy_factors = FALSE)
   }
 
-  # Partial
-  if (!isFALSE(partial)) {
-    # partial
-    if (isTRUE(partial)) {
-      data[[x]] <- datawizard::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
-      data[[y]] <- datawizard::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
-    }
+  # narrowing the data to its complete form (without missing values)
+  var_x <- .complete_variable_x(data, x, y)
+  var_y <- .complete_variable_y(data, x, y)
+  # check validity of the amount of observations
+  n_obs <- length(var_x)
 
-    # semi-partial
-    if (partial == "semi") {
-      insight::format_error("Semi-partial correlations are not supported yet. Get in touch if you want to contribute.")
-    }
-  }
-
-  # Winsorize
-  if (!isFALSE(winsorize) && !is.null(winsorize)) {
-    # set default (if not specified)
-    if (isTRUE(winsorize)) {
-      winsorize <- 0.2
-    }
-
-    # winsorization would otherwise fail in case of NAs present
-    data <- as.data.frame(
-      datawizard::winsorize(stats::na.omit(data[c(x, y)]),
-        threshold = winsorize,
-        verbose = verbose
-      )
-    )
-  }
-
-  # Rank transform (i.e., "robust")
-  if (ranktransform) {
-    data[c(x, y)] <- datawizard::ranktransform(data[c(x, y)], sign = FALSE, method = "average")
-  }
-
-  # check if enough no. of obs ------------------------------
-
-  # this is a trick in case the number of valid observations is lower than 3
-  n_obs <- length(.complete_variable_x(data, x, y))
-  invalid <- FALSE
   if (n_obs < 3L) {
-    if (isTRUE(verbose)) {
-      insight::format_warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."))
+    insight::format_alert(paste(x, "and", y, "have less than 3 complete observations."))
+  }
+
+  # check value of ci (confidence level)
+  if (ci == "default") {
+    ci <- 0.95
+  } else if (!is.null(ci)) {
+    if (length(ci) != 1L || ci <= 0 || ci >= 1)
+      stop("The confidence level (ci) is not between 0 and 1")
+  }
+
+  # check value of alternative
+  alternative <- match.arg(alternative, c("two.sided", "less", "greater"))
+  # check value of tau_type and direction when relevant
+  if(method == "kendall") {
+    if ("tau_type" %in% names(list(...))) {
+      tau_type <- match.arg(tolower(tau_type), c("a", "b", "c"))
+      if("direction" %in% names(list(...))) direction <- match.arg(tolower(direction), c("row", "column"))
+      else direction <- "row"
     }
-    invalid <- TRUE
-    original_info <- list(data = data, x = x, y = y)
-    data <- datasets::mtcars # Basically use a working dataset so the correlation doesn't fail
-    x <- "mpg"
-    y <- "disp"
+    else tau_type <- "b"
   }
-
-
-  # Find method
-  method <- tolower(method)
-  if (method == "auto" && !bayesian) method <- .find_correlationtype(data, x, y)
-  if (method == "auto" && bayesian) method <- "pearson"
-
-  # Frequentist
-  if (!bayesian) {
-    if (method %in% c("tetra", "tetrachoric")) {
-      out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
-    } else if (method %in% c("poly", "polychoric")) {
-      out <- .cor_test_polychoric(data, x, y, ci = ci, ...)
-    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
-      out <- .cor_test_biserial(data, x, y, ci = ci, method = method, ...)
-    } else if (method == "biweight") {
-      out <- .cor_test_biweight(data, x, y, ci = ci, ...)
-    } else if (method == "distance") {
-      out <- .cor_test_distance(data, x, y, ci = ci, ...)
-    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
-      out <- .cor_test_percentage(data, x, y, ci = ci, ...)
-    } else if (method %in% c("blomqvist", "median", "medial")) {
-      out <- .cor_test_blomqvist(data, x, y, ci = ci, ...)
-    } else if (method == "hoeffding") {
-      out <- .cor_test_hoeffding(data, x, y, ci = ci, ...)
-    } else if (method == "somers") {
-      out <- .cor_test_somers(data, x, y, ci = ci, ...)
-    } else if (method == "gamma") {
-      out <- .cor_test_gamma(data, x, y, ci = ci, ...)
-    } else if (method == "gaussian") {
-      out <- .cor_test_gaussian(data, x, y, ci = ci, ...)
-    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
-      out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
-    } else {
-      out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
+  if(methodUse == "biserial") {
+    if("xType" %in% names(list(...))) {
+      xType <- match.arg(tolower(xType), c("base", "point", "rank"))
     }
-
-    # Bayesian
-  } else {
-    if (method %in% c("tetra", "tetrachoric")) {
-      insight::format_error("Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("poly", "polychoric")) {
-      insight::format_error("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
-      insight::format_error("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method == "biweight") {
-      insight::format_error("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method == "distance") {
-      insight::format_error("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
-      insight::format_error("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("blomqvist", "median", "medial")) {
-      insight::format_error("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
-    } else if (method == "hoeffding") {
-      insight::format_error("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
-    } else if (method == "gamma") {
-      insight::format_error("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
-      out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
-    } else {
-      out <- .cor_test_bayes(
-        data,
-        x,
-        y,
-        ci = ci,
-        method = method,
-        bayesian_prior = bayesian_prior,
-        bayesian_ci_method = bayesian_ci_method,
-        bayesian_test = bayesian_test,
-        ...
-      )
+    else xType <- "base"
+  }
+  if(methodUse == "percentage") {
+    if("beta" %in% names(list(...))) {
+      if (length(beta) != 1L || beta <= 0 || beta >= 0.5)
+        stop("The bend criterion (beta) is not between 0 and 0.5")
     }
+    else beta <- 0.2
   }
 
-  # Replace by NANs if invalid
-  if (isTRUE(invalid)) {
-    data <- original_info$data
-    out$Parameter1 <- original_info$x
-    out$Parameter2 <- original_info$y
-    out[!names(out) %in% c("Parameter1", "Parameter2")] <- NA
+  # +=======================+
+  #  calculate by the method
+  # +=======================+
+
+  # when bayesian
+  if(bayesian) {
+    if (methodUse %in% c("kendall", "biserial", "point-biserial", "rank-biserial", "biweight", "distance", "percentage", "gamma", "somers", "polychoric", "tetrachoric"))
+      insight::format_error(paste0("The bayesian form of ", tohigher(methodUse[1]), methodUse[-1], " correlation method is not supported yet. Get in touch if you want to contribute."))
+    if (methodUse %in% c("blomqvist", "hoeffding"))
+      insight::format_error(paste0("Bayesian ", toupper(methodUse[1]), methodUse[-1], ifelse(methodUse == "hoeffding", "'s", ""), "correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor)."))
+    out <- .cor_test_bayes(var_x, var_y, ci, method, ...)
+    out$Parameter1 <- x
+    out$Parameter2 <- y
+  }
+  else {
+    out <- switch(methodUse,
+                  "frequantive" = .cor_test_freq(var_x, var_y, ci, alternative, method, ...),
+                  "kendall" = .cor_test_kendall(var_x, var_y, ci, alternative, tau_type, direction, ...),
+                  "biserial" = .cor_test_biserial(var_x, var_y, ci, alternative, xType = "base", ...),
+                  "point-biserial" = .cor_test_biserial(var_x, var_y, ci, alternative, xType = "point", ...),
+                  "rank-biserial" = .cor_test_biserial(var_x, var_y, ci, alternative, xType = "rank", ...),
+                  "biweight" = .cor_test_biweight(var_x, var_y, ci, alternative, ...),
+                  "distance" = .cor_test_distance(var_x, var_y, ci, alternative, ...),
+                  "percentage" = .cor_test_percentage(var_x, var_y, ci, alternative, beta, ...),
+                  "blomqvist" = .cor_test_freq(sign(var_x - median(var_x)), sign(var_y - median(var_y)), ci, alternative, ...),
+                  "hoeffding" = .cor_test_hoeffding(var_x, var_y, ci, ...),
+                  "gamma" = .cor_test_gamma(var_x, var_y, ci, alternative, ...),
+                  "gaussian" = .cor_test_freq(stats::qnorm(rank(var_x) / (length(var_x) + 1)), stats::qnorm(rank(var_y) / (length(var_y) + 1)), ci, alternative, ...),
+                  "shepherd" = .cor_test_shepherd(var_x, var_y, ci, alternative, ...),
+                  "somers" = .cor_test_somers(var_x, var_y, ci, alternative, ...),
+                  "polychoric" = .cor_test_polychoric(var_x, var_y, ci, alternative, ...),
+                  "tetrachoric" = .cor_test_tetrachoric(var_x, var_y, ci, alternative, ...))
+    out$Parameter1 <- x
+    out$Parameter2 <- y
   }
 
-  # Number of observations and CI
-  out$n_Obs <- n_obs
-  out$CI <- ci
 
-  # Reorder columns
-  if ("CI_low" %in% names(out)) {
-    order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high")
-    out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
-  }
+  if (!"Method" %in% names(out)) out$Method <- paste0(tohigher(methodUse[1]), methodUse[-1], ifelse(bayesian, " (Bayesian)", ""))
 
-  # Output
-  attr(out, "coefficient_name") <- c("rho", "r", "tau", "Dxy")[c("rho", "r", "tau", "Dxy") %in% names(out)][1]
-  attr(out, "ci") <- ci
-  attr(out, "data") <- data
-  class(out) <- unique(c("easycor_test", "easycorrelation", "parameters_model", class(out)))
   out
 }
 
 
+#  Corr methods -------------------
+
+# pearson and spearman calc function
+#' @keywords internal
+.cor_test_freq <- function(var_x, var_y,
+                           ci = 0.95,
+                           alternative = "two.sided",
+                           method = "pearson",
+                           ...) {
+  # calculating the pearson or spearman correlation coefficient
+  r <- cor(var_x, var_y, method = method)
+  # calculating the degrees of freedom, t-value and p-value
+  df <- length(var_x) - 2
+  t_p <- .t_p_value(r, df, alternative)
+  # creating output dataframe
+  out <- data.frame("r" = r,
+                    "df_error" = df,
+                    "t" = t_p[1],
+                    "p" = t_p[2],
+                    "Method" = method)
+  # calculating the confidence interval
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                 "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI_low <- CI[1]
+    out$CI_high <- CI[2]
+  }
+  # returning output
+  out
+}
+
+# kendall's tau calc function
+#' @keywords internal
+.cor_test_kendall <- function(var_x, var_y,
+                              ci = 0.95,
+                              alternative = "two.sided",
+                              tau_type = "b",
+                              direction = "row",
+                              ...) {
+
+  tab <- table(var_x, var_y)
+  n <- length(var_x)
+  # calculating the concordant and discordant pairs amounts within the data and across it
+  ConDisParams <- DescTools::ConDisPairs(tab)[3:4]
+  # calculating kendall's tau
+  tau <- switch(tau_type,
+                "a" = DescTools::KendallTauA(var_x, var_y, direction = direction, conf.level = ci, ...),
+                "b" = DescTools::KendallTauB(var_x, var_y, conf.level = ci, ...),
+                "c" = DescTools::StuartTauC(var_x, var_y, conf.level = ci, ...))
+  CI <- tau[2:3]
+  tau <- tau[1]
+  # calculating the z-value according to the tau_type required
+  if(tau_type != "a") {
+    xi <- rowSums(tab)
+    yj <- colSums(tab)
+    vx <- sum(xi * (xi - 1) * (2 * xi + 5))
+    vy <- sum(yj * (yj - 1) * (2 * yj + 5))
+    v1 <- sum(xi * (xi - 1)) * sum(yj * (yj - 1)) / (2 * n * (n - 1))
+    v2 <- sum(xi * (xi - 1) * (xi - 2)) * sum(yj * (yj - 1) * (yj - 2)) / (9 * n * (n - 1) * (n - 2))
+    v <- (n * (n - 1) * (2 * n + 5) - vx - vy)/18 + v1 + v2
+    z <- (ConDisParams$C- ConDisParams$D) / sqrt(v)
+  }
+  else {
+    z <- (ConDisParams$C - ConDisParams$D) / sqrt(n * (n - 1) * (2 * n + 5) / 18)
+  }
+  # calculating the p-value
+  p <- switch(alternative,
+              "two.sided" = 2 * stats::pnorm(abs(z), lower.tail = FALSE),
+              "less" = stats::pnorm(z),
+              "greater" = stats::pnorm(z, lower.tail = FALSE))
+  # creating output dataframe
+  out <- data.frame("tau" = tau,
+                    "z" = z,
+                    "p" = p,
+                    "df_error" = NULL)
+  # renaming coefficient value appropriately
+  names(out)[1] <- switch(tau_type,
+                          "a" = "TauA",
+                          "b" = "TauB",
+                          "c" = "TauC")
+  # finding the standard deviation using calculus
+  sd <- (CI[2] - tau) / qnorm((1 + ci) / 2)
+  # calculating the confidence interval
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = CI,
+                 "less" = c(-Inf, tau + qnorm(ci) * sd),
+                 "greater" = c(tau - qnorm(ci) * sd, Inf))
+    out$CI_low <- CI[1]
+    out$CI_high <- CI[2]
+  }
+  # returning output
+  out
+}
+
+# biserial correlation calc function
+#' @keywords internal
+.cor_test_biserial <- function(var_x, var_y,
+                               ci = 0.95,
+                               alternative = "two.sided",
+                               xType = "base",
+                               ...) {
+  if(!.var_type(var_x)$is_binary && !.var_type(var_y)$is_binary) insight::format_error("Biserial correlation can only be applied atleast one of x and y is dichotomous")
+  else if(!.var_type(var_x)$is_binary)
+  {
+    temp <- var_x
+    var_x <- var_y
+    var_y <- temp
+  }
+
+  # calculating helping values
+  n <- length(var_x)
+  m0 <- mean(var_x[var_y == 0])
+  m1 <- mean(var_x[var_y == 1])
+  n0 <- sum(var_y == 0)
+  n1 <- sum(var_y == 1)
+  sdX <- sd(var_x)
+
+  r <- switch(xType,
+              "base" = ((m1 - m0) / sdX) * sqrt(n1 * n0 / (n ^ 2 - n)),
+              "point" = (m1 - m0 - 1) / sqrt((n ^ 2 * sdX ^ 2) / (n1 * n0) - 2 * (m1 - m0) + 1),
+              "rank" = 2 * (m1 - m0) / (n1 + n0))
+  # calculating the degrees of freedom, t-value and p-value
+  df <- n - 2
+  t_p <- .t_p_value(r, df, alternative)
+  # creating output dataframe
+  out <- data.frame("r" = r,
+                    "df_error" = df,
+                    "t" = t_p[1],
+                    "p" = t_p[2],
+                    "Method" = switch(xType,
+                                      "base" = "Biserial",
+                                      "point" = "Point Biserial",
+                                      "rank" = "Rank Biserial"))
+  # calculating the confidence interval
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                 "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI_low <- CI[1]
+    out$CI_high <- CI[2]
+  }
+  # returning output
+  out
+}
+
+# biweight midcorrelation calc function
+#' @keywords internal
+.cor_test_biweight <- function(var_x, var_y,
+                               ci = 0.95,
+                               alternative = "two.sided",
+                               ...) {
+  # finding helping values
+  xb <- (var_x - median(var_x)) / (9 * mad(var_x, constant = 1))
+  yb <- (var_y - median(var_y)) / (9 * mad(var_y, constant = 1))
+  wx <- (1 - xb ^ 2) ^ 2 * (1 - abs(xb) > 0)
+  wy <- (1 - yb ^ 2) ^ 2 * (1 - abs(yb) > 0)
+  xDnm <- sqrt(sum(((var_x - median(var_x)) * wx) ^ 2))
+  yDnm <- sqrt(sum(((var_y - median(var_y)) * wy) ^ 2))
+
+  # finding x Tilda and y Tilda for use infinal calculation
+  xTil <- ((var_x - median(var_x)) * wx) / xDnm
+  yTil <- ((var_y - median(var_y)) * wy) / yDnm
+
+  # calculating the coefficient
+  r <- sum(xTil * yTil)
+  # calculating the degrees of freedom, t-value and p-value
+  df <- length(var_x) - 2
+  t_p <- .t_p_value(r, df, alternative)
+  # creating output dataframe
+  out <- data.frame("r" = r,
+                    "df_error" = df,
+                    "t" = t_p[1],
+                    "p" = t_p[2])
+  # calculating the confidence interval
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                 "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI_low <- CI[1]
+    out$CI_high <- CI[2]
+  }
+  # returning output
+  out
+}
+
+# distance correlation calc function (same as original, with little bit of tweaks)
+#' @keywords internal
+.cor_test_distance <- function(var_x, var_y,
+                               ci = 0.95,
+                               corrected = TRUE,
+                               ...) {
+  # TODO put .cor_test_distance_corrected and .cor_test_distance_raw in here
+  if (!corrected) {
+    rez <- .cor_test_distance_raw(var_x, var_y, index = 1)
+    rez <- data.frame("r" = rez$r,
+                      "df_error" = NA,
+                      "t" = NA,
+                      "p" = NA,
+                      "CI" = NA,
+                      "CI_low" = NA,
+                      "CI_high" = NA)
+  }
+  else {
+    rez <- .cor_test_distance_corrected(var_x, var_y, ci = ci)
+    rez <- data.frame("r" = rez$r,
+                      "df_error" = rez$df,
+                      "t" = rez$t,
+                      "p" = rez$p,
+                      "CI_low" = rez$CI_low,
+                      "CI_high" = rez$CI_high,
+                      "Method" = "Distance (Bias Corrected)")
+  }
+
+  rez
+}
+
+# percentage bend correlation calc function
+#' @keywords internal
+.cor_test_percentage <- function(var_x, var_y,
+                                 ci = 0.95,
+                                 alternative = "two.sided",
+                                 beta = 0.2,
+                                 ...) {
+  # finding helping values
+  ohmX <- .omhat(var_x, beta)
+  ohmY <- .omhat(var_y, beta)
+  pbosX <- .pbos(var_x, beta)
+  pbosY <- .pbos(var_y, beta)
+
+  # finding a and b values
+  a <- (var_x - pbosX) / ohmX
+  b <- (var_y - pbosY) / ohmY
+  a <- ifelse(a < -1, -1, ifelse(a > 1, 1, a))
+  b <- ifelse(b < -1, -1, ifelse(b > 1, 1, b))
+
+  # calculating the coefficient
+  r <- sum(a * b) / sqrt(sum(a ^ 2) * sum(b ^ 2))
+  # calculating the degrees of freedom, t-value and p-value
+  df <- length(var_x) - 2
+  t_p <- .t_p_value(r, df, alternative)
+  # creating output dataframe
+  out <- data.frame("r" = r,
+                    "df_error" = df,
+                    "t" = t_p[1],
+                    "p" = t_p[2])
+  # calculating the confidence interval
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                 "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI_low <- CI[1]
+    out$CI_high <- CI[2]
+  }
+  # returning output
+  out
+}
+
+# hoeffding's D correlation calc function (same as original, with little bit of tweaks)
+#' @keywords internal
+.cor_test_hoeffding <- function(var_x, var_y,
+                                ci = 0.95,
+                                ...) {
+  insight::check_if_installed("Hmisc", "for 'hoeffding' correlations")
+
+  rez <- Hmisc::hoeffd(var_x, var_y)
+
+  data.frame("r" = rez$D[2, 1],
+             "df_error" = length(var_x) - 2,
+             "t" = NA,
+             "p" = rez$P[2, 1],
+             "CI_low" = NA,
+             "CI_high" = NA)
+}
+
+# gamma correlation calc function (almost the same as original)
+#' @keywords internal
+.cor_test_gamma <- function(var_x, var_y,
+                            ci = 0.95,
+                            alternative = "two.sided",
+                            ...) {
+  # using the method from the original function
+  ConDisField <- outer(var_x, var_x, function(x1, x2) sign(x1 - x2)) * outer(var_y, var_y, function(y1, y2) sign(y1 - y2))
+  r <- sum(ConDisField) / sum(abs(ConDisField))
+  # calculating the degrees of freedom, t-value and p-value
+  df <- length(var_x) - 2
+  t_p <- .t_p_value(r, df, alternative)
+  # creating output dataframe
+  out <- data.frame("r" = r,
+                    "df_error" = df,
+                    "t" = t_p[1],
+                    "p" = t_p[2])
+  # calculating the confidence interval
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                 "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI_low <- CI[1]
+    out$CI_high <- CI[2]
+  }
+  # returning output
+  out
+}
+
+# Shepherd's Pi calc function
+#' @keywords internal
+.cor_test_shepherd <- function(var_x, var_y,
+                               ci = 0.95,
+                               alternative = "two.sided",
+                               bayesian = FALSE,
+                               ...) {
+  # finding outliers using bootstraped mahalanobis (as done in original)
+  d <- .robust_bootstrap_mahalanobis(cbind(var_x, var_y))
+  outliers <- d >= 6
+  out <- .cor_test_freq(var_x[!outliers], var_y[!outliers], ci, alternative, "spearman")
+  out$Method <- "Shepherd's Pi"
+
+  # returning output
+  out
+}
+
+# somers' D correlation calc function (same as original, with little bit of tweaks)
+#' @keywords internal
+.cor_test_somers <- function(var_x, var_y,
+                             ci = 0.95,
+                             alternative = "two.sided",
+                             ...) {
+  insight::check_if_installed("Hmisc", "for 'somers' correlations")
+
+  rez <- Hmisc::somers2(var_x, var_y)
+
+  data.frame("r" = rez["Dxy"],
+             "df_error" = length(var_x) - 2,
+             "t" = NA,
+             "p" = NA,
+             "CI_low" = NA,
+             "CI_high" = NA,
+             "Method" = "Somers' D")
+}
+
+# polychoric correlation calc function (same as original, with little bit of tweaks)
+#' @keywords internal
+.cor_test_polychoric <- function(var_x, var_y,
+                                 ci = 0.95,
+                                 alternative = "two.sided",
+                                 ...) {
+  insight::check_if_installed("psych", "for 'tetrachronic' correlations")
+
+  # valid matrix check
+  if (!is.factor(var_x) && !is.factor(var_y)) insight::format_error("Polychoric correlations can only be ran on ordinal factors.")
+
+  if (!is.factor(var_x) || !is.factor(var_y)) {
+    insight::check_if_installed("polycor", "for 'polyserial' correlations")
+
+    r <- polycor::polyserial(
+      x = if (is.factor(var_x)) as.numeric(var_y) else as.numeric(var_x),
+      y = if (is.factor(var_x)) as.numeric(var_x) else as.numeric(var_y)
+    )
+    method <- "Polyserial"
+  } else {
+    # Reconstruct dataframe
+    dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
+    junk <- utils::capture.output({
+      r <- suppressWarnings(psych::polychoric(dat)$rho[2, 1])
+    })
+    method <- "Polychoric"
+  }
+
+  # calculating the degrees of freedom, t-value and p-value
+  df <- length(var_x) - 2
+  t_p <- .t_p_value(r, df, alternative)
+  # creating output dataframe
+  out <- data.frame("r" = r,
+                    "df" = df,
+                    "t" = t_p[1],
+                    "p" = t_p[2],
+                    "Method" = method)
+  # calculating the confidence interval
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                 "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI_low <- CI[1]
+    out$CI_high <- CI[2]
+  }
+  # returning output
+  out
+}
+
+# tetrachoric correlation calc function (same as original, with little bit of tweaks)
+#' @keywords internal
+.cor_test_tetrachoric <- function(var_x, var_y,
+                                  ci = 0.95,
+                                  alternative = "two.sided",
+                                  ...) {
+  insight::check_if_installed("psych", "for 'tetrachronic' correlations")
+
+  # valid matrix check
+  if (length(unique(var_x)) > 2 && length(unique(var_y)) > 2) insight::format_error("Tetrachoric correlations can only be ran on dichotomous data.")
+
+  # Reconstruct dataframe
+  dat <- data.frame(var_x, var_y)
+
+  junk <- utils::capture.output(r <- psych::tetrachoric(dat)$rho[2, 1]) # nolint
+
+  # calculating the degrees of freedom, t-value and p-value
+  df <- length(var_x) - 2
+  t_p <- .t_p_value(r, df, alternative)
+  # creating output dataframe
+  out <- data.frame("r" = r,
+                    "df_error" = df,
+                    "t" = t_p[1],
+                    "p" = t_p[2])
+  # calculating the confidence interval
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                 "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI_low <- CI[1]
+    out$CI_high <- CI[2]
+  }
+  # returning output
+  out
+}
+
+# bayesian frequentist calc function (same as original, with little bit of tweaks)
+.cor_test_bayes <- function(var_x, var_y,
+                            ci = 0.95,
+                            method = "pearson",
+                            bayesian_prior = "medium",
+                            bayesian_ci_method = "hdi",
+                            bayesian_test = c("pd", "rope", "bf"),
+                            ...) {
+  insight::check_if_installed("BayesFactor")
 
 
+  method_label <- "Bayesian Pearson"
+  method <- tolower(method)
+  if (method %in% c("spearman", "spear", "s")) {
+    var_x <- datawizard::ranktransform(var_x, method = "average")
+    var_y <- datawizard::ranktransform(var_y, method = "average")
+    metho_label <- "Bayesian Spearman"
+  } else if (method == "gaussian") {
+    var_x <- stats::qnorm(rank(var_x) / (length(var_x) + 1))
+    var_y <- stats::qnorm(rank(var_y) / (length(var_y) + 1))
+    method_label <- "Bayesian Gaussian"
+  } else if (method == "gaussian") {
+    d <- .robust_bootstrap_mahalanobis(cbind(var_x, var_y))
+    outliers <- d >= 6
 
-# Utilities ---------------------------------------------------------------
+    var_x <- datawizard::ranktransform(var_x[!outliers], method = "average")
+    var_y <- datawizard::ranktransform(var_y[!outliers], method = "average")
+
+    method_label <- "Bayesian Shepherd's Pi"
+  }
+
+  out <- .cor_test_bayes_base(
+    var_x,
+    var_y,
+    ci = ci,
+    bayesian_prior = bayesian_prior,
+    bayesian_ci_method = bayesian_ci_method,
+    bayesian_test = bayesian_test,
+    ...
+  )
+
+  # Add method
+  out$Method <- method_label
+  out
+}
 
 
+#  internal helping functions --------------------
 
+
+# confidence interval calculation
+#' @keywords internal
+.ci_value <- function(r, side, ci, df) {
+  tanh(atanh(r) + side * stats::qnorm(ci) / sqrt(df - 1))
+}
+
+# getting from the data frame the values of the column x where all the pairs of x and y are complete
 #' @keywords internal
 .complete_variable_x <- function(data, x, y) {
   data[[x]][stats::complete.cases(data[[x]], data[[y]])]
 }
 
+# getting from the data frame the values of the column y where all the pairs of x and y are complete
 #' @keywords internal
 .complete_variable_y <- function(data, x, y) {
   data[[y]][stats::complete.cases(data[[x]], data[[y]])]
+}
+
+# t-value & p-value calculation
+#' @keywords internal
+.t_p_value <- function(r, df, alternative) {
+  t <- r * sqrt(df / (1 - r ^ 2))
+  p <- switch(alternative,
+              "two.sided" = 2 * stats::pt(abs(t), df, lower.tail = FALSE),
+              "less" = stats::pt(t, df),
+              "greater" = stats::pt(t, df, lower.tail = FALSE))
+  c(t, p)
+}
+
+# Specific helpers -----------------------
+
+##  distance============
+
+#' @keywords internal
+.cor_test_distance_corrected <- function(x, y, ci = 0.95) {
+  x <- as.matrix(stats::dist(x))
+  y <- as.matrix(stats::dist(y))
+  n <- nrow(x)
+
+  A <- .A_star(x)
+  B <- .A_star(y)
+
+  XY <- (sum(A * B) - (n / (n - 2)) * sum(diag(A * B))) / n^2
+  XX <- (sum(A * A) - (n / (n - 2)) * sum(diag(A * A))) / n^2
+  YY <- (sum(B * B) - (n / (n - 2)) * sum(diag(B * B))) / n^2
+
+  r <- XY / sqrt(XX * YY)
+
+  M <- n * (n - 3) / 2
+  dof <- M - 1
+
+  t <- sqrt(M - 1) * r / sqrt(1 - r^2)
+  p <- 1 - stats::pt(t, df = dof)
+
+  ci_vals <- cor_to_ci(r, n = n, ci = ci)
+
+  list(
+    r = r,
+    t = t,
+    df = dof,
+    p = p,
+    CI_low = ci_vals$CI_low,
+    CI_high = ci_vals$CI_high
+  )
+}
+
+#' @keywords internal
+.cor_test_distance_raw <- function(x, y, index = 1) {
+  if (index < 0 || index > 2) {
+    insight::format_error("`index` must be between 0 and 2.")
+    index <- 1.0
+  }
+
+  x <- as.matrix(stats::dist(x))
+  y <- as.matrix(stats::dist(y))
+
+  A <- .A_kl(x, index)
+  B <- .A_kl(y, index)
+
+  cov <- sqrt(mean(A * B))
+  dVarX <- sqrt(mean(A * A))
+  dVarY <- sqrt(mean(B * B))
+  V <- sqrt(dVarX * dVarY)
+  if (V > 0) {
+    r <- cov / V
+  } else {
+    r <- 0
+  }
+  list(r = r, cov = cov)
+}
+
+#' @keywords internal
+.A_kl <- function(x, index) {
+  d <- as.matrix(x)^index
+  m <- rowMeans(d)
+  M <- mean(d)
+  a <- sweep(d, 1, m)
+  b <- sweep(a, 2, m)
+  (b + M)
+}
+
+#' @keywords internal
+.A_star <- function(d) {
+  ## d is a distance matrix or distance object
+  ## modified or corrected doubly centered distance matrices
+  ## denoted A* (or B*) in JMVA t-test paper (2013)
+  d <- as.matrix(d)
+  n <- nrow(d)
+  if (n != ncol(d)) stop("Argument d should be distance", call. = FALSE)
+  m <- rowMeans(d)
+  M <- mean(d)
+  a <- sweep(d, 1, m)
+  b <- sweep(a, 2, m)
+  A <- b + M # same as plain A
+  # correction to get A^*
+  A <- A - d / n
+  diag(A) <- m - M
+  (n / (n - 1)) * A
+}
+
+##  percentage bend============
+
+# ohmhat calculation
+#' @keywords internal
+.ohmhat <- function(x, beta) {
+  sort(abs(x - median(x)))[floor(1 - beta * length(x))]
+}
+
+# pbos calculation
+#' @keywords internal
+.pbos <- function(x, beta) {
+  omhat <- .ohmhat(x, beta)
+  psi <- (x - median(x)) / omhat
+  i1 <- length(psi[psi < -1])
+  i2 <- length(psi[psi > 1])
+  sx <- ifelse(psi < -1, 0, ifelse(psi > 1, 0, x))
+  (sum(sx) + omhat * (i2 - i1)) / (length(x) - i1 - i2)
+}
+
+## shepherd's D============
+
+# robust bootstrap mahalanobis calculation
+#' @keywords internal
+.robust_bootstrap_mahalanobis <- function(data, iterations = 1000) {
+  Ms <- replicate(n = iterations, {
+    # Draw random numbers from 1:n with replacement
+    idx <- sample(nrow(data), replace = TRUE)
+    # Resample data
+    dat <- data[idx, ]
+    # Calculating the Mahalanobis distance for each actual observation using resampled data
+    stats::mahalanobis(data, center = colMeans(dat), cov = stats::cov(dat))
+  })
+
+  apply(Ms, 1, stats::median)
+}
+
+## bayes============
+
+#' @keywords internal
+.cor_test_bayes_base <- function(var_x,
+                                 var_y,
+                                 ci = 0.95,
+                                 bayesian_prior = "medium",
+                                 bayesian_ci_method = "hdi",
+                                 bayesian_test = c("pd", "rope", "bf"),
+                                 ...) {
+  insight::check_if_installed("BayesFactor")
+
+
+  rez <- BayesFactor::correlationBF(var_x, var_y, rscale = bayesian_prior)
+  params <- parameters::model_parameters(
+    rez,
+    dispersion = FALSE,
+    ci_method = bayesian_ci_method,
+    test = bayesian_test,
+    rope_range = c(-0.1, 0.1),
+    rope_ci = 1,
+    ...
+  )
+  # validation check: do we have a BF column?
+  if (is.null(params$BF)) {
+    params$BF <- NA
+  }
+
+
+  # Rename coef
+  if (sum(names(params) %in% c("Median", "Mean", "MAP")) == 1) {
+    names(params)[names(params) %in% c("Median", "Mean", "MAP")] <- "rho"
+  }
+
+  # Remove useless columns
+  params[names(params) %in% c("Effects", "Component")] <- NULL
+
+  # returning output
+  params[names(params) != "Parameter"]
 }

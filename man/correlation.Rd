@@ -77,48 +77,8 @@ set to \code{0.95} (\verb{95\%} CI).}
 \item{bayesian}{If \code{TRUE}, will run the correlations under a Bayesian
 framework.}
 
-\item{bayesian_prior}{For the prior argument, several named values are
-recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and
-\code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)},
-\code{1/3}, \code{1/sqrt(3)} and \code{1}, respectively. See the
-\code{BayesFactor::correlationBF} function.}
-
-\item{bayesian_ci_method, bayesian_test}{See arguments in
-\code{\link[=parameters]{model_parameters()}} for \code{BayesFactor} tests.}
-
 \item{redundant}{Should the data include redundant rows (where each given
 correlation is repeated two times).}
-
-\item{include_factors}{If \code{TRUE}, the factors are kept and eventually
-converted to numeric or used as random effects (depending of
-\code{multilevel}). If \code{FALSE}, factors are removed upfront.}
-
-\item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and
-semi-partial correlations, respectively.}
-
-\item{partial_bayesian}{If partial correlations under a Bayesian framework
-are needed, you will also need to set \code{partial_bayesian} to \code{TRUE} to
-obtain "full" Bayesian partial correlations. Otherwise, you will obtain
-pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
-frequentist partialization).}
-
-\item{multilevel}{If \code{TRUE}, the factors are included as random factors.
-Else, if \code{FALSE} (default), they are included as fixed effects in the
-simple regression model.}
-
-\item{ranktransform}{If \code{TRUE}, will rank-transform the variables prior to
-estimating the correlation, which is one way of making the analysis more
-resistant to extreme values (outliers). Note that, for instance, a Pearson's
-correlation on rank-transformed data is equivalent to a Spearman's rank
-correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
-redundant. Nonetheless, it is an easy option to increase the robustness of the
-correlation as well as flexible way to obtain Bayesian or multilevel
-Spearman-like rank correlations.}
-
-\item{winsorize}{Another way of making the correlation more "robust" (i.e.,
-limiting the impact of extreme values). Can be either \code{FALSE} or a
-number between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired
-threshold. See the \code{\link[=winsorize]{winsorize()}} function for more details.}
 
 \item{verbose}{Toggle warnings.}
 
@@ -127,8 +87,11 @@ threshold. See the \code{\link[=winsorize]{winsorize()}} function for more detai
 names. This option can also be set globally by running
 \code{options(easystats.standardize_names = TRUE)}.}
 
-\item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
-other methods. See \code{stats::cor.test} for further details.}
+\item{...}{Additional arguments depending on \code{method}.
+\itemize{
+\item \code{"percentage"}: \code{beta} (default is \code{0.2}).
+\item \code{"bayes"}: \code{bayesian_prior} = "medium", \code{bayesian_ci_method} (default: "hdi"), \code{bayesian_test} (default: \code{c("pd", "rope", "bf")})
+}}
 }
 \value{
 A correlation object that can be displayed using the \code{print}, \code{summary} or
@@ -146,84 +109,6 @@ You can easily visualize the result using \code{\link[=visualisation_recipe.easy
 (see examples \href{https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples}{\strong{here}}).
 }
 \details{
-\subsection{Correlation Types}{
-\itemize{
-\item \strong{Pearson's correlation}: This is the most common correlation
-method. It corresponds to the covariance of the two variables normalized
-(i.e., divided) by the product of their standard deviations.
-\item \strong{Spearman's rank correlation}: A non-parametric measure of rank
-correlation (statistical dependence between the rankings of two variables).
-The Spearman correlation between two variables is equal to the Pearson
-correlation between the rank values of those two variables; while Pearson's
-correlation assesses linear relationships, Spearman's correlation assesses
-monotonic relationships (whether linear or not). Confidence Intervals (CI)
-for Spearman's correlations are computed using the Fieller et al. (1957)
-correction (see Bishara and Hittner, 2017).
-\item \strong{Kendall's rank correlation}: In the normal case, the Kendall correlation
-is preferred than the Spearman correlation because of a smaller gross error
-sensitivity (GES) and a smaller asymptotic variance (AV), making it more
-robust and more efficient. However, the interpretation of Kendall's tau is
-less direct than that of Spearman's rho, in the sense that it quantifies the
-difference between the percentage of concordant and discordant pairs among
-all possible pairwise events. Confidence Intervals (CI) for Kendall's
-correlations are computed using the Fieller et al. (1957) correction (see
-Bishara and Hittner, 2017).
-\item \strong{Biweight midcorrelation}: A measure of similarity that is
-median-based, instead of the traditional mean-based, thus being less
-sensitive to outliers. It can be used as a robust alternative to other
-similarity metrics, such as Pearson correlation (Langfelder & Horvath,
-2012).
-\item \strong{Distance correlation}: Distance correlation measures both
-linear and non-linear association between two random variables or random
-vectors. This is in contrast to Pearson's correlation, which can only detect
-linear association between two random variables.
-\item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it
-is based on a down-weight of a specified percentage of marginal observations
-deviating from the median (by default, \verb{20\%}).
-\item \strong{Shepherd's Pi correlation}: Equivalent to a Spearman's rank
-correlation after outliers removal (by means of bootstrapped Mahalanobis
-distance).
-\item \strong{Blomqvist’s coefficient}: The Blomqvist’s coefficient (also
-referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
-median-based non-parametric correlation that has some advantages over
-measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
-2006).
-\item \strong{Hoeffding’s D}: The Hoeffding’s D statistics is a
-non-parametric rank based measure of association that detects more general
-departures from independence (Hoeffding 1948), including non-linear
-associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied
-ranks, otherwise it can have lower values), with larger values indicating a
-stronger relationship between the variables.
-\item \strong{Somers’ D}: The Somers’ D statistics is a non-parametric rank
-based measure of association between a binary variable and a continuous
-variable, for instance, in the context of logistic regression the binary
-outcome and the predicted probabilities for each outcome. Usually, Somers' D
-is a measure of ordinal association, however, this implementation it is
-limited to the case of a binary outcome.
-\item \strong{Point-Biserial and biserial correlation}: Correlation
-coefficient used when one variable is continuous and the other is dichotomous
-(binary). Point-Biserial is equivalent to a Pearson's correlation, while
-Biserial should be used when the binary variable is assumed to have an
-underlying continuity. For example, anxiety level can be measured on a
-continuous scale, but can be classified dichotomously as high/low.
-\item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is
-similar to Kendall's Tau coefficient. It is relatively robust to outliers and
-deals well with data that have many ties.
-\item \strong{Winsorized correlation}: Correlation of variables that have
-been formerly Winsorized, i.e., transformed by limiting extreme values to
-reduce the effect of possibly spurious outliers.
-\item \strong{Gaussian rank Correlation}: The Gaussian rank correlation
-estimator is a simple and well-performing alternative for robust rank
-correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of
-the ranks.
-\item \strong{Polychoric correlation}: Correlation between two theorized
-normally distributed continuous latent variables, from two observed ordinal
-variables.
-\item \strong{Tetrachoric correlation}: Special case of the polychoric
-correlation applicable when both observed variables are dichotomous.
-}
-}
-
 \subsection{Partial Correlation}{
 \strong{Partial correlations} are estimated as the correlation between two
 variables after adjusting for the (linear) effect of one or more other

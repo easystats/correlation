@@ -37,8 +37,11 @@ these indices.}
 better, though the Bishara and Hittner (2017) paper favours the Fieller
 correction. Both are generally very similar.}
 
-\item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
-other methods. See \code{stats::cor.test} for further details.}
+\item{...}{Additional arguments depending on \code{method}.
+\itemize{
+\item \code{"percentage"}: \code{beta} (default is \code{0.2}).
+\item \code{"bayes"}: \code{bayesian_prior} = "medium", \code{bayesian_ci_method} (default: "hdi"), \code{bayesian_test} (default: \code{c("pd", "rope", "bf")})
+}}
 }
 \value{
 A list containing a \emph{p}-value and the statistic or the CI bounds.

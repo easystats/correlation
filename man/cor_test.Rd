@@ -10,16 +10,8 @@ cor_test(
   y,
   method = "pearson",
   ci = 0.95,
+  alternative = "two.sided",
   bayesian = FALSE,
-  bayesian_prior = "medium",
-  bayesian_ci_method = "hdi",
-  bayesian_test = c("pd", "rope", "bf"),
-  include_factors = FALSE,
-  partial = FALSE,
-  partial_bayesian = FALSE,
-  multilevel = FALSE,
-  ranktransform = FALSE,
-  winsorize = FALSE,
   verbose = TRUE,
   ...
 )
@@ -49,50 +41,13 @@ set to \code{0.95} (\verb{95\%} CI).}
 \item{bayesian}{If \code{TRUE}, will run the correlations under a Bayesian
 framework.}
 
-\item{bayesian_prior}{For the prior argument, several named values are
-recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and
-\code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)},
-\code{1/3}, \code{1/sqrt(3)} and \code{1}, respectively. See the
-\code{BayesFactor::correlationBF} function.}
-
-\item{bayesian_ci_method, bayesian_test}{See arguments in
-\code{\link[=parameters]{model_parameters()}} for \code{BayesFactor} tests.}
-
-\item{include_factors}{If \code{TRUE}, the factors are kept and eventually
-converted to numeric or used as random effects (depending of
-\code{multilevel}). If \code{FALSE}, factors are removed upfront.}
-
-\item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and
-semi-partial correlations, respectively.}
-
-\item{partial_bayesian}{If partial correlations under a Bayesian framework
-are needed, you will also need to set \code{partial_bayesian} to \code{TRUE} to
-obtain "full" Bayesian partial correlations. Otherwise, you will obtain
-pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
-frequentist partialization).}
-
-\item{multilevel}{If \code{TRUE}, the factors are included as random factors.
-Else, if \code{FALSE} (default), they are included as fixed effects in the
-simple regression model.}
-
-\item{ranktransform}{If \code{TRUE}, will rank-transform the variables prior to
-estimating the correlation, which is one way of making the analysis more
-resistant to extreme values (outliers). Note that, for instance, a Pearson's
-correlation on rank-transformed data is equivalent to a Spearman's rank
-correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
-redundant. Nonetheless, it is an easy option to increase the robustness of the
-correlation as well as flexible way to obtain Bayesian or multilevel
-Spearman-like rank correlations.}
-
-\item{winsorize}{Another way of making the correlation more "robust" (i.e.,
-limiting the impact of extreme values). Can be either \code{FALSE} or a
-number between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired
-threshold. See the \code{\link[=winsorize]{winsorize()}} function for more details.}
-
 \item{verbose}{Toggle warnings.}
 
-\item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
-other methods. See \code{stats::cor.test} for further details.}
+\item{...}{Additional arguments depending on \code{method}.
+\itemize{
+\item \code{"percentage"}: \code{beta} (default is \code{0.2}).
+\item \code{"bayes"}: \code{bayesian_prior} = "medium", \code{bayesian_ci_method} (default: "hdi"), \code{bayesian_test} (default: \code{c("pd", "rope", "bf")})
+}}
 }
 \description{
 This function performs a correlation test between two variables.
@@ -175,47 +130,6 @@ variables.
 \item \strong{Tetrachoric correlation}: Special case of the polychoric
 correlation applicable when both observed variables are dichotomous.
 }
-}
-
-\subsection{Partial Correlation}{
-\strong{Partial correlations} are estimated as the correlation between two
-variables after adjusting for the (linear) effect of one or more other
-variable. The correlation test is then run after having partialized the
-dataset, independently from it. In other words, it considers partialization
-as an independent step generating a different dataset, rather than belonging
-to the same model. This is why some discrepancies are to be expected for the
-t- and p-values, CIs, BFs etc (but \emph{not} the correlation coefficient)
-compared to other implementations (e.g., \code{ppcor}). (The size of these
-discrepancies depends on the number of covariates partialled-out and the
-strength of the linear association between all variables.) Such partial
-correlations can be represented as Gaussian Graphical Models (GGM), an
-increasingly popular tool in psychology. A GGM traditionally include a set of
-variables depicted as circles ("nodes"), and a set of lines that visualize
-relationships between them, which thickness represents the strength of
-association (see Bhushan et al., 2019).
-
-\strong{Multilevel correlations} are a special case of partial correlations where
-the variable to be adjusted for is a factor and is included as a random
-effect in a mixed model (note that the remaining continuous variables of the
-dataset will still be included as fixed effects, similarly to regular partial
-correlations). The model is a random intercept model, i.e. the multilevel
-correlation is adjusted for \code{(1 | groupfactor)}.That said, there is an
-important difference between using \code{cor_test()} and \code{correlation()}: If you
-set \code{multilevel=TRUE} in \code{correlation()} but \code{partial} is set to \code{FALSE} (as
-per default), then a back-transformation from partial to non-partial
-correlation will be attempted (through \code{\link[=pcor_to_cor]{pcor_to_cor()}}).
-However, this is not possible when using \code{cor_test()} so that if you set
-\code{multilevel=TRUE} in it, the resulting correlations are partial one. Note
-that for Bayesian multilevel correlations, if \code{partial = FALSE}, the back
-transformation will also recompute \emph{p}-values based on the new \emph{r} scores,
-and will drop the Bayes factors (as they are not relevant anymore). To keep
-Bayesian scores, set \code{partial = TRUE}.
-}
-
-\subsection{Notes}{
-Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technically
-Pearson Bayesian correlations of rank transformed data, rather than pure
-Bayesian rank correlations (which have different priors).
 }
 }
 \examples{

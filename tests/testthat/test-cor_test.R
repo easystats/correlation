@@ -1,8 +1,12 @@
-test_that("cor_test frequentist", {
+test_that("cor_test names (x,y)", {
   expect_error(cor_test(iris, Petal.Length, Petal.Width))
 
   out <- cor_test(iris, "Petal.Length", "Petal.Width")
-  expect_equal(out$r, 0.962, tolerance = 0.01)
+  out2 <- parameters::model_parameters(stats::cor.test(iris$Petal.Length, iris$Petal.Width))
+  expect_equal(out$r, out2$r, tolerance = 0.01)
+  expect_equal(out$CI_low, out2$CI_low, tolerance = 0.01)
+  expect_equal(out$CI_high, out2$CI_high, tolerance = 0.01)
+  # TODO
 })
 
 test_that("cor_test kendall", {
