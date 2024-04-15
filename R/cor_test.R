@@ -3,66 +3,77 @@
 #' This function performs a correlation test between two variables.
 #' You can easily visualize the result using [`plot()`][visualisation_recipe.easycormatrix()] (see examples [**here**](https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples)).
 #'
-#' @param data A data frame.
-#' @param x,y Names of two variables present in the data.
+#' @param x,y Vectors of the two variables the correlation test is done for.
+#'   \cr Alternatively, can be names of variables in `data`.
 #' @param ci Confidence/Credible Interval level. If `"default"`, then it is
 #'   set to `0.95` (`95%` CI).
 #' @param method A character string indicating which correlation coefficient is
-#'   to be used for the test. One of `"pearson"` (default),
-#'   `"kendall"`, `"spearman"` (but see also the `robust` argument), `"biserial"`,
-#'   `"polychoric"`, `"tetrachoric"`, `"biweight"`,
-#'   `"distance"`, `"percentage"` (for percentage bend correlation),
-#'   `"blomqvist"` (for Blomqvist's coefficient), `"hoeffding"` (for
-#'   Hoeffding's D), `"gamma"`, `"gaussian"` (for Gaussian Rank
-#'   correlation) or `"shepherd"` (for Shepherd's Pi correlation). Setting
-#'   `"auto"` will attempt at selecting the most relevant method
-#'   (polychoric when ordinal factors involved, tetrachoric when dichotomous
+#'   to be used for the test. \cr Possible Values: `"pearson"` (default),
+#'   `"kendall"`, `"spearman"`, `"biserial"`, `"point-biserial"`, `"rankbiserial"`,
+#'   `"polychoric"`, `"tetrachoric"`, `"biweight"`, `"distance"`, `"percentage"`
+#'   (for percentage bend correlation), `"blomqvist"` (for Blomqvist's
+#'   coefficient), `"hoeffding"` (for Hoeffding's D), `"gamma"`, `"gaussian"`
+#'   (for Gaussian Rank correlation), `"shepherd"` (for Shepherd's Pi correlation).
+#'   \cr (polychoric when ordinal factors involved, tetrachoric when dichotomous
 #'   factors involved, point-biserial if one dichotomous and one continuous and
 #'   pearson otherwise). See below the **details** section for a description of
 #'   these indices.
 #' @param bayesian If `TRUE`, will run the correlations under a Bayesian
 #'   framework.
 #' @param verbose Toggle warnings.
-#' @param ... Additional arguments depending on `method`.
-#'  - `"percentage"`: `beta` (default is `0.2`).
-#'  - `"bayes"`: `bayesian_prior` = "medium", `bayesian_ci_method` (default: "hdi"), `bayesian_test` (default: `c("pd", "rope", "bf")`)
+#' @param ... Optional arguments:
+#'  - `data` A data frame (when `x` and/or `y` are not vectors).
+#'  - Arguments dependent on `method` being:
+#'    - `"kendall"`:
+#'      - `tau_type` = `"b"`
+#'      - `direction` = `"row"` (used when `tau_type` = `"a"`)
+#'    - `"percentage"`:
+#'      - `beta` = `0.2`
+#'    - `"bayes"`:
+#'      - `bayesian_prior` = "medium"
+#'      - `bayesian_ci_method` = "hdi"
+#'      - `bayesian_test` = `c("pd", "rope", "bf")`
 #'
 #'
 #' @details
 #'
 #' ## Correlation Types
-#' - **Pearson's correlation**: This is the most common correlation
-#' method. It corresponds to the covariance of the two variables normalized
-#' (i.e., divided) by the product of their standard deviations.
+#' - **Pearson's correlation**: This is the most common correlation method. It
+#' corresponds to the covariance of the two variables normalized (i.e., divided)
+#' by the product of their standard deviations.
 #'
 #' - **Spearman's rank correlation**: A non-parametric measure of rank
 #' correlation (statistical dependence between the rankings of two variables).
-#' The Spearman correlation between two variables is equal to the Pearson
+#' \cr The Spearman correlation between two variables is equal to the Pearson
 #' correlation between the rank values of those two variables; while Pearson's
 #' correlation assesses linear relationships, Spearman's correlation assesses
-#' monotonic relationships (whether linear or not). Confidence Intervals (CI)
-#' for Spearman's correlations are computed using the Fieller et al. (1957)
+#' monotonic relationships (whether linear or not). \cr Confidence Intervals
+#' (CI) for Spearman's correlations are computed using the Fieller et al. (1957)
 #' correction (see Bishara and Hittner, 2017).
 #'
-#' - **Kendall's rank correlation**: In the normal case, the Kendall correlation
-#' is preferred than the Spearman correlation because of a smaller gross error
-#' sensitivity (GES) and a smaller asymptotic variance (AV), making it more
-#' robust and more efficient. However, the interpretation of Kendall's tau is
-#' less direct than that of Spearman's rho, in the sense that it quantifies the
-#' difference between the percentage of concordant and discordant pairs among
-#' all possible pairwise events. Confidence Intervals (CI) for Kendall's
-#' correlations are computed using the Fieller et al. (1957) correction (see
-#' Bishara and Hittner, 2017).
+#' - **Kendall's rank correlation**: Is used to quantify the association between
+#' two variables based on the ranks of their data points. \cr It comes in three
+#' variants which provide different approaches for handling tied ranks, allowing
+#' for robust assessments of association across different datasets and
+#' scenarios. \cr Confidence Intervals (CI) for Kendall's correlations are
+#' computed using the Fieller et al. (1957) correction (see Bishara and Hittner,
+#' 2017). \cr The three variants are: tau-a, tau-b (default), and tau-c.
+#'   - **Tau-a** doesn't account for ties and calculates the difference between
+#'   the proportions of concordant and discordant pairs.
+#'   - **Tau-b** adjusts for ties by incorporating a correction factor, ensuring
+#'   a more accurate measure of association.
+#'   - **Tau-c**, similar to tau-b, considers ties, but it only adjusts for
+#'   pairs where both variables have tied ranks.
 #'
 #' - **Biweight midcorrelation**: A measure of similarity that is
 #' median-based, instead of the traditional mean-based, thus being less
-#' sensitive to outliers. It can be used as a robust alternative to other
+#' sensitive to outliers. \cr It can be used as a robust alternative to other
 #' similarity metrics, such as Pearson correlation (Langfelder & Horvath,
 #' 2012).
 #'
 #' - **Distance correlation**: Distance correlation measures both
 #' linear and non-linear association between two random variables or random
-#' vectors. This is in contrast to Pearson's correlation, which can only detect
+#' vectors. \cr This is in contrast to Pearson's correlation, which can only detect
 #' linear association between two random variables.
 #'
 #' - **Percentage bend correlation**: Introduced by Wilcox (1994), it
@@ -79,46 +90,44 @@
 #' measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
 #' 2006).
 #'
-#' - **Hoeffding’s D**: The Hoeffding’s D statistics is a
-#' non-parametric rank based measure of association that detects more general
-#' departures from independence (Hoeffding 1948), including non-linear
-#' associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied
-#' ranks, otherwise it can have lower values), with larger values indicating a
-#' stronger relationship between the variables.
+#' - **Hoeffding’s D**: The Hoeffding’s D statistics is a non-parametric rank
+#' based measure of association that detects more general departures from
+#' independence (Hoeffding 1948), including non-linear associations. \cr
+#' Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks,
+#' otherwise it can have lower values), with larger values indicating a stronger
+#' relationship between the variables.
 #'
 #' - **Somers’ D**: The Somers’ D statistics is a non-parametric rank
 #' based measure of association between a binary variable and a continuous
 #' variable, for instance, in the context of logistic regression the binary
-#' outcome and the predicted probabilities for each outcome. Usually, Somers' D
-#' is a measure of ordinal association, however, this implementation it is
-#' limited to the case of a binary outcome.
+#' outcome and the predicted probabilities for each outcome. \cr Usually,
+#' Somers' D is a measure of ordinal association, however, this implementation
+#' it is limited to the case of a binary outcome.
 #'
-#' - **Point-Biserial and biserial correlation**: Correlation
+#' - **Point-Biserial, Rank-Biserial and biserial correlation**: Correlation
 #' coefficient used when one variable is continuous and the other is dichotomous
-#' (binary). Point-Biserial is equivalent to a Pearson's correlation, while
+#' (binary). \cr Point-Biserial is equivalent to a Pearson's correlation, while
 #' Biserial should be used when the binary variable is assumed to have an
 #' underlying continuity. For example, anxiety level can be measured on a
-#' continuous scale, but can be classified dichotomously as high/low.
+#' continuous scale, but can be classified dichotomously as high/low. \cr
+#' Rank-Biserial is also equivalent to a Pearson's correlation, but it is used
+#' when the continuous variable is ordinal, and the dichotomous variable is
+#' assumed to have any relation to the order of the ordinal variable rather than
+#' it's value.
 #'
-#' - **Gamma correlation**: The Goodman-Kruskal gamma statistic is
-#' similar to Kendall's Tau coefficient. It is relatively robust to outliers and
-#' deals well with data that have many ties.
+#' - **Gamma correlation**: The Goodman-Kruskal gamma statistic is similar to
+#' Kendall's Tau coefficient. It is relatively robust to outliers and deals well
+#' with data that have many ties.
 #'
-#' - **Winsorized correlation**: Correlation of variables that have
-#' been formerly Winsorized, i.e., transformed by limiting extreme values to
-#' reduce the effect of possibly spurious outliers.
+#' - **Gaussian rank Correlation**: The Gaussian rank correlation estimator is a
+#' simple and well-performing alternative for robust rank correlations (Boudt et
+#' al., 2012). \cr It is based on the Gaussian quantiles of the ranks.
 #'
-#' - **Gaussian rank Correlation**: The Gaussian rank correlation
-#' estimator is a simple and well-performing alternative for robust rank
-#' correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of
-#' the ranks.
+#' - **Polychoric correlation**: Correlation between two theorized normally
+#' distributed continuous latent variables, from two observed ordinal variables.
 #'
-#' - **Polychoric correlation**: Correlation between two theorized
-#' normally distributed continuous latent variables, from two observed ordinal
-#' variables.
-#'
-#' - **Tetrachoric correlation**: Special case of the polychoric
-#' correlation applicable when both observed variables are dichotomous.
+#' - **Tetrachoric correlation**: Special case of the polychoric correlation
+#' applicable when both observed variables are dichotomous.
 #'
 #'
 #' @examples
@@ -178,7 +187,7 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
 #' @export
-cor_test <- function(data, x, y,
+cor_test <- function(x, y,
                      method = "pearson",
                      ci = 0.95,
                      alternative = "two.sided",
@@ -189,7 +198,7 @@ cor_test <- function(data, x, y,
   #  checks
   # +======+
 
-  #   check value of method
+  # check value of method
   method <- match.arg(tolower(method), c("pearson", "spearman", "spear", "s",
                                          "kendall", "biserial", "pointbiserial",
                                          "point-biserial", "rankbiserial",
@@ -209,15 +218,91 @@ cor_test <- function(data, x, y,
   methodUse <- ifelse(method %in% c("poly", "polychoric"), "polychoric", methodUse)
   methodUse <- ifelse(method %in% c("tetra", "tetrachoric"), "tetrachoric", methodUse)
 
+  # vectors or names check
+  xIsVec <- !length(x) == 1L
+  yIsVec <- !length(y) == 1L
 
   # Make sure factor is no factor
   if (!methodUse %in% c("tetrachoric", "polychoric")) {
-    data[c(x, y)] <- datawizard::to_numeric(data[c(x, y)], dummy_factors = FALSE)
+    if (xIsVec || yIsVec) {
+      if (xIsVec) {
+        x <- datawizard::to_numeric(x, dummy_factors = FALSE)
+      }
+      else {
+        data[[x]] <- datawizard::to_numeric(data[[x]], dummy_factors = FALSE)
+      }
+      if (yIsVec) {
+        y <- datawizard::to_numeric(y, dummy_factors = FALSE)
+      }
+      else {
+        data[[y]] <- datawizard::to_numeric(data[[y]], dummy_factors = FALSE)
+      }
+    }
+    else {
+      data[c(x, y)] <- datawizard::to_numeric(data[c(x, y)], dummy_factors = FALSE)
+    }
   }
 
-  # narrowing the data to its complete form (without missing values)
-  var_x <- .complete_variable_x(data, x, y)
-  var_y <- .complete_variable_y(data, x, y)
+  # check validity of variables as vectors and/or as names
+  if (!xIsVec || !yIsVec) {
+    if (!"data" %in% names(list(...))) {
+      insight::format_error("At least 1 of the variables is from a data frame but no data frame has been provided.")
+    }
+    data <- list(...)$data
+    if (!is.data.frame(data)) {
+      insight::format_error("The data provided is not a data frame.")
+    }
+    if (xIsVec) {
+      completeY <- stats::complete.cases(data[[y]])
+      if (length(x) == nrows(data)) {
+        completeX <- stats::complete.cases(x)
+        var_x <- x[completeX * completeY == 1L]
+        var_y <- data[[y]][completeX * completeY == 1L]
+      }
+      else if (length(x) == sum(completeY)) {
+        var_y <- data[[y]][completeY]
+        completeX <- stats::complete.cases(x)
+        var_x <- x[completeX]
+        var_y <- var_y[completeX]
+      }
+      else {
+        insight::format_error("Cannot match complete cases of variable x with variable y, \n       The length of x should match the length of y or the length of the whole data frame.")
+      }
+    }
+    else if (yIsVec) {
+      completeX <- stats::complete.cases(data[[x]])
+      if (length(y) == nrows(data)) {
+        completeY <- stats::complete.cases(y)
+        var_x <- data[[x]][completeX * completeY == 1L]
+        var_y <- y[completeX * completeY == 1L]
+      }
+      else if (length(y) == sum(completeX)) {
+        var_x <- data[[x]][completeX]
+        completeY <- stats::complete.cases(y)
+        var_x <- var_x[completeY]
+        var_y <- y[completeY]
+      }
+      else {
+        insight::format_error("Cannot match complete cases of variable x with variable y, \n       The length of y should match the length of x or the length of the whole data frame.")
+      }
+    }
+    else {
+      completeCase <- stats::complete.cases(data[[x]], data[[y]])
+      var_x <- data[[x]][completeCase]
+      var_y <- data[[y]][completeCase]
+    }
+  }
+  else {
+    if (length(x) != length(y)) {
+      insight::format_error("The length of x should match the length of y.")
+    }
+    else {
+      completeCase <- stats::complete.cases(x, y)
+      var_x <- x[completeCase]
+      var_y <- y[completeCase]
+    }
+  }
+
   # check validity of the amount of observations
   n_obs <- length(var_x)
 
@@ -244,18 +329,24 @@ cor_test <- function(data, x, y,
     }
     else tau_type <- "b"
   }
-  if(methodUse == "biserial") {
-    if("xType" %in% names(list(...))) {
-      xType <- match.arg(tolower(xType), c("base", "point", "rank"))
-    }
-    else xType <- "base"
-  }
   if(methodUse == "percentage") {
     if("beta" %in% names(list(...))) {
       if (length(beta) != 1L || beta <= 0 || beta >= 0.5)
         stop("The bend criterion (beta) is not between 0 and 0.5")
     }
     else beta <- 0.2
+  }
+  if(bayesian) {
+    if("bayesian_prior" %in% names(list(...))) {
+      bayesian_prior <- match.arg(tolower(bayesian_prior), c("medium", "medium.narrow", "wide", "ultra-wide"))
+    }
+    else bayesian_prior <- "medium"
+    if(!"bayesian_ci_method" %in% names(list(...))) {
+      bayesian_ci_method <- "hdi"
+    }
+    if(!"bayesian_test" %in% names(list(...))) {
+      bayesian_test <- c("pd", "rope", "bf")
+    }
   }
 
   # +=======================+
@@ -497,10 +588,29 @@ cor_test <- function(data, x, y,
                                ci = 0.95,
                                corrected = TRUE,
                                ...) {
-  # TODO put .cor_test_distance_corrected and .cor_test_distance_raw in here
   if (!corrected) {
-    rez <- .cor_test_distance_raw(var_x, var_y, index = 1)
-    rez <- data.frame("r" = rez$r,
+    if("index" %in% names(list(...))) {
+      if (index < 0 || index > 2) {
+        insight::format_error("`index` must be between 0 and 2.")
+        index <- 1.0
+      }
+    }
+    else index <- 1.0
+
+    var_x <- as.matrix(stats::dist(var_x))
+    var_y <- as.matrix(stats::dist(var_y))
+
+    A <- .A_kl(var_x, index)
+    B <- .A_kl(var_y, index)
+
+    V <- sqrt(sqrt(mean(A * A)) * sqrt(mean(B * B)))
+    if (V > 0) {
+      r <- sqrt(mean(A * B)) / V
+    } else {
+      r <- 0
+    }
+
+    rez <- data.frame("r" = r,
                       "df_error" = NA,
                       "t" = NA,
                       "p" = NA,
@@ -509,13 +619,27 @@ cor_test <- function(data, x, y,
                       "CI_high" = NA)
   }
   else {
-    rez <- .cor_test_distance_corrected(var_x, var_y, ci = ci)
-    rez <- data.frame("r" = rez$r,
-                      "df_error" = rez$df,
-                      "t" = rez$t,
-                      "p" = rez$p,
-                      "CI_low" = rez$CI_low,
-                      "CI_high" = rez$CI_high,
+    var_x <- as.matrix(stats::dist(var_x))
+    var_y <- as.matrix(stats::dist(var_y))
+    n <- nrow(var_x)
+
+    A <- .A_star(var_x)
+    B <- .A_star(var_y)
+
+    XY <- (sum(A * B) - (n / (n - 2)) * sum(diag(A * B))) / n^2
+    XX <- (sum(A * A) - (n / (n - 2)) * sum(diag(A * A))) / n^2
+    YY <- (sum(B * B) - (n / (n - 2)) * sum(diag(B * B))) / n^2
+
+    r <- XY / sqrt(XX * YY)
+    M <- n * (n - 3) / 2
+    ci_vals <- cor_to_ci(r, n = n, ci = ci)
+
+    rez <- data.frame("r" = r,
+                      "df_error" = M - 1,
+                      "t" = sqrt(M - 1) * r / sqrt(1 - r^2),
+                      "p" = 1 - stats::pt(t, df = M - 1),
+                      "CI_low" = ci_vals$CI_low,
+                      "CI_high" = ci_vals$CI_high,
                       "Method" = "Distance (Bias Corrected)")
   }
 
@@ -790,18 +914,6 @@ cor_test <- function(data, x, y,
   tanh(atanh(r) + side * stats::qnorm(ci) / sqrt(df - 1))
 }
 
-# getting from the data frame the values of the column x where all the pairs of x and y are complete
-#' @keywords internal
-.complete_variable_x <- function(data, x, y) {
-  data[[x]][stats::complete.cases(data[[x]], data[[y]])]
-}
-
-# getting from the data frame the values of the column y where all the pairs of x and y are complete
-#' @keywords internal
-.complete_variable_y <- function(data, x, y) {
-  data[[y]][stats::complete.cases(data[[x]], data[[y]])]
-}
-
 # t-value & p-value calculation
 #' @keywords internal
 .t_p_value <- function(r, df, alternative) {
@@ -816,64 +928,6 @@ cor_test <- function(data, x, y,
 # Specific helpers -----------------------
 
 ##  distance============
-
-#' @keywords internal
-.cor_test_distance_corrected <- function(x, y, ci = 0.95) {
-  x <- as.matrix(stats::dist(x))
-  y <- as.matrix(stats::dist(y))
-  n <- nrow(x)
-
-  A <- .A_star(x)
-  B <- .A_star(y)
-
-  XY <- (sum(A * B) - (n / (n - 2)) * sum(diag(A * B))) / n^2
-  XX <- (sum(A * A) - (n / (n - 2)) * sum(diag(A * A))) / n^2
-  YY <- (sum(B * B) - (n / (n - 2)) * sum(diag(B * B))) / n^2
-
-  r <- XY / sqrt(XX * YY)
-
-  M <- n * (n - 3) / 2
-  dof <- M - 1
-
-  t <- sqrt(M - 1) * r / sqrt(1 - r^2)
-  p <- 1 - stats::pt(t, df = dof)
-
-  ci_vals <- cor_to_ci(r, n = n, ci = ci)
-
-  list(
-    r = r,
-    t = t,
-    df = dof,
-    p = p,
-    CI_low = ci_vals$CI_low,
-    CI_high = ci_vals$CI_high
-  )
-}
-
-#' @keywords internal
-.cor_test_distance_raw <- function(x, y, index = 1) {
-  if (index < 0 || index > 2) {
-    insight::format_error("`index` must be between 0 and 2.")
-    index <- 1.0
-  }
-
-  x <- as.matrix(stats::dist(x))
-  y <- as.matrix(stats::dist(y))
-
-  A <- .A_kl(x, index)
-  B <- .A_kl(y, index)
-
-  cov <- sqrt(mean(A * B))
-  dVarX <- sqrt(mean(A * A))
-  dVarY <- sqrt(mean(B * B))
-  V <- sqrt(dVarX * dVarY)
-  if (V > 0) {
-    r <- cov / V
-  } else {
-    r <- 0
-  }
-  list(r = r, cov = cov)
-}
 
 #' @keywords internal
 .A_kl <- function(x, index) {

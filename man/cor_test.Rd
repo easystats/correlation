@@ -5,7 +5,6 @@
 \title{Correlation test}
 \usage{
 cor_test(
-  data,
   x,
   y,
   method = "pearson",
@@ -17,20 +16,17 @@ cor_test(
 )
 }
 \arguments{
-\item{data}{A data frame.}
-
-\item{x, y}{Names of two variables present in the data.}
+\item{x, y}{Vectors of the two variables the correlation test is done for.
+\cr Alternatively, can be names of variables in \code{data}.}
 
 \item{method}{A character string indicating which correlation coefficient is
-to be used for the test. One of \code{"pearson"} (default),
-\code{"kendall"}, \code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
-\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
-\code{"distance"}, \code{"percentage"} (for percentage bend correlation),
-\code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
-Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank
-correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
-\code{"auto"} will attempt at selecting the most relevant method
-(polychoric when ordinal factors involved, tetrachoric when dichotomous
+to be used for the test. \cr Possible Values: \code{"pearson"} (default),
+\code{"kendall"}, \code{"spearman"}, \code{"biserial"}, \code{"point-biserial"}, \code{"rankbiserial"},
+\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"}
+(for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's
+coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"}
+(for Gaussian Rank correlation), \code{"shepherd"} (for Shepherd's Pi correlation).
+\cr (polychoric when ordinal factors involved, tetrachoric when dichotomous
 factors involved, point-biserial if one dichotomous and one continuous and
 pearson otherwise). See below the \strong{details} section for a description of
 these indices.}
@@ -43,10 +39,27 @@ framework.}
 
 \item{verbose}{Toggle warnings.}
 
-\item{...}{Additional arguments depending on \code{method}.
+\item{...}{Optional arguments:
 \itemize{
-\item \code{"percentage"}: \code{beta} (default is \code{0.2}).
-\item \code{"bayes"}: \code{bayesian_prior} = "medium", \code{bayesian_ci_method} (default: "hdi"), \code{bayesian_test} (default: \code{c("pd", "rope", "bf")})
+\item \code{data} A data frame (when \code{x} and/or \code{y} are not vectors).
+\item Arguments dependent on \code{method} being:
+\itemize{
+\item \code{"kendall"}:
+\itemize{
+\item \code{tau_type} = \code{"b"}
+\item \code{direction} = \code{"row"} (used when \code{tau_type} = \code{"a"})
+}
+\item \code{"percentage"}:
+\itemize{
+\item \code{beta} = \code{0.2}
+}
+\item \code{"bayes"}:
+\itemize{
+\item \code{bayesian_prior} = "medium"
+\item \code{bayesian_ci_method} = "hdi"
+\item \code{bayesian_test} = \code{c("pd", "rope", "bf")}
+}
+}
 }}
 }
 \description{
@@ -56,26 +69,32 @@ You can easily visualize the result using \code{\link[=visualisation_recipe.easy
 \details{
 \subsection{Correlation Types}{
 \itemize{
-\item \strong{Pearson's correlation}: This is the most common correlation
-method. It corresponds to the covariance of the two variables normalized
-(i.e., divided) by the product of their standard deviations.
+\item \strong{Pearson's correlation}: This is the most common correlation method. It
+corresponds to the covariance of the two variables normalized (i.e., divided)
+by the product of their standard deviations.
 \item \strong{Spearman's rank correlation}: A non-parametric measure of rank
 correlation (statistical dependence between the rankings of two variables).
-The Spearman correlation between two variables is equal to the Pearson
+\cr The Spearman correlation between two variables is equal to the Pearson
 correlation between the rank values of those two variables; while Pearson's
 correlation assesses linear relationships, Spearman's correlation assesses
-monotonic relationships (whether linear or not). Confidence Intervals (CI)
-for Spearman's correlations are computed using the Fieller et al. (1957)
+monotonic relationships (whether linear or not). \cr Confidence Intervals
+(CI) for Spearman's correlations are computed using the Fieller et al. (1957)
 correction (see Bishara and Hittner, 2017).
-\item \strong{Kendall's rank correlation}: In the normal case, the Kendall correlation
-is preferred than the Spearman correlation because of a smaller gross error
-sensitivity (GES) and a smaller asymptotic variance (AV), making it more
-robust and more efficient. However, the interpretation of Kendall's tau is
-less direct than that of Spearman's rho, in the sense that it quantifies the
-difference between the percentage of concordant and discordant pairs among
-all possible pairwise events. Confidence Intervals (CI) for Kendall's
-correlations are computed using the Fieller et al. (1957) correction (see
-Bishara and Hittner, 2017).
+\item \strong{Kendall's rank correlation}: Is used to quantify the association between
+two variables based on the ranks of their data points. \cr It comes in three
+variants which provide different approaches for handling tied ranks, allowing
+for robust assessments of association across different datasets and
+scenarios. \cr Confidence Intervals (CI) for Kendall's correlations are
+computed using the Fieller et al. (1957) correction (see Bishara and Hittner,
+2017). \cr The three variants are: tau-a, tau-b (default), and tau-c.
+\itemize{
+\item \strong{Tau-a} doesn't account for ties and calculates the difference between
+the proportions of concordant and discordant pairs.
+\item \strong{Tau-b} adjusts for ties by incorporating a correction factor, ensuring
+a more accurate measure of association.
+\item \strong{Tau-c}, similar to tau-b, considers ties, but it only adjusts for
+pairs where both variables have tied ranks.
+}
 \item \strong{Biweight midcorrelation}: A measure of similarity that is
 median-based, instead of the traditional mean-based, thus being less
 sensitive to outliers. It can be used as a robust alternative to other
@@ -117,9 +136,6 @@ continuous scale, but can be classified dichotomously as high/low.
 \item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is
 similar to Kendall's Tau coefficient. It is relatively robust to outliers and
 deals well with data that have many ties.
-\item \strong{Winsorized correlation}: Correlation of variables that have
-been formerly Winsorized, i.e., transformed by limiting extreme values to
-reduce the effect of possibly spurious outliers.
 \item \strong{Gaussian rank Correlation}: The Gaussian rank correlation
 estimator is a simple and well-performing alternative for robust rank
 correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of

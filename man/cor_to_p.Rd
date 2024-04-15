@@ -18,15 +18,13 @@ cor_to_p(cor, n, method = "pearson")
 set to \code{0.95} (\verb{95\%} CI).}
 
 \item{method}{A character string indicating which correlation coefficient is
-to be used for the test. One of \code{"pearson"} (default),
-\code{"kendall"}, \code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
-\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
-\code{"distance"}, \code{"percentage"} (for percentage bend correlation),
-\code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
-Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank
-correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
-\code{"auto"} will attempt at selecting the most relevant method
-(polychoric when ordinal factors involved, tetrachoric when dichotomous
+to be used for the test. \cr Possible Values: \code{"pearson"} (default),
+\code{"kendall"}, \code{"spearman"}, \code{"biserial"}, \code{"point-biserial"}, \code{"rankbiserial"},
+\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"}
+(for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's
+coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"}
+(for Gaussian Rank correlation), \code{"shepherd"} (for Shepherd's Pi correlation).
+\cr (polychoric when ordinal factors involved, tetrachoric when dichotomous
 factors involved, point-biserial if one dichotomous and one continuous and
 pearson otherwise). See below the \strong{details} section for a description of
 these indices.}
@@ -37,10 +35,27 @@ these indices.}
 better, though the Bishara and Hittner (2017) paper favours the Fieller
 correction. Both are generally very similar.}
 
-\item{...}{Additional arguments depending on \code{method}.
+\item{...}{Optional arguments:
 \itemize{
-\item \code{"percentage"}: \code{beta} (default is \code{0.2}).
-\item \code{"bayes"}: \code{bayesian_prior} = "medium", \code{bayesian_ci_method} (default: "hdi"), \code{bayesian_test} (default: \code{c("pd", "rope", "bf")})
+\item \code{data} A data frame (when \code{x} and/or \code{y} are not vectors).
+\item Arguments dependent on \code{method} being:
+\itemize{
+\item \code{"kendall"}:
+\itemize{
+\item \code{tau_type} = \code{"b"}
+\item \code{direction} = \code{"row"} (used when \code{tau_type} = \code{"a"})
+}
+\item \code{"percentage"}:
+\itemize{
+\item \code{beta} = \code{0.2}
+}
+\item \code{"bayes"}:
+\itemize{
+\item \code{bayesian_prior} = "medium"
+\item \code{bayesian_ci_method} = "hdi"
+\item \code{bayesian_test} = \code{c("pd", "rope", "bf")}
+}
+}
 }}
 }
 \value{
