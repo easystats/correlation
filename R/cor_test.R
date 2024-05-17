@@ -222,6 +222,16 @@ cor_test <- function(x, y,
   xIsVec <- !length(x) == 1L
   yIsVec <- !length(y) == 1L
 
+  if (!xIsVec || !yIsVec) {
+    if (!"data" %in% names(list(...))) {
+      insight::format_error("At least 1 of the variables is from a data frame but no data frame has been provided.")
+    }
+    data <- list(...)$data
+    if (!is.data.frame(data)) {
+      insight::format_error("The data provided is not a data frame.")
+    }
+  }
+
   # Make sure factor is no factor
   if (!methodUse %in% c("tetrachoric", "polychoric")) {
     if (xIsVec || yIsVec) {
@@ -243,18 +253,23 @@ cor_test <- function(x, y,
     }
   }
 
+  # need to fix for biserial to work
+  # need to check if atleast one of the variables are dichotomous
+  # that is for all variations of x/y is vector or not
+#
+#   if(!.var_type(var_x)$is_binary && !.var_type(var_y)$is_binary) insight::format_error("Biserial correlation can only be applied when atleast one of x and y is dichotomous")
+#   else if(!.var_type(var_x)$is_binary)
+#   {
+#     temp <- var_x
+#     var_x <- var_y
+#     var_y <- temp
+#   }
+
   # check validity of variables as vectors and/or as names
   if (!xIsVec || !yIsVec) {
-    if (!"data" %in% names(list(...))) {
-      insight::format_error("At least 1 of the variables is from a data frame but no data frame has been provided.")
-    }
-    data <- list(...)$data
-    if (!is.data.frame(data)) {
-      insight::format_error("The data provided is not a data frame.")
-    }
     if (xIsVec) {
       completeY <- stats::complete.cases(data[[y]])
-      if (length(x) == nrows(data)) {
+      if (length(x) == nrow(data)) {
         completeX <- stats::complete.cases(x)
         var_x <- x[completeX * completeY == 1L]
         var_y <- data[[y]][completeX * completeY == 1L]
@@ -271,7 +286,7 @@ cor_test <- function(x, y,
     }
     else if (yIsVec) {
       completeX <- stats::complete.cases(data[[x]])
-      if (length(y) == nrows(data)) {
+      if (length(y) == nrow(data)) {
         completeY <- stats::complete.cases(y)
         var_x <- data[[x]][completeX * completeY == 1L]
         var_y <- y[completeX * completeY == 1L]
@@ -323,30 +338,32 @@ cor_test <- function(x, y,
   # check value of tau_type and direction when relevant
   if(method == "kendall") {
     if ("tau_type" %in% names(list(...))) {
-      tau_type <- match.arg(tolower(tau_type), c("a", "b", "c"))
-      if("direction" %in% names(list(...))) direction <- match.arg(tolower(direction), c("row", "column"))
+      tau_type <- match.arg(tolower(list(...)$tau_type), c("a", "b", "c"))
+      if("direction" %in% names(list(...))) direction <- match.arg(tolower(list(...)$direction), c("row", "column"))
       else direction <- "row"
     }
     else tau_type <- "b"
   }
   if(methodUse == "percentage") {
     if("beta" %in% names(list(...))) {
-      if (length(beta) != 1L || beta <= 0 || beta >= 0.5)
+      if (length(list(...)$beta) != 1L || list(...)$beta <= 0 || list(...)$beta >= 0.5)
         stop("The bend criterion (beta) is not between 0 and 0.5")
     }
     else beta <- 0.2
   }
   if(bayesian) {
     if("bayesian_prior" %in% names(list(...))) {
-      bayesian_prior <- match.arg(tolower(bayesian_prior), c("medium", "medium.narrow", "wide", "ultra-wide"))
+      bayesian_prior <- match.arg(tolower(list(...)$bayesian_prior), c("medium", "medium.narrow", "wide", "ultra-wide"))
     }
     else bayesian_prior <- "medium"
-    if(!"bayesian_ci_method" %in% names(list(...))) {
-      bayesian_ci_method <- "hdi"
+    if("bayesian_ci_method" %in% names(list(...))) {
+      bayesian_ci_method <- list(...)$bayesian_ci_method
     }
-    if(!"bayesian_test" %in% names(list(...))) {
-      bayesian_test <- c("pd", "rope", "bf")
+    else bayesian_ci_method <- "hdi"
+    if("bayesian_test" %in% names(list(...))) {
+      bayesian_test <- list(...)$bayesian_test
     }
+    else bayesian_test <- c("pd", "rope", "bf")
   }
 
   # +=======================+
@@ -356,7 +373,7 @@ cor_test <- function(x, y,
   # when bayesian
   if(bayesian) {
     if (methodUse %in% c("kendall", "biserial", "point-biserial", "rank-biserial", "biweight", "distance", "percentage", "gamma", "somers", "polychoric", "tetrachoric"))
-      insight::format_error(paste0("The bayesian form of ", tohigher(methodUse[1]), methodUse[-1], " correlation method is not supported yet. Get in touch if you want to contribute."))
+      insight::format_error(paste0("The bayesian form of ", toupper(methodUse[1]), methodUse[-1], " correlation method is not supported yet. Get in touch if you want to contribute."))
     if (methodUse %in% c("blomqvist", "hoeffding"))
       insight::format_error(paste0("Bayesian ", toupper(methodUse[1]), methodUse[-1], ifelse(methodUse == "hoeffding", "'s", ""), "correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor)."))
     out <- .cor_test_bayes(var_x, var_y, ci, method, ...)
@@ -381,12 +398,14 @@ cor_test <- function(x, y,
                   "somers" = .cor_test_somers(var_x, var_y, ci, alternative, ...),
                   "polychoric" = .cor_test_polychoric(var_x, var_y, ci, alternative, ...),
                   "tetrachoric" = .cor_test_tetrachoric(var_x, var_y, ci, alternative, ...))
-    out$Parameter1 <- x
-    out$Parameter2 <- y
+    out$Parameter1 <- ifelse(xIsVec, "x-Vector", x)
+    out$Parameter2 <- ifelse(yIsVec, "y-Vector", y)
   }
 
 
-  if (!"Method" %in% names(out)) out$Method <- paste0(tohigher(methodUse[1]), methodUse[-1], ifelse(bayesian, " (Bayesian)", ""))
+
+  if (!"Method" %in% names(out)) out$Method <- paste0(toupper(methodUse[1]), methodUse[-1], ifelse(bayesian, " (Bayesian)", ""))
+  else out$Method <- paste0(out$Method, ifelse(bayesian, " (Bayesian)", ""))
 
   out
 }
@@ -440,11 +459,11 @@ cor_test <- function(x, y,
   ConDisParams <- DescTools::ConDisPairs(tab)[3:4]
   # calculating kendall's tau
   tau <- switch(tau_type,
-                "a" = DescTools::KendallTauA(var_x, var_y, direction = direction, conf.level = ci, ...),
-                "b" = DescTools::KendallTauB(var_x, var_y, conf.level = ci, ...),
-                "c" = DescTools::StuartTauC(var_x, var_y, conf.level = ci, ...))
+                "a" = DescTools::KendallTauA(var_x, var_y, direction = direction, conf.level = ci),
+                "b" = DescTools::KendallTauB(var_x, var_y, conf.level = ci),
+                "c" = DescTools::StuartTauC(var_x, var_y, conf.level = ci))
   CI <- tau[2:3]
-  tau <- tau[1]
+  tau <- tau[[1]]
   # calculating the z-value according to the tau_type required
   if(tau_type != "a") {
     xi <- rowSums(tab)
@@ -468,13 +487,7 @@ cor_test <- function(x, y,
   out <- data.frame("tau" = tau,
                     "z" = z,
                     "p" = p,
-                    "df_error" = NULL)
-  # renaming coefficient value appropriately
-  names(out)[1] <- switch(tau_type,
-                          "a" = "TauA",
-                          "b" = "TauB",
-                          "c" = "TauC")
-  # finding the standard deviation using calculus
+                    "df_error" = NA)
   sd <- (CI[2] - tau) / qnorm((1 + ci) / 2)
   # calculating the confidence interval
   if (!is.null(ci)) {
@@ -496,8 +509,8 @@ cor_test <- function(x, y,
                                alternative = "two.sided",
                                xType = "base",
                                ...) {
-  if(!.var_type(var_x)$is_binary && !.var_type(var_y)$is_binary) insight::format_error("Biserial correlation can only be applied atleast one of x and y is dichotomous")
-  else if(!.var_type(var_x)$is_binary)
+  if(!.vartype(var_x)$is_binary && !.vartype(var_y)$is_binary) insight::format_error("Biserial correlation can only be applied atleast one of x and y is dichotomous")
+  else if(!.vartype(var_x)$is_binary)
   {
     temp <- var_x
     var_x <- var_y
@@ -879,7 +892,7 @@ cor_test <- function(x, y,
     var_x <- stats::qnorm(rank(var_x) / (length(var_x) + 1))
     var_y <- stats::qnorm(rank(var_y) / (length(var_y) + 1))
     method_label <- "Bayesian Gaussian"
-  } else if (method == "gaussian") {
+  } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
     d <- .robust_bootstrap_mahalanobis(cbind(var_x, var_y))
     outliers <- d >= 6
 
@@ -992,6 +1005,46 @@ cor_test <- function(x, y,
   })
 
   apply(Ms, 1, stats::median)
+}
+
+## biserial============
+
+#' @keywords internal
+.vartype <- function(x) {
+  out <- list(
+    is_factor = FALSE,
+    is_numeric = FALSE,
+    is_character = FALSE,
+    is_binary = FALSE,
+    is_continuous = FALSE,
+    is_count = FALSE
+  )
+
+  if (is.factor(x)) {
+    out$is_factor <- TRUE
+  }
+
+  if (is.character(x)) {
+    out$is_character <- TRUE
+  }
+
+  if (is.numeric(x)) {
+    out$is_numeric <- TRUE
+  }
+
+  if (length(unique(x)) == 2) {
+    out$is_binary <- TRUE
+  }
+
+  if (out$is_numeric && !out$is_binary) {
+    out$is_continuous <- TRUE
+  }
+
+  if (all(x %% 1 == 0)) {
+    out$is_count <- TRUE
+  }
+
+  out
 }
 
 ## bayes============
