@@ -27,6 +27,8 @@
 #'    - `"kendall"`:
 #'      - `tau_type` = `"b"`
 #'      - `direction` = `"row"` (used when `tau_type` = `"a"`)
+#'    - `"distance"`:
+#'      - `corrected` = `TRUE`
 #'    - `"percentage"`:
 #'      - `beta` = `0.2`
 #'    - `"bayes"`:
@@ -253,18 +255,6 @@ cor_test <- function(x, y,
     }
   }
 
-  # need to fix for biserial to work
-  # need to check if atleast one of the variables are dichotomous
-  # that is for all variations of x/y is vector or not
-#
-#   if(!.var_type(var_x)$is_binary && !.var_type(var_y)$is_binary) insight::format_error("Biserial correlation can only be applied when atleast one of x and y is dichotomous")
-#   else if(!.var_type(var_x)$is_binary)
-#   {
-#     temp <- var_x
-#     var_x <- var_y
-#     var_y <- temp
-#   }
-
   # check validity of variables as vectors and/or as names
   if (!xIsVec || !yIsVec) {
     if (xIsVec) {
@@ -344,6 +334,12 @@ cor_test <- function(x, y,
     }
     else tau_type <- "b"
   }
+  if (methodUse == "distance") {
+    if("corrected" %in% names(list(...))) {
+      corrected <- list(...)$corrected
+    }
+    else corrected <- TRUE
+  }
   if(methodUse == "percentage") {
     if("beta" %in% names(list(...))) {
       if (length(list(...)$beta) != 1L || list(...)$beta <= 0 || list(...)$beta >= 0.5)
@@ -388,7 +384,7 @@ cor_test <- function(x, y,
                   "point-biserial" = .cor_test_biserial(var_x, var_y, ci, alternative, xType = "point", ...),
                   "rank-biserial" = .cor_test_biserial(var_x, var_y, ci, alternative, xType = "rank", ...),
                   "biweight" = .cor_test_biweight(var_x, var_y, ci, alternative, ...),
-                  "distance" = .cor_test_distance(var_x, var_y, ci, alternative, ...),
+                  "distance" = .cor_test_distance(var_x, var_y, ci, alternative, corrected, ...),
                   "percentage" = .cor_test_percentage(var_x, var_y, ci, alternative, beta, ...),
                   "blomqvist" = .cor_test_freq(sign(var_x - median(var_x)), sign(var_y - median(var_y)), ci, alternative, ...),
                   "hoeffding" = .cor_test_hoeffding(var_x, var_y, ci, ...),
@@ -398,15 +394,21 @@ cor_test <- function(x, y,
                   "somers" = .cor_test_somers(var_x, var_y, ci, alternative, ...),
                   "polychoric" = .cor_test_polychoric(var_x, var_y, ci, alternative, ...),
                   "tetrachoric" = .cor_test_tetrachoric(var_x, var_y, ci, alternative, ...))
-    out$Parameter1 <- ifelse(xIsVec, "x-Vector", x)
-    out$Parameter2 <- ifelse(yIsVec, "y-Vector", y)
+    out$Parameter1 <- ifelse(xIsVec, deparse(substitute(x)), x)
+    out$Parameter2 <- ifelse(yIsVec, deparse(substitute(y)), y)
   }
-
-
 
   if (!"Method" %in% names(out)) out$Method <- paste0(toupper(methodUse[1]), methodUse[-1], ifelse(bayesian, " (Bayesian)", ""))
   else out$Method <- paste0(out$Method, ifelse(bayesian, " (Bayesian)", ""))
 
+  # Reorder columns
+  order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high", "Method")
+  out <- out[c(order[order %in% names(out)], setdiff(names(out), order[order %in% names(out)]))]
+
+  attr(out, "coefficient_name") <- c("r", "rho", "tau", "Dxy")[c("r", "rho", "tau", "Dxy") %in% names(out)][1]
+  attr(out, "ci") <- ci
+  if ("data" %in% list(...)) attr(out, "data") <- data
+  class(out) <- unique(c("easycor_test", "easycorrelation", "prameters_model", class(out)))
   out
 }
 
@@ -437,6 +439,7 @@ cor_test <- function(x, y,
                  "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
                  "less" = c(-Inf, .ci_value(r, 1, ci, df)),
                  "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI <- ci
     out$CI_low <- CI[1]
     out$CI_high <- CI[2]
   }
@@ -452,7 +455,6 @@ cor_test <- function(x, y,
                               tau_type = "b",
                               direction = "row",
                               ...) {
-
   tab <- table(var_x, var_y)
   n <- length(var_x)
   # calculating the concordant and discordant pairs amounts within the data and across it
@@ -495,6 +497,7 @@ cor_test <- function(x, y,
                  "two.sided" = CI,
                  "less" = c(-Inf, tau + qnorm(ci) * sd),
                  "greater" = c(tau - qnorm(ci) * sd, Inf))
+    out$CI <- ci
     out$CI_low <- CI[1]
     out$CI_high <- CI[2]
   }
@@ -509,47 +512,65 @@ cor_test <- function(x, y,
                                alternative = "two.sided",
                                xType = "base",
                                ...) {
-  if(!.vartype(var_x)$is_binary && !.vartype(var_y)$is_binary) insight::format_error("Biserial correlation can only be applied atleast one of x and y is dichotomous")
-  else if(!.vartype(var_x)$is_binary)
+  xVartype <- .vartype(var_x)
+  yVartype <- .vartype(var_y)
+
+  if (!xVartype$is_binary == !yVartype$is_binary) insight::format_error("Biserial correlation can noly be applied for one dichotomous variable and one continuous variable.")
+  else if (xVartype$is_binary)
   {
     temp <- var_x
     var_x <- var_y
     var_y <- temp
+    temp <- xVartype
+    xVartype <- yVartype
+    yVartype <- temp
   }
 
-  # calculating helping values
-  n <- length(var_x)
-  m0 <- mean(var_x[var_y == 0])
-  m1 <- mean(var_x[var_y == 1])
-  n0 <- sum(var_y == 0)
-  n1 <- sum(var_y == 1)
-  sdX <- sd(var_x)
+  if (yVartype$is_factor || yVartype$is_character) var_y <- as.numeric(var_y)
+  var_y <- as.vector((var_y - min(var_y, na.rm = TRUE)) / (diff(range(var_y, na.rm = TRUE))))
 
-  r <- switch(xType,
-              "base" = ((m1 - m0) / sdX) * sqrt(n1 * n0 / (n ^ 2 - n)),
-              "point" = (m1 - m0 - 1) / sqrt((n ^ 2 * sdX ^ 2) / (n1 * n0) - 2 * (m1 - m0) + 1),
-              "rank" = 2 * (m1 - m0) / (n1 + n0))
-  # calculating the degrees of freedom, t-value and p-value
-  df <- n - 2
-  t_p <- .t_p_value(r, df, alternative)
-  # creating output dataframe
-  out <- data.frame("r" = r,
-                    "df_error" = df,
-                    "t" = t_p[1],
-                    "p" = t_p[2],
-                    "Method" = switch(xType,
-                                      "base" = "Biserial",
-                                      "point" = "Point Biserial",
-                                      "rank" = "Rank Biserial"))
-  # calculating the confidence interval
-  if (!is.null(ci)) {
-    CI <- switch(alternative,
-                 "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
-                 "less" = c(-Inf, .ci_value(r, 1, ci, df)),
-                 "greater" = c(.ci_value(r, -1, ci, df), Inf))
-    out$CI_low <- CI[1]
-    out$CI_high <- CI[2]
+  if (xType == "point") {
+    out <- .cor_test_freq(var_x, var_y, ci, alternative)
+    out$Method <- "Point Biserial"
   }
+
+  else {
+    # calculating helping values
+    n <- length(var_x)
+    m0 <- mean(var_x[var_y == 0])
+    m1 <- mean(var_x[var_y == 1])
+    q <- mean(var_y)
+
+    # calculating coefficient
+    r <- switch(xType,
+                "base" = ((m1 - m0) * (1 - q) * q / stats::dnorm(stats::qnorm(q))) / stats::sd(var_x),
+                "rank" = 2 * (m1 - m0) / n)
+
+    # calculating the degrees of freedom, t-value and p-value
+    df <- n - 2
+    t_p <- .t_p_value(r, df, alternative)
+
+    # creating output dataframe
+    out <- data.frame("r" = r,
+                      "df_error" = df,
+                      "t" = t_p[1],
+                      "p" = t_p[2],
+                      "Method" = switch(xType,
+                                        "base" = "Biserial",
+                                        "rank" = "Rank Biserial"))
+
+    # calculating the confidence interval
+    if (!is.null(ci)) {
+      CI <- switch(alternative,
+                   "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                   "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                   "greater" = c(.ci_value(r, -1, ci, df), Inf))
+      out$CI <- ci
+      out$CI_low <- CI[1]
+      out$CI_high <- CI[2]
+    }
+  }
+
   # returning output
   out
 }
@@ -588,6 +609,7 @@ cor_test <- function(x, y,
                  "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
                  "less" = c(-Inf, .ci_value(r, 1, ci, df)),
                  "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI <- ci
     out$CI_low <- CI[1]
     out$CI_high <- CI[2]
   }
@@ -599,6 +621,7 @@ cor_test <- function(x, y,
 #' @keywords internal
 .cor_test_distance <- function(var_x, var_y,
                                ci = 0.95,
+                               alternative = "two.sided",
                                corrected = TRUE,
                                ...) {
   if (!corrected) {
@@ -645,14 +668,25 @@ cor_test <- function(x, y,
 
     r <- XY / sqrt(XX * YY)
     M <- n * (n - 3) / 2
-    ci_vals <- cor_to_ci(r, n = n, ci = ci)
+
+    df <- M - 1
+    t_p <- .t_p_value(r, df, alternative)
+
+    # calculating the confidence interval
+    if (!is.null(ci)) {
+      CI <- switch(alternative,
+                   "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                   "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                   "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    }
 
     rez <- data.frame("r" = r,
-                      "df_error" = M - 1,
-                      "t" = sqrt(M - 1) * r / sqrt(1 - r^2),
-                      "p" = 1 - stats::pt(t, df = M - 1),
-                      "CI_low" = ci_vals$CI_low,
-                      "CI_high" = ci_vals$CI_high,
+                      "df_error" = df,
+                      "t" = t_p[1],
+                      "p" = t_p[2],
+                      "CI" = ci,
+                      "CI_low" = CI[1],
+                      "CI_high" = CI[2],
                       "Method" = "Distance (Bias Corrected)")
   }
 
@@ -667,17 +701,15 @@ cor_test <- function(x, y,
                                  beta = 0.2,
                                  ...) {
   # finding helping values
-  ohmX <- .omhat(var_x, beta)
-  ohmY <- .omhat(var_y, beta)
+  ohmX <- .ohmhat(var_x, beta)
+  ohmY <- .ohmhat(var_y, beta)
   pbosX <- .pbos(var_x, beta)
   pbosY <- .pbos(var_y, beta)
-
   # finding a and b values
   a <- (var_x - pbosX) / ohmX
   b <- (var_y - pbosY) / ohmY
   a <- ifelse(a < -1, -1, ifelse(a > 1, 1, a))
   b <- ifelse(b < -1, -1, ifelse(b > 1, 1, b))
-
   # calculating the coefficient
   r <- sum(a * b) / sqrt(sum(a ^ 2) * sum(b ^ 2))
   # calculating the degrees of freedom, t-value and p-value
@@ -694,6 +726,7 @@ cor_test <- function(x, y,
                  "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
                  "less" = c(-Inf, .ci_value(r, 1, ci, df)),
                  "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI <- ci
     out$CI_low <- CI[1]
     out$CI_high <- CI[2]
   }
@@ -714,6 +747,7 @@ cor_test <- function(x, y,
              "df_error" = length(var_x) - 2,
              "t" = NA,
              "p" = rez$P[2, 1],
+             "CI" = NA,
              "CI_low" = NA,
              "CI_high" = NA)
 }
@@ -724,7 +758,6 @@ cor_test <- function(x, y,
                             ci = 0.95,
                             alternative = "two.sided",
                             ...) {
-  # using the method from the original function
   ConDisField <- outer(var_x, var_x, function(x1, x2) sign(x1 - x2)) * outer(var_y, var_y, function(y1, y2) sign(y1 - y2))
   r <- sum(ConDisField) / sum(abs(ConDisField))
   # calculating the degrees of freedom, t-value and p-value
@@ -741,6 +774,7 @@ cor_test <- function(x, y,
                  "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
                  "less" = c(-Inf, .ci_value(r, 1, ci, df)),
                  "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI <- ci
     out$CI_low <- CI[1]
     out$CI_high <- CI[2]
   }
@@ -755,7 +789,7 @@ cor_test <- function(x, y,
                                alternative = "two.sided",
                                bayesian = FALSE,
                                ...) {
-  # finding outliers using bootstraped mahalanobis (as done in original)
+  # finding outliers using bootstraped mahalanobis
   d <- .robust_bootstrap_mahalanobis(cbind(var_x, var_y))
   outliers <- d >= 6
   out <- .cor_test_freq(var_x[!outliers], var_y[!outliers], ci, alternative, "spearman")
@@ -773,12 +807,24 @@ cor_test <- function(x, y,
                              ...) {
   insight::check_if_installed("Hmisc", "for 'somers' correlations")
 
+  xVartype <- .vartype(var_x)
+  yVartype <- .vartype(var_y)
+
+  if (!xVartype$is_binary == !yVartype$is_binary) insight::format_error("Somers' D can noly be applied for one dichotomous variable and one continuous variable.")
+  else if (xVartype$is_binary)
+  {
+    temp <- var_x
+    var_x <- var_y
+    var_y <- temp
+  }
+
   rez <- Hmisc::somers2(var_x, var_y)
 
-  data.frame("r" = rez["Dxy"],
+  data.frame("Dxy" = rez["Dxy"],
              "df_error" = length(var_x) - 2,
              "t" = NA,
              "p" = NA,
+             "CI" = NA,
              "CI_low" = NA,
              "CI_high" = NA,
              "Method" = "Somers' D")
@@ -827,6 +873,7 @@ cor_test <- function(x, y,
                  "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
                  "less" = c(-Inf, .ci_value(r, 1, ci, df)),
                  "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI <- ci
     out$CI_low <- CI[1]
     out$CI_high <- CI[2]
   }
@@ -864,6 +911,7 @@ cor_test <- function(x, y,
                  "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
                  "less" = c(-Inf, .ci_value(r, 1, ci, df)),
                  "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    out$CI <- ci
     out$CI_low <- CI[1]
     out$CI_high <- CI[2]
   }
@@ -880,7 +928,6 @@ cor_test <- function(x, y,
                             bayesian_test = c("pd", "rope", "bf"),
                             ...) {
   insight::check_if_installed("BayesFactor")
-
 
   method_label <- "Bayesian Pearson"
   method <- tolower(method)
@@ -920,12 +967,9 @@ cor_test <- function(x, y,
 
 #  internal helping functions --------------------
 
-
 # confidence interval calculation
 #' @keywords internal
-.ci_value <- function(r, side, ci, df) {
-  tanh(atanh(r) + side * stats::qnorm(ci) / sqrt(df - 1))
-}
+.ci_value <- function(r, side, ci, df) tanh(atanh(r) + side * stats::qnorm(ci) / sqrt(df - 1))
 
 # t-value & p-value calculation
 #' @keywords internal
@@ -975,19 +1019,17 @@ cor_test <- function(x, y,
 
 # ohmhat calculation
 #' @keywords internal
-.ohmhat <- function(x, beta) {
-  sort(abs(x - median(x)))[floor(1 - beta * length(x))]
-}
+.ohmhat <- function(x, beta) sort(abs(x - median(x)))[floor((1 - beta) * length(x))]
 
 # pbos calculation
 #' @keywords internal
 .pbos <- function(x, beta) {
-  omhat <- .ohmhat(x, beta)
-  psi <- (x - median(x)) / omhat
+  ohmhat <- .ohmhat(x, beta)
+  psi <- (x - median(x)) / ohmhat
   i1 <- length(psi[psi < -1])
   i2 <- length(psi[psi > 1])
   sx <- ifelse(psi < -1, 0, ifelse(psi > 1, 0, x))
-  (sum(sx) + omhat * (i2 - i1)) / (length(x) - i1 - i2)
+  (sum(sx) + ohmhat * (i2 - i1)) / (length(x) - i1 - i2)
 }
 
 ## shepherd's D============
@@ -1020,29 +1062,12 @@ cor_test <- function(x, y,
     is_count = FALSE
   )
 
-  if (is.factor(x)) {
-    out$is_factor <- TRUE
-  }
-
-  if (is.character(x)) {
-    out$is_character <- TRUE
-  }
-
-  if (is.numeric(x)) {
-    out$is_numeric <- TRUE
-  }
-
-  if (length(unique(x)) == 2) {
-    out$is_binary <- TRUE
-  }
-
-  if (out$is_numeric && !out$is_binary) {
-    out$is_continuous <- TRUE
-  }
-
-  if (all(x %% 1 == 0)) {
-    out$is_count <- TRUE
-  }
+  if (is.factor(x)) out$is_factor <- TRUE
+  if (is.character(x)) out$is_character <- TRUE
+  if (is.numeric(x)) out$is_numeric <- TRUE
+  if (length(unique(x)) == 2) out$is_binary <- TRUE
+  if (out$is_numeric && !out$is_binary) out$is_continuous <- TRUE
+  if (all(x %% 1 == 0)) out$is_count <- TRUE
 
   out
 }
@@ -1059,7 +1084,6 @@ cor_test <- function(x, y,
                                  ...) {
   insight::check_if_installed("BayesFactor")
 
-
   rez <- BayesFactor::correlationBF(var_x, var_y, rscale = bayesian_prior)
   params <- parameters::model_parameters(
     rez,
@@ -1074,7 +1098,6 @@ cor_test <- function(x, y,
   if (is.null(params$BF)) {
     params$BF <- NA
   }
-
 
   # Rename coef
   if (sum(names(params) %in% c("Median", "Mean", "MAP")) == 1) {

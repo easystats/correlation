@@ -9,7 +9,7 @@ test_that("cor_test names (x,y)", {
   expect_equal(out$CI_high, out2$CI_high, tolerance = 0.01)
 })
 
-test_that("cor_test data.frame and vector", {
+test_that("cor_test inputs are columns from data.frame and/or vector", {
   x <- iris$Petal.Length
   y <- iris$Petal.Width
 
@@ -108,8 +108,9 @@ test_that("cor_test bayesian", {
 })
 
 test_that("cor_test tetrachoric", {
-  # skip_if_not_or_load_if_installed("psych")
-  # skip_if_not_or_load_if_installed("polycor")
+  skip_if_not_or_load_if_installed("psych")
+  skip_if_not_or_load_if_installed("polycor")
+
   data <- iris
   data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
   data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
@@ -133,77 +134,77 @@ test_that("cor_test tetrachoric", {
   expect_equal(out$r, -0.144, tolerance = 0.01)
 
   # Biserial
+  expect_error(cor_test("Sepal.Width", "Petal.Width", data = data, method = "biserial"))
+
   out <- cor_test("Sepal.Width", "Petal.Width_binary", data = data, method = "pointbiserial")
-  expect_equal(out$r, -0.3212561, tolerance = 0.01)
+  expect_equal(out$r, -0.3212561, tolerance = 0.0001)
 
   out <- cor_test("Sepal.Width", "Petal.Width_binary", data = data, method = "biserial")
-  expect_equal(out$r, -0.403, tolerance = 0.01)
   out_psych <- psych::biserial(data[["Sepal.Width"]], data[["Petal.Width_binary"]])[1]
-})
+  expect_equal(out$r, out_psych, tolerance = 0.0001)
 
+  out <- cor_test("Sepal.Width", "Petal.Width_binary", data = data, method = "rankbiserial")
+  expect_equal(out$r, -0.003755053, tolerance = 0.0001)
+})
 
 test_that("cor_test robust", {
-  out1 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "pearson", ranktransform = TRUE)
-  out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "spearman", ranktransform = FALSE)
-  expect_equal(out1$r, out2$rho, tolerance = 0.01)
+  out1 <- cor_test(datawizard::ranktransform(iris$Petal.Length, sign = FALSE, method = "average"), datawizard::ranktransform(iris$Petal.Width, sign = FALSE, method = "average"))
+  out2 <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "spearman")
+  expect_equal(out1$r, out2$r, tolerance = 0.01)
 })
-
 
 test_that("cor_test distance", {
   skip_if(getRversion() < "4.0")
   skip_if_not_or_load_if_installed("energy")
 
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "distance")
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "distance")
   comparison <- energy::dcorT.test(iris$Petal.Length, iris$Petal.Width)
   expect_equal(out$r, as.numeric(comparison$estimate), tolerance = 0.001)
   expect_identical(out$Method, "Distance (Bias Corrected)")
 })
 
-
 test_that("cor_test percentage", {
   skip_if_not_or_load_if_installed("WRS2")
 
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "percentage")
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "percentage")
   comparison <- WRS2::pbcor(iris$Petal.Length, iris$Petal.Width)
   expect_equal(out$r, as.numeric(comparison$cor), tolerance = 0.01)
 })
 
-
 test_that("cor_test shepherd", {
   set.seed(333)
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd")
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "shepherd")
   expect_equal(out$r, 0.94762, tolerance = 0.01)
 
   skip_if_not_or_load_if_installed("BayesFactor")
   set.seed(333)
-  out2 <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd", bayesian = TRUE)
+  out2 <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "shepherd", bayesian = TRUE)
   expect_equal(out2$rho, 0.9429992, tolerance = 0.01)
 })
-
 
 test_that("cor_test blomqvist", {
   skip_if_not_or_load_if_installed("wdm")
 
   set.seed(333)
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "blomqvist")
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "blomqvist")
   expect_equal(out$r, 0.9066667, tolerance = 0.01)
 })
 
 test_that("cor_test hoeffding and somers", {
   skip_if_not_or_load_if_installed("Hmisc")
   set.seed(333)
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "hoeffding")
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "hoeffding")
   expect_equal(out$r, 0.5629277, tolerance = 0.01)
 
   set.seed(333)
   df <- data.frame(x = 1:6, y = c(0, 0, 1, 0, 1, 1))
-  out2 <- cor_test(df, "y", "x", method = "somers")
+  out2 <- cor_test("x", "y", data = df, method = "somers")
   expect_equal(out2$Dxy, 0.7777778, tolerance = 0.01)
 })
 
 test_that("cor_test gamma", {
   set.seed(333)
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gamma")
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "gamma")
   expect_equal(out$r, 0.8453925, tolerance = 0.01)
 })
 
@@ -211,26 +212,21 @@ test_that("cor_test gaussian", {
   skip_if_not_or_load_if_installed("BayesFactor")
 
   set.seed(333)
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian")
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "gaussian")
   expect_equal(out$r, 0.87137, tolerance = 0.01)
 
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, method = "gaussian", bayesian = TRUE)
   expect_equal(out$r, 0.8620878, tolerance = 0.01)
 })
 
-
-
 # Additional arguments ----------------------------------------------------
-
 
 test_that("cor_test one-sided p value", {
   baseline <- cor.test(iris$Petal.Length, iris$Petal.Width, alternative = "greater")
 
-  out <- cor_test(iris, "Petal.Length", "Petal.Width", alternative = "greater")
+  out <- cor_test("Petal.Length", "Petal.Width", data = iris, alternative = "greater")
   expect_equal(out$p, baseline$p.value, tolerance = 0.000001)
 })
-
-
 
 # Edge cases --------------------------------------------------------------
 
