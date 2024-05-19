@@ -1,6 +1,6 @@
-#' \code{correlation}
+#' \code{correlation2}
 #'
-#' @title correlation: Methods for correlation analysis
+#' @title correlation2: Methods for correlation analysis
 #'
 #' @description
 #'
@@ -12,7 +12,7 @@
 #' References: Makowski et al. (2020) \doi{10.21105/joss.02306}.
 #'
 #' @docType package
-#' @aliases correlation-package
-#' @name correlation-package
+#' @aliases correlation2-package
+#' @name correlation2-package
 #' @keywords internal
 "_PACKAGE"
