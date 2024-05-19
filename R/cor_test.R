@@ -5,6 +5,7 @@
 #'
 #' @param x,y Vectors of the two variables the correlation test is done for.
 #'   \cr Alternatively, can be names of variables in `data`.
+#' @param data An optional data frame.
 #' @param ci Confidence/Credible Interval level. If `"default"`, then it is
 #'   set to `0.95` (`95%` CI).
 #' @param method A character string indicating which correlation coefficient is
@@ -190,6 +191,7 @@
 #' }
 #' @export
 cor_test <- function(x, y,
+                     data = NULL,
                      method = "pearson",
                      ci = 0.95,
                      alternative = "two.sided",
@@ -225,11 +227,9 @@ cor_test <- function(x, y,
   yIsVec <- !length(y) == 1L
 
   if (!xIsVec || !yIsVec) {
-    if (!"data" %in% names(list(...))) {
+    if (is.null(data)) {
       insight::format_error("At least 1 of the variables is from a data frame but no data frame has been provided.")
-    }
-    data <- list(...)$data
-    if (!is.data.frame(data)) {
+    } else if (!is.data.frame(data)) {
       insight::format_error("The data provided is not a data frame.")
     }
   }
