@@ -132,6 +132,10 @@
 #' - **Tetrachoric correlation**: Special case of the polychoric correlation
 #' applicable when both observed variables are dichotomous.
 #'
+#' ## Confidence Intervals
+#'
+#' For correlation methods that do not have a direct parametric method of
+#' obtaining _p_-values and CIs, we use [cor_to_p] and [cor_to_ci].
 #'
 #' @examples
 #' library(correlation)

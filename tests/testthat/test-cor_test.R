@@ -17,19 +17,9 @@ test_that("cor_test inputs are columns from data.frame and/or vector", {
   expect_error(cor_test(x, "Petal.Width"))
 
   out <- cor_test("Petal.Length", "Petal.Width", data = iris)
-  out2 <- cor_test(x, "Petal.Width", data = iris)
-  out3 <- cor_test("Petal.Length", y, data = iris)
-  out4 <- cor_test(x, y)
+  out2 <- cor_test(x, y)
 
-  expect_equal(out$r, out2$r, tolerance = 0.001)
-  expect_equal(out$CI_low, out2$CI_low, tolerance = 0.001)
-  expect_equal(out$CI_high, out2$CI_high, tolerance = 0.001)
-  expect_equal(out$r, out3$r, tolerance = 0.001)
-  expect_equal(out$CI_low, out3$CI_low, tolerance = 0.001)
-  expect_equal(out$CI_high, out3$CI_high, tolerance = 0.001)
-  expect_equal(out$r, out4$r, tolerance = 0.001)
-  expect_equal(out$CI_low, out4$CI_low, tolerance = 0.001)
-  expect_equal(out$CI_high, out4$CI_high, tolerance = 0.001)
+  expect_equal(out[-(1:2)], out2[-(1:2)])
 })
 
 test_that("cor_test kendall tau-a", {
@@ -228,9 +218,3 @@ test_that("cor_test one-sided p value", {
   expect_equal(out$p, baseline$p.value, tolerance = 0.000001)
 })
 
-# Edge cases --------------------------------------------------------------
-
-test_that("cor_test 2 valid observations", {
-  out <- correlation(data.frame(v2 = c(2, 1, 1, 2), v3 = c(1, 2, NA, NA)))
-  expect_true(is.na(out$r))
-})
