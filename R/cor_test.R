@@ -969,7 +969,9 @@ cor_test <- function(x, y,
 
 # confidence interval calculation
 #' @keywords internal
-.ci_value <- function(r, side, ci, df) tanh(atanh(r) + side * stats::qnorm(ci) / sqrt(df - 1))
+.ci_value <- function(r, side, ci, df) {
+  z_fisher(z = z_fisher(r = r) + side * stats::qnorm(ci) / sqrt(df - 1))
+}
 
 # t-value & p-value calculation
 #' @keywords internal

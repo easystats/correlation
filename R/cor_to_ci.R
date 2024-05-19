@@ -34,12 +34,12 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fiell
   }
 
   moe <- stats::qnorm(1 - (1 - ci) / 2) * tau.se
-  zu <- atanh(cor) + moe
-  zl <- atanh(cor) - moe
+  zu <- z_fisher(r = cor) + moe
+  zl <- z_fisher(r = cor) - moe
 
   # Convert back to r
-  ci_low <- tanh(zl)
-  ci_high <- tanh(zu)
+  ci_low <- z_fisher(z = zl)
+  ci_high <- z_fisher(z = zu)
 
   list(CI_low = ci_low, CI_high = ci_high)
 }
@@ -59,12 +59,12 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fiell
 
   moe <- stats::qnorm(1 - (1 - ci) / 2) * zrs.se
 
-  zu <- atanh(cor) + moe
-  zl <- atanh(cor) - moe
+  zu <- z_fisher(r = cor) + moe
+  zl <- z_fisher(r = cor) - moe
 
   # Convert back to r
-  ci_low <- tanh(zl)
-  ci_high <- tanh(zu)
+  ci_low <- z_fisher(z = zl)
+  ci_high <- z_fisher(z = zu)
 
   list(CI_low = ci_low, CI_high = ci_high)
 }
@@ -72,7 +72,7 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fiell
 
 # Pearson -----------------------------------------------------------------
 .cor_to_ci_pearson <- function(cor, n, ci = 0.95, ...) {
-  z <- atanh(cor)
+  z <- z_fisher(r = cor)
   se <- 1 / sqrt(n - 3) # Sample standard error
 
   # CI
@@ -81,8 +81,8 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fiell
   ci_high <- z + se * stats::qnorm(alpha)
 
   # Convert back to r
-  ci_low <- tanh(ci_low)
-  ci_high <- tanh(ci_high)
+  ci_low <- z_fisher(z = ci_low)
+  ci_high <- z_fisher(z = ci_high)
 
   list(CI_low = ci_low, CI_high = ci_high)
 }
