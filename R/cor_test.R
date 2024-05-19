@@ -223,8 +223,8 @@ cor_test <- function(x, y,
   methodUse <- ifelse(method %in% c("tetra", "tetrachoric"), "tetrachoric", methodUse)
 
   # vectors or names check
-  xIsVec <- !length(x) == 1L
-  yIsVec <- !length(y) == 1L
+  xIsVec <- length(x) != 1L
+  yIsVec <- length(y) != 1L
 
   if (!xIsVec || !yIsVec) {
     if (is.null(data)) {
@@ -325,41 +325,53 @@ cor_test <- function(x, y,
 
   # check value of alternative
   alternative <- match.arg(alternative, c("two.sided", "less", "greater"))
+
   # check value of tau_type and direction when relevant
   if(method == "kendall") {
+    tau_type <- "b"
+    direction <- "row"
     if ("tau_type" %in% names(list(...))) {
       tau_type <- match.arg(tolower(list(...)$tau_type), c("a", "b", "c"))
-      if("direction" %in% names(list(...))) direction <- match.arg(tolower(list(...)$direction), c("row", "column"))
-      else direction <- "row"
     }
-    else tau_type <- "b"
+    if ("direction" %in% names(list(...))) {
+      direction <- match.arg(tolower(list(...)$direction), c("row", "column"))
+    }
   }
+
   if (methodUse == "distance") {
-    if("corrected" %in% names(list(...))) {
+    corrected <- TRUE
+    if ("corrected" %in% names(list(...))) {
       corrected <- list(...)$corrected
     }
-    else corrected <- TRUE
   }
+
   if(methodUse == "percentage") {
+    beta <- 0.2
     if("beta" %in% names(list(...))) {
-      if (length(list(...)$beta) != 1L || list(...)$beta <= 0 || list(...)$beta >= 0.5)
+      beta <- list(...)$beta
+      if (length(beta) != 1L || beta <= 0 || beta >= 0.5) {
         stop("The bend criterion (beta) is not between 0 and 0.5")
+      }
     }
-    else beta <- 0.2
   }
+
   if(bayesian) {
+    bayesian_prior <- "medium"
+    bayesian_ci_method <- "hdi"
+    bayesian_test <- c("pd", "rope", "bf")
+
     if("bayesian_prior" %in% names(list(...))) {
-      bayesian_prior <- match.arg(tolower(list(...)$bayesian_prior), c("medium", "medium.narrow", "wide", "ultra-wide"))
+      bayesian_prior <- match.arg(tolower(list(...)$bayesian_prior),
+                                  c("medium", "medium.narrow", "wide", "ultra-wide"))
     }
-    else bayesian_prior <- "medium"
-    if("bayesian_ci_method" %in% names(list(...))) {
+
+    if ("bayesian_ci_method" %in% names(list(...))) {
       bayesian_ci_method <- list(...)$bayesian_ci_method
     }
-    else bayesian_ci_method <- "hdi"
-    if("bayesian_test" %in% names(list(...))) {
+
+    if ("bayesian_test" %in% names(list(...))) {
       bayesian_test <- list(...)$bayesian_test
     }
-    else bayesian_test <- c("pd", "rope", "bf")
   }
 
   # +=======================+
