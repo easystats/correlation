@@ -223,96 +223,42 @@ cor_test <- function(x, y,
   methodUse <- ifelse(method %in% c("tetra", "tetrachoric"), "tetrachoric", methodUse)
 
   # vectors or names check
-  xIsVec <- length(x) != 1L
-  yIsVec <- length(y) != 1L
+  xIsName <- is.character(x) && (length(x) == 1L)
+  yIsName <- is.character(y) && (length(y) == 1L)
 
-  if (!xIsVec || !yIsVec) {
-    if (is.null(data)) {
-      insight::format_error("At least 1 of the variables is from a data frame but no data frame has been provided.")
+  x_name <- ifelse(xIsName, x, deparse(substitute(x)))
+  y_name <- ifelse(yIsName, y, deparse(substitute(y)))
+
+  # if x,y are names, get them from data.frame
+  if (xIsName != yIsName) {
+    insight::format_error("Both x,y must be vectors or valid names on columns in data.")
+  } else if (xIsName) {
+    if (is.data.frame(data) && all(c(x, y) %in% colnames(data))) {
+      x <- data[[x]]
+      y <- data[[y]]
+    } else if (is.null(data)) {
+      insight::format_error("No data frame has been provided.")
     } else if (!is.data.frame(data)) {
       insight::format_error("The data provided is not a data frame.")
+    } else {
+      insight::format_error(paste0(x, " or ", y, "not found in data."))
     }
   }
 
-  # Make sure factor is no factor
-  if (!methodUse %in% c("tetrachoric", "polychoric")) {
-    if (xIsVec || yIsVec) {
-      if (xIsVec) {
-        x <- datawizard::to_numeric(x, dummy_factors = FALSE)
-      }
-      else {
-        data[[x]] <- datawizard::to_numeric(data[[x]], dummy_factors = FALSE)
-      }
-      if (yIsVec) {
-        y <- datawizard::to_numeric(y, dummy_factors = FALSE)
-      }
-      else {
-        data[[y]] <- datawizard::to_numeric(data[[y]], dummy_factors = FALSE)
-      }
-    }
-    else {
-      data[c(x, y)] <- datawizard::to_numeric(data[c(x, y)], dummy_factors = FALSE)
-    }
-  }
-
-  # check validity of variables as vectors and/or as names
-  if (!xIsVec || !yIsVec) {
-    if (xIsVec) {
-      completeY <- stats::complete.cases(data[[y]])
-      if (length(x) == nrow(data)) {
-        completeX <- stats::complete.cases(x)
-        var_x <- x[completeX * completeY == 1L]
-        var_y <- data[[y]][completeX * completeY == 1L]
-      }
-      else if (length(x) == sum(completeY)) {
-        var_y <- data[[y]][completeY]
-        completeX <- stats::complete.cases(x)
-        var_x <- x[completeX]
-        var_y <- var_y[completeX]
-      }
-      else {
-        insight::format_error("Cannot match complete cases of variable x with variable y, \n       The length of x should match the length of y or the length of the whole data frame.")
-      }
-    }
-    else if (yIsVec) {
-      completeX <- stats::complete.cases(data[[x]])
-      if (length(y) == nrow(data)) {
-        completeY <- stats::complete.cases(y)
-        var_x <- data[[x]][completeX * completeY == 1L]
-        var_y <- y[completeX * completeY == 1L]
-      }
-      else if (length(y) == sum(completeX)) {
-        var_x <- data[[x]][completeX]
-        completeY <- stats::complete.cases(y)
-        var_x <- var_x[completeY]
-        var_y <- y[completeY]
-      }
-      else {
-        insight::format_error("Cannot match complete cases of variable x with variable y, \n       The length of y should match the length of x or the length of the whole data frame.")
-      }
-    }
-    else {
-      completeCase <- stats::complete.cases(data[[x]], data[[y]])
-      var_x <- data[[x]][completeCase]
-      var_y <- data[[y]][completeCase]
-    }
-  }
-  else {
-    if (length(x) != length(y)) {
-      insight::format_error("The length of x should match the length of y.")
-    }
-    else {
-      completeCase <- stats::complete.cases(x, y)
-      var_x <- x[completeCase]
-      var_y <- y[completeCase]
-    }
-  }
+  # get complete cases
+  oo <- stats::complete.cases(x, y)
+  var_x <- x[oo]
+  var_y <- y[oo]
 
   # check validity of the amount of observations
-  n_obs <- length(var_x)
-
-  if (n_obs < 3L) {
+  if (length(var_x) < 3L) {
     insight::format_alert(paste(x, "and", y, "have less than 3 complete observations."))
+  }
+
+  # Make sure x,y are not factor(s)
+  if (!methodUse %in% c("tetrachoric", "polychoric")) {
+    var_x <- datawizard::to_numeric(var_x, dummy_factors = FALSE)
+    var_y <- datawizard::to_numeric(var_y, dummy_factors = FALSE)
   }
 
   # check value of ci (confidence level)
@@ -385,8 +331,8 @@ cor_test <- function(x, y,
     if (methodUse %in% c("blomqvist", "hoeffding"))
       insight::format_error(paste0("Bayesian ", toupper(methodUse[1]), methodUse[-1], ifelse(methodUse == "hoeffding", "'s", ""), "correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor)."))
     out <- .cor_test_bayes(var_x, var_y, ci, method, ...)
-    out$Parameter1 <- x
-    out$Parameter2 <- y
+    out$Parameter1 <- x_name
+    out$Parameter2 <- y_name
   }
   else {
     out <- switch(methodUse,
@@ -406,8 +352,8 @@ cor_test <- function(x, y,
                   "somers" = .cor_test_somers(var_x, var_y, ci, alternative, ...),
                   "polychoric" = .cor_test_polychoric(var_x, var_y, ci, alternative, ...),
                   "tetrachoric" = .cor_test_tetrachoric(var_x, var_y, ci, alternative, ...))
-    out$Parameter1 <- ifelse(xIsVec, deparse(substitute(x)), x)
-    out$Parameter2 <- ifelse(yIsVec, deparse(substitute(y)), y)
+    out$Parameter1 <- x_name
+    out$Parameter2 <- y_name
   }
 
   if (!"Method" %in% names(out)) out$Method <- paste0(toupper(methodUse[1]), methodUse[-1], ifelse(bayesian, " (Bayesian)", ""))
