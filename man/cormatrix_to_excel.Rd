@@ -17,7 +17,7 @@ but no need to specify extension).}
 \item{print.mat}{Logical, whether to also print the correlation matrix
 to console.}
 
-\item{...}{Parameters to be passed to \code{\link[=correlation]{correlation()}}}
+\item{...}{Parameters to be passed to \code{\link[correlation:correlation]{correlation::correlation()}}}
 }
 \value{
 A Microsoft Excel document, containing the colour-coded

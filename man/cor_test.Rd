@@ -7,6 +7,7 @@
 cor_test(
   x,
   y,
+  data = NULL,
   method = "pearson",
   ci = 0.95,
   alternative = "two.sided",
@@ -18,6 +19,8 @@ cor_test(
 \arguments{
 \item{x, y}{Vectors of the two variables the correlation test is done for.
 \cr Alternatively, can be names of variables in \code{data}.}
+
+\item{data}{An optional data frame.}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. \cr Possible Values: \code{"pearson"} (default),
@@ -48,6 +51,10 @@ framework.}
 \itemize{
 \item \code{tau_type} = \code{"b"}
 \item \code{direction} = \code{"row"} (used when \code{tau_type} = \code{"a"})
+}
+\item \code{"distance"}:
+\itemize{
+\item \code{corrected} = \code{TRUE}
 }
 \item \code{"percentage"}:
 \itemize{
@@ -97,12 +104,12 @@ pairs where both variables have tied ranks.
 }
 \item \strong{Biweight midcorrelation}: A measure of similarity that is
 median-based, instead of the traditional mean-based, thus being less
-sensitive to outliers. It can be used as a robust alternative to other
+sensitive to outliers. \cr It can be used as a robust alternative to other
 similarity metrics, such as Pearson correlation (Langfelder & Horvath,
 2012).
 \item \strong{Distance correlation}: Distance correlation measures both
 linear and non-linear association between two random variables or random
-vectors. This is in contrast to Pearson's correlation, which can only detect
+vectors. \cr This is in contrast to Pearson's correlation, which can only detect
 linear association between two random variables.
 \item \strong{Percentage bend correlation}: Introduced by Wilcox (1994), it
 is based on a down-weight of a specified percentage of marginal observations
@@ -115,36 +122,38 @@ referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
 median-based non-parametric correlation that has some advantages over
 measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
 2006).
-\item \strong{Hoeffding’s D}: The Hoeffding’s D statistics is a
-non-parametric rank based measure of association that detects more general
-departures from independence (Hoeffding 1948), including non-linear
-associations. Hoeffding’s D varies between -0.5 and 1 (if there are no tied
-ranks, otherwise it can have lower values), with larger values indicating a
-stronger relationship between the variables.
+\item \strong{Hoeffding’s D}: The Hoeffding’s D statistics is a non-parametric rank
+based measure of association that detects more general departures from
+independence (Hoeffding 1948), including non-linear associations. \cr
+Hoeffding’s D varies between -0.5 and 1 (if there are no tied ranks,
+otherwise it can have lower values), with larger values indicating a stronger
+relationship between the variables.
 \item \strong{Somers’ D}: The Somers’ D statistics is a non-parametric rank
 based measure of association between a binary variable and a continuous
 variable, for instance, in the context of logistic regression the binary
-outcome and the predicted probabilities for each outcome. Usually, Somers' D
-is a measure of ordinal association, however, this implementation it is
-limited to the case of a binary outcome.
-\item \strong{Point-Biserial and biserial correlation}: Correlation
+outcome and the predicted probabilities for each outcome. \cr Usually,
+Somers' D is a measure of ordinal association, however, this implementation
+it is limited to the case of a binary outcome.
+\item \strong{Point-Biserial, Rank-Biserial and biserial correlation}: Correlation
 coefficient used when one variable is continuous and the other is dichotomous
-(binary). Point-Biserial is equivalent to a Pearson's correlation, while
+(binary). \cr Point-Biserial is equivalent to a Pearson's correlation, while
 Biserial should be used when the binary variable is assumed to have an
 underlying continuity. For example, anxiety level can be measured on a
-continuous scale, but can be classified dichotomously as high/low.
-\item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is
-similar to Kendall's Tau coefficient. It is relatively robust to outliers and
-deals well with data that have many ties.
-\item \strong{Gaussian rank Correlation}: The Gaussian rank correlation
-estimator is a simple and well-performing alternative for robust rank
-correlations (Boudt et al., 2012). It is based on the Gaussian quantiles of
-the ranks.
-\item \strong{Polychoric correlation}: Correlation between two theorized
-normally distributed continuous latent variables, from two observed ordinal
-variables.
-\item \strong{Tetrachoric correlation}: Special case of the polychoric
-correlation applicable when both observed variables are dichotomous.
+continuous scale, but can be classified dichotomously as high/low. \cr
+Rank-Biserial is also equivalent to a Pearson's correlation, but it is used
+when the continuous variable is ordinal, and the dichotomous variable is
+assumed to have any relation to the order of the ordinal variable rather than
+it's value.
+\item \strong{Gamma correlation}: The Goodman-Kruskal gamma statistic is similar to
+Kendall's Tau coefficient. It is relatively robust to outliers and deals well
+with data that have many ties.
+\item \strong{Gaussian rank Correlation}: The Gaussian rank correlation estimator is a
+simple and well-performing alternative for robust rank correlations (Boudt et
+al., 2012). \cr It is based on the Gaussian quantiles of the ranks.
+\item \strong{Polychoric correlation}: Correlation between two theorized normally
+distributed continuous latent variables, from two observed ordinal variables.
+\item \strong{Tetrachoric correlation}: Special case of the polychoric correlation
+applicable when both observed variables are dichotomous.
 }
 }
 }

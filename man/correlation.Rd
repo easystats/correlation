@@ -95,6 +95,10 @@ names. This option can also be set globally by running
 \item \code{tau_type} = \code{"b"}
 \item \code{direction} = \code{"row"} (used when \code{tau_type} = \code{"a"})
 }
+\item \code{"distance"}:
+\itemize{
+\item \code{corrected} = \code{TRUE}
+}
 \item \code{"percentage"}:
 \itemize{
 \item \code{beta} = \code{0.2}

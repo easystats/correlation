@@ -2,6 +2,8 @@
 % Please edit documentation in R/correlation-package.R
 \docType{package}
 \name{correlation-package}
+\alias{correlation2}
+\alias{correlation2-package}
 \alias{correlation-package}
 \title{correlation: Methods for correlation analysis}
 \description{
