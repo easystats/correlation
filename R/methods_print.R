@@ -3,7 +3,9 @@
 
 #' @export
 print.easycorrelation <- function(x, ...) {
-  cat(insight::export_table(format(x, ...), format = "text"))
+  x_fmt <- format(x, ...)
+  x_fmt$method <- NULL
+  cat(insight::export_table(x_fmt, format = "text"))
   invisible(x)
 }
 

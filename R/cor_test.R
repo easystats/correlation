@@ -360,13 +360,16 @@ cor_test <- function(x, y,
     out$Parameter2 <- y_name
   }
 
-  if (!"Method" %in% names(out)) out$Method <- paste0(toupper(methodUse[1]), methodUse[-1], ifelse(bayesian, " (Bayesian)", ""))
-  else out$Method <- paste0(out$Method, ifelse(bayesian, " (Bayesian)", ""))
+  if (!"method" %in% names(out)) {
+    out$method <- methodUse
+  }
+  out$method <- paste0(out$method, ifelse(bayesian, " (Bayesian)", ""))
 
   # Reorder columns
-  order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high", "Method")
+  order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high", "method")
   out <- out[c(order[order %in% names(out)], setdiff(names(out), order[order %in% names(out)]))]
 
+  attr(out, "method") <- out$method
   attr(out, "coefficient_name") <- c("r", "rho", "tau", "Dxy")[c("r", "rho", "tau", "Dxy") %in% names(out)][1]
   attr(out, "ci") <- ci
   if ("data" %in% list(...)) attr(out, "data") <- data
@@ -394,7 +397,7 @@ cor_test <- function(x, y,
                     "df_error" = df,
                     "t" = t_p[1],
                     "p" = t_p[2],
-                    "Method" = method)
+                    "method" = method)
   # calculating the confidence interval
   if (!is.null(ci)) {
     CI <- switch(alternative,
@@ -493,7 +496,7 @@ cor_test <- function(x, y,
 
   if (xType == "point") {
     out <- .cor_test_freq(var_x, var_y, ci, alternative)
-    out$Method <- "Point Biserial"
+    out$method <- "Point Biserial"
   }
 
   else {
@@ -517,7 +520,7 @@ cor_test <- function(x, y,
                       "df_error" = df,
                       "t" = t_p[1],
                       "p" = t_p[2],
-                      "Method" = switch(xType,
+                      "method" = switch(xType,
                                         "base" = "Biserial",
                                         "rank" = "Rank Biserial"))
 
@@ -649,7 +652,7 @@ cor_test <- function(x, y,
                       "CI" = ci,
                       "CI_low" = CI[1],
                       "CI_high" = CI[2],
-                      "Method" = "Distance (Bias Corrected)")
+                      "method" = "Distance (Bias Corrected)")
   }
 
   rez
@@ -755,7 +758,7 @@ cor_test <- function(x, y,
   d <- .robust_bootstrap_mahalanobis(cbind(var_x, var_y))
   outliers <- d >= 6
   out <- .cor_test_freq(var_x[!outliers], var_y[!outliers], ci, alternative, "spearman")
-  out$Method <- "Shepherd's Pi"
+  out$method <- "Shepherd's Pi"
 
   # returning output
   out
@@ -789,7 +792,7 @@ cor_test <- function(x, y,
              "CI" = NA,
              "CI_low" = NA,
              "CI_high" = NA,
-             "Method" = "Somers' D")
+             "method" = "Somers' D")
 }
 
 # polychoric correlation calc function (same as original, with little bit of tweaks)
@@ -828,7 +831,7 @@ cor_test <- function(x, y,
                     "df" = df,
                     "t" = t_p[1],
                     "p" = t_p[2],
-                    "Method" = method)
+                    "method" = method)
   # calculating the confidence interval
   if (!is.null(ci)) {
     CI <- switch(alternative,
@@ -922,7 +925,7 @@ cor_test <- function(x, y,
   )
 
   # Add method
-  out$Method <- method_label
+  out$method <- method_label
   out
 }
 
