@@ -274,6 +274,8 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
 if (require("lme4", quietly = TRUE)) {
   cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
 }
-cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
+if (require("rstanarm", quietly = TRUE)) {
+  cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
+}
 }
 }
