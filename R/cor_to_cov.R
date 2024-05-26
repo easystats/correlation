@@ -43,8 +43,8 @@ cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.ep
     is_symmetric <- FALSE
   }
   p <- dim(cor)[1]
-  q <- p * (p - 1) / 2
-  if (isTRUE(all.equal(cor[lower.tri(cor)], rep(0, q))) || isTRUE(all.equal(cor[upper.tri(cor)], rep(0, q)))) {
+  quan <- p * (p - 1) / 2
+  if (isTRUE(all.equal(cor[lower.tri(cor)], rep(0, quan))) || isTRUE(all.equal(cor[upper.tri(cor)], rep(0, quan)))) {
     is_triangular <- TRUE
   } else {
     is_triangular <- FALSE
@@ -53,7 +53,7 @@ cor_to_cov <- function(cor, sd = NULL, variance = NULL, tol = .Machine$double.ep
     insight::format_error("'cor' should be either a symmetric or a triangular matrix")
   }
 
-  cov <- diag(sd) %*% cor %*% diag(sd)
-  colnames(cov) <- rownames(cov) <- colnames(cor)
-  cov
+  cov_matrix <- diag(sd) %*% cor %*% diag(sd)
+  colnames(cov_matrix) <- rownames(cov_matrix) <- colnames(cor)
+  cov_matrix
 }

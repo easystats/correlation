@@ -26,9 +26,9 @@ cor_sort <- function(x, distance = "correlation", hclust_method = "complete", ..
 
 #' @export
 cor_sort.easycorrelation <- function(x, distance = "correlation", hclust_method = "complete", ...) {
-  order <- .cor_sort_order(as.matrix(x), distance = distance, hclust_method = hclust_method, ...)
-  x$Parameter1 <- factor(x$Parameter1, levels = order)
-  x$Parameter2 <- factor(x$Parameter2, levels = order)
+  col_order <- .cor_sort_order(as.matrix(x), distance = distance, hclust_method = hclust_method, ...)
+  x$Parameter1 <- factor(x$Parameter1, levels = col_order)
+  x$Parameter2 <- factor(x$Parameter2, levels = col_order)
   reordered <- x[order(x$Parameter1, x$Parameter2), ]
 
   # Restore class and attributes
@@ -55,11 +55,11 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
   m <- x
   row.names(m) <- x$Parameter
   m <- as.matrix(m[names(m)[names(m) != "Parameter"]])
-  order <- .cor_sort_order(m, distance = distance, hclust_method = hclust_method, ...)
+  col_order <- .cor_sort_order(m, distance = distance, hclust_method = hclust_method, ...)
 
   # Reorder
-  x$Parameter <- factor(x$Parameter, levels = order)
-  reordered <- x[order(x$Parameter), c("Parameter", order)]
+  x$Parameter <- factor(x$Parameter, levels = col_order)
+  reordered <- x[order(x$Parameter), c("Parameter", col_order)]
 
   # Restore class and attributes
   attributes(reordered) <- utils::modifyList(
@@ -76,8 +76,8 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
 
 #' @export
 cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "complete", ...) {
-  order <- .cor_sort_order(x, distance = distance, hclust_method = hclust_method, ...)
-  reordered <- x[order, order]
+  col_order <- .cor_sort_order(x, distance = distance, hclust_method = hclust_method, ...)
+  reordered <- x[col_order, col_order]
 
   # Restore class and attributes
   attributes(reordered) <- utils::modifyList(
