@@ -1,12 +1,13 @@
 #' Convert correlation to p-values and CIs
 #'
-#' Get statistics, p-values and confidence intervals (CI) from correlation coefficients.
+#' Get statistics, *p*-values and confidence intervals (CI) from correlation
+#' coefficients.
 #'
 #' @param cor A correlation matrix or coefficient.
 #' @param n The sample size (number of observations).
 #' @inheritParams cor_test
 #'
-#' @return A list containing a p-value and the statistic or the CI bounds.
+#' @return A list containing a *p*-value and the statistic or the CI bounds.
 #'
 #' @examples
 #' cor.test(iris$Sepal.Length, iris$Sepal.Width)
@@ -15,23 +16,25 @@
 #' cor_to_ci(-0.1175698, n = 150)
 #' cor_to_ci(cor(iris[1:4]), n = 150)
 #'
-#' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
+#' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman", exact = FALSE)
 #' cor_to_p(-0.1667777, n = 150, method = "spearman")
 #' cor_to_ci(-0.1667777, ci = 0.95, n = 150)
 #'
-#' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall")
+#' cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall", exact = FALSE)
 #' cor_to_p(-0.07699679, n = 150, method = "kendall")
+#'
 #' @references Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
 #'   correlations when data are not normal. Behavior research methods, 49(1),
 #'   294-309.
 #'
-#' @importFrom stats qnorm pt
 #' @export
 cor_to_p <- function(cor, n, method = "pearson") {
-
   # Statistic
   if (method == "kendall") {
-    warning("Estimation for Kendall's correlation is not perfectly correct. Help us to improve it.")
+    insight::format_alert(
+      "p-value estimation for Kendall's correlation is not perfectly correct.",
+      "Help us to improve it."
+    )
     statistic <- (3 * cor * sqrt(n * (n - 1))) / sqrt(2 * (2 * n + 5))
   } else {
     statistic <- cor * sqrt((n - 2) / (1 - cor^2))

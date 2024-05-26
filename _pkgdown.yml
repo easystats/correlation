@@ -1,13 +1,5 @@
-authors:
-  Dominique Makowski:
-    href: https://dominiquemakowski.github.io/
-  Daniel Lüdecke:
-    href: https://github.com/strengejacke
-  Mattan S. Ben-Shachar:
-    href: https://github.com/mattansb
-  Indrajeet Patil:
-    href: https://sites.google.com/site/indrajeetspatilmorality/
+url: https://easystats.github.io/correlation/
 
 template:
-  params:
-    bootswatch: cosmo
+  bootstrap: 5
+  package: easystatstemplate

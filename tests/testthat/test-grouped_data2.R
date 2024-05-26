@@ -1,5 +1,5 @@
-
-if (require("dplyr")) {
+test_that("correlation with grouped data", {
+  skip_if_not_or_load_if_installed("poorman")
   df <- subset(mtcars, select = c("am", "mpg", "wt")) %>% group_by(am)
 
   expect_error(
@@ -15,4 +15,4 @@ if (require("dplyr")) {
   )
 
   expect_equal(corr_df$r, c(-0.7676554, -0.9089148), tolerance = 0.001)
-}
+})

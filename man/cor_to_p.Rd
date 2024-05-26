@@ -15,7 +15,7 @@ cor_to_p(cor, n, method = "pearson")
 \item{n}{The sample size (number of observations).}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
-set to 0.95 (95\% CI).}
+set to \code{0.95} (\verb{95\%} CI).}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default),
@@ -28,7 +28,8 @@ correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
 \code{"auto"} will attempt at selecting the most relevant method
 (polychoric when ordinal factors involved, tetrachoric when dichotomous
 factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise).}
+pearson otherwise). See below the \strong{details} section for a description of
+these indices.}
 
 \item{correction}{Only used if method is 'spearman' or 'kendall'. Can be
 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or
@@ -40,10 +41,11 @@ correction. Both are generally very similar.}
 other methods. See \code{stats::cor.test} for further details.}
 }
 \value{
-A list containing a p-value and the statistic or the CI bounds.
+A list containing a \emph{p}-value and the statistic or the CI bounds.
 }
 \description{
-Get statistics, p-values and confidence intervals (CI) from correlation coefficients.
+Get statistics, \emph{p}-values and confidence intervals (CI) from correlation
+coefficients.
 }
 \examples{
 cor.test(iris$Sepal.Length, iris$Sepal.Width)
@@ -52,15 +54,16 @@ cor_to_p(cor(iris[1:4]), n = 150)
 cor_to_ci(-0.1175698, n = 150)
 cor_to_ci(cor(iris[1:4]), n = 150)
 
-cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman")
+cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "spearman", exact = FALSE)
 cor_to_p(-0.1667777, n = 150, method = "spearman")
 cor_to_ci(-0.1667777, ci = 0.95, n = 150)
 
-cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall")
+cor.test(iris$Sepal.Length, iris$Sepal.Width, method = "kendall", exact = FALSE)
 cor_to_p(-0.07699679, n = 150, method = "kendall")
+
 }
 \references{
 Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
-  correlations when data are not normal. Behavior research methods, 49(1),
-  294-309.
+correlations when data are not normal. Behavior research methods, 49(1),
+294-309.
 }

@@ -3,7 +3,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  if (corrected == FALSE) {
+  if (!corrected) {
     rez <- .cor_test_distance_raw(var_x, var_y, index = 1)
     rez <- data.frame(
       Parameter1 = x,
@@ -14,7 +14,8 @@
       t = NA,
       df_error = NA,
       p = NA,
-      Method = "Distance"
+      Method = "Distance",
+      stringsAsFactors = FALSE
     )
   } else {
     rez <- .cor_test_distance_corrected(var_x, var_y, ci = ci)
@@ -27,7 +28,8 @@
       t = rez$t,
       df_error = rez$df,
       p = rez$p,
-      Method = "Distance (Bias Corrected)"
+      Method = "Distance (Bias Corrected)",
+      stringsAsFactors = FALSE
     )
   }
 
@@ -40,11 +42,10 @@
 # Basis -------------------------------------------------------------------
 
 
-#' @importFrom stats dist pt
 #' @keywords internal
 .cor_test_distance_corrected <- function(x, y, ci = 0.95) {
-  x <- as.matrix(dist(x))
-  y <- as.matrix(dist(y))
+  x <- as.matrix(stats::dist(x))
+  y <- as.matrix(stats::dist(y))
   n <- nrow(x)
 
   A <- .A_star(x)
@@ -60,7 +61,7 @@
   dof <- M - 1
 
   t <- sqrt(M - 1) * r / sqrt(1 - r^2)
-  p <- 1 - pt(t, df = dof)
+  p <- 1 - stats::pt(t, df = dof)
 
   ci_vals <- cor_to_ci(r, n = n, ci = ci)
 
@@ -80,13 +81,12 @@
 #' @keywords internal
 .cor_test_distance_raw <- function(x, y, index = 1) {
   if (index < 0 || index > 2) {
-    stop("`index` must be between 0 and 2.")
+    insight::format_error("`index` must be between 0 and 2.")
     index <- 1.0
   }
 
-  x <- as.matrix(dist(x))
-  y <- as.matrix(dist(y))
-  n <- nrow(x)
+  x <- as.matrix(stats::dist(x))
+  y <- as.matrix(stats::dist(y))
 
   A <- .A_kl(x, index)
   B <- .A_kl(y, index)
@@ -131,7 +131,7 @@
   ## denoted A* (or B*) in JMVA t-test paper (2013)
   d <- as.matrix(d)
   n <- nrow(d)
-  if (n != ncol(d)) stop("Argument d should be distance")
+  if (n != ncol(d)) stop("Argument d should be distance", call. = FALSE)
   m <- rowMeans(d)
   M <- mean(d)
   a <- sweep(d, 1, m)

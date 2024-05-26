@@ -1,7 +1,6 @@
 #' @rdname cor_to_pcor
 #' @export
 spcor_to_cor <- function(spcor = NULL, cov = NULL, semi = FALSE, tol = .Machine$double.eps^(2 / 3)) {
-
   # Get cor
   spcor <- .get_cor(spcor, cov)
 

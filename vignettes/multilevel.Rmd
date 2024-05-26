@@ -37,6 +37,7 @@ options(
 )
 
 if (!requireNamespace("ggplot2", quietly = TRUE) ||
+  !requireNamespace("BayesFactor", quietly = TRUE) ||
   !requireNamespace("lme4", quietly = TRUE)) {
   knitr::opts_chunk$set(eval = FALSE)
 }
@@ -45,12 +46,12 @@ if (!requireNamespace("ggplot2", quietly = TRUE) ||
 ## Data
 
 Imagine we have an experiment in which **10 individuals** completed a task with
-**100 trials**. For each trial - there will 1000 trials (10 * 1000) in total -
+**100 trials**. For each of the 1000 trials (10 * 100) in total,
 we measured two things, **V1** and **V2**, and we are interested in
 **investigating the link between these two variables**.
 
 We will generate data using the
-[`simulate_simpson()`](https://easystats.github.io/correlation/reference/simulate_simpson.html)
+[`simulate_simpson()`](https://easystats.github.io/bayestestR/reference/simulate_simpson.html)
 function from this package and look at its summary:
 
 ```{r}

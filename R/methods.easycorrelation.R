@@ -1,6 +1,11 @@
+# target argument can be used to matrix-fy a specific column.
+# @examples
+# summary(correlation(mtcars), target = "p")
 #' @export
-summary.easycorrelation <- function(object, redundant = FALSE, ...) {
-
+summary.easycorrelation <- function(object,
+                                    redundant = FALSE,
+                                    target = NULL,
+                                    ...) {
   # If data2 is present
   if (!is.null(attributes(object)$data2)) {
     redundant <- FALSE
@@ -8,30 +13,39 @@ summary.easycorrelation <- function(object, redundant = FALSE, ...) {
 
   frame <- .get_matrix(object, square = redundant)
 
-
   # Add redundant
   if (redundant) {
     object <- .add_redundant(object)
   }
 
-  target_col <- names(object)[names(object) %in% c("r", "rho", "tau", "Median", "Dxy")][1]
-  if (is.na(target_col)) {
-    target_col <- names(object)[!names(object) %in% c("Parameter1", "Parameter2")][1]
+  if (is.null(target)) {
+    target <- names(object)[names(object) %in% c("r", "rho", "tau", "Median", "Dxy")][1]
+    if (is.na(target)) {
+      target <- names(object)[!names(object) %in% c("Parameter1", "Parameter2")][1]
+    }
+  } else {
+    target <- target[target %in% names(object)][1]
+    if (is.na(target) || length(target) == 0) {
+      stop("`target` must be a column name in the correlation object.", call. = FALSE)
+    }
   }
-  out <- .create_matrix(frame, object, column = target_col, redundant = redundant)
+
+  out <- .create_matrix(frame, object, column = target, redundant = redundant)
 
   # Fill attributes
-  for (i in names(object)[!names(object) %in% c("Group", "Parameter1", "Parameter2", target_col)]) {
+  for (i in names(object)[!names(object) %in% c("Group", "Parameter1", "Parameter2", target)]) {
     attri <- .create_matrix(frame, object, column = i, redundant = redundant)
     attr(out, i) <- attri
   }
 
   # Transfer attributes
-  attributes(out) <-
-    c(attributes(out), attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))])
+  attributes(out) <- c(
+    attributes(out),
+    attributes(object)[!names(attributes(object)) %in% c("names", "row.names", "class", names(attributes(out)))]
+  )
   attributes(out) <- c(attributes(out), list(...))
   attr(out, "redundant") <- redundant
-  attr(out, "coefficient_name") <- target_col
+  attr(out, "coefficient_name") <- target
 
   if (inherits(object, "grouped_easycorrelation")) {
     class(out) <- c("easycormatrix", "see_easycormatrix", "grouped_easycormatrix", class(out))
@@ -43,6 +57,14 @@ summary.easycorrelation <- function(object, redundant = FALSE, ...) {
 }
 
 
+#' @export
+as.data.frame.easycorrelation <- function(x, ..., redundant = FALSE) {
+  if (redundant) {
+    x <- .add_redundant(x)
+  }
+  as.data.frame.data.frame(x)
+}
+
 
 #' @export
 as.table.easycorrelation <- function(x, ...) {
@@ -50,10 +72,8 @@ as.table.easycorrelation <- function(x, ...) {
   summary(x, redundant = TRUE)
 }
 
-
-
-
-
+# @examples
+# as.matrix(correlation(mtcars))
 #' @export
 as.matrix.easycorrelation <- function(x, ...) {
   mat <- summary(x, redundant = TRUE)
@@ -69,32 +89,45 @@ as.matrix.easycorrelation <- function(x, ...) {
     mat <- mat[-1]
   }
 
-  as.matrix(mat)
+  m <- as.matrix(mat)
+  class(m) <- c("easycormatrix", class(m))
+  m
 }
 
-
-
-
-
-
-# plot ----------------------------
-
+# @examples
+# as.list(correlation(mtcars))
 #' @export
-plot.easycormatrix <- function(x, ...) {
-  if (!requireNamespace("see", quietly = TRUE)) {
-    stop("Package 'see' needed to plot correlation graphs. Please install it by running `install.packages('see')`.")
+as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
+  if (inherits(x, "grouped_easycorrelation")) {
+    lx <- split(x, x$Group)
+    lx <- lapply(lx, .create_matrix_list, cols = cols)
+  } else {
+    lx <- .create_matrix_list(x, cols = cols)
   }
-  NextMethod()
+
+  if (inherits(x, "grouped_easycorrelation")) {
+    class(lx) <- c("grouped_easymatrixlist", "easymatrixlist")
+  }
+
+  lx
 }
 
 
-
-
+# @examples
+# insight::standardize_names(correlation(mtcars[1:4], method = "kendall"))
+# insight::standardize_names(correlation(mtcars[1:4], method = "kendall"), style = "broom")
+# correlation(mtcars[1:4], method = "kendall", standardize_names = TRUE)
+#' @export
+standardize_names.easycorrelation <- function(data, ...) {
+  ori <- data
+  names(data)[names(data) == datawizard::data_find(data, select = "(rho|tau)", regex = TRUE, verbose = FALSE)] <- "r"
+  data <- insight::standardize_names(as.data.frame(data), ...)
+  class(data) <- class(ori)
+  data
+}
 
 
 # Internals ---------------------------------------------------------------
-
-
 
 #' @keywords internal
 .create_matrix <- function(frame, object, column = "r", redundant = TRUE) {
@@ -110,20 +143,9 @@ plot.easycormatrix <- function(x, ...) {
   } else {
     out <- .fill_matrix(frame, object, column = column, redundant = redundant)
   }
+
   out
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #' @keywords internal
@@ -141,10 +163,49 @@ plot.easycormatrix <- function(x, ...) {
   row.names(frame) <- NULL
 
   # Remove upper triangular
-  if (redundant == FALSE & is.null(attributes(object)$data2)) {
+  if (!redundant && is.null(attributes(object)$data2)) {
     frame[-1][lower.tri(frame[-1])] <- NA
     frame <- frame[c(1, ncol(frame):2)]
   }
 
   frame
+}
+
+
+#' @keywords internal
+.create_matrix_list <- function(object, cols = NULL, redundant = FALSE, ...) {
+  if (inherits(object, "grouped_easycorrelation")) {
+    class(object) <- class(object)[class(object) != "grouped_easycorrelation"]
+  }
+
+  if (is.null(cols)) {
+    cols <- colnames(object)[!colnames(object) %in% c("Group", "Parameter1", "Parameter2")]
+  }
+
+  sx <- summary(object = object, redundant = redundant, ...)
+
+  .corr <- sx
+  attributes(.corr) <- attributes(.corr)[c("names", "row.names")]
+  class(.corr) <- c("easycormatrix", "data.frame")
+
+  lx <- c(
+    list(coefficient = .corr),
+    attributes(sx)[cols[cols %in% names(attributes(sx))]]
+  )
+
+  lx <- lapply(
+    lx,
+    `attributes<-`,
+    value = attributes(.corr)
+  )
+
+  names(lx)[1] <- attributes(sx)$coefficient_name
+
+  attributes(lx) <- c(
+    attributes(lx),
+    class = "easymatrixlist",
+    attributes(sx)[!names(attributes(sx)) %in% c("names", "row.names", "class", "coefficient_name", names(lx))]
+  )
+
+  lx
 }

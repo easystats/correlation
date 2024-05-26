@@ -1,19 +1,49 @@
-
 # Console -----------------------------------------------------------------
 
 
-#' @importFrom insight export_table
 #' @export
 print.easycorrelation <- function(x, ...) {
-  formatted_table <- format(x, ...)
-  cat(insight::export_table(formatted_table, format = "text"))
+  cat(insight::export_table(format(x, ...), format = "text"))
   invisible(x)
 }
 
 #' @export
-print.easycormatrix <- print.easycorrelation
+print.easycormatrix <- function(x, ...) {
+  formatted <- format(x, ...)
+  # If real matrix, print as matrix
+  if (colnames(formatted)[1] == "Variables") {
+    formatted$Variables <- NULL
+    print(as.matrix(formatted))
+  } else {
+    cat(insight::export_table(format(x, ...), format = "text"))
+  }
+  invisible(x)
+}
 
 
+#' @export
+print.easymatrixlist <- function(x, cols = "auto", ...) {
+  if (cols == "auto") {
+    cols <- c(names(x)[1], "n_Obs", "p")
+  }
+
+  cols <- cols[cols %in% names(x)]
+
+  for (i in cols) {
+    cat(" ", i, " ", "\n", rep("-", nchar(i) + 2), "\n", sep = "")
+    print(x[[i]])
+    cat("\n")
+  }
+}
+
+#' @export
+print.grouped_easymatrixlist <- function(x, cols = "auto", ...) {
+  for (i in names(x)) {
+    cat(rep("=", nchar(i) + 2), "\n ", i, " ", "\n", rep("=", nchar(i) + 2), "\n\n", sep = "")
+    print(x[[i]])
+    cat("\n")
+  }
+}
 
 # MD and HTML --------------------------------------------------------------
 
@@ -146,17 +176,3 @@ print_html.easycormatrix <- function(x,
     ...
   )
 }
-
-
-
-
-# Reexports functions ------------------------
-
-#' @importFrom insight print_md
-#' @export
-insight::print_md
-
-
-#' @importFrom insight print_html
-#' @export
-insight::print_html

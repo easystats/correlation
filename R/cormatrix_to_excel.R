@@ -1,0 +1,437 @@
+#' @title Easy export of correlation matrix to Excel
+#'
+#' @description Easily output a correlation matrix and export it to
+#' Microsoft Excel, with the first row and column frozen, and
+#' correlation coefficients colour-coded based on effect size
+#' (0.0-0.2: small (no colour); 0.2-0.4: medium (pink/light blue);
+#' 0.4-1.0: large (red/dark blue)), following Cohen's suggestions
+#' for small (.10), medium (.30), and large (.50) correlation sizes.
+#'
+#' @param data The data frame
+#' @param filename Desired filename (path can be added before hand
+#' but no need to specify extension).
+#' @param overwrite Whether to allow overwriting previous file.
+#' @param print.mat Logical, whether to also print the correlation matrix
+#'                  to console.
+#' @param ... Parameters to be passed to [correlation::correlation()]
+#'
+#' @keywords correlation matrix Excel
+#' @author Adapted from @JanMarvin (JanMarvin/openxlsx2#286) and
+#' the original `rempsyc::cormatrix_excel`.
+#' @return A Microsoft Excel document, containing the colour-coded
+#'         correlation matrix with significance stars, on the first
+#'         sheet, and the colour-coded p-values on the second sheet.
+#' @export
+#' @examplesIf requireNamespace("openxlsx2", quietly = TRUE)
+#' \dontshow{
+#' .old_wd <- setwd(tempdir())
+#' }
+#' # Basic example
+#' suppressWarnings(cormatrix_to_excel(mtcars,
+#'   select = c("mpg", "cyl", "disp", "hp", "carb"), filename = "cormatrix1"
+#' ))
+#' suppressWarnings(cormatrix_to_excel(iris,
+#'   p_adjust = "none",
+#'   filename = "cormatrix2"
+#' ))
+#' suppressWarnings(cormatrix_to_excel(airquality,
+#'   method = "spearman",
+#'   filename = "cormatrix3"
+#' ))
+#' \dontshow{
+#' setwd(.old_wd)
+#' }
+cormatrix_to_excel <- function(data,
+                               filename,
+                               overwrite = TRUE,
+                               print.mat = TRUE,
+                               ...) {
+  if (missing(filename)) {
+    stop("Argument 'filename' required (as per CRAN policies)")
+  }
+
+  insight::check_if_installed("openxlsx2")
+
+  # create correlation matrix with p values
+  cm <- correlation::correlation(data, ...)
+  cm <- summary(cm, redundant = TRUE)
+  all.columns <- 2:(ncol(cm))
+  if (isTRUE(print.mat)) {
+    print(cm)
+  }
+  pf <- attr(cm, "p")
+
+  # Define colours
+  style_gray <- c(rgb = "C1CDCD")
+  style_black <- c(rgb = "000000")
+  style_pink <- c(rgb = "FBCAC0")
+  style_peach <- c(rgb = "F79681")
+  style_red <- c(rgb = "F65534")
+  style_lightblue <- c(rgb = "97FFFF")
+  style_midblue <- c(rgb = "0AF3FF")
+  style_darkblue <- c(rgb = "00BFFF")
+  style_green1 <- c(rgb = "698B22")
+  style_green2 <- c(rgb = "9ACD32")
+  style_green3 <- c(rgb = "B3EE3A")
+
+  # Colours
+  gray_style <- openxlsx2::create_dxfs_style(
+    bgFill = style_gray,
+    font_color = style_black,
+    numFmt = "#.#0 _*_*_*"
+  )
+
+  p_style <- openxlsx2::create_dxfs_style(
+    bgFill = "",
+    font_color = style_black,
+    numFmt = "#.##0 _*_*_*"
+  )
+  p_style1 <- openxlsx2::create_dxfs_style(
+    bgFill = style_green1,
+    font_color = style_black,
+    numFmt = "#.##0 _*_*_*"
+  )
+  p_style2 <- openxlsx2::create_dxfs_style(
+    bgFill = style_green2,
+    font_color = style_black,
+    numFmt = "#.##0 _*_*_*"
+  )
+  p_style3 <- openxlsx2::create_dxfs_style(
+    bgFill = style_green3,
+    font_color = style_black,
+    numFmt = "#.##0 _*_*_*"
+  )
+
+  # no star
+  no_star <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 _*_*_*",
+    font_color = style_black,
+    bgFill = ""
+  )
+
+  # one star
+  one_star_pink <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*_*_*",
+    font_color = style_black,
+    bgFill = style_pink
+  )
+  one_star_peach <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*_*_*",
+    font_color = style_black,
+    bgFill = style_peach
+  )
+  one_star_red <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*_*_*",
+    font_color = style_black,
+    bgFill = style_red
+  )
+  one_star_lightblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*_*_*",
+    font_color = style_black,
+    bgFill = style_lightblue
+  )
+  one_star_midblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*_*_*",
+    font_color = style_black,
+    bgFill = style_midblue
+  )
+  one_star_darkblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*_*_*",
+    font_color = style_black,
+    bgFill = style_darkblue
+  )
+
+  # two stars
+  two_stars_pink <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*_*",
+    font_color = style_black,
+    bgFill = style_pink
+  )
+  two_stars_peach <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*_*",
+    font_color = style_black,
+    bgFill = style_peach
+  )
+  two_stars_red <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*_*",
+    font_color = style_black,
+    bgFill = style_red
+  )
+  two_stars_lightblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*_*",
+    font_color = style_black,
+    bgFill = style_lightblue
+  )
+  two_stars_midblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*_*",
+    font_color = style_black,
+    bgFill = style_midblue
+  )
+  two_stars_darkblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*_*",
+    font_color = style_black,
+    bgFill = style_darkblue
+  )
+
+  # three stars
+  three_stars_pink <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*\\*",
+    font_color = style_black,
+    bgFill = style_pink
+  )
+  three_stars_peach <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*\\*",
+    font_color = style_black,
+    bgFill = style_peach
+  )
+  three_stars_red <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*\\*",
+    font_color = style_black,
+    bgFill = style_red
+  )
+  three_stars_lightblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*\\*",
+    font_color = style_black,
+    bgFill = style_lightblue
+  )
+  three_stars_midblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*\\*",
+    font_color = style_black,
+    bgFill = style_midblue
+  )
+  three_stars_darkblue <- openxlsx2::create_dxfs_style(
+    numFmt = "#.#0 \\*\\*\\*",
+    font_color = style_black,
+    bgFill = style_darkblue
+  )
+
+  # create openxlsx2 workbook
+  wb <- openxlsx2::wb_workbook()
+
+  # assign all the required styles to the workbook
+  wb$add_style(gray_style)
+  wb$add_style(no_star)
+  wb$add_style(one_star_pink)
+  wb$add_style(one_star_peach)
+  wb$add_style(one_star_red)
+  wb$add_style(one_star_lightblue)
+  wb$add_style(one_star_midblue)
+  wb$add_style(one_star_darkblue)
+  wb$add_style(two_stars_pink)
+  wb$add_style(two_stars_peach)
+  wb$add_style(two_stars_red)
+  wb$add_style(two_stars_lightblue)
+  wb$add_style(two_stars_midblue)
+  wb$add_style(two_stars_darkblue)
+  wb$add_style(three_stars_pink)
+  wb$add_style(three_stars_peach)
+  wb$add_style(three_stars_red)
+  wb$add_style(three_stars_lightblue)
+  wb$add_style(three_stars_midblue)
+  wb$add_style(three_stars_darkblue)
+  wb$add_style(p_style)
+  wb$add_style(p_style1)
+  wb$add_style(p_style2)
+  wb$add_style(p_style3)
+  # wb$styles_mgr$styles$dxfs
+  # wb$styles_mgr$dxf
+
+  # create the worksheets and write the data to the worksheets.
+  wb$add_worksheet("r_values")$add_data(x = cm)
+  wb$add_worksheet("p_values")$add_data(x = pf)
+
+  # create conditional formatting for the stars (as well as colours as we have no)
+  # one star
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .05)",
+    style = "one_star_pink"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= .2, p_values!B2 < .05)",
+    style = "one_star_peach"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .05)",
+    style = "one_star_red"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .05)",
+    style = "one_star_lightblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .05)",
+    style = "one_star_midblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .05)",
+    style = "one_star_darkblue"
+  )
+
+  # two stars
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .01)",
+    style = "two_stars_pink"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= .2, p_values!B2 < .01)",
+    style = "two_stars_peach"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .01)",
+    style = "two_stars_red"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= -.02, r_values!B2 < 0, p_values!B2 < .01)",
+    style = "two_stars_lightblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .01)",
+    style = "two_stars_midblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .01)",
+    style = "two_stars_darkblue"
+  )
+
+  # three stars
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .001)",
+    style = "three_stars_pink"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= .2, p_values!B2 < .001)",
+    style = "three_stars_peach"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .001)",
+    style = "three_stars_red"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .001)",
+    style = "three_stars_lightblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .001)",
+    style = "three_stars_midblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .001)",
+    style = "three_stars_darkblue"
+  )
+
+  # Other formatting
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(r_values!B2 = 1)",
+    style = "gray_style"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "AND(p_values!B2 >= .05)",
+    style = "no_star"
+  )
+
+  # p-values
+  wb$add_conditional_formatting("p_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "< 10",
+    style = "p_style"
+  )
+  wb$add_conditional_formatting("p_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "< .05",
+    style = "p_style1"
+  )
+  wb$add_conditional_formatting("p_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "< .01",
+    style = "p_style2"
+  )
+  wb$add_conditional_formatting("p_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "< .001",
+    style = "p_style3"
+  )
+  wb$add_conditional_formatting("p_values",
+    cols = all.columns,
+    rows = all.columns,
+    rule = "== 0",
+    style = "gray_style"
+  )
+
+  ## Freeze Panes
+  wb$freeze_pane("r_values", firstCol = TRUE, firstRow = TRUE)
+  wb$freeze_pane("p_values", firstCol = TRUE, firstRow = TRUE)
+
+  # Save Excel
+  cat(paste0(
+    "\n\n [Correlation matrix '", filename,
+    ".xlsx' has been saved to working directory (or where specified).]"
+  ))
+  openxlsx2::wb_save(wb, path = paste0(filename, ".xlsx"), overwrite = TRUE)
+
+  # open in Excel
+  openxlsx2::xl_open(paste0(filename, ".xlsx"))
+}

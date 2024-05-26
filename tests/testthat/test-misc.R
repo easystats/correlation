@@ -1,13 +1,3 @@
-
-test_that("Mahalanobis", {
-  d <- distance_mahalanobis(data = iris[, 1:4], robust = FALSE)
-  expect_equal(ncol(d), 1)
-  d <- distance_mahalanobis(data = iris[, 1:4], robust = TRUE)
-  expect_equal(ncol(d), 3)
-})
-
-
-
 test_that("cor_to_cov", {
   cor <- cor(iris[1:4])
   cov <- cov(iris[1:4])
@@ -32,7 +22,8 @@ test_that("z_fisher works", {
 })
 
 test_that("simulate_simpson works", {
+  skip_if_not_or_load_if_installed("MASS")
   set.seed(123)
-  df <- simulate_simpson(n = 100, groups = 5, r = 0.5)
+  df <- bayestestR::simulate_simpson(n = 100, groups = 5, r = 0.5)
   expect_equal(dim(df), c(500L, 3L))
 })

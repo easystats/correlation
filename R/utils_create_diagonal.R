@@ -30,13 +30,14 @@
   if ("pd" %in% names(params)) diagonal$pd <- 1
   if ("ROPE_Percentage" %in% names(params)) diagonal$ROPE_Percentage <- 0
   if ("BF" %in% names(params)) diagonal$BF <- Inf
+  if ("log_BF" %in% names(params)) diagonal$log_BF <- Inf
   if ("Prior_Distribution" %in% names(params)) diagonal$Prior_Distribution <- unique(params$Prior_Distribution)[1]
   if ("Prior_Location" %in% names(params)) diagonal$Prior_Location <- unique(params$Prior_Location)[1]
   if ("Prior_Scale" %in% names(params)) diagonal$Prior_Scale <- unique(params$Prior_Scale)[1]
 
   for (var in names(params)[!names(params) %in% names(diagonal)]) {
-    if (length(unique(params[[var]])) > 1) {
-      stop("Something's unexpected happened when creating the diagonal data. Please open an issue at https://github.com/easystats/correlation/issues")
+    if (length(unique(params[[var]])) > 1L) {
+      insight::format_error("Something's unexpected happened when creating the diagonal data. Please open an issue at https://github.com/easystats/correlation/issues")
     }
     diagonal[[var]] <- unique(params[[var]])[1]
   }

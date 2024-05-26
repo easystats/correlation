@@ -1,16 +1,97 @@
+# correlation Development
+
+- New `cormatrix_to_excel()` function for exporting correlation matrices to Excel with color formatting.
+- This release changes the licensing model of `{correlation}` to an MIT license.
+
+# correlation 0.8.4
+
+- Minor improvements and code revisions due to changes in other packages.
+
+- Default color scheme for correlation matrices switched to use red for negative
+  values and blue for positive values.
+
+# correlation 0.8.3
+
+## Breaking Changes
+
+- `distance_mahalanobis()` is deprecated. Use `performance::check_outliers(method = "mahalanobis_robust")` instead.
+
+- The minimum needed R version has been bumped to `3.6`.
+
+## Minor Changes
+
+- Fixes breakages caused by updates to *parameters* package (#269).
+
+- The visualization recipe (plots) for redundant correlation matrices was
+  improved, so self-correlations will no longer be labelled and get a neutral
+  color.
+
+- The `print()` method redundant correlation matrices no longer shows the
+  diagonal with self-correlations.
+
+# correlation 0.8.2
+
+- Maintenance release for *datawizard* package update.
+
+# correlation 0.8.1
+
+- Maintenance release for *datawizard* package update.
+
+# correlation 0.8.0
+
+## Breaking Changes
+
+- `robust` argument, which was deprecated in favour of `ranktransform` in
+  `0.6.1` release, has now been removed.
+
+# correlation 0.7.1
+
+## Bug Fixes
+
+- Bug fix in `plot()` methods
+
+# correlation 0.7.0
+
+## Breaking Changes
+
+- Removes `winsorize()` function, which now lives in `datawizard` package.
+
+## New Features
+
+- New `cor_smooth()` function for smoothing non-positive definite matrices.
+
+## Bug Fixes
+
+- When `data2` was specified `correlation()` was over-correcting for all of the
+  combinations of variables in the full x and y tables, rather than in just the
+  ones specified (#195).
+
+## Minor Changes
+
+- `correlation()` gains a new argument `rename` to rename variables.
+
+- `simualte_simpson()` function is now re-exported from `bayestestR` package.
+
+- `plot()` for `"easycor_test"` objects now produces an annotated scatter plot.
+
 # correlation 0.6.1
 
 ## Breaking Changes
 
-- `simualte_simpson()`: The groups are now named after the pattern "G_" (can be altered with the `group_prefix` argument).
+- `simualte_simpson()`: The groups are now named after the pattern `"G_"` (can
+  be altered with the `group_prefix` argument).
+
 - `robust` argument deprecated in favour of `ranktransform`.
 
 ## New Features
 
 - `correlation` gains two new arguments: `select` and `select2` to select
   specific variables from dataframes to compare (#146).
-  
+
 - `as.matrix` method works for grouped correlations (#148).
+
+- New `as.list` method returns a list of various matrices related to correlation
+  analysis (correlation, number of observations, *p*-values, etc.).
 
 ## Bug Fixes
 

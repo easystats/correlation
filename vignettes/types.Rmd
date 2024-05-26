@@ -31,10 +31,15 @@ set.seed(333)
 
 
 if (!requireNamespace("see", quietly = TRUE) ||
-  !requireNamespace("tidyr", quietly = TRUE) ||
-  !requireNamespace("dplyr", quietly = TRUE) ||
+  !requireNamespace("datawizard", quietly = TRUE) ||
+  !requireNamespace("poorman", quietly = TRUE) ||
   !requireNamespace("ggplot2", quietly = TRUE)) {
   knitr::opts_chunk$set(eval = FALSE)
+} else {
+  library(see)
+  library(datawizard)
+  library(poorman)
+  library(ggplot2)
 }
 ```
 
@@ -93,7 +98,7 @@ can be used as a robust alternative to other similarity metrics, such as Pearson
 correlation [@langfelder2012fast].
 
 - **Distance correlation**: Distance correlation measures both linear and
-non-linear association between two random variables or random vectors. This is
+non-linear association between two random variables or random vectors (for more, see @szekely2007measuring, @szekely2009brownian). This is
 in contrast to Pearson's correlation, which can only detect linear association
 between two random variables.
 
@@ -169,8 +174,8 @@ library(correlation)
 library(bayestestR)
 library(see)
 library(ggplot2)
-library(tidyr)
-library(dplyr)
+library(datawizard)
+library(poorman)
 ```
 
 ### Utility functions
@@ -178,13 +183,13 @@ library(dplyr)
 ```{r}
 generate_results <- function(r, n = 100, transformation = "none") {
   data <- bayestestR::simulate_correlation(round(n), r = r)
-  
+
   if (transformation != "none") {
     var <- ifelse(grepl("(", transformation, fixed = TRUE), "data$V2)", "data$V2")
     transformation <- paste0(transformation, var)
     data$V2 <- eval(parse(text = transformation))
   }
-  
+
   out <- data.frame(n = n, transformation = transformation, r = r)
 
   out$Pearson <- cor_test(data, "V1", "V2", method = "pearson")$r
@@ -193,7 +198,7 @@ generate_results <- function(r, n = 100, transformation = "none") {
   out$Biweight <- cor_test(data, "V1", "V2", method = "biweight")$r
   out$Distance <- cor_test(data, "V1", "V2", method = "distance")$r
   out$Distance <- cor_test(data, "V1", "V2", method = "distance")$r
-  
+
   out
 }
 ```
@@ -203,7 +208,7 @@ generate_results <- function(r, n = 100, transformation = "none") {
 ```{r}
 data <- data.frame()
 for (r in seq(0, 0.999, length.out = 200)) {
-  for (n in c(100)) {
+  for (n in 100) {
     for (transformation in c(
       "none",
       "exp(",
@@ -223,14 +228,15 @@ for (r in seq(0, 0.999, length.out = 200)) {
   }
 }
 
-
 data %>%
-  tidyr::pivot_longer(-c(n, r, transformation),
-                      names_to = "Type",
-                      values_to = "Estimation") %>% 
-  dplyr::mutate(Type = forcats::fct_relevel(Type, "Pearson", "Spearman", "Kendall", "Biweight", "Distance")) %>%
+  datawizard::reshape_longer(
+    select = -c("n", "r", "transformation"),
+    names_to = "Type",
+    values_to = "Estimation"
+  ) %>%
+  mutate(Type = relevel(as.factor(Type), "Pearson", "Spearman", "Kendall", "Biweight", "Distance")) %>%
   ggplot(aes(x = r, y = Estimation, fill = Type)) +
-  geom_smooth(aes(color = Type), method = "loess", alpha = 0) +
+  geom_smooth(aes(color = Type), method = "loess", alpha = 0, na.rm = TRUE) +
   geom_vline(aes(xintercept = 0.5), linetype = "dashed") +
   geom_hline(aes(yintercept = 0.5), linetype = "dashed") +
   guides(colour = guide_legend(override.aes = list(alpha = 1))) +
@@ -241,13 +247,15 @@ data %>%
   facet_wrap(~transformation)
 
 model <- data %>%
-  tidyr::pivot_longer(-c(n, r, transformation),
-                      names_to = "Type",
-                      values_to = "Estimation") %>% 
+  datawizard::reshape_longer(
+    select = -c("n", "r", "transformation"),
+    names_to = "Type",
+    values_to = "Estimation"
+  ) %>%
   lm(r ~ Type / Estimation, data = .) %>%
   parameters::parameters()
 
-dplyr::arrange(model[6:10, ], desc(Coefficient))
+arrange(model[6:10, ], desc(Coefficient))
 ```
 
 As we can see, **distance** correlation is able to capture the strength even for

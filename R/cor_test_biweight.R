@@ -1,4 +1,3 @@
-#' @importFrom stats median mad
 #' @keywords internal
 .cor_test_biweight <- function(data, x, y, ci = 0.95, ...) {
   var_x <- .complete_variable_x(data, x, y)
@@ -9,8 +8,8 @@
   u <- (var_x - stats::median(var_x)) / (9 * stats::mad(var_x, constant = 1))
   v <- (var_y - stats::median(var_y)) / (9 * stats::mad(var_y, constant = 1))
 
-  I_x <- ifelse((1 - abs(u)) > 0, 1, 0)
-  I_y <- ifelse((1 - abs(v)) > 0, 1, 0)
+  I_x <- as.numeric((1 - abs(u)) > 0)
+  I_y <- as.numeric((1 - abs(v)) > 0)
 
   w_x <- I_x * (1 - u^2)^2
   w_y <- I_y * (1 - v^2)^2
@@ -32,7 +31,7 @@
     Parameter2 = y,
     r = r,
     t = p$statistic,
-    df_error = length(var_x) - 2,
+    df_error = length(var_x) - 2L,
     p = p$p,
     CI_low = ci_vals$CI_low,
     CI_high = ci_vals$CI_high,

@@ -9,16 +9,16 @@ library(see)
 # Generate data
 set.seed(333)
 data <- bayestestR::simulate_correlation(n = 200, r = 0.05)
-data$V2 <- data$V2 + effectsize::change_scale(data$V1, to = c(0, 2))^3
+data$V2 <- data$V2 + datawizard::data_rescale(data$V1, to = c(0, 2))^3
 
-data <- dplyr::arrange(data, V2)
+data <- arrange(data, V2)
 
 # Outliers
 data$V2[c(150, 185)] <- c(max(data$V2) * 1, max(data$V2) * 1)
 data$V2[c(1, 5, 10)] <- c(min(data$V2) * 2, max(data$V2) * 1, min(data$V2) * 1.5)
 
 # Rescale to match coef
-data$V2 <- effectsize::change_scale(data$V2, to = c(0, 1))
+data$V2 <- datawizard::data_rescale(data$V2, to = c(0, 1))
 
 
 # Correlation results

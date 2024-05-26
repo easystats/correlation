@@ -17,9 +17,9 @@
 #' predictor, because it is scaled to (i.e., relative to) the total variability
 #' in the response variable.
 #'
-#'
-#'
-#' @param cor,pcor A correlation matrix, or a partial or a semipartial
+#' @param cor A correlation matrix, or a partial or a semipartial
+#'   correlation matrix.
+#' @param pcor A correlation matrix, or a partial or a semipartial
 #'   correlation matrix.
 #' @param cov A covariance matrix (or a vector of the SD of the variables).
 #'   Required for semi-partial correlations.
@@ -36,12 +36,11 @@
 #'
 #' # Inverse
 #' round(pcor_to_cor(cor_to_pcor(cor)) - cor, 2) # Should be 0
-#' @importFrom stats cov2cor
 #' @export
+
 cor_to_pcor <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
   UseMethod("cor_to_pcor")
 }
-
 
 
 #' @export
@@ -51,19 +50,21 @@ cor_to_pcor.matrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
 }
 
 
-
 #' @export
 cor_to_pcor.easycormatrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
-  .cor_to_pcor_easycormatrix(cor = cor, tol = tol)
+  if (!inherits(cor, "matrix")) {
+    .cor_to_pcor_easycormatrix(cor = cor, tol = tol)
+  } else {
+    NextMethod()
+  }
 }
 
 
-
 #' @export
+
 cor_to_pcor.easycorrelation <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
   .cor_to_pcor_easycorrelation(cor = cor, tol = tol)
 }
-
 
 
 # pcor to cor -------------------------------------------------------------
@@ -76,7 +77,6 @@ pcor_to_cor <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
 }
 
 
-
 #' @export
 pcor_to_cor.matrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
   pcor <- .get_cor(pcor, cov = NULL)
@@ -86,7 +86,11 @@ pcor_to_cor.matrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
 
 #' @export
 pcor_to_cor.easycormatrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
-  .cor_to_pcor_easycormatrix(pcor = pcor, tol = tol)
+  if (!inherits(pcor, "matrix")) {
+    .cor_to_pcor_easycormatrix(pcor = pcor, tol = tol)
+  } else {
+    NextMethod()
+  }
 }
 
 
@@ -118,7 +122,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
   # Replace
   newdata <- data.frame()
-  for (i in 1:nrow(cor)) {
+  for (i in seq_len(nrow(cor))) {
     row <- row.names(r) == cor[i, "Parameter1"]
     col <- colnames(r) == cor[i, "Parameter2"]
     newdata <- rbind(
@@ -131,7 +135,8 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
         df_error = nobs[row, col] - 2,
         p = p$p[row, col],
         Method = "Pearson",
-        n_Obs = nobs[row, col]
+        n_Obs = nobs[row, col],
+        stringsAsFactors = FALSE
       )
     )
   }
@@ -150,7 +155,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
   # Format
   newdata <- cbind(cor[1:2], newdata)
-  cor <- cor[, 1:ncol(newdata)]
+  cor <- cor[, seq_len(ncol(newdata))]
   cor[, ] <- newdata
   names(cor) <- names(newdata)
 
@@ -173,6 +178,10 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   }
 
   # Extract info
+  if (inherits(cor, "matrix")) {
+    return(r)
+  }
+
   p_adjust <- attributes(cor)$p_adjust
   nobs <- as.matrix(attributes(cor)$n_Obs[-1])
 
@@ -182,7 +191,9 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   row.names(r) <- NULL
 
   # P-values adjustments
-  p$p <- stats::p.adjust(p$p, method = p_adjust, n = nrow(cor) * (ncol(cor) - 1))
+  n_comp <- sum(upper.tri(p$p))
+  p$p[upper.tri(p$p)] <- stats::p.adjust(p$p[upper.tri(p$p)], method = p_adjust, n = n_comp)
+  p$p[lower.tri(p$p)] <- stats::p.adjust(p$p[lower.tri(p$p)], method = p_adjust, n = n_comp)
   attributes(cor)$p_adjust <- p_adjust
 
   # Statistic and p-value
@@ -236,12 +247,12 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   # Get Cormatrix
   if (is.null(cor)) {
     if (is.null(cov)) {
-      stop("A correlation or covariance matrix is required.")
+      stop("A correlation or covariance matrix is required.", call. = FALSE)
     } else {
       cor <- stats::cov2cor(cov)
     }
   } else {
-    if (inherits(cor, "easycormatrix")) {
+    if (inherits(cor, "easycormatrix") && colnames(cor)[1] == "Parameter") {
       row.names(cor) <- cor$Parameter
       cor <- as.matrix(cor[-1])
     }

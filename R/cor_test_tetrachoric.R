@@ -1,24 +1,20 @@
-#' @importFrom stats complete.cases
-#' @importFrom utils capture.output
 #' @keywords internal
 .cor_test_tetrachoric <- function(data, x, y, ci = 0.95, ...) {
-  if (!requireNamespace("psych", quietly = TRUE)) {
-    stop("Package `psych` required for tetrachoric correlations. Please install it by running `install.packages('psych').", call. = FALSE)
-  }
+  insight::check_if_installed("psych", "for 'tetrachronic' correlations")
 
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  # Sanity check
-  if (length(unique(var_x)) > 2 & length(unique(var_y)) > 2) {
-    stop("Tetrachoric correlations can only be ran on dichotomous data.")
+  # valid matrix check
+  if (length(unique(var_x)) > 2 && length(unique(var_y)) > 2) {
+    insight::format_error("Tetrachoric correlations can only be ran on dichotomous data.")
   }
 
   # Reconstruct dataframe
   dat <- data.frame(var_x, var_y)
   names(dat) <- c(x, y)
 
-  junk <- utils::capture.output(r <- psych::tetrachoric(dat)$rho[2, 1])
+  junk <- utils::capture.output(r <- psych::tetrachoric(dat)$rho[2, 1]) # nolint
 
   p <- cor_to_p(r, n = nrow(data))
   ci_vals <- cor_to_ci(r, n = nrow(data), ci = ci)

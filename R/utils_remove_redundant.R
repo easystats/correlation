@@ -17,8 +17,6 @@
 
 
 
-
-
 #' @keywords internal
 .add_redundant <- function(params, data = NULL) {
   # save in case of failure
@@ -36,6 +34,7 @@
   if (ncol(diagonal) != ncol(params)) {
     return(original_params)
   }
+
   params <- rbind(params, diagonal)
 
   # Reorder
@@ -48,16 +47,13 @@
 
 
 
-
-
-
 #' @keywords internal
 .get_rows_non_NA <- function(m) {
-  rows <- c()
-  cols <- c()
+  rows <- NULL
+  cols <- NULL
 
   for (col in colnames(m)) {
-    for (row in 1:nrow(m)) {
+    for (row in seq_len(nrow(m))) {
       if (!is.na(m[row, col])) {
         rows <- c(rows, row.names(m)[row])
         cols <- c(cols, col)

@@ -1,8 +1,6 @@
 #' @keywords internal
 .cor_test_hoeffding <- function(data, x, y, ci = 0.95, ...) {
-  if (!requireNamespace("Hmisc", quietly = TRUE)) {
-    stop("Package `Hmisc` required for 'hoeffding' correlations. Please install it by running `install.packages('Hmisc').", call. = FALSE)
-  }
+  insight::check_if_installed("Hmisc", "for 'hoeffding' correlations")
 
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)

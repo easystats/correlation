@@ -12,11 +12,10 @@
 #' @seealso pinv from the pracma package
 #' @export
 matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {
-
-  # Sanity checks
-  # sanity checks
+  # valid matrix checks
+  # valid matrix checks
   if (!isSquare(m)) {
-    stop("The matrix should be a square matrix.")
+    stop("The matrix should be a square matrix.", call. = FALSE)
   }
 
   stopifnot(is.numeric(m), length(dim(m)) == 2, is.matrix(m))

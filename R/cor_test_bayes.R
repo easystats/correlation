@@ -1,7 +1,3 @@
-#' @importFrom stats complete.cases rnorm qnorm
-#' @importFrom utils install.packages
-#' @importFrom effectsize ranktransform
-#' @importFrom parameters model_parameters
 #' @keywords internal
 .cor_test_bayes <- function(data,
                             x,
@@ -12,18 +8,16 @@
                             bayesian_ci_method = "hdi",
                             bayesian_test = c("pd", "rope", "bf"),
                             ...) {
-  if (!requireNamespace("BayesFactor")) {
-    stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
-  }
+  insight::check_if_installed("BayesFactor")
 
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
   if (tolower(method) %in% c("spearman", "spear", "s")) {
-    var_x <- effectsize::ranktransform(var_x, sign = TRUE, method = "average")
-    var_y <- effectsize::ranktransform(var_y, sign = TRUE, method = "average")
+    var_x <- datawizard::ranktransform(var_x, sign = TRUE, method = "average")
+    var_y <- datawizard::ranktransform(var_y, sign = TRUE, method = "average")
     method <- "Bayesian Spearman"
-  } else if (tolower(method) %in% c("gaussian")) {
+  } else if (tolower(method) %in% "gaussian") {
     var_x <- stats::qnorm(rank(var_x) / (length(var_x) + 1))
     var_y <- stats::qnorm(rank(var_y) / (length(var_y) + 1))
     method <- "Bayesian Gaussian rank"
@@ -60,15 +54,14 @@
                                  bayesian_test = c("pd", "rope", "bf"),
                                  method = "pearson",
                                  ...) {
-  if (!requireNamespace("BayesFactor")) {
-    stop("This function needs `BayesFactor` to be installed. Please install by running `install.packages('BayesFactor')`.")
-  }
+  insight::check_if_installed("BayesFactor")
 
   if (x == y) {
     # Avoid error in the case of perfect correlation
-    rez <- BayesFactor::correlationBF(rnorm(1000), rnorm(1000), rscale = bayesian_prior)
+    rez <- BayesFactor::correlationBF(stats::rnorm(1000), stats::rnorm(1000), rscale = bayesian_prior)
     params <- parameters::model_parameters(
       rez,
+      dispersion = FALSE,
       ci_method = bayesian_ci_method,
       test = bayesian_test,
       rope_range = c(-0.1, 0.1),
@@ -89,12 +82,17 @@
     rez <- BayesFactor::correlationBF(var_x, var_y, rscale = bayesian_prior)
     params <- parameters::model_parameters(
       rez,
+      dispersion = FALSE,
       ci_method = bayesian_ci_method,
       test = bayesian_test,
       rope_range = c(-0.1, 0.1),
       rope_ci = 1,
       ...
     )
+    # validation check: do we have a BF column?
+    if (is.null(params$BF)) {
+      params$BF <- NA
+    }
   }
 
   # Rename coef
