@@ -234,40 +234,38 @@ cor_test <- function(data,
     }
 
     # Bayesian
+  } else if (method %in% c("tetra", "tetrachoric")) {
+    insight::format_error("Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("poly", "polychoric")) {
+    insight::format_error("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
+    insight::format_error("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method == "biweight") {
+    insight::format_error("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method == "distance") {
+    insight::format_error("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
+    insight::format_error("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("blomqvist", "median", "medial")) {
+    insight::format_error("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
+  } else if (method == "hoeffding") {
+    insight::format_error("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
+  } else if (method == "gamma") {
+    insight::format_error("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+    out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
   } else {
-    if (method %in% c("tetra", "tetrachoric")) {
-      insight::format_error("Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("poly", "polychoric")) {
-      insight::format_error("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
-      insight::format_error("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method == "biweight") {
-      insight::format_error("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method == "distance") {
-      insight::format_error("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
-      insight::format_error("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("blomqvist", "median", "medial")) {
-      insight::format_error("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
-    } else if (method == "hoeffding") {
-      insight::format_error("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
-    } else if (method == "gamma") {
-      insight::format_error("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
-      out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
-    } else {
-      out <- .cor_test_bayes(
-        data,
-        x,
-        y,
-        ci = ci,
-        method = method,
-        bayesian_prior = bayesian_prior,
-        bayesian_ci_method = bayesian_ci_method,
-        bayesian_test = bayesian_test,
-        ...
-      )
-    }
+    out <- .cor_test_bayes(
+      data,
+      x,
+      y,
+      ci = ci,
+      method = method,
+      bayesian_prior = bayesian_prior,
+      bayesian_ci_method = bayesian_ci_method,
+      bayesian_test = bayesian_test,
+      ...
+    )
   }
 
   # Replace by NANs if invalid
