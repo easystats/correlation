@@ -369,19 +369,19 @@ correlation <- function(data,
   attributes(out) <- c(
     attributes(out),
     list(
-      "data" = data,
-      "data2" = data2,
-      "modelframe" = rez$data,
-      "ci" = ci,
-      "n" = nrow(data),
-      "method" = method,
-      "bayesian" = bayesian,
-      "p_adjust" = p_adjust,
-      "partial" = partial,
-      "multilevel" = multilevel,
-      "partial_bayesian" = partial_bayesian,
-      "bayesian_prior" = bayesian_prior,
-      "include_factors" = include_factors
+      data = data,
+      data2 = data2,
+      modelframe = rez$data,
+      ci = ci,
+      n = nrow(data),
+      method = method,
+      bayesian = bayesian,
+      p_adjust = p_adjust,
+      partial = partial,
+      multilevel = multilevel,
+      partial_bayesian = partial_bayesian,
+      bayesian_prior = bayesian_prior,
+      include_factors = include_factors
     )
   )
 
@@ -429,39 +429,38 @@ correlation <- function(data,
   if (!is.null(data2)) {
     if (inherits(data2, "grouped_df")) {
       groups2 <- setdiff(colnames(attributes(data2)$groups), ".rows")
-      if (all.equal(groups, groups2)) {
-        ungrouped_y <- as.data.frame(data2)
-        ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
-        modelframe <- data.frame()
-        out <- data.frame()
-        for (i in names(xlist)) {
-          xlist[[i]][groups] <- NULL
-          ylist[[i]][groups] <- NULL
-          rez <- .correlation(
-            xlist[[i]],
-            data2 = ylist[[i]],
-            method = method,
-            p_adjust = p_adjust,
-            ci = ci,
-            bayesian = bayesian,
-            bayesian_prior = bayesian_prior,
-            bayesian_ci_method = bayesian_ci_method,
-            bayesian_test = bayesian_test,
-            redundant = redundant,
-            include_factors = include_factors,
-            partial = partial,
-            partial_bayesian = partial_bayesian,
-            multilevel = multilevel,
-            ranktransform = ranktransform,
-            winsorize = winsorize
-          )
-          modelframe_current <- rez$data
-          rez$params$Group <- modelframe_current$Group <- i
-          out <- rbind(out, rez$params)
-          modelframe <- rbind(modelframe, modelframe_current)
-        }
-      } else {
-        stop("'data2' should have the same grouping characteristics as data.", call. = FALSE)
+      if (!all.equal(groups, groups2)) {
+        insight::format_error("'data2' should have the same grouping characteristics as data.")
+      }
+      ungrouped_y <- as.data.frame(data2)
+      ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
+      modelframe <- data.frame()
+      out <- data.frame()
+      for (i in names(xlist)) {
+        xlist[[i]][groups] <- NULL
+        ylist[[i]][groups] <- NULL
+        rez <- .correlation(
+          xlist[[i]],
+          data2 = ylist[[i]],
+          method = method,
+          p_adjust = p_adjust,
+          ci = ci,
+          bayesian = bayesian,
+          bayesian_prior = bayesian_prior,
+          bayesian_ci_method = bayesian_ci_method,
+          bayesian_test = bayesian_test,
+          redundant = redundant,
+          include_factors = include_factors,
+          partial = partial,
+          partial_bayesian = partial_bayesian,
+          multilevel = multilevel,
+          ranktransform = ranktransform,
+          winsorize = winsorize
+        )
+        modelframe_current <- rez$data
+        rez$params$Group <- modelframe_current$Group <- i
+        out <- rbind(out, rez$params)
+        modelframe <- rbind(modelframe, modelframe_current)
       }
     }
     # else

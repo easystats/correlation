@@ -42,10 +42,10 @@
 
 
 .extract_corr_parameters <- function(model) {
-  names <- unlist(strsplit(model$data.name, " and ", fixed = TRUE))
+  data_names <- unlist(strsplit(model$data.name, " and ", fixed = TRUE))
   out <- data.frame(
-    "Parameter1" = names[1],
-    "Parameter2" = names[2],
+    Parameter1 = data_names[1],
+    Parameter2 = data_names[2],
     stringsAsFactors = FALSE
   )
 

@@ -52,10 +52,10 @@ cor_to_pcor.matrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
 
 #' @export
 cor_to_pcor.easycormatrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
-  if (!inherits(cor, "matrix")) {
-    .cor_to_pcor_easycormatrix(cor = cor, tol = tol)
-  } else {
+  if (inherits(cor, "matrix")) {
     NextMethod()
+  } else {
+    .cor_to_pcor_easycormatrix(cor = cor, tol = tol)
   }
 }
 
@@ -86,10 +86,10 @@ pcor_to_cor.matrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
 
 #' @export
 pcor_to_cor.easycormatrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
-  if (!inherits(pcor, "matrix")) {
-    .cor_to_pcor_easycormatrix(pcor = pcor, tol = tol)
-  } else {
+  if (inherits(pcor, "matrix")) {
     NextMethod()
+  } else {
+    .cor_to_pcor_easycormatrix(pcor = pcor, tol = tol)
   }
 }
 
@@ -114,28 +114,28 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
   # Extract info
   p_adjust <- attributes(cor)$p_adjust
-  nobs <- as.matrix(attributes(summary(cor, redundant = TRUE))$n_Obs[-1])
+  number_obs <- as.matrix(attributes(summary(cor, redundant = TRUE))$n_Obs[-1])
 
   # Get Statistics
-  p <- cor_to_p(r, n = nobs, method = "pearson")
-  ci_vals <- cor_to_ci(r, n = nobs, ci = attributes(cor)$ci)
+  p <- cor_to_p(r, n = number_obs, method = "pearson")
+  ci_vals <- cor_to_ci(r, n = number_obs, ci = attributes(cor)$ci)
 
   # Replace
   newdata <- data.frame()
   for (i in seq_len(nrow(cor))) {
-    row <- row.names(r) == cor[i, "Parameter1"]
-    col <- colnames(r) == cor[i, "Parameter2"]
+    row_index <- row.names(r) == cor[i, "Parameter1"]
+    col_index <- colnames(r) == cor[i, "Parameter2"]
     newdata <- rbind(
       newdata,
       data.frame(
-        r = r[row, col],
-        CI_low = ci_vals$CI_low[row, col],
-        CI_high = ci_vals$CI_high[row, col],
-        t = p$statistic[row, col],
-        df_error = nobs[row, col] - 2,
-        p = p$p[row, col],
+        r = r[row_index, col_index],
+        CI_low = ci_vals$CI_low[row_index, col_index],
+        CI_high = ci_vals$CI_high[row_index, col_index],
+        t = p$statistic[row_index, col_index],
+        df_error = number_obs[row_index, col_index] - 2,
+        p = p$p[row_index, col_index],
         Method = "Pearson",
-        n_Obs = nobs[row, col],
+        n_Obs = number_obs[row_index, col_index],
         stringsAsFactors = FALSE
       )
     )
@@ -183,10 +183,10 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   }
 
   p_adjust <- attributes(cor)$p_adjust
-  nobs <- as.matrix(attributes(cor)$n_Obs[-1])
+  number_obs <- as.matrix(attributes(cor)$n_Obs[-1])
 
-  p <- cor_to_p(r, n = nobs, method = "pearson")
-  ci_vals <- cor_to_ci(r, n = nobs, ci = attributes(cor)$ci)
+  p <- cor_to_p(r, n = number_obs, method = "pearson")
+  ci_vals <- cor_to_ci(r, n = number_obs, ci = attributes(cor)$ci)
   r <- cbind(data.frame(Parameter = row.names(r)), r)
   row.names(r) <- NULL
 
@@ -247,15 +247,12 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   # Get Cormatrix
   if (is.null(cor)) {
     if (is.null(cov)) {
-      stop("A correlation or covariance matrix is required.", call. = FALSE)
-    } else {
-      cor <- stats::cov2cor(cov)
+      insight::format_error("A correlation or covariance matrix is required.")
     }
-  } else {
-    if (inherits(cor, "easycormatrix") && colnames(cor)[1] == "Parameter") {
-      row.names(cor) <- cor$Parameter
-      cor <- as.matrix(cor[-1])
-    }
+    cor <- stats::cov2cor(cov)
+  } else if (inherits(cor, "easycormatrix") && colnames(cor)[1] == "Parameter") {
+    row.names(cor) <- cor$Parameter
+    cor <- as.matrix(cor[-1])
   }
   cor
 }

@@ -47,19 +47,19 @@ cormatrix_to_excel <- function(data,
                                print.mat = TRUE,
                                ...) {
   if (missing(filename)) {
-    stop("Argument 'filename' required (as per CRAN policies)")
+    insight::format_error("Argument 'filename' required (as per CRAN policies).")
   }
 
   insight::check_if_installed("openxlsx2")
 
   # create correlation matrix with p values
-  cm <- correlation::correlation(data, ...)
-  cm <- summary(cm, redundant = TRUE)
-  all.columns <- 2:(ncol(cm))
+  cormatrix <- correlation::correlation(data, ...)
+  cormatrix <- summary(cormatrix, redundant = TRUE)
+  all.columns <- 2:(ncol(cormatrix))
   if (isTRUE(print.mat)) {
-    print(cm)
+    print(cormatrix)
   }
-  pf <- attr(cm, "p")
+  p_val <- attr(cormatrix, "p")
 
   # Define colours
   style_gray <- c(rgb = "C1CDCD")
@@ -237,8 +237,8 @@ cormatrix_to_excel <- function(data,
   # wb$styles_mgr$dxf
 
   # create the worksheets and write the data to the worksheets.
-  wb$add_worksheet("r_values")$add_data(x = cm)
-  wb$add_worksheet("p_values")$add_data(x = pf)
+  wb$add_worksheet("r_values")$add_data(x = cormatrix)
+  wb$add_worksheet("p_values")$add_data(x = p_val)
 
   # create conditional formatting for the stars (as well as colours as we have no)
   # one star

@@ -45,7 +45,7 @@ format.easycormatrix <- function(x,
   # If it's a real matrix
   if (!"Parameter" %in% colnames(x)) {
     m <- as.data.frame(x)
-    return(cbind(data.frame("Variables" = row.names(x)), m))
+    return(cbind(data.frame(Variables = row.names(x)), m))
   }
 
   # Find attributes
@@ -105,7 +105,7 @@ format.easycormatrix <- function(x,
     }
 
     if (!stars_only) {
-      sig[, nums] <- sapply(sig[, nums], function(x) ifelse(x != "", paste0(" (", x, ")"), ""))
+      sig[, nums] <- sapply(sig[, nums], function(x) ifelse(x != "", paste0(" (", x, ")"), "")) # nolint
     }
 
     if (include_significance || stars) {
@@ -146,11 +146,11 @@ format.easycormatrix <- function(x,
   # N-obs
   if (!is.null(x$n_Obs)) {
     if (length(unique(x$n_Obs)) == 1) {
-      nobs <- unique(x$n_Obs)
+      number_obs <- unique(x$n_Obs)
     } else {
-      nobs <- paste0(min(x$n_Obs), "-", max(x$n_Obs))
+      number_obs <- paste0(min(x$n_Obs), "-", max(x$n_Obs))
     }
-    footer <- paste0(footer, "\nObservations: ", nobs)
+    footer <- paste0(footer, "\nObservations: ", number_obs)
   }
 
   # final new line
@@ -158,8 +158,8 @@ format.easycormatrix <- function(x,
 
   # for html/markdown, create list
   if (!is.null(format) && format != "text") {
-    footer <- unlist(strsplit(footer, "\n"))
-    footer <- as.list(footer[nchar(footer) > 0])
+    footer <- unlist(strsplit(footer, "\n", fixed = TRUE))
+    footer <- as.list(footer[nzchar(footer, keepNA = TRUE)])
   }
 
   footer
