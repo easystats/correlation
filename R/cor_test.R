@@ -140,58 +140,45 @@
 #' @examples
 #' library(correlation)
 #'
-#' cor_test(iris, "Sepal.Length", "Sepal.Width")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris)
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "spearman")
 #' \donttest{
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "kendall")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "biweight")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "distance")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "percentage")
 #'
-#' if (require("wdm", quietly = TRUE)) {
-#'   cor_test(iris, "Sepal.Length", "Sepal.Width", method = "blomqvist")
-#' }
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "blomqvist")
 #'
 #' if (require("Hmisc", quietly = TRUE)) {
-#'   cor_test(iris, "Sepal.Length", "Sepal.Width", method = "hoeffding")
+#'   cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "hoeffding")
 #' }
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gamma")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gaussian")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "shepherd")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gamma")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gaussian")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "shepherd")
+
 #' if (require("BayesFactor", quietly = TRUE)) {
-#'   cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
+#'   cor_test("Sepal.Length", "Sepal.Width", data = iris, bayesian = TRUE)
 #' }
-#'
-#' # Robust (these two are equivalent)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", ranktransform = TRUE)
-#'
-#' # Winsorized
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
 #'
 #' # Tetrachoric
 #' if (require("psych", quietly = TRUE) && require("rstanarm", quietly = TRUE)) {
 #'   data <- iris
 #'   data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
 #'   data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
-#'   cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
+#'   cor_test("Sepal.Width_binary", "Petal.Width_binary", data = data, method = "tetrachoric")
 #'
 #'   # Biserial
-#'   cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
+#'   cor_test("Sepal.Width", "Petal.Width_binary", data = data, method = "biserial")
 #'
 #'   # Polychoric
 #'   data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
 #'   data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
-#'   cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+#'   cor_test("Petal.Width_ordinal", "Sepal.Length_ordinal", data = data, method = "polychoric")
 #'
 #'   # When one variable is continuous, will run 'polyserial' correlation
-#'   cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
+#'   cor_test("Sepal.Width", "Sepal.Length_ordinal", data = data, method = "polychoric")
 #' }
-#'
-#' # Partial
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 #' }
 #' @export
 cor_test <- function(x, y,
