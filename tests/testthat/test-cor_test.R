@@ -68,8 +68,8 @@ test_that("cor_test bayesian", {
 
   df <- iris
   df$Petal.Length2 <- df$Petal.Length
-  out3 <- cor_test("Petal.Length", "Petal.Length2", data = df, bayesian = TRUE)
-  expect_equal(out3$r, 1.000, tolerance = 0.01)
+  expect_error(cor_test("Petal.Length", "Petal.Length2", data = df, bayesian = TRUE))
+  # expect_equal(out3$r, 1.000, tolerance = 0.01)
 
   if (getRversion() >= "3.6") {
     set.seed(123)

@@ -349,7 +349,7 @@ cor_test <- function(x, y,
                   "distance" = .cor_test_distance(var_x, var_y, ci, alternative, corrected, ...),
                   "percentage" = .cor_test_percentage(var_x, var_y, ci, alternative, beta, ...),
                   "blomqvist" = .cor_test_freq(sign(var_x - median(var_x)), sign(var_y - median(var_y)), ci, alternative, ...),
-                  "hoeffding" = .cor_test_hoeffding(var_x, var_y, ci, ...),
+                  "hoeffding" = .cor_test_hoeffding(var_x, var_y, ci, alternative, ...),
                   "gamma" = .cor_test_gamma(var_x, var_y, ci, alternative, ...),
                   "gaussian" = .cor_test_freq(stats::qnorm(rank(var_x) / (length(var_x) + 1)), stats::qnorm(rank(var_y) / (length(var_y) + 1)), ci, alternative, ...),
                   "shepherd" = .cor_test_shepherd(var_x, var_y, ci, alternative, ...),
@@ -590,6 +590,7 @@ cor_test <- function(x, y,
                                corrected = TRUE,
                                ...) {
   if (!corrected) {
+    n <- length(var_x)
     if("index" %in% names(list(...))) {
       if (index < 0 || index > 2) {
         insight::format_error("`index` must be between 0 and 2.")
@@ -611,13 +612,22 @@ cor_test <- function(x, y,
       r <- 0
     }
 
+    df = n - 2
+    t_p <- .t_p_value(r, df, alternative)
+    if (!is.null(ci)) {
+      CI <- switch(alternative,
+                   "two.sided" = .ci_value(r, c(-1, 1), (1 + ci) / 2, df),
+                   "less" = c(-Inf, .ci_value(r, 1, ci, df)),
+                   "greater" = c(.ci_value(r, -1, ci, df), Inf))
+    }
+
     rez <- data.frame("r" = r,
-                      "df_error" = NA,
-                      "t" = NA,
-                      "p" = NA,
-                      "CI" = NA,
-                      "CI_low" = NA,
-                      "CI_high" = NA)
+                      "df_error" = df,
+                      "t" = t_p[1],
+                      "p" = t_p[2],
+                      "CI" = ci,
+                      "CI_low" = CI[1],
+                      "CI_high" = CI[2])
   }
   else {
     var_x <- as.matrix(stats::dist(var_x))
@@ -703,18 +713,28 @@ cor_test <- function(x, y,
 #' @keywords internal
 .cor_test_hoeffding <- function(var_x, var_y,
                                 ci = 0.95,
+                                alternative = "two.sided",
                                 ...) {
   insight::check_if_installed("Hmisc", "for 'hoeffding' correlations")
 
   rez <- Hmisc::hoeffd(var_x, var_y)
 
+  df = length(var_x) - 2
+  t_p <- .t_p_value(rez$D[2, 1], df, alternative)
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(rez$D[2, 1], c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(rez$D[2, 1], 1, ci, df)),
+                 "greater" = c(.ci_value(rez$D[2, 1], -1, ci, df), Inf))
+  }
+
   data.frame("r" = rez$D[2, 1],
              "df_error" = length(var_x) - 2,
-             "t" = NA,
+             "t" = t_p[1],
              "p" = rez$P[2, 1],
-             "CI" = NA,
-             "CI_low" = NA,
-             "CI_high" = NA)
+             "CI" = ci,
+             "CI_low" = CI[1],
+             "CI_high" = CI[2])
 }
 
 # gamma correlation calc function (almost the same as original)
@@ -785,13 +805,22 @@ cor_test <- function(x, y,
 
   rez <- Hmisc::somers2(var_x, var_y)
 
+  df = length(var_x) - 2
+  t_p <- .t_p_value(rez["Dxy"], df, alternative)
+  if (!is.null(ci)) {
+    CI <- switch(alternative,
+                 "two.sided" = .ci_value(rez["Dxy"], c(-1, 1), (1 + ci) / 2, df),
+                 "less" = c(-Inf, .ci_value(rez["Dxy"], 1, ci, df)),
+                 "greater" = c(.ci_value(rez["Dxy"], -1, ci, df), Inf))
+  }
+
   data.frame("Dxy" = rez["Dxy"],
              "df_error" = length(var_x) - 2,
-             "t" = NA,
-             "p" = NA,
-             "CI" = NA,
-             "CI_low" = NA,
-             "CI_high" = NA,
+             "t" = t_p[1],
+             "p" = t_p[2],
+             "CI" = ci,
+             "CI_low" = CI[1],
+             "CI_high" = CI[2],
              "method" = "Somers' D")
 }
 
@@ -893,6 +922,8 @@ cor_test <- function(x, y,
                             bayesian_test = c("pd", "rope", "bf"),
                             ...) {
   insight::check_if_installed("BayesFactor")
+
+  if (all(var_x == var_y)) insight::format_error("The two variables must be different.")
 
   method_label <- "Bayesian Pearson"
   method <- tolower(method)
