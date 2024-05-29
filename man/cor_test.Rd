@@ -156,61 +156,58 @@ distributed continuous latent variables, from two observed ordinal variables.
 applicable when both observed variables are dichotomous.
 }
 }
+
+\subsection{Confidence Intervals}{
+
+For correlation methods that do not have a direct parametric method of
+obtaining \emph{p}-values and CIs, we use \link{cor_to_p} and \link{cor_to_ci}.
+}
 }
 \examples{
 library(correlation)
+data("iris")
 
-cor_test(iris, "Sepal.Length", "Sepal.Width")
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
+cor_test(iris$Sepal.Length, iris$Sepal.Width) # method = "pearson"
+# or
+cor_test("Sepal.Length", "Sepal.Width", data = iris) # method = "pearson"
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "spearman")
 \donttest{
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "percentage")
-
-if (require("wdm", quietly = TRUE)) {
-  cor_test(iris, "Sepal.Length", "Sepal.Width", method = "blomqvist")
-}
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "kendall")
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "biweight")
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "distance")
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "percentage")
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "blomqvist")
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gamma")
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gaussian")
+cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "shepherd")
 
 if (require("Hmisc", quietly = TRUE)) {
-  cor_test(iris, "Sepal.Length", "Sepal.Width", method = "hoeffding")
+  cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "hoeffding")
 }
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gamma")
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "gaussian")
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "shepherd")
+
 if (require("BayesFactor", quietly = TRUE)) {
-  cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
+  cor_test("Sepal.Length", "Sepal.Width", data = iris, bayesian = TRUE)
 }
 
-# Robust (these two are equivalent)
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
-cor_test(iris, "Sepal.Length", "Sepal.Width", method = "pearson", ranktransform = TRUE)
-
-# Winsorized
-cor_test(iris, "Sepal.Length", "Sepal.Width", winsorize = 0.2)
-
-# Tetrachoric
+# Tetrachoric, Polychoric, and Biserial
 if (require("psych", quietly = TRUE) && require("rstanarm", quietly = TRUE)) {
-  data <- iris
-  data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
-  data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
-  cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
+  data("mtcars")
+  mtcars$am <- factor(mtcars$am, levels = 0:1)
+  mtcars$vs <- factor(mtcars$vs, levels = 0:1)
+  mtcars$cyl <- ordered(mtcars$cyl, levels = c(4, 6, 8))
+  mtcars$carb <- ordered(mtcars$carb, , levels = c(1:4, 6, 8))
+
+  # Tetrachoric
+  cor_test(mtcars$am, mtcars$vs, method = "tetrachoric")
 
   # Biserial
-  cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
+  cor_test(mtcars$mpg, mtcars$am, method = "biserial")
 
   # Polychoric
-  data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
-  data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
-  cor_test(data, "Petal.Width_ordinal", "Sepal.Length_ordinal", method = "polychoric")
+  cor_test(mtcars$cyl, mtcars$carb, method = "polychoric")
 
   # When one variable is continuous, will run 'polyserial' correlation
-  cor_test(data, "Sepal.Width", "Sepal.Length_ordinal", method = "polychoric")
+  cor_test(mtcars$cyl, mtcars$mpg, method = "polychoric")
 }
-
-# Partial
-cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
-cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
-cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 }
 }

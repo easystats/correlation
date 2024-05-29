@@ -139,45 +139,49 @@
 #'
 #' @examples
 #' library(correlation)
+#' data("iris")
 #'
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris)
+#' cor_test(iris$Sepal.Length, iris$Sepal.Width) # method = "pearson"
+#' # or
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris) # method = "pearson"
 #' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "spearman")
 #' \donttest{
 #' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "kendall")
 #' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "biweight")
 #' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "distance")
 #' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "percentage")
-#'
 #' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "blomqvist")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gamma")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gaussian")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "shepherd")
 #'
 #' if (require("Hmisc", quietly = TRUE)) {
 #'   cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "hoeffding")
 #' }
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gamma")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gaussian")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "shepherd")
-
+#'
 #' if (require("BayesFactor", quietly = TRUE)) {
 #'   cor_test("Sepal.Length", "Sepal.Width", data = iris, bayesian = TRUE)
 #' }
 #'
-#' # Tetrachoric
+#' # Tetrachoric, Polychoric, and Biserial
 #' if (require("psych", quietly = TRUE) && require("rstanarm", quietly = TRUE)) {
-#'   data <- iris
-#'   data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
-#'   data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
-#'   cor_test("Sepal.Width_binary", "Petal.Width_binary", data = data, method = "tetrachoric")
+#'   data("mtcars")
+#'   mtcars$am <- factor(mtcars$am, levels = 0:1)
+#'   mtcars$vs <- factor(mtcars$vs, levels = 0:1)
+#'   mtcars$cyl <- ordered(mtcars$cyl, levels = c(4, 6, 8))
+#'   mtcars$carb <- ordered(mtcars$carb, , levels = c(1:4, 6, 8))
+#'
+#'   # Tetrachoric
+#'   cor_test(mtcars$am, mtcars$vs, method = "tetrachoric")
 #'
 #'   # Biserial
-#'   cor_test("Sepal.Width", "Petal.Width_binary", data = data, method = "biserial")
+#'   cor_test(mtcars$mpg, mtcars$am, method = "biserial")
 #'
 #'   # Polychoric
-#'   data$Petal.Width_ordinal <- as.factor(round(data$Petal.Width))
-#'   data$Sepal.Length_ordinal <- as.factor(round(data$Sepal.Length))
-#'   cor_test("Petal.Width_ordinal", "Sepal.Length_ordinal", data = data, method = "polychoric")
+#'   cor_test(mtcars$cyl, mtcars$carb, method = "polychoric")
 #'
 #'   # When one variable is continuous, will run 'polyserial' correlation
-#'   cor_test("Sepal.Width", "Sepal.Length_ordinal", data = data, method = "polychoric")
+#'   cor_test(mtcars$cyl, mtcars$mpg, method = "polychoric")
 #' }
 #' }
 #' @export
@@ -817,7 +821,7 @@ cor_test <- function(x, y,
                                  ci = 0.95,
                                  alternative = "two.sided",
                                  ...) {
-  insight::check_if_installed("psych", "for 'tetrachronic' correlations")
+  insight::check_if_installed("psych", "for 'polychoric' correlations")
 
   # valid matrix check
   if (!is.factor(var_x) && !is.factor(var_y)) insight::format_error("Polychoric correlations can only be ran on ordinal factors.")
@@ -868,7 +872,7 @@ cor_test <- function(x, y,
                                   ci = 0.95,
                                   alternative = "two.sided",
                                   ...) {
-  insight::check_if_installed("psych", "for 'tetrachronic' correlations")
+  insight::check_if_installed("psych", "for 'tetrachoric' correlations")
 
   # valid matrix check
   if (length(unique(var_x)) > 2 && length(unique(var_y)) > 2) insight::format_error("Tetrachoric correlations can only be ran on dichotomous data.")
