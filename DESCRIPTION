@@ -56,9 +56,9 @@ Depends:
 Imports:
     bayestestR (>= 0.13.2),
     datasets,
-    datawizard (>= 0.9.1),
-    insight (>= 0.19.8),
-    parameters (>= 0.21.5),
+    datawizard (>= 0.10.0),
+    insight (>= 0.19.11),
+    parameters (>= 0.21.7),
     stats
 Suggests:
     BayesFactor,
