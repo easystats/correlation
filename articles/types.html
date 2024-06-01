@@ -5,22 +5,21 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="correlation">
 <title>Correlation Types • correlation</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.9/font.css" rel="stylesheet">
 <link href="../deps/JetBrains_Mono-0.4.9/font.css" rel="stylesheet">
 <link href="../deps/Roboto_Slab-0.4.9/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Correlation Types">
+<link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Correlation Types">
+<meta name="description" content="correlation">
 <meta property="og:description" content="correlation">
 <meta property="og:image" content="https://easystats.github.io/correlation/reference/figures/card.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:creator" content="@easystats4u">
 <meta name="twitter:site" content="@easystats4u">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -122,8 +121,7 @@ correlation method. It corresponds to the covariance of the two
 variables normalized (i.e., divided) by the product of their standard
 deviations.</li>
 </ul>
-<p><span class="math display">\[r_{xy} = \frac{cov(x,y)}{SD_x \times
-SD_y}\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>c</mi><mi>o</mi><mi>v</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>S</mi><msub><mi>D</mi><mi>x</mi></msub><mo>×</mo><mi>S</mi><msub><mi>D</mi><mi>y</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">r_{xy} = \frac{cov(x,y)}{SD_x \times SD_y}</annotation></semantics></math></p>
 <ul>
 <li>
 <strong>Spearman’s rank correlation</strong>: A non-parametric
@@ -136,8 +134,7 @@ computed using the <span class="citation">Fieller, Hartley, and Pearson
 (1957)</span> correction <span class="citation">(see Bishara and Hittner
 2017)</span>.</li>
 </ul>
-<p><span class="math display">\[r_{s_{xy}} = \frac{cov(rank_x,
-rank_y)}{SD(rank_x) \times SD(rank_y)}\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><msub><mi>s</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub></msub><mo>=</mo><mfrac><mrow><mi>c</mi><mi>o</mi><mi>v</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mi>a</mi><mi>n</mi><msub><mi>k</mi><mi>x</mi></msub><mo>,</mo><mi>r</mi><mi>a</mi><mi>n</mi><msub><mi>k</mi><mi>y</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>S</mi><mi>D</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mi>a</mi><mi>n</mi><msub><mi>k</mi><mi>x</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mi>S</mi><mi>D</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mi>a</mi><mi>n</mi><msub><mi>k</mi><mi>y</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">r_{s_{xy}} = \frac{cov(rank_x, rank_y)}{SD(rank_x) \times SD(rank_y)}</annotation></semantics></math></p>
 <ul>
 <li>
 <strong>Kendall’s rank correlation</strong>: In the normal case, the
@@ -153,9 +150,7 @@ computed using the <span class="citation">Fieller, Hartley, and Pearson
 2017)</span>. For each pair of observations (i ,j) of two variables (x,
 y), it is defined as follows:</li>
 </ul>
-<p><span class="math display">\[\tau_{xy} =
-\frac{2}{n(n-1)}\sum_{i&lt;j}^{}sign(x_i - x_j) \times sign(y_i -
-y_j)\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub><mo>=</mo><mfrac><mn>2</mn><mrow><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>&lt;</mo><mi>j</mi></mrow><mrow></mrow></munderover><mi>s</mi><mi>i</mi><mi>g</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mi>s</mi><mi>i</mi><mi>g</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><msub><mi>y</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\tau_{xy} = \frac{2}{n(n-1)}\sum_{i&lt;j}^{}sign(x_i - x_j) \times sign(y_i - y_j)</annotation></semantics></math></p>
 <ul>
 <li><p><strong>Biweight midcorrelation</strong>: A measure of similarity
 that is median-based, instead of the traditional mean-based, thus being
@@ -217,12 +212,16 @@ partialization as an independent step generating a different dataset,
 rather than belonging to the same model. This is why some discrepancies
 are to be expected for the <em>t</em>- and the <em>p</em>-values (but
 not the correlation coefficient) compared to other implementations such
-as <code>ppcor</code>. Let <span class="math inline">\(e_{x.z}\)</span>
-be the residuals from the linear prediction of <span class="math inline">\(x\)</span> by <span class="math inline">\(z\)</span> (note that this can be expanded to a
-multivariate <span class="math inline">\(z\)</span>):</p></li>
+as <code>ppcor</code>. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mrow><mi>x</mi><mi>.</mi><mi>z</mi></mrow></msub><annotation encoding="application/x-tex">e_{x.z}</annotation></semantics></math>
+be the residuals from the linear prediction of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>
+(note that this can be expanded to a multivariate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>):</p></li>
 </ul>
-<p><span class="math display">\[r_{xy.z} =
-r_{e_{x.z},e_{y.z}}\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mrow><mi>x</mi><mi>y</mi><mi>.</mi><mi>z</mi></mrow></msub><mo>=</mo><msub><mi>r</mi><mrow><msub><mi>e</mi><mrow><mi>x</mi><mi>.</mi><mi>z</mi></mrow></msub><mo>,</mo><msub><mi>e</mi><mrow><mi>y</mi><mi>.</mi><mi>z</mi></mrow></msub></mrow></msub></mrow><annotation encoding="application/x-tex">r_{xy.z} = r_{e_{x.z},e_{y.z}}</annotation></semantics></math></p>
 <ul>
 <li>
 <strong>Multilevel correlation</strong>: Multilevel correlations are
