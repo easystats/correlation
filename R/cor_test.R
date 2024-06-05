@@ -8,7 +8,7 @@
 #' @param data An optional data frame.
 #' @param ci Confidence/Credible Interval level. If `"default"`, then it is
 #'   set to `0.95` (`95%` CI).
-#' @param method A character string indicating which correlation coefficient is
+#' @param Method A character string indicating which correlation coefficient is
 #'   to be used for the test. \cr Possible Values: `"pearson"` (default),
 #'   `"kendall"`, `"spearman"`, `"biserial"`, `"point-biserial"`, `"rankbiserial"`,
 #'   `"polychoric"`, `"tetrachoric"`, `"biweight"`, `"distance"`, `"percentage"`
@@ -24,7 +24,7 @@
 #' @param verbose Toggle warnings.
 #' @param ... Optional arguments:
 #'  - `data` A data frame (when `x` and/or `y` are not vectors).
-#'  - Arguments dependent on `method` being:
+#'  - Arguments dependent on `Method` being:
 #'    - `"kendall"`:
 #'      - `tau_type` = `"b"`
 #'      - `direction` = `"row"` (used when `tau_type` = `"a"`)
@@ -34,14 +34,14 @@
 #'      - `beta` = `0.2`
 #'    - `"bayes"`:
 #'      - `bayesian_prior` = "medium"
-#'      - `bayesian_ci_method` = "hdi"
+#'      - `bayesian_ci_Method` = "hdi"
 #'      - `bayesian_test` = `c("pd", "rope", "bf")`
 #'
 #'
 #' @details
 #'
 #' ## Correlation Types
-#' - **Pearson's correlation**: This is the most common correlation method. It
+#' - **Pearson's correlation**: This is the most common correlation Method. It
 #' corresponds to the covariance of the two variables normalized (i.e., divided)
 #' by the product of their standard deviations.
 #'
@@ -134,29 +134,29 @@
 #'
 #' ## Confidence Intervals
 #'
-#' For correlation methods that do not have a direct parametric method of
+#' For correlation Methods that do not have a direct parametric Method of
 #' obtaining _p_-values and CIs, we use [cor_to_p] and [cor_to_ci].
 #'
 #' @examples
 #' library(correlation)
 #' data("iris")
 #'
-#' cor_test(iris$Sepal.Length, iris$Sepal.Width) # method = "pearson"
+#' cor_test(iris$Sepal.Length, iris$Sepal.Width) # Method = "pearson"
 #' # or
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris) # method = "pearson"
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "spearman")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris) # Method = "pearson"
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "spearman")
 #' \donttest{
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "kendall")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "biweight")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "distance")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "percentage")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "blomqvist")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gamma")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "gaussian")
-#' cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "shepherd")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "kendall")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "biweight")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "distance")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "percentage")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "blomqvist")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "gamma")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "gaussian")
+#' cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "shepherd")
 #'
 #' if (require("Hmisc", quietly = TRUE)) {
-#'   cor_test("Sepal.Length", "Sepal.Width", data = iris, method = "hoeffding")
+#'   cor_test("Sepal.Length", "Sepal.Width", data = iris, Method = "hoeffding")
 #' }
 #'
 #' if (require("BayesFactor", quietly = TRUE)) {
@@ -172,22 +172,22 @@
 #'   mtcars$carb <- ordered(mtcars$carb, , levels = c(1:4, 6, 8))
 #'
 #'   # Tetrachoric
-#'   cor_test(mtcars$am, mtcars$vs, method = "tetrachoric")
+#'   cor_test(mtcars$am, mtcars$vs, Method = "tetrachoric")
 #'
 #'   # Biserial
-#'   cor_test(mtcars$mpg, mtcars$am, method = "biserial")
+#'   cor_test(mtcars$mpg, mtcars$am, Method = "biserial")
 #'
 #'   # Polychoric
-#'   cor_test(mtcars$cyl, mtcars$carb, method = "polychoric")
+#'   cor_test(mtcars$cyl, mtcars$carb, Method = "polychoric")
 #'
 #'   # When one variable is continuous, will run 'polyserial' correlation
-#'   cor_test(mtcars$cyl, mtcars$mpg, method = "polychoric")
+#'   cor_test(mtcars$cyl, mtcars$mpg, Method = "polychoric")
 #' }
 #' }
 #' @export
 cor_test <- function(x, y,
                      data = NULL,
-                     method = "pearson",
+                     Method = "pearson",
                      ci = 0.95,
                      alternative = "two.sided",
                      bayesian = FALSE,
@@ -197,8 +197,8 @@ cor_test <- function(x, y,
   #  checks
   # +======+
 
-  # check value of method
-  method <- match.arg(tolower(method), c("pearson", "spearman", "spear", "s",
+  # check value of Method
+  Method <- match.arg(tolower(Method), c("pearson", "spearman", "spear", "s",
                                          "kendall", "biserial", "pointbiserial",
                                          "point-biserial", "rankbiserial",
                                          "rank-biserial", "biweight", "distance",
@@ -208,14 +208,14 @@ cor_test <- function(x, y,
                                          "gaussian", "shepherd", "sheperd",
                                          "shepherdspi", "pi",  "somers", "poly",
                                          "polychoric", "tetra", "tetrachoric"))
-  methodUse <- ifelse(method %in% c("pearson", "spearman", "spear", "s"), "frequantive", method)
-  methodUse <- ifelse(method %in% c("pointbiserial", "point-biserial"), "point-biserial", methodUse)
-  methodUse <- ifelse(method %in% c("rankbiserial", "rank-biserial"), "rank-biserial", methodUse)
-  methodUse <- ifelse(method %in% c("percentage", "percentage_bend", "percentagebend", "pb"), "percentage", methodUse)
-  methodUse <- ifelse(method %in% c("blomqvist", "median", "medial"), "blomqvist", methodUse)
-  methodUse <- ifelse(method %in% c("shepherd", "sheperd", "shepherdspi", "pi"), "shepherd", methodUse)
-  methodUse <- ifelse(method %in% c("poly", "polychoric"), "polychoric", methodUse)
-  methodUse <- ifelse(method %in% c("tetra", "tetrachoric"), "tetrachoric", methodUse)
+  MethodUse <- ifelse(Method %in% c("pearson", "spearman", "spear", "s"), "frequantive", Method)
+  MethodUse <- ifelse(Method %in% c("pointbiserial", "point-biserial"), "point-biserial", MethodUse)
+  MethodUse <- ifelse(Method %in% c("rankbiserial", "rank-biserial"), "rank-biserial", MethodUse)
+  MethodUse <- ifelse(Method %in% c("percentage", "percentage_bend", "percentagebend", "pb"), "percentage", MethodUse)
+  MethodUse <- ifelse(Method %in% c("blomqvist", "median", "medial"), "blomqvist", MethodUse)
+  MethodUse <- ifelse(Method %in% c("shepherd", "sheperd", "shepherdspi", "pi"), "shepherd", MethodUse)
+  MethodUse <- ifelse(Method %in% c("poly", "polychoric"), "polychoric", MethodUse)
+  MethodUse <- ifelse(Method %in% c("tetra", "tetrachoric"), "tetrachoric", MethodUse)
 
   # vectors or names check
   xIsName <- is.character(x) && (length(x) == 1L)
@@ -251,7 +251,7 @@ cor_test <- function(x, y,
   }
 
   # Make sure x,y are not factor(s)
-  if (!methodUse %in% c("tetrachoric", "polychoric")) {
+  if (!MethodUse %in% c("tetrachoric", "polychoric")) {
     var_x <- datawizard::to_numeric(var_x, dummy_factors = FALSE)
     var_y <- datawizard::to_numeric(var_y, dummy_factors = FALSE)
   }
@@ -268,7 +268,7 @@ cor_test <- function(x, y,
   alternative <- match.arg(alternative, c("two.sided", "less", "greater"))
 
   # check value of tau_type and direction when relevant
-  if(method == "kendall") {
+  if(Method == "kendall") {
     tau_type <- "b"
     direction <- "row"
     if ("tau_type" %in% names(list(...))) {
@@ -279,14 +279,14 @@ cor_test <- function(x, y,
     }
   }
 
-  if (methodUse == "distance") {
+  if (MethodUse == "distance") {
     corrected <- TRUE
     if ("corrected" %in% names(list(...))) {
       corrected <- list(...)$corrected
     }
   }
 
-  if(methodUse == "percentage") {
+  if(MethodUse == "percentage") {
     beta <- 0.2
     if("beta" %in% names(list(...))) {
       beta <- list(...)$beta
@@ -298,7 +298,7 @@ cor_test <- function(x, y,
 
   if(bayesian) {
     bayesian_prior <- "medium"
-    bayesian_ci_method <- "hdi"
+    bayesian_ci_Method <- "hdi"
     bayesian_test <- c("pd", "rope", "bf")
 
     if("bayesian_prior" %in% names(list(...))) {
@@ -306,8 +306,8 @@ cor_test <- function(x, y,
                                   c("medium", "medium.narrow", "wide", "ultra-wide"))
     }
 
-    if ("bayesian_ci_method" %in% names(list(...))) {
-      bayesian_ci_method <- list(...)$bayesian_ci_method
+    if ("bayesian_ci_Method" %in% names(list(...))) {
+      bayesian_ci_Method <- list(...)$bayesian_ci_Method
     }
 
     if ("bayesian_test" %in% names(list(...))) {
@@ -316,22 +316,22 @@ cor_test <- function(x, y,
   }
 
   # +=======================+
-  #  calculate by the method
+  #  calculate by the Method
   # +=======================+
 
   # when bayesian
   if(bayesian) {
-    if (methodUse %in% c("kendall", "biserial", "point-biserial", "rank-biserial", "biweight", "distance", "percentage", "gamma", "somers", "polychoric", "tetrachoric"))
-      insight::format_error(paste0("The bayesian form of ", toupper(methodUse[1]), methodUse[-1], " correlation method is not supported yet. Get in touch if you want to contribute."))
-    if (methodUse %in% c("blomqvist", "hoeffding"))
-      insight::format_error(paste0("Bayesian ", toupper(methodUse[1]), methodUse[-1], ifelse(methodUse == "hoeffding", "'s", ""), "correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor)."))
-    out <- .cor_test_bayes(var_x, var_y, ci, method, ...)
+    if (MethodUse %in% c("kendall", "biserial", "point-biserial", "rank-biserial", "biweight", "distance", "percentage", "gamma", "somers", "polychoric", "tetrachoric"))
+      insight::format_error(paste0("The bayesian form of ", toupper(MethodUse[1]), MethodUse[-1], " correlation Method is not supported yet. Get in touch if you want to contribute."))
+    if (MethodUse %in% c("blomqvist", "hoeffding"))
+      insight::format_error(paste0("Bayesian ", toupper(MethodUse[1]), MethodUse[-1], ifelse(MethodUse == "hoeffding", "'s", ""), "correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor)."))
+    out <- .cor_test_bayes(var_x, var_y, ci, Method, ...)
     out$Parameter1 <- x_name
     out$Parameter2 <- y_name
   }
   else {
-    out <- switch(methodUse,
-                  "frequantive" = .cor_test_freq(var_x, var_y, ci, alternative, method, ...),
+    out <- switch(MethodUse,
+                  "frequantive" = .cor_test_freq(var_x, var_y, ci, alternative, Method, ...),
                   "kendall" = .cor_test_kendall(var_x, var_y, ci, alternative, tau_type, direction, ...),
                   "biserial" = .cor_test_biserial(var_x, var_y, ci, alternative, xType = "base", ...),
                   "point-biserial" = .cor_test_biserial(var_x, var_y, ci, alternative, xType = "point", ...),
@@ -351,16 +351,16 @@ cor_test <- function(x, y,
     out$Parameter2 <- y_name
   }
 
-  if (!"method" %in% names(out)) {
-    out$method <- methodUse
+  if (!"Method" %in% names(out)) {
+    out$Method <- MethodUse
   }
-  out$method <- paste0(out$method, ifelse(bayesian, " (Bayesian)", ""))
+  out$Method <- paste0(out$Method, ifelse(bayesian, " (Bayesian)", ""))
 
   # Reorder columns
-  order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high", "method")
+  order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high", "Method")
   out <- out[c(order[order %in% names(out)], setdiff(names(out), order[order %in% names(out)]))]
 
-  attr(out, "method") <- out$method
+  attr(out, "Method") <- out$Method
   attr(out, "coefficient_name") <- c("r", "rho", "tau", "Dxy")[c("r", "rho", "tau", "Dxy") %in% names(out)][1]
   attr(out, "ci") <- ci
   if ("data" %in% list(...)) attr(out, "data") <- data
@@ -369,17 +369,17 @@ cor_test <- function(x, y,
 }
 
 
-#  Corr methods -------------------
+#  Corr Methods -------------------
 
 # pearson and spearman calc function
 #' @keywords internal
 .cor_test_freq <- function(var_x, var_y,
                            ci = 0.95,
                            alternative = "two.sided",
-                           method = "pearson",
+                           Method = "pearson",
                            ...) {
   # calculating the pearson or spearman correlation coefficient
-  r <- cor(var_x, var_y, method = method)
+  r <- cor(var_x, var_y, Method = Method)
   # calculating the degrees of freedom, t-value and p-value
   df <- length(var_x) - 2
   t_p <- .t_p_value(r, df, alternative)
@@ -388,7 +388,7 @@ cor_test <- function(x, y,
                     "df_error" = df,
                     "t" = t_p[1],
                     "p" = t_p[2],
-                    "method" = method)
+                    "Method" = Method)
   # calculating the confidence interval
   if (!is.null(ci)) {
     CI <- switch(alternative,
@@ -487,7 +487,7 @@ cor_test <- function(x, y,
 
   if (xType == "point") {
     out <- .cor_test_freq(var_x, var_y, ci, alternative)
-    out$method <- "Point Biserial"
+    out$Method <- "Point Biserial"
   }
 
   else {
@@ -511,7 +511,7 @@ cor_test <- function(x, y,
                       "df_error" = df,
                       "t" = t_p[1],
                       "p" = t_p[2],
-                      "method" = switch(xType,
+                      "Method" = switch(xType,
                                         "base" = "Biserial",
                                         "rank" = "Rank Biserial"))
 
@@ -653,7 +653,7 @@ cor_test <- function(x, y,
                       "CI" = ci,
                       "CI_low" = CI[1],
                       "CI_high" = CI[2],
-                      "method" = "Distance (Bias Corrected)")
+                      "Method" = "Distance (Bias Corrected)")
   }
 
   rez
@@ -769,7 +769,7 @@ cor_test <- function(x, y,
   d <- .robust_bootstrap_mahalanobis(cbind(var_x, var_y))
   outliers <- d >= 6
   out <- .cor_test_freq(var_x[!outliers], var_y[!outliers], ci, alternative, "spearman")
-  out$method <- "Shepherd's Pi"
+  out$Method <- "Shepherd's Pi"
 
   # returning output
   out
@@ -812,7 +812,7 @@ cor_test <- function(x, y,
              "CI" = ci,
              "CI_low" = CI[1],
              "CI_high" = CI[2],
-             "method" = "Somers' D")
+             "Method" = "Somers' D")
 }
 
 # polychoric correlation calc function (same as original, with little bit of tweaks)
@@ -833,14 +833,14 @@ cor_test <- function(x, y,
       x = if (is.factor(var_x)) as.numeric(var_y) else as.numeric(var_x),
       y = if (is.factor(var_x)) as.numeric(var_x) else as.numeric(var_y)
     )
-    method <- "Polyserial"
+    Method <- "Polyserial"
   } else {
     # Reconstruct dataframe
     dat <- data.frame(as.numeric(var_x), as.numeric(var_y))
     junk <- utils::capture.output({
       r <- suppressWarnings(psych::polychoric(dat)$rho[2, 1])
     })
-    method <- "Polychoric"
+    Method <- "Polychoric"
   }
 
   # calculating the degrees of freedom, t-value and p-value
@@ -851,7 +851,7 @@ cor_test <- function(x, y,
                     "df" = df,
                     "t" = t_p[1],
                     "p" = t_p[2],
-                    "method" = method)
+                    "Method" = Method)
   # calculating the confidence interval
   if (!is.null(ci)) {
     CI <- switch(alternative,
@@ -907,33 +907,33 @@ cor_test <- function(x, y,
 # bayesian frequentist calc function (same as original, with little bit of tweaks)
 .cor_test_bayes <- function(var_x, var_y,
                             ci = 0.95,
-                            method = "pearson",
+                            Method = "pearson",
                             bayesian_prior = "medium",
-                            bayesian_ci_method = "hdi",
+                            bayesian_ci_Method = "hdi",
                             bayesian_test = c("pd", "rope", "bf"),
                             ...) {
   insight::check_if_installed("BayesFactor")
 
   if (all(var_x == var_y)) insight::format_error("The two variables must be different.")
 
-  method_label <- "Bayesian Pearson"
-  method <- tolower(method)
-  if (method %in% c("spearman", "spear", "s")) {
-    var_x <- datawizard::ranktransform(var_x, method = "average")
-    var_y <- datawizard::ranktransform(var_y, method = "average")
+  Method_label <- "Bayesian Pearson"
+  Method <- tolower(Method)
+  if (Method %in% c("spearman", "spear", "s")) {
+    var_x <- datawizard::ranktransform(var_x, Method = "average")
+    var_y <- datawizard::ranktransform(var_y, Method = "average")
     metho_label <- "Bayesian Spearman"
-  } else if (method == "gaussian") {
+  } else if (Method == "gaussian") {
     var_x <- stats::qnorm(rank(var_x) / (length(var_x) + 1))
     var_y <- stats::qnorm(rank(var_y) / (length(var_y) + 1))
-    method_label <- "Bayesian Gaussian"
-  } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+    Method_label <- "Bayesian Gaussian"
+  } else if (Method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
     d <- .robust_bootstrap_mahalanobis(cbind(var_x, var_y))
     outliers <- d >= 6
 
-    var_x <- datawizard::ranktransform(var_x[!outliers], method = "average")
-    var_y <- datawizard::ranktransform(var_y[!outliers], method = "average")
+    var_x <- datawizard::ranktransform(var_x[!outliers], Method = "average")
+    var_y <- datawizard::ranktransform(var_y[!outliers], Method = "average")
 
-    method_label <- "Bayesian Shepherd's Pi"
+    Method_label <- "Bayesian Shepherd's Pi"
   }
 
   out <- .cor_test_bayes_base(
@@ -941,13 +941,13 @@ cor_test <- function(x, y,
     var_y,
     ci = ci,
     bayesian_prior = bayesian_prior,
-    bayesian_ci_method = bayesian_ci_method,
+    bayesian_ci_Method = bayesian_ci_Method,
     bayesian_test = bayesian_test,
     ...
   )
 
-  # Add method
-  out$method <- method_label
+  # Add Method
+  out$Method <- Method_label
   out
 }
 
@@ -1068,7 +1068,7 @@ cor_test <- function(x, y,
                                  var_y,
                                  ci = 0.95,
                                  bayesian_prior = "medium",
-                                 bayesian_ci_method = "hdi",
+                                 bayesian_ci_Method = "hdi",
                                  bayesian_test = c("pd", "rope", "bf"),
                                  ...) {
   insight::check_if_installed("BayesFactor")
@@ -1077,7 +1077,7 @@ cor_test <- function(x, y,
   params <- parameters::model_parameters(
     rez,
     dispersion = FALSE,
-    ci_method = bayesian_ci_method,
+    ci_Method = bayesian_ci_Method,
     test = bayesian_test,
     rope_range = c(-0.1, 0.1),
     rope_ci = 1,
