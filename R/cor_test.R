@@ -633,9 +633,18 @@ cor_test <- function(x, y,
     YY <- (sum(B * B) - (n / (n - 2)) * sum(diag(B * B))) / n^2
 
     r <- XY / sqrt(XX * YY)
-    M <- n * (n - 3) / 2
 
-    df <- M - 1
+    # due to the fact that the calculation of distance correlation is based on
+    # every pair of samples, the degrees freedom increases combinatorially, and
+    # it is calculated as:
+    #
+    # df <- n * (n - 3) / 2 - 1
+    #
+    # but, for the simplicity of the function and its results across all types
+    # of correlations, we will keep the degrees of freedom as it is usually
+    # calculated.
+
+    df <- n - 2
     t_p <- .t_p_value(r, df, alternative)
 
     # calculating the confidence interval
