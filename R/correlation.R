@@ -155,27 +155,36 @@
 #'
 #' @export
 correlation <- function(data,
-                        data2 = NULL,
                         select = NULL,
                         select2 = NULL,
-                        rename = NULL,
+
                         method = "pearson",
-                        p_adjust = "holm",
+
                         ci = 0.95,
-                        bayesian = FALSE,
-                        bayesian_prior = "medium",
-                        bayesian_ci_method = "hdi",
-                        bayesian_test = c("pd", "rope", "bf"),
-                        redundant = FALSE,
+                        p_adjust = "holm",
+
+                        use = "pairwise.complete.obs",
                         include_factors = FALSE,
-                        partial = FALSE,
-                        partial_bayesian = FALSE,
-                        multilevel = FALSE,
-                        ranktransform = FALSE,
-                        winsorize = FALSE,
+                        redundant = FALSE,
+
                         verbose = TRUE,
                         standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
+  # TODO: support grouped_df
+
+  # validate select/select
+  select <- datawizard::find_columns(data, select = select)
+  select2 <- datawizard::find_columns(data, select = select2)
+
+  # if include_factors is TRUE
+  # convert factors to dummy vars
+
+  # use == "pairwise.complete.obs"
+  # use == "complete.obs" -> na.omit(data)
+
+  # ignore redundant if select2 is given
+
+
   # valid matrix checks
   if (!partial && multilevel) {
     partial <- TRUE
