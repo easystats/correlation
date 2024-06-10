@@ -162,9 +162,7 @@
 
 # actual function ----
 
-correlation <- function(data,
-                        select = NULL,
-                        select2 = NULL,
+correlation <- function(data, select = NULL, select2 = NULL,
                         method = "pearson",
                         ci = 0.95,
                         p_adjust = "holm",
@@ -175,12 +173,79 @@ correlation <- function(data,
                         verbose = TRUE,
                         standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
+  # algorithm ----
+
+  # step 1: validate input
+  # step 2: if needed handle grouped_df type
+  # step 3: clean data in accordance to use value:
+  #   use == "pairwise.complete.obs" -> perform na.omit on each combination separately
+  #   use == "complete.obs" -> perform na.omit on all of the data that are mentioned in the context of select and select2 if there are select and/or select2
+  # step 4: splitted to 3 kinds, no select or select2 (a), select only (b) and select and select2 (c)
+  #   no select or select2 (a)
+  #     step 4.a.1: find all valid combinations of the columns in the data
+  #   select only (b)
+  #     step 4.b.1: find all valid combinations of the columns in the data that are mentioned in select
+  #   select and select2 (c)
+  #     step 4.c.1: find all valid combinations of the columns in the data that are mentioned in select and select2
+  #   step 4.2: perform correlations on combinations only
+
+  # validate method
+  method <- match.arg(tolower(method), c("pearson", "spearman", "spear", "s"))
+                                         # "kendall", "biserial", "pointbiserial",
+                                         # "point-biserial", "rankbiserial",
+                                         # "rank-biserial", "biweight", "distance",
+                                         # "percentage", "percentage_bend",
+                                         # "percentagebend", "pb", "blomqvist",
+                                         # "median", "medial", "hoeffding", "gamma",
+                                         # "gaussian", "shepherd", "sheperd",
+                                         # "shepherdspi", "pi",  "somers", "poly",
+                                         # "polychoric", "tetra", "tetrachoric"))
+
+  # adjusting variables if bayesian is TRUE
+  if(bayesian) {
+    p_adjust <- "none"
+  }
+
+  # validate p_adjust
+  p_adjust <- match.arg(p_adjust, c("holm", "hochberg", "hommel", "bonferroni",
+                                    "BH", "BY", "fdr", "somers", "none"))
+
+  # appliance for include_factors or not
+  if (include_factors) data <- datawizard::to_numeric(data) else data <- data[sapply(data, is.numeric)]
+
+  # validate ci
+  if (ci == "default") {
+    ci <- 0.95
+  } else if (ci < 0 || ci > 1) {
+    insight::format_error("CI should be between 0 and 1.")
+  }
+
+  # checking validity of select and select2
+  if (is.null(select)) {
+    if (!is.null(select2)) {
+        insight::format_warning("select2 is provided but select is not, using select2 as select")
+        select <- select2
+        select2 <- NULL
+    }
+    else {
+      select <- colnames(data)
+    }
+  }
+  if (!is.null(select2)) all_selected <- c(select, select2) else all_selected <- select
+
+  not_in_data <- !all_selected %in% colnames(data)
+
+  if (any(not_in_data)) {
+    insight::format_error(paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", "))
+  }
+
   # TODO: support grouped_df
 
-  # validate select/select
+  # validate select/select2
   select <- datawizard::find_columns(data, select = select)
   select2 <- datawizard::find_columns(data, select = select2)
 
+  # take from it the grouped_df part when i get to it
   if (!is.null(select)) {
     # check for valid names
     all_selected <- c(select, select2)
@@ -207,6 +272,8 @@ correlation <- function(data,
   # if include_factors is TRUE
   # convert factors to dummy vars
 
+
+
   # done further in the correlation function
 
   # use == "pairwise.complete.obs"
@@ -214,15 +281,9 @@ correlation <- function(data,
 
   # ignore redundant if select2 is given
 
-  # adjusting variables if bayesian is TRUE
-  if(bayesian) {
-    p_adjust <- "none"
-  }
 
-  # CI
-  if (ci == "default") {
-    ci <- 0.95
-  }
+
+
 
 
 

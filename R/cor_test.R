@@ -247,7 +247,7 @@ cor_test <- function(x, y,
 
   # check validity of the amount of observations
   if (length(var_x) < 3L) {
-    insight::format_alert(paste(x, "and", y, "have less than 3 complete observations."))
+    insight::format_alert(paste(x_name, "and", y_name, "have less than 3 complete observations."))
   }
 
   # Make sure x,y are not factor(s)
