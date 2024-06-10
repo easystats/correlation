@@ -297,22 +297,21 @@ cor_test <- function(x, y,
   }
 
   if(bayesian) {
-    bayesian_prior <- "medium"
-    bayesian_ci_method <- "hdi"
-    bayesian_test <- c("pd", "rope", "bf")
-
     if("bayesian_prior" %in% names(list(...))) {
       bayesian_prior <- match.arg(tolower(list(...)$bayesian_prior),
                                   c("medium", "medium.narrow", "wide", "ultra-wide"))
     }
+    else bayesian_prior <- "medium"
 
     if ("bayesian_ci_method" %in% names(list(...))) {
       bayesian_ci_method <- list(...)$bayesian_ci_method
     }
+    else bayesian_ci_method <- "hdi"
 
     if ("bayesian_test" %in% names(list(...))) {
       bayesian_test <- list(...)$bayesian_test
     }
+    else bayesian_test <- c("pd", "rope", "bf")
   }
 
   # +=======================+

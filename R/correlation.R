@@ -154,19 +154,24 @@
 #'   ordinal variables. American Sociological Review. 27 (6).
 #'
 #' @export
+
+## Notes =========
+
+# files utils_clean_data.R and utils_get_combinations.R are now redundant
+# in LOOP can be converted to double loop one runs on the x values and the other on the y values (each time cleaned from the done x values if there is no select2)
+
+# actual function ----
+
 correlation <- function(data,
                         select = NULL,
                         select2 = NULL,
-
                         method = "pearson",
-
                         ci = 0.95,
                         p_adjust = "holm",
-
                         use = "pairwise.complete.obs",
+                        bayesian = FALSE,
                         include_factors = FALSE,
                         redundant = FALSE,
-
                         verbose = TRUE,
                         standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
@@ -176,42 +181,11 @@ correlation <- function(data,
   select <- datawizard::find_columns(data, select = select)
   select2 <- datawizard::find_columns(data, select = select2)
 
-  # if include_factors is TRUE
-  # convert factors to dummy vars
-
-  # use == "pairwise.complete.obs"
-  # use == "complete.obs" -> na.omit(data)
-
-  # ignore redundant if select2 is given
-
-
-  # valid matrix checks
-  if (!partial && multilevel) {
-    partial <- TRUE
-    convert_back_to_r <- TRUE
-  } else {
-    convert_back_to_r <- FALSE
-  }
-
-  # p-adjustment
-  if (bayesian) {
-    p_adjust <- "none"
-  }
-
-  # CI
-  if (ci == "default") {
-    ci <- 0.95
-  }
-
-  if (is.null(data2) && !is.null(select)) {
+  if (!is.null(select)) {
     # check for valid names
     all_selected <- c(select, select2)
     not_in_data <- !all_selected %in% colnames(data)
-    if (any(not_in_data)) {
-      insight::format_error(
-        paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", ")
-      )
-    }
+    if (any(not_in_data)) insight::format_error(paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", "))
 
     # for grouped df, add group variables to both data frames
     if (inherits(data, "grouped_df")) {
@@ -223,13 +197,34 @@ correlation <- function(data,
       grp_df <- NULL
     }
 
-
     data2 <- if (!is.null(select2)) data[select2]
     data <- data[select]
 
     attr(data, "groups") <- grp_df
     attr(data2, "groups") <- if (!is.null(select2)) grp_df
   }
+
+  # if include_factors is TRUE
+  # convert factors to dummy vars
+
+  # done further in the correlation function
+
+  # use == "pairwise.complete.obs"
+  # use == "complete.obs" -> na.omit(data)
+
+  # ignore redundant if select2 is given
+
+  # adjusting variables if bayesian is TRUE
+  if(bayesian) {
+    p_adjust <- "none"
+  }
+
+  # CI
+  if (ci == "default") {
+    ci <- 0.95
+  }
+
+
 
   # renaming the columns if so desired
   if (!is.null(rename)) {
@@ -266,12 +261,10 @@ correlation <- function(data,
       data,
       data2 = data2,
       method = method,
-      p_adjust = p_adjust,
       ci = ci,
+      p_adjust = p_adjust,
+      use = use,
       bayesian = bayesian,
-      bayesian_prior = bayesian_prior,
-      bayesian_ci_method = bayesian_ci_method,
-      bayesian_test = bayesian_test,
       redundant = redundant,
       include_factors = include_factors,
       partial = partial,
@@ -323,22 +316,16 @@ correlation <- function(data,
 
 #' @keywords internal
 .correlation_grouped_df <- function(data,
-                                    data2 = NULL,
+                                    data2 = NULL, # do i need it tho?, maybe except selects instead?
                                     method = "pearson",
+                                    ci = 0.95,
                                     p_adjust = "holm",
-                                    ci = "default",
+                                    use = "pairwise.complete.obs",
                                     bayesian = FALSE,
-                                    bayesian_prior = "medium",
-                                    bayesian_ci_method = "hdi",
-                                    bayesian_test = c("pd", "rope", "bf"),
+                                    include_factors = FALSE,
                                     redundant = FALSE,
-                                    include_factors = TRUE,
-                                    partial = FALSE,
-                                    partial_bayesian = FALSE,
-                                    multilevel = FALSE,
-                                    ranktransform = FALSE,
-                                    winsorize = FALSE,
                                     verbose = TRUE,
+                                    standardize_names = getOption("easystats.standardize_names", FALSE),
                                     ...) {
   groups <- setdiff(colnames(attributes(data)$groups), ".rows")
   ungrouped_x <- as.data.frame(data)
@@ -423,32 +410,42 @@ correlation <- function(data,
 
 #' @keywords internal
 .correlation <- function(data,
-                         data2 = NULL,
+                         data2 = NULL, # do i need it tho?, maybe except selects instead?
                          method = "pearson",
+                         ci = 0.95,
                          p_adjust = "holm",
-                         ci = "default",
+                         use = "pairwise.complete.obs",
                          bayesian = FALSE,
-                         bayesian_prior = "medium",
-                         bayesian_ci_method = "hdi",
-                         bayesian_test = c("pd", "rope", "bf"),
-                         redundant = FALSE,
                          include_factors = FALSE,
-                         partial = FALSE,
-                         partial_bayesian = FALSE,
-                         multilevel = FALSE,
-                         ranktransform = FALSE,
-                         winsorize = FALSE,
+                         redundant = FALSE,
                          verbose = TRUE,
+                         standardize_names = getOption("easystats.standardize_names", FALSE),
                          ...) {
-  if (!is.null(data2)) {
+  if (!is.null(data2)) { # do not need data2 then
     data <- cbind(data, data2)
   }
 
   if (ncol(data) <= 2L && any(sapply(data, is.factor)) && !include_factors) {
     if (isTRUE(verbose)) {
-      insight::format_warning("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you.")
+      insight::format_error("It seems like there is not enough continuous variables in your data. \nAdding `include_factors = TRUE` to the function should help!")
     }
     include_factors <- TRUE
+  }
+
+  # adjusting variables if bayesian is TRUE
+  if(bayesian) {
+    if("bayesian_prior" %in% names(list(...))) {
+      bayesian_prior <- match.arg(tolower(list(...)$bayesian_prior),
+                                  c("medium", "medium.narrow", "wide", "ultra-wide"))
+    }
+
+    if ("bayesian_ci_method" %in% names(list(...))) {
+      bayesian_ci_method <- list(...)$bayesian_ci_method
+    }
+
+    if ("bayesian_test" %in% names(list(...))) {
+      bayesian_test <- list(...)$bayesian_test
+    }
   }
 
   # valid matrix checks ----------------
@@ -472,8 +469,8 @@ correlation <- function(data,
   )
   data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
 
-  # LOOP ----------------
-
+  # LOOP ----
+  # running cor test for each pair
   for (i in seq_len(nrow(combinations))) {
     x <- as.character(combinations[i, "Parameter1"])
     y <- as.character(combinations[i, "Parameter2"])
@@ -483,27 +480,29 @@ correlation <- function(data,
       verbose <- FALSE
     }
 
-    result <- cor_test(
-      data,
-      x = x,
-      y = y,
-      ci = ci,
-      method = method,
-      bayesian = bayesian,
-      bayesian_prior = bayesian_prior,
-      bayesian_ci_method = bayesian_ci_method,
-      bayesian_test = bayesian_test,
-      partial = partial,
-      multilevel = multilevel,
-      ranktransform = ranktransform,
-      winsorize = winsorize,
-      verbose = verbose,
-      ...
-    )
+    result <- cor_test(x, y,
+                       data = data,
+                       ci = ci,
+                       method = method,
+                       bayesian = bayesian,
+                       bayesian_prior = bayesian_prior,
+                       bayesian_ci_method = bayesian_ci_method,
+                       bayesian_test = bayesian_test,
+                       partial = partial,
+                       multilevel = multilevel,
+                       ranktransform = ranktransform,
+                       winsorize = winsorize,
+                       verbose = verbose,
+                       ...
+                       )
+
+    # reseting for some reason the "rho" and "tau" names to be "r", might not work anymore due to changes in cor_test, option "Dxy" ignored, not really relevant tho
+
+    # will be redundent because cor_test always returns "r" as the name
 
     # Merge
     if (i == 1) {
-      params <- result
+      params <- result # first iteration keeps the result of the first pair
     } else {
       if (!all(names(result) %in% names(params))) {
         if ("r" %in% names(params) && !"r" %in% names(result)) {
@@ -525,12 +524,9 @@ correlation <- function(data,
   # Make method column more informative
   if ("Method" %in% names(params)) {
     params$Method <- paste0(params$Method, " correlation")
-
-    # Did Winsorization happen? If yes, Method column should reflect that
-    if (!isFALSE(winsorize) && !is.null(winsorize)) {
-      params$Method <- paste0("Winsorized ", params$Method)
-    }
   }
+
+  # instead of removing the redundant rows, should not compute them at all
 
   # Remove superfluous correlations when two variable sets provided
   if (!is.null(data2)) {
@@ -538,10 +534,14 @@ correlation <- function(data,
     params <- params[params$Parameter2 %in% names(data2), ]
   }
 
+  # there is always p, then should always do that without the id check
+
   # P-values adjustments
   if ("p" %in% names(params)) {
     params$p <- stats::p.adjust(params$p, method = p_adjust)
   }
+
+  # again instead of removing the redundant rows, should not compute them at all
 
   # Redundant
   if (redundant) {
@@ -551,9 +551,62 @@ correlation <- function(data,
   list(params = params, data = data)
 }
 
+# internal helping functions ----
+
+# without a change
+#' @keywords internal
+.clean_data <- function(data, include_factors = TRUE, multilevel = FALSE) {
+  if (!multilevel) {
+    if (include_factors) {
+      data <- datawizard::to_numeric(data)
+    } else {
+      data <- data[sapply(data, is.numeric)]
+    }
+  }
+  data
+}
+
+# to be changed
+#' @keywords internal
+.get_combinations <- function(data,
+                              data2 = NULL,
+                              redundant = TRUE,
+                              include_factors = TRUE,
+                              multilevel = FALSE,
+                              method = "pearson") {
+  data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
+
+  if (method == "polychoric") {
+    vars <- names(data)
+  } else if (multilevel) {
+    vars <- names(data[sapply(data, is.numeric)])
+  } else {
+    vars <- names(data)
+  }
 
 
 
+  # Find pairs
+  if (is.null(data2)) {
+    vars2 <- vars
+  } else {
+    data2 <- .clean_data(data2, include_factors = include_factors, multilevel = multilevel)
+    data2_nums <- data2[sapply(data2, is.numeric)]
+    vars2 <- names(data2_nums)
+  }
+
+  combinations <- expand.grid(vars, vars2, stringsAsFactors = FALSE)
+  combinations <- combinations[order(match(combinations$Var1, vars), match(combinations$Var2, vars2)), ]
+
+  row.names(combinations) <- NULL
+  names(combinations) <- c("Parameter1", "Parameter2")
+
+  if (!redundant) {
+    combinations <- .remove_redundant(combinations)
+  }
+
+  combinations
+}
 
 
 
@@ -565,3 +618,6 @@ plot.easycorrelation <- function(x, ...) {
 
   NextMethod()
 }
+
+
+
