@@ -17,12 +17,19 @@ a predictor X1 and a response variable Y can be interpreted as the proportion
 of (unique) variance accounted for by X1 relative to the residual or
 unexplained variance of Y that cannot be accounted by the other variables.'><meta property="og:image" content="https://easystats.github.io/correlation/reference/figures/card.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:creator" content="@easystats4u"><meta name="twitter:site" content="@easystats4u"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+
+
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4.4</small>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html" aria-label="Reference"><span class="fa fa-file-code"></span> Reference</a></li>
 <li class="nav-item dropdown">
@@ -56,6 +63,8 @@ unexplained variance of Y that cannot be accounted by the other variables.'><met
     <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
   </ul></li>
       </ul></div>
+
+
   </div>
 </nav><div class="container template-reference-topic">
 <div class="row">
@@ -64,6 +73,7 @@ unexplained variance of Y that cannot be accounted by the other variables.'><met
       <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/main/R/cor_to_pcor.R" class="external-link"><code>R/cor_to_pcor.R</code></a>, <a href="https://github.com/easystats/correlation/blob/main/R/cor_to_spcor.R" class="external-link"><code>R/cor_to_spcor.R</code></a></small>
       <div class="d-none name"><code>cor_to_pcor.Rd</code></div>
     </div>
+
     <div class="ref-description section level2">
     <p>Convert a correlation matrix to a (semi)partial correlation matrix. Partial
 correlations are a measure of the correlation between two variables that
@@ -75,6 +85,7 @@ a predictor X1 and a response variable Y can be interpreted as the proportion
 of (unique) variance accounted for by X1 relative to the residual or
 unexplained variance of Y that cannot be accounted by the other variables.</p>
     </div>
+
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cor_to_pcor</span><span class="op">(</span><span class="va">cor</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
@@ -83,19 +94,29 @@ unexplained variance of Y that cannot be accounted by the other variables.</p>
 <span></span>
 <span><span class="fu">cor_to_spcor</span><span class="op">(</span>cor <span class="op">=</span> <span class="cn">NULL</span>, cov <span class="op">=</span> <span class="cn">NULL</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
+
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
 <dl><dt id="arg-cor">cor<a class="anchor" aria-label="anchor" href="#arg-cor"></a></dt>
 <dd><p>A correlation matrix, or a partial or a semipartial
 correlation matrix.</p></dd>
+
+
 <dt id="arg-tol">tol<a class="anchor" aria-label="anchor" href="#arg-tol"></a></dt>
 <dd><p>Relative tolerance to detect zero singular values.</p></dd>
+
+
 <dt id="arg-pcor">pcor<a class="anchor" aria-label="anchor" href="#arg-pcor"></a></dt>
 <dd><p>A correlation matrix, or a partial or a semipartial
 correlation matrix.</p></dd>
+
+
 <dt id="arg-cov">cov<a class="anchor" aria-label="anchor" href="#arg-cov"></a></dt>
 <dd><p>A covariance matrix (or a vector of the SD of the variables).
 Required for semi-partial correlations.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -110,6 +131,7 @@ it might be seen as a better indicator of the "practical relevance" of a
 predictor, because it is scaled to (i.e., relative to) the total variability
 in the response variable.</p>
     </div>
+
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></span>
@@ -139,12 +161,21 @@ in the response variable.</p>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
+
+
     <footer><div class="pkgdown-footer-left">
   <p>Developed by <a href="https://dominiquemakowski.github.io/" class="external-link">Dominique Makowski</a>, <a href="https://wiernik.org/" class="external-link">Brenton M. Wiernik</a>, <a href="https://sites.google.com/site/indrajeetspatilmorality/" class="external-link">Indrajeet Patil</a>, <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>, <a href="https://home.msbstats.info/" class="external-link">Mattan S. Ben-Shachar</a>, <a href="https://remi-theriault.com/" class="external-link">Rémi Thériault</a>.</p>
 </div>
+
 <div class="pkgdown-footer-right">
   <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
+
     </footer></div>
+
+
+
+
+
   </body></html>
 

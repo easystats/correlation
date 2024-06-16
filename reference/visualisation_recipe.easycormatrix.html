@@ -9,12 +9,19 @@ method to produce a basic ggplot. You can customize this plot ad-hoc or via
 the arguments described below.
 See examples here."><meta property="og:image" content="https://easystats.github.io/correlation/reference/figures/card.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:creator" content="@easystats4u"><meta name="twitter:site" content="@easystats4u"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+
+
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4.4</small>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html" aria-label="Reference"><span class="fa fa-file-code"></span> Reference</a></li>
 <li class="nav-item dropdown">
@@ -48,6 +55,8 @@ See examples here."><meta property="og:image" content="https://easystats.github.
     <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
   </ul></li>
       </ul></div>
+
+
   </div>
 </nav><div class="container template-reference-topic">
 <div class="row">
@@ -56,6 +65,7 @@ See examples here."><meta property="og:image" content="https://easystats.github.
       <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/main/R/visualisation_recipe.cor_test.R" class="external-link"><code>R/visualisation_recipe.cor_test.R</code></a>, <a href="https://github.com/easystats/correlation/blob/main/R/visualisation_recipe.easycormatrix.R" class="external-link"><code>R/visualisation_recipe.easycormatrix.R</code></a>, <a href="https://github.com/easystats/correlation/blob/main/R/visualisation_recipe.easycorrelation.R" class="external-link"><code>R/visualisation_recipe.easycorrelation.R</code></a></small>
       <div class="d-none name"><code>visualisation_recipe.easycormatrix.Rd</code></div>
     </div>
+
     <div class="ref-description section level2">
     <p>Objects from the <code>correlation</code> package can be easily visualized. You can
 simply run <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on them, which will internally call the <code><a href="https://easystats.github.io/datawizard/reference/visualisation_recipe.html" class="external-link">visualisation_recipe()</a></code>
@@ -63,6 +73,7 @@ method to produce a basic <code>ggplot</code>. You can customize this plot ad-ho
 the arguments described below.
 See examples <a href="https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples"><strong>here</strong></a>.</p>
     </div>
+
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'easycor_test'</span></span>
@@ -96,25 +107,42 @@ See examples <a href="https://easystats.github.io/correlation/reference/visualis
 <span><span class="co"># S3 method for class 'easycorrelation'</span></span>
 <span><span class="fu"><a href="https://easystats.github.io/datawizard/reference/visualisation_recipe.html" class="external-link">visualisation_recipe</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
+
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A correlation object.</p></dd>
+
+
 <dt id="arg-show-data">show_data<a class="anchor" aria-label="anchor" href="#arg-show-data"></a></dt>
 <dd><p>Show data. For correlation matrices, can be <code>"tile"</code>
 (default) or <code>"point"</code>.</p></dd>
+
+
 <dt id="arg-show-text">show_text<a class="anchor" aria-label="anchor" href="#arg-show-text"></a></dt>
 <dd><p>Show labels with matrix values.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Other arguments passed to other functions.</p></dd>
+
+
 <dt id="arg-show-legend">show_legend<a class="anchor" aria-label="anchor" href="#arg-show-legend"></a></dt>
 <dd><p>Show legend. Can be set to <code>FALSE</code> to remove the legend.</p></dd>
+
+
 <dt id="arg-tile-point-text-scale-scale-fill-smooth-labs">tile, point, text, scale, scale_fill, smooth, labs<a class="anchor" aria-label="anchor" href="#arg-tile-point-text-scale-scale-fill-smooth-labs"></a></dt>
 <dd><p>Additional aesthetics and
 parameters for the geoms (see customization example).</p></dd>
+
+
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>Alias for <code>show_data</code>, for backwards compatibility.</p></dd>
+
 </dl></div>
+
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
@@ -282,12 +310,21 @@ parameters for the geoms (see customization example).</p></dd>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
+
+
     <footer><div class="pkgdown-footer-left">
   <p>Developed by <a href="https://dominiquemakowski.github.io/" class="external-link">Dominique Makowski</a>, <a href="https://wiernik.org/" class="external-link">Brenton M. Wiernik</a>, <a href="https://sites.google.com/site/indrajeetspatilmorality/" class="external-link">Indrajeet Patil</a>, <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>, <a href="https://home.msbstats.info/" class="external-link">Mattan S. Ben-Shachar</a>, <a href="https://remi-theriault.com/" class="external-link">Rémi Thériault</a>.</p>
 </div>
+
 <div class="pkgdown-footer-right">
   <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
+
     </footer></div>
+
+
+
+
+
   </body></html>
 

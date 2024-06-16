@@ -3,12 +3,19 @@
 You can easily visualize the result using plot() (see examples here)."><meta property="og:description" content="This function performs a correlation test between two variables.
 You can easily visualize the result using plot() (see examples here)."><meta property="og:image" content="https://easystats.github.io/correlation/reference/figures/card.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:creator" content="@easystats4u"><meta name="twitter:site" content="@easystats4u"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+
+
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4.4</small>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html" aria-label="Reference"><span class="fa fa-file-code"></span> Reference</a></li>
 <li class="nav-item dropdown">
@@ -42,6 +49,8 @@ You can easily visualize the result using plot() (see examples here)."><meta pro
     <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
   </ul></li>
       </ul></div>
+
+
   </div>
 </nav><div class="container template-reference-topic">
 <div class="row">
@@ -50,10 +59,12 @@ You can easily visualize the result using plot() (see examples here)."><meta pro
       <small class="dont-index">Source: <a href="https://github.com/easystats/correlation/blob/main/R/cor_test.R" class="external-link"><code>R/cor_test.R</code></a></small>
       <div class="d-none name"><code>cor_test.Rd</code></div>
     </div>
+
     <div class="ref-description section level2">
     <p>This function performs a correlation test between two variables.
 You can easily visualize the result using <code><a href="visualisation_recipe.easycormatrix.html">plot()</a></code> (see examples <a href="https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples"><strong>here</strong></a>).</p>
     </div>
+
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cor_test</span><span class="op">(</span></span>
@@ -76,12 +87,19 @@ You can easily visualize the result using <code><a href="visualisation_recipe.ea
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
+
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>A data frame.</p></dd>
+
+
 <dt id="arg-x-y">x, y<a class="anchor" aria-label="anchor" href="#arg-x-y"></a></dt>
 <dd><p>Names of two variables present in the data.</p></dd>
+
+
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>A character string indicating which correlation coefficient is
 to be used for the test. One of <code>"pearson"</code> (default),
@@ -96,38 +114,56 @@ correlation) or <code>"shepherd"</code> (for Shepherd's Pi correlation). Setting
 factors involved, point-biserial if one dichotomous and one continuous and
 pearson otherwise). See below the <strong>details</strong> section for a description of
 these indices.</p></dd>
+
+
 <dt id="arg-ci">ci<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
 <dd><p>Confidence/Credible Interval level. If <code>"default"</code>, then it is
 set to <code>0.95</code> (<code>95%</code> CI).</p></dd>
+
+
 <dt id="arg-bayesian">bayesian<a class="anchor" aria-label="anchor" href="#arg-bayesian"></a></dt>
 <dd><p>If <code>TRUE</code>, will run the correlations under a Bayesian
 framework.</p></dd>
+
+
 <dt id="arg-bayesian-prior">bayesian_prior<a class="anchor" aria-label="anchor" href="#arg-bayesian-prior"></a></dt>
 <dd><p>For the prior argument, several named values are
 recognized: <code>"medium.narrow"</code>, <code>"medium"</code>, <code>"wide"</code>, and
 <code>"ultrawide"</code>. These correspond to scale values of <code>1/sqrt(27)</code>,
 <code>1/3</code>, <code>1/sqrt(3)</code> and <code>1</code>, respectively. See the
 <code><a href="https://rdrr.io/pkg/BayesFactor/man/correlationBF.html" class="external-link">BayesFactor::correlationBF</a></code> function.</p></dd>
+
+
 <dt id="arg-bayesian-ci-method-bayesian-test">bayesian_ci_method, bayesian_test<a class="anchor" aria-label="anchor" href="#arg-bayesian-ci-method-bayesian-test"></a></dt>
 <dd><p>See arguments in
 <code>model_parameters()</code> for <code>BayesFactor</code> tests.</p></dd>
+
+
 <dt id="arg-include-factors">include_factors<a class="anchor" aria-label="anchor" href="#arg-include-factors"></a></dt>
 <dd><p>If <code>TRUE</code>, the factors are kept and eventually
 converted to numeric or used as random effects (depending of
 <code>multilevel</code>). If <code>FALSE</code>, factors are removed upfront.</p></dd>
+
+
 <dt id="arg-partial">partial<a class="anchor" aria-label="anchor" href="#arg-partial"></a></dt>
 <dd><p>Can be <code>TRUE</code> or <code>"semi"</code> for partial and
 semi-partial correlations, respectively.</p></dd>
+
+
 <dt id="arg-partial-bayesian">partial_bayesian<a class="anchor" aria-label="anchor" href="#arg-partial-bayesian"></a></dt>
 <dd><p>If partial correlations under a Bayesian framework
 are needed, you will also need to set <code>partial_bayesian</code> to <code>TRUE</code> to
 obtain "full" Bayesian partial correlations. Otherwise, you will obtain
 pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
 frequentist partialization).</p></dd>
+
+
 <dt id="arg-multilevel">multilevel<a class="anchor" aria-label="anchor" href="#arg-multilevel"></a></dt>
 <dd><p>If <code>TRUE</code>, the factors are included as random factors.
 Else, if <code>FALSE</code> (default), they are included as fixed effects in the
 simple regression model.</p></dd>
+
+
 <dt id="arg-ranktransform">ranktransform<a class="anchor" aria-label="anchor" href="#arg-ranktransform"></a></dt>
 <dd><p>If <code>TRUE</code>, will rank-transform the variables prior to
 estimating the correlation, which is one way of making the analysis more
@@ -137,21 +173,30 @@ correlation. Thus, using <code>robust=TRUE</code> and <code>method="spearman"</c
 redundant. Nonetheless, it is an easy option to increase the robustness of the
 correlation as well as flexible way to obtain Bayesian or multilevel
 Spearman-like rank correlations.</p></dd>
+
+
 <dt id="arg-winsorize">winsorize<a class="anchor" aria-label="anchor" href="#arg-winsorize"></a></dt>
 <dd><p>Another way of making the correlation more "robust" (i.e.,
 limiting the impact of extreme values). Can be either <code>FALSE</code> or a
 number between 0 and 1 (e.g., <code>0.2</code>) that corresponds to the desired
 threshold. See the <code>winsorize()</code> function for more details.</p></dd>
+
+
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>Toggle warnings.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments (e.g., <code>alternative</code>) to be passed to
 other methods. See <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">stats::cor.test</a></code> for further details.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+
 <div class="section">
 <h3 id="correlation-types">Correlation Types<a class="anchor" aria-label="anchor" href="#correlation-types"></a></h3>
+
 <ul><li><p><strong>Pearson's correlation</strong>: This is the most common correlation
 method. It corresponds to the covariance of the two variables normalized
 (i.e., divided) by the product of their standard deviations.</p></li>
@@ -226,6 +271,7 @@ variables.</p></li>
 <li><p><strong>Tetrachoric correlation</strong>: Special case of the polychoric
 correlation applicable when both observed variables are dichotomous.</p></li>
 </ul></div>
+
 <div class="section">
 <h3 id="partial-correlation">Partial Correlation<a class="anchor" aria-label="anchor" href="#partial-correlation"></a></h3>
 <p><strong>Partial correlations</strong> are estimated as the correlation between two
@@ -260,13 +306,16 @@ transformation will also recompute <em>p</em>-values based on the new <em>r</em>
 and will drop the Bayes factors (as they are not relevant anymore). To keep
 Bayesian scores, set <code>partial = TRUE</code>.</p>
 </div>
+
 <div class="section">
 <h3 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a></h3>
 <p>Kendall and Spearman correlations when <code>bayesian=TRUE</code>: These are technically
 Pearson Bayesian correlations of rank transformed data, rather than pure
 Bayesian rank correlations (which have different priors).</p>
 </div>
+
     </div>
+
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/correlation/">correlation</a></span><span class="op">)</span></span></span>
@@ -455,12 +504,21 @@ Bayesian rank correlations (which have different priors).</p>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
+
+
     <footer><div class="pkgdown-footer-left">
   <p>Developed by <a href="https://dominiquemakowski.github.io/" class="external-link">Dominique Makowski</a>, <a href="https://wiernik.org/" class="external-link">Brenton M. Wiernik</a>, <a href="https://sites.google.com/site/indrajeetspatilmorality/" class="external-link">Indrajeet Patil</a>, <a href="https://github.com/strengejacke" class="external-link">Daniel Lüdecke</a>, <a href="https://home.msbstats.info/" class="external-link">Mattan S. Ben-Shachar</a>, <a href="https://remi-theriault.com/" class="external-link">Rémi Thériault</a>.</p>
 </div>
+
 <div class="pkgdown-footer-right">
   <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
+
     </footer></div>
+
+
+
+
+
   </body></html>
 
