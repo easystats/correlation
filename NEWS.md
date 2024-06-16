@@ -1,4 +1,4 @@
-# correlation Development
+# correlation 0.8.5
 
 - New `cormatrix_to_excel()` function for exporting correlation matrices to Excel with color formatting.
 - This release changes the licensing model of `{correlation}` to an MIT license.
