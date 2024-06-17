@@ -165,11 +165,12 @@
 correlation <- function(data, select = NULL, select2 = NULL,
                         method = "pearson",
                         ci = 0.95,
+                        alternative = "two.sided",
                         p_adjust = "holm",
                         use = "pairwise.complete.obs",
                         bayesian = FALSE,
                         include_factors = FALSE,
-                        redundant = FALSE,
+                        redundant = TRUE,
                         verbose = TRUE,
                         standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
@@ -191,15 +192,18 @@ correlation <- function(data, select = NULL, select2 = NULL,
 
   # validate method
   method <- match.arg(tolower(method), c("pearson", "spearman", "spear", "s"))
-                                         # "kendall", "biserial", "pointbiserial",
-                                         # "point-biserial", "rankbiserial",
-                                         # "rank-biserial", "biweight", "distance",
-                                         # "percentage", "percentage_bend",
-                                         # "percentagebend", "pb", "blomqvist",
-                                         # "median", "medial", "hoeffding", "gamma",
-                                         # "gaussian", "shepherd", "sheperd",
-                                         # "shepherdspi", "pi",  "somers", "poly",
-                                         # "polychoric", "tetra", "tetrachoric"))
+  # "kendall", "biserial", "pointbiserial",
+  # "point-biserial", "rankbiserial",
+  # "rank-biserial", "biweight", "distance",
+  # "percentage", "percentage_bend",
+  # "percentagebend", "pb", "blomqvist",
+  # "median", "medial", "hoeffding", "gamma",
+  # "gaussian", "shepherd", "sheperd",
+  # "shepherdspi", "pi",  "somers", "poly",
+  # "polychoric", "tetra", "tetrachoric"))
+
+  # validate alternative
+  alternative <- match.arg(tolower(alternative), c("two.sided", "greater", "less"))
 
   # adjusting variables if bayesian is TRUE
   if(bayesian) {
@@ -223,14 +227,19 @@ correlation <- function(data, select = NULL, select2 = NULL,
   # checking validity of select and select2
   if (is.null(select)) {
     if (!is.null(select2)) {
-        insight::format_warning("select2 is provided but select is not, using select2 as select")
-        select <- select2
-        select2 <- NULL
+      insight::format_warning("`select2` is provided but `select` is not, using `select2` as `select`")
+      select <- select2
+      select2 <- NULL
     }
     else {
       select <- colnames(data)
     }
   }
+
+  # removing values that appear multiple times
+  select <- unique(select)
+  if (!is.null(select2)) select2 <- unique(select2)
+
   if (!is.null(select2)) all_selected <- c(select, select2) else all_selected <- select
 
   not_in_data <- !all_selected %in% colnames(data)
@@ -239,124 +248,133 @@ correlation <- function(data, select = NULL, select2 = NULL,
     insight::format_error(paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", "))
   }
 
-  # TODO: support grouped_df
+  # ignore redundant if select2 is given
+  if (!is.null(select2) && redundant) {
+    redundant <- FALSE
+  }
 
   # validate select/select2
   select <- datawizard::find_columns(data, select = select)
-  select2 <- datawizard::find_columns(data, select = select2)
+  if (!is.null(select2)) select2 <- datawizard::find_columns(data, select = select2)
 
-  # take from it the grouped_df part when i get to it
-  if (!is.null(select)) {
-    # check for valid names
-    all_selected <- c(select, select2)
-    not_in_data <- !all_selected %in% colnames(data)
-    if (any(not_in_data)) insight::format_error(paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", "))
+  # TODO: support grouped_df
 
-    # for grouped df, add group variables to both data frames
-    if (inherits(data, "grouped_df")) {
-      grp_df <- attributes(data)$groups
-      grp_var <- setdiff(colnames(grp_df), ".rows")
-      select <- unique(c(select, grp_var))
-      select2 <- if (!is.null(select2)) unique(c(select2, grp_var))
-    } else {
-      grp_df <- NULL
-    }
-
-    data2 <- if (!is.null(select2)) data[select2]
-    data <- data[select]
-
-    attr(data, "groups") <- grp_df
-    attr(data2, "groups") <- if (!is.null(select2)) grp_df
-  }
+  # # take from it the grouped_df part when i get to it
+  # if (!is.null(select)) {
+  #   # for grouped df, add group variables to both data frames
+  #   if (inherits(data, "grouped_df")) {
+  #     grp_df <- attributes(data)$groups
+  #     grp_var <- setdiff(colnames(grp_df), ".rows")
+  #     select <- unique(c(select, grp_var))
+  #     select2 <- if (!is.null(select2)) unique(c(select2, grp_var))
+  #   } else {
+  #     grp_df <- NULL
+  #   }
+  #
+  #   data2 <- if (!is.null(select2)) data[select2]
+  #   data <- data[select]
+  #
+  #   attr(data, "groups") <- grp_df
+  #   attr(data2, "groups") <- if (!is.null(select2)) grp_df
+  # }
 
   # if include_factors is TRUE
   # convert factors to dummy vars
 
-
-
-  # done further in the correlation function
-
-  # use == "pairwise.complete.obs"
-  # use == "complete.obs" -> na.omit(data)
-
-  # ignore redundant if select2 is given
-
-
-
-
-
-
-
-  # renaming the columns if so desired
-  if (!is.null(rename)) {
-    if (length(data) != length(rename)) {
-      insight::format_warning("Mismatch between number of variables and names.")
-    } else {
-      colnames(data) <- rename
-    }
+  # if use is "complete.obs"
+  if (use == "complete.obs") {
+    data <- na.omit(data)
   }
 
   if (inherits(data, "grouped_df")) {
-    rez <- .correlation_grouped_df(
-      data,
-      data2 = data2,
-      method = method,
-      p_adjust = p_adjust,
-      ci = ci,
-      bayesian = bayesian,
-      bayesian_prior = bayesian_prior,
-      bayesian_ci_method = bayesian_ci_method,
-      bayesian_test = bayesian_test,
-      redundant = redundant,
-      include_factors = include_factors,
-      partial = partial,
-      partial_bayesian = partial_bayesian,
-      multilevel = multilevel,
-      ranktransform = ranktransform,
-      winsorize = winsorize,
-      verbose = verbose,
-      ...
-    )
+    # handle as grouped_df
+    # rez <- .correlation_grouped_df(
+    #   data,
+    #   data2 = data2,
+    #   method = method,
+    #   p_adjust = p_adjust,
+    #   ci = ci,
+    #   bayesian = bayesian,
+    #   bayesian_prior = bayesian_prior,
+    #   bayesian_ci_method = bayesian_ci_method,
+    #   bayesian_test = bayesian_test,
+    #   redundant = redundant,
+    #   include_factors = include_factors,
+    #   partial = partial,
+    #   partial_bayesian = partial_bayesian,
+    #   multilevel = multilevel,
+    #   ranktransform = ranktransform,
+    #   winsorize = winsorize,
+    #   verbose = verbose,
+    #   ...
+    # )
   } else {
-    rez <- .correlation(
-      data,
-      data2 = data2,
-      method = method,
-      ci = ci,
-      p_adjust = p_adjust,
-      use = use,
-      bayesian = bayesian,
-      redundant = redundant,
-      include_factors = include_factors,
-      partial = partial,
-      partial_bayesian = partial_bayesian,
-      multilevel = multilevel,
-      ranktransform = ranktransform,
-      winsorize = winsorize,
-      verbose = verbose,
-      ...
-    )
+    # handle as data frame
+    if (ncol(data) <= 2L && any(sapply(data, is.factor)) && !include_factors) {
+      if (isTRUE(verbose)) insight::format_error("It seems like there is not enough continuous variables in your data. \nAdding `include_factors = TRUE` to the function should help!")
+      include_factors <- TRUE
+    }
+
+    # cleaning the data and getting combinations
+    combs <- if (is.null(select2)) expand.grid(select, select) else expand.grid(select2, select)
+    names(combs) <- c("temp", "var1")
+    combs$var2 <- combs$temp
+    combs <- sapply(combs[,2:3], as.character)
+
+    # handling redundant if prompted to
+    if (redundant) {
+      keptL <- NULL
+      removeL <- rep(FALSE, nrow(combs))
+
+      for (i in 1:nrow(combs)) {
+        if (combs[i, 1] == combs[i, 2]) {
+          removeL[i] <- TRUE
+          keptL <- c(keptL, combs[i, 1])
+        }
+        if (combs[i, 2] %in% keptL) {
+          removeL[i] <- TRUE
+        }
+      }
+      combs <- combs[!removeL,]
+    }
+
+    # running cor test for each pair
+    for (i in 1:nrow(combs)) {
+      result <- cor_test(x = combs[i, 1], y = combs[i, 2],
+                         data = data,
+                         method = method,
+                         ci = ci,
+                         alternative = alternative,
+                         bayesian = bayesian,
+                         verbose = FALSE,
+                         ...)
+      if (i > 1) params <- rbind(params, result) else params <- result
+    }
+
+    params$p <- stats::p.adjust(params$p, method = p_adjust)
   }
-  out <- rez$params
+
+  out <- params
 
   attributes(out) <- c(
     attributes(out),
     list(
       "data" = data,
-      "data2" = data2,
-      "modelframe" = rez$data,
+      "select" = select,
       "ci" = ci,
-      "n" = nrow(data),
+      "p_adjust" = p_adjust,
+      "use" = use,
       "method" = method,
       "bayesian" = bayesian,
-      "p_adjust" = p_adjust,
-      "partial" = partial,
-      "multilevel" = multilevel,
-      "partial_bayesian" = partial_bayesian,
-      "bayesian_prior" = bayesian_prior,
-      "include_factors" = include_factors
+      "include_factors" = include_factors,
+      "redundent" = redundant,
+      "n" = nrow(data)
     )
   )
+
+  if (!is.null(select2)) {
+    attributes(out)$select2 <- select2
+  }
 
   attr(out, "additional_arguments") <- list(...)
 
@@ -365,8 +383,6 @@ correlation <- function(data, select = NULL, select2 = NULL,
   } else {
     class(out) <- unique(c("easycorrelation", "see_easycorrelation", "parameters_model", class(out)))
   }
-
-  if (convert_back_to_r) out <- pcor_to_cor(pcor = out) # Revert back to r if needed.
 
   if (standardize_names) insight::standardize_names(out, ...)
   out
@@ -466,210 +482,6 @@ correlation <- function(data, select = NULL, select2 = NULL,
   out <- out[c("Group", names(out)[names(out) != "Group"])]
   list(params = out, data = modelframe)
 }
-
-
-
-#' @keywords internal
-.correlation <- function(data,
-                         data2 = NULL, # do i need it tho?, maybe except selects instead?
-                         method = "pearson",
-                         ci = 0.95,
-                         p_adjust = "holm",
-                         use = "pairwise.complete.obs",
-                         bayesian = FALSE,
-                         include_factors = FALSE,
-                         redundant = FALSE,
-                         verbose = TRUE,
-                         standardize_names = getOption("easystats.standardize_names", FALSE),
-                         ...) {
-  if (!is.null(data2)) { # do not need data2 then
-    data <- cbind(data, data2)
-  }
-
-  if (ncol(data) <= 2L && any(sapply(data, is.factor)) && !include_factors) {
-    if (isTRUE(verbose)) {
-      insight::format_error("It seems like there is not enough continuous variables in your data. \nAdding `include_factors = TRUE` to the function should help!")
-    }
-    include_factors <- TRUE
-  }
-
-  # adjusting variables if bayesian is TRUE
-  if(bayesian) {
-    if("bayesian_prior" %in% names(list(...))) {
-      bayesian_prior <- match.arg(tolower(list(...)$bayesian_prior),
-                                  c("medium", "medium.narrow", "wide", "ultra-wide"))
-    }
-
-    if ("bayesian_ci_method" %in% names(list(...))) {
-      bayesian_ci_method <- list(...)$bayesian_ci_method
-    }
-
-    if ("bayesian_test" %in% names(list(...))) {
-      bayesian_test <- list(...)$bayesian_test
-    }
-  }
-
-  # valid matrix checks ----------------
-
-  # What if only factors
-  if (sum(sapply(if (is.null(data2)) data else cbind(data, data2), is.numeric)) == 0) {
-    include_factors <- TRUE
-  }
-
-  if (method == "polychoric") multilevel <- TRUE
-
-  # Clean data and get combinations -------------
-
-  combinations <- .get_combinations(
-    data,
-    data2 = NULL,
-    redundant = FALSE,
-    include_factors = include_factors,
-    multilevel = multilevel,
-    method = method
-  )
-  data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
-
-  # LOOP ----
-  # running cor test for each pair
-  for (i in seq_len(nrow(combinations))) {
-    x <- as.character(combinations[i, "Parameter1"])
-    y <- as.character(combinations[i, "Parameter2"])
-
-    # avoid repeated warnings
-    if (i > 1) {
-      verbose <- FALSE
-    }
-
-    result <- cor_test(x, y,
-                       data = data,
-                       ci = ci,
-                       method = method,
-                       bayesian = bayesian,
-                       bayesian_prior = bayesian_prior,
-                       bayesian_ci_method = bayesian_ci_method,
-                       bayesian_test = bayesian_test,
-                       partial = partial,
-                       multilevel = multilevel,
-                       ranktransform = ranktransform,
-                       winsorize = winsorize,
-                       verbose = verbose,
-                       ...
-                       )
-
-    # reseting for some reason the "rho" and "tau" names to be "r", might not work anymore due to changes in cor_test, option "Dxy" ignored, not really relevant tho
-
-    # will be redundent because cor_test always returns "r" as the name
-
-    # Merge
-    if (i == 1) {
-      params <- result # first iteration keeps the result of the first pair
-    } else {
-      if (!all(names(result) %in% names(params))) {
-        if ("r" %in% names(params) && !"r" %in% names(result)) {
-          names(result)[names(result) %in% c("rho", "tau")] <- "r"
-        }
-        if ("r" %in% names(result) && !"r" %in% names(params)) {
-          names(params)[names(params) %in% c("rho", "tau")] <- "r"
-        }
-        if (!"r" %in% names(params) && any(c("rho", "tau") %in% names(result))) {
-          names(params)[names(params) %in% c("rho", "tau")] <- "r"
-          names(result)[names(result) %in% c("rho", "tau")] <- "r"
-        }
-        result[names(params)[!names(params) %in% names(result)]] <- NA
-      }
-      params <- rbind(params, result)
-    }
-  }
-
-  # Make method column more informative
-  if ("Method" %in% names(params)) {
-    params$Method <- paste0(params$Method, " correlation")
-  }
-
-  # instead of removing the redundant rows, should not compute them at all
-
-  # Remove superfluous correlations when two variable sets provided
-  if (!is.null(data2)) {
-    params <- params[!params$Parameter1 %in% names(data2), ]
-    params <- params[params$Parameter2 %in% names(data2), ]
-  }
-
-  # there is always p, then should always do that without the id check
-
-  # P-values adjustments
-  if ("p" %in% names(params)) {
-    params$p <- stats::p.adjust(params$p, method = p_adjust)
-  }
-
-  # again instead of removing the redundant rows, should not compute them at all
-
-  # Redundant
-  if (redundant) {
-    params <- .add_redundant(params, data)
-  }
-
-  list(params = params, data = data)
-}
-
-# internal helping functions ----
-
-# without a change
-#' @keywords internal
-.clean_data <- function(data, include_factors = TRUE, multilevel = FALSE) {
-  if (!multilevel) {
-    if (include_factors) {
-      data <- datawizard::to_numeric(data)
-    } else {
-      data <- data[sapply(data, is.numeric)]
-    }
-  }
-  data
-}
-
-# to be changed
-#' @keywords internal
-.get_combinations <- function(data,
-                              data2 = NULL,
-                              redundant = TRUE,
-                              include_factors = TRUE,
-                              multilevel = FALSE,
-                              method = "pearson") {
-  data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
-
-  if (method == "polychoric") {
-    vars <- names(data)
-  } else if (multilevel) {
-    vars <- names(data[sapply(data, is.numeric)])
-  } else {
-    vars <- names(data)
-  }
-
-
-
-  # Find pairs
-  if (is.null(data2)) {
-    vars2 <- vars
-  } else {
-    data2 <- .clean_data(data2, include_factors = include_factors, multilevel = multilevel)
-    data2_nums <- data2[sapply(data2, is.numeric)]
-    vars2 <- names(data2_nums)
-  }
-
-  combinations <- expand.grid(vars, vars2, stringsAsFactors = FALSE)
-  combinations <- combinations[order(match(combinations$Var1, vars), match(combinations$Var2, vars2)), ]
-
-  row.names(combinations) <- NULL
-  names(combinations) <- c("Parameter1", "Parameter2")
-
-  if (!redundant) {
-    combinations <- .remove_redundant(combinations)
-  }
-
-  combinations
-}
-
-
 
 # plot ----------------------------
 
