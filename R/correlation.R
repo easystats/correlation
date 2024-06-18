@@ -170,37 +170,12 @@ correlation <- function(data, select = NULL, select2 = NULL,
                         use = "pairwise.complete.obs",
                         bayesian = FALSE,
                         include_factors = FALSE,
-                        redundant = TRUE,
+                        redundant = FALSE,
                         verbose = TRUE,
                         standardize_names = getOption("easystats.standardize_names", FALSE),
                         ...) {
-  # algorithm ----
-
-  # step 1: validate input
-  # step 2: if needed handle grouped_df type
-  # step 3: clean data in accordance to use value:
-  #   use == "pairwise.complete.obs" -> perform na.omit on each combination separately
-  #   use == "complete.obs" -> perform na.omit on all of the data that are mentioned in the context of select and select2 if there are select and/or select2
-  # step 4: splitted to 3 kinds, no select or select2 (a), select only (b) and select and select2 (c)
-  #   no select or select2 (a)
-  #     step 4.a.1: find all valid combinations of the columns in the data
-  #   select only (b)
-  #     step 4.b.1: find all valid combinations of the columns in the data that are mentioned in select
-  #   select and select2 (c)
-  #     step 4.c.1: find all valid combinations of the columns in the data that are mentioned in select and select2
-  #   step 4.2: perform correlations on combinations only
-
   # validate method
   method <- match.arg(tolower(method), c("pearson", "spearman", "spear", "s"))
-  # "kendall", "biserial", "pointbiserial",
-  # "point-biserial", "rankbiserial",
-  # "rank-biserial", "biweight", "distance",
-  # "percentage", "percentage_bend",
-  # "percentagebend", "pb", "blomqvist",
-  # "median", "medial", "hoeffding", "gamma",
-  # "gaussian", "shepherd", "sheperd",
-  # "shepherdspi", "pi",  "somers", "poly",
-  # "polychoric", "tetra", "tetrachoric"))
 
   # validate alternative
   alternative <- match.arg(tolower(alternative), c("two.sided", "greater", "less"))
@@ -278,9 +253,6 @@ correlation <- function(data, select = NULL, select2 = NULL,
   #   attr(data2, "groups") <- if (!is.null(select2)) grp_df
   # }
 
-  # if include_factors is TRUE
-  # convert factors to dummy vars
-
   # if use is "complete.obs"
   if (use == "complete.obs") {
     data <- na.omit(data)
@@ -340,14 +312,25 @@ correlation <- function(data, select = NULL, select2 = NULL,
 
     # running cor test for each pair
     for (i in 1:nrow(combs)) {
-      result <- cor_test(x = combs[i, 1], y = combs[i, 2],
-                         data = data,
-                         method = method,
-                         ci = ci,
-                         alternative = alternative,
-                         bayesian = bayesian,
-                         verbose = FALSE,
-                         ...)
+      if (combs[i, 1] == combs[i, 2] && bayesian)
+        result <- cor_test(x = combs[i, 1], y = combs[i, 2],
+                           data = data,
+                           method = method,
+                           ci = ci,
+                           alternative = alternative,
+                           bayesian = !bayesian,
+                           verbose = FALSE,
+                           ...)
+      else {
+        result <- cor_test(x = combs[i, 1], y = combs[i, 2],
+                           data = data,
+                           method = method,
+                           ci = ci,
+                           alternative = alternative,
+                           bayesian = bayesian,
+                           verbose = FALSE,
+                           ...)
+      }
       if (i > 1) params <- rbind(params, result) else params <- result
     }
 
@@ -491,6 +474,3 @@ plot.easycorrelation <- function(x, ...) {
 
   NextMethod()
 }
-
-
-
