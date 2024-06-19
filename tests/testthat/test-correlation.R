@@ -39,7 +39,6 @@ test_that("comparison with other packages", {
   # out <- correlation(iris, include_factors = FALSE, method = "kendall")
   # rez <- as.data.frame(summary(out, redundant = TRUE))
 
-
   # r <- as.matrix(rez[2:5])
   # expect_equal(mean(r - cor(iris[1:4], method = "kendall")), 0, tolerance = 0.0001)
   #
