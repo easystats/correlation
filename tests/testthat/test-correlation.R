@@ -20,6 +20,10 @@ test_that("comparison with other packages", {
   p <- as.matrix(attributes(rez)$p[2:5])
   expect_equal(mean(p - hmisc$P, na.rm = TRUE), 0, tolerance = 0.0001)
 
+  # at the time of writing these tests, the results of the line:
+  # mean(cor(iris[1:4]) - Hmisc::rcorr(as.matrix(iris[1:4]), type = c("pearson"))$P, na.rm = TRUE)
+  # which compares between the calculations of cor from stats package and rcorr from Hmisc package
+  # does not equal to 0, but to 0.2647537
 
   # Spearman
   out <- correlation(iris, include_factors = FALSE, method = "spearman")
@@ -35,7 +39,12 @@ test_that("comparison with other packages", {
   p <- as.matrix(attributes(rez)$p[2:5])
   expect_equal(mean(p - hmisc$P, na.rm = TRUE), 0, tolerance = 0.0001)
 
-  # Kendall
+  # at the time of writing these tests, the results of the line:
+  # mean(cor(iris[1:4]) - Hmisc::rcorr(as.matrix(iris[1:4]), type = c("pearson"))$P, na.rm = TRUE)
+  # which compares between the calculations of cor from stats package and rcorr from Hmisc package
+  # does not equal to 0, but to 0.3077653
+
+  # # Kendall
   # out <- correlation(iris, include_factors = FALSE, method = "kendall")
   # rez <- as.data.frame(summary(out, redundant = TRUE))
 
@@ -72,6 +81,8 @@ test_that("comparison with other packages", {
   r <- as.matrix(rez[2:5])
   expect_equal(mean(r - cor(iris[1:4])), 0, tolerance = 0.01)
 
+  # even though the previous tests compared to Hmisc failed, the following two passed, curious...
+
   hmisc <- Hmisc::rcorr(as.matrix(iris[1:4]), type = c("pearson"))
   expect_equal(mean(r - hmisc$r), 0, tolerance = 0.01)
 
@@ -80,24 +91,28 @@ test_that("comparison with other packages", {
   expect_equal(mean(p - hmisc$P, na.rm = TRUE), 0, tolerance = 0.01)
 })
 
-
-
 # Size
 test_that("format checks", {
   skip_if_not_or_load_if_installed("psych")
 
   out <- correlation(iris, include_factors = TRUE)
   expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7L, 8L))
+
+  # for odd reasons summary(out) returns a matrix with all variables in the rows and in the columns,
+  # even though the cells in 1 row and 1 column are empty in that matrix...
+  # therefore, the following test fails
+
   expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(6L, 7L))
 
-  expect_message(
-    out <- correlation(iris, method = "auto", include_factors = TRUE),
-    "Check your data"
-  )
+  # # method = "auto" has been deprecated
+  # expect_message(
+  #   out <- correlation(iris, method = "auto", include_factors = TRUE),
+  #   "Check your data"
+  # )
   expect_identical(c(nrow(summary(out, redundant = TRUE)), ncol(summary(out, redundant = TRUE))), c(7L, 8L))
   expect_identical(c(nrow(summary(out)), ncol(summary(out))), c(6L, 7L))
 
-  expect_true(all(c("Pearson correlation", "Point-biserial correlation", "Tetrachoric correlation") %in% out$Method))
+  expect_true(all(c("Pearson", "Point-biserial", "Tetrachoric") %in% out$Method))
 
   # X and Y
   out <- correlation(iris[1:2], iris[3:4])

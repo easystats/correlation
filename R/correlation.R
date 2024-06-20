@@ -293,6 +293,9 @@ correlation <- function(data, select = NULL, select2 = NULL,
     combs$var2 <- combs$temp
     combs <- sapply(combs[,2:3], as.character)
 
+    # remove combinations of a variable to itself
+    combs <- combs[combs[,1] != combs[,2],]
+
     # handling redundant if prompted to
     if (redundant) {
       keptL <- NULL
@@ -315,7 +318,7 @@ correlation <- function(data, select = NULL, select2 = NULL,
       if (combs[i, 1] == combs[i, 2] && bayesian)
         result <- cor_test(x = combs[i, 1], y = combs[i, 2],
                            data = data,
-                           method = method,
+                           method = paste0(toupper(substr(method, 1, 1)), substr(method, 2, nchar(method))),
                            ci = ci,
                            alternative = alternative,
                            bayesian = !bayesian,
@@ -324,7 +327,7 @@ correlation <- function(data, select = NULL, select2 = NULL,
       else {
         result <- cor_test(x = combs[i, 1], y = combs[i, 2],
                            data = data,
-                           method = method,
+                           method = paste0(toupper(substr(method, 1, 1)), substr(method, 2, nchar(method))),
                            ci = ci,
                            alternative = alternative,
                            bayesian = bayesian,
