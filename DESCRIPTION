@@ -83,7 +83,7 @@ Suggests:
     tidygraph,
     wdm,
     WRS2,
-    openxlsx2
+    openxlsx2 (>= 1.0)
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
