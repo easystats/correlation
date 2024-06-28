@@ -54,7 +54,7 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
       out_text <- paste0(
         out_text,
         ", t(",
-        insight::format_value(x$df, protect_integers = TRUE),
+        insight::format_value(x$df_error, protect_integers = TRUE),
         ") = ",
         insight::format_value(x$t)
       )

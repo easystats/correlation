@@ -12,7 +12,7 @@
       CI_low = rez$CI_low,
       CI_high = rez$CI_high,
       t = rez$t,
-      df_error = rez$df,
+      df_error = rez$df_error,
       p = rez$p,
       Method = "Distance (Bias Corrected)",
       stringsAsFactors = FALSE
