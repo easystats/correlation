@@ -8,18 +8,17 @@
 #' @param ci Confidence/Credible Interval level. If `"default"`, then it is
 #'   set to `0.95` (`95%` CI).
 #' @param method A character string indicating which correlation coefficient is
-#'   to be used for the test. One of `"pearson"` (default),
-#'   `"kendall"`, `"spearman"` (but see also the `robust` argument), `"biserial"`,
-#'   `"polychoric"`, `"tetrachoric"`, `"biweight"`,
-#'   `"distance"`, `"percentage"` (for percentage bend correlation),
-#'   `"blomqvist"` (for Blomqvist's coefficient), `"hoeffding"` (for
-#'   Hoeffding's D), `"gamma"`, `"gaussian"` (for Gaussian Rank
-#'   correlation) or `"shepherd"` (for Shepherd's Pi correlation). Setting
-#'   `"auto"` will attempt at selecting the most relevant method
-#'   (polychoric when ordinal factors involved, tetrachoric when dichotomous
-#'   factors involved, point-biserial if one dichotomous and one continuous and
-#'   pearson otherwise). See below the **details** section for a description of
-#'   these indices.
+#'   to be used for the test. One of `"pearson"` (default), `"kendall"`,
+#'   `"spearman"` (but see also the `robust` argument), `"biserial"`,
+#'   `"polychoric"`, `"tetrachoric"`, `"biweight"`, `"distance"`, `"percentage"`
+#'   (for percentage bend correlation), `"blomqvist"` (for Blomqvist's
+#'   coefficient), `"hoeffding"` (for Hoeffding's D), `"gamma"`, `"gaussian"`
+#'   (for Gaussian Rank correlation) or `"shepherd"` (for Shepherd's Pi
+#'   correlation). Setting `"auto"` will attempt at selecting the most relevant
+#'   method (polychoric when ordinal factors involved, tetrachoric when
+#'   dichotomous factors involved, point-biserial if one dichotomous and one
+#'   continuous and pearson otherwise). See below the **details** section for a
+#'   description of these indices.
 #' @param bayesian If `TRUE`, will run the correlations under a Bayesian
 #'   framework.
 #' @param partial_bayesian If partial correlations under a Bayesian framework
@@ -28,30 +27,29 @@
 #'   pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
 #'   frequentist partialization).
 #' @param include_factors If `TRUE`, the factors are kept and eventually
-#'   converted to numeric or used as random effects (depending of
-#'   `multilevel`). If `FALSE`, factors are removed upfront.
-#' @param partial Can be `TRUE` or `"semi"` for partial and
-#'   semi-partial correlations, respectively.
+#'   converted to numeric or used as random effects (depending of `multilevel`).
+#'   If `FALSE`, factors are removed upfront.
+#' @param partial Can be `TRUE` or `"semi"` for partial and semi-partial
+#'   correlations, respectively.
 #' @inheritParams datawizard::adjust
 #' @param bayesian_prior For the prior argument, several named values are
-#'   recognized: `"medium.narrow"`, `"medium"`, `"wide"`, and
-#'   `"ultrawide"`. These correspond to scale values of `1/sqrt(27)`,
-#'   `1/3`, `1/sqrt(3)` and `1`, respectively. See the
-#'   `BayesFactor::correlationBF` function.
+#'   recognized: `"medium.narrow"`, `"medium"`, `"wide"`, and `"ultrawide"`.
+#'   These correspond to scale values of `1/sqrt(27)`, `1/3`, `1/sqrt(3)` and
+#'   `1`, respectively. See the `BayesFactor::correlationBF` function.
 #' @param bayesian_ci_method,bayesian_test See arguments in
-#'   [`model_parameters()`][parameters] for `BayesFactor` tests.
+#'   [`parameters::model_parameters()`] for `BayesFactor` tests.
 #' @param ranktransform If `TRUE`, will rank-transform the variables prior to
 #'   estimating the correlation, which is one way of making the analysis more
-#'   resistant to extreme values (outliers). Note that, for instance, a Pearson's
-#'   correlation on rank-transformed data is equivalent to a Spearman's rank
-#'   correlation. Thus, using `robust=TRUE` and `method="spearman"` is
-#'   redundant. Nonetheless, it is an easy option to increase the robustness of the
-#'   correlation as well as flexible way to obtain Bayesian or multilevel
-#'   Spearman-like rank correlations.
+#'   resistant to extreme values (outliers). Note that, for instance, a
+#'   Pearson's correlation on rank-transformed data is equivalent to a
+#'   Spearman's rank correlation. Thus, using `robust=TRUE` and
+#'   `method="spearman"` is redundant. Nonetheless, it is an easy option to
+#'   increase the robustness of the correlation as well as flexible way to
+#'   obtain Bayesian or multilevel Spearman-like rank correlations.
 #' @param winsorize Another way of making the correlation more "robust" (i.e.,
-#'   limiting the impact of extreme values). Can be either `FALSE` or a
-#'   number between 0 and 1 (e.g., `0.2`) that corresponds to the desired
-#'   threshold. See the [`winsorize()`][winsorize] function for more details.
+#'   limiting the impact of extreme values). Can be either `FALSE` or a number
+#'   between 0 and 1 (e.g., `0.2`) that corresponds to the desired threshold.
+#'   See the [`datawizard::winsorize()`] function for more details.
 #' @param verbose Toggle warnings.
 #' @param ... Additional arguments (e.g., `alternative`) to be passed to
 #'   other methods. See `stats::cor.test` for further details.
