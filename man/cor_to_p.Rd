@@ -18,18 +18,17 @@ cor_to_p(cor, n, method = "pearson")
 set to \code{0.95} (\verb{95\%} CI).}
 
 \item{method}{A character string indicating which correlation coefficient is
-to be used for the test. One of \code{"pearson"} (default),
-\code{"kendall"}, \code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
-\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
-\code{"distance"}, \code{"percentage"} (for percentage bend correlation),
-\code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
-Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank
-correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
-\code{"auto"} will attempt at selecting the most relevant method
-(polychoric when ordinal factors involved, tetrachoric when dichotomous
-factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise). See below the \strong{details} section for a description of
-these indices.}
+to be used for the test. One of \code{"pearson"} (default), \code{"kendall"},
+\code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
+\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"}
+(for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's
+coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"}
+(for Gaussian Rank correlation) or \code{"shepherd"} (for Shepherd's Pi
+correlation). Setting \code{"auto"} will attempt at selecting the most relevant
+method (polychoric when ordinal factors involved, tetrachoric when
+dichotomous factors involved, point-biserial if one dichotomous and one
+continuous and pearson otherwise). See below the \strong{details} section for a
+description of these indices.}
 
 \item{correction}{Only used if method is 'spearman' or 'kendall'. Can be
 'fieller' (default; Fieller et al., 1957), 'bw' (only for Spearman) or

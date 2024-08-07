@@ -177,7 +177,7 @@ test_that("specific types", {
     y = as.ordered(sample(letters[1:5], 20, TRUE))
   )
 
-  expect_no_error(correlation(data, method = "polychoric"))
+  expect_warning(correlation(data, method = "polychoric"), regex = "It seems like")
 })
 
 test_that("correlation doesn't fail when BFs are NA", {
