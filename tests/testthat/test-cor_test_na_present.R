@@ -22,7 +22,7 @@ test_that("cor_test bayesian", {
 
   set.seed(123)
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", bayesian = TRUE)
-  expect_equal(out$r, -0.1947696, tolerance = 0.01)
+  expect_equal(out$rho, -0.1947696, tolerance = 0.01)
 })
 
 test_that("cor_test tetrachoric", {
@@ -122,7 +122,7 @@ test_that("cor_test gaussian", {
 
   skip_if_not_or_load_if_installed("BayesFactor")
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "gaussian", bayesian = TRUE)
-  expect_equal(out$r, -0.3269572, tolerance = 0.01)
+  expect_equal(out$rho, -0.3269572, tolerance = 0.01)
 })
 
 
