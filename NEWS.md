@@ -1,3 +1,7 @@
+# correlation 0.8.6
+
+- Fix CRAN check issues.
+
 # correlation 0.8.5
 
 - New `cormatrix_to_excel()` function for exporting correlation matrices to Excel with color formatting.
@@ -206,4 +210,3 @@
 - Fixed issue in `correlation()` for correlation coefficients with less than
   four complete pairs of observations (in such cases, `cor_test()` now returns
   `NA` for the confidence intervals).
-
