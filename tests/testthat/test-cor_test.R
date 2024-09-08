@@ -17,7 +17,7 @@ test_that("cor_test kendall", {
 test_that("cor_test bayesian", {
   skip_if_not_or_load_if_installed("BayesFactor")
   out <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
-  expect_equal(out$r, 0.9591191, tolerance = 0.01)
+  expect_equal(out$rho, 0.9591191, tolerance = 0.01)
 
   set.seed(123)
   df_1 <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
@@ -121,7 +121,7 @@ test_that("cor_test percentage", {
 test_that("cor_test shepherd", {
   set.seed(333)
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd")
-  expect_equal(out$r, 0.94762, tolerance = 0.01)
+  expect_equal(out$rho, 0.94762, tolerance = 0.01)
 
   skip_if_not_or_load_if_installed("BayesFactor")
   set.seed(333)
@@ -164,7 +164,7 @@ test_that("cor_test gaussian", {
   expect_equal(out$r, 0.87137, tolerance = 0.01)
 
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
-  expect_equal(out$r, 0.8620878, tolerance = 0.01)
+  expect_equal(out$rho, 0.8620878, tolerance = 0.01)
 })
 
 
