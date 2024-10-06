@@ -54,10 +54,10 @@ BugReports: https://github.com/easystats/correlation/issues
 Depends:
     R (>= 3.6)
 Imports:
-    bayestestR (>= 0.14.0),
+    bayestestR (>= 0.15.0),
     datasets,
-    datawizard (>= 0.12.3),
-    insight (>= 0.20.4),
+    datawizard (>= 0.13.0),
+    insight (>= 0.20.5),
     parameters (>= 0.22.2),
     stats
 Suggests:
@@ -95,4 +95,4 @@ Config/Needs/website:
     rstudio/bslib,
     r-lib/pkgdown,
     easystats/easystatstemplate
-Remotes: easystats/datawizard
+Remotes: easystats/bayestestR#678
