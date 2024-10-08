@@ -1,7 +1,7 @@
 Type: Package
 Package: correlation
 Title: Methods for Correlation Analysis
-Version: 0.8.5.2
+Version: 0.8.6
 Authors@R:
     c(person(given = "Dominique",
              family = "Makowski",
@@ -95,4 +95,3 @@ Config/Needs/website:
     rstudio/bslib,
     r-lib/pkgdown,
     easystats/easystatstemplate
-Remotes: easystats/bayestestR#678
