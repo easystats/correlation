@@ -4,7 +4,7 @@ pkgdown_sha: 4f5c10eb59676f0ca2462eb06d7d7232c573a693
 articles:
   multilevel: multilevel.html
   types: types.html
-last_built: 2024-10-25T19:20Z
+last_built: 2024-10-26T14:27Z
 urls:
   reference: https://easystats.github.io/correlation/reference
   article: https://easystats.github.io/correlation/articles
