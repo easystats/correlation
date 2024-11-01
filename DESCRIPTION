@@ -58,7 +58,7 @@ Imports:
     datasets,
     datawizard (>= 0.13.0),
     insight (>= 0.20.5),
-    parameters (>= 0.22.2),
+    parameters (>= 0.23.0),
     stats
 Suggests:
     BayesFactor,
