@@ -155,5 +155,5 @@ cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "comple
   # Append any unused rows at the end
   refined_row_order <- c(refined_row_order, which(!used_rows))
 
-  list(row_order = refined_row_order, col_order = row_order)
+  list(row_order = rownames(m)[refined_row_order], col_order = colnames(m)[col_order])
 }
