@@ -79,9 +79,9 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
 #' @export
 cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "complete", ...) {
   if(isSquare(x)) {
-    i <- .cor_sort_order_square(x, distance = distance, hclust_method = hclust_method, ...)
+    i <- .cor_sort_square(x, distance = distance, hclust_method = hclust_method, ...)
   } else {
-    i <- .cor_sort_order_nonsquare(x, distance = "euclidean", ...)
+    i <- .cor_sort_nonsquare(x, distance = "euclidean", ...)
   }
 
   reordered <- x[i$row_order, i$col_order]
@@ -98,7 +98,7 @@ cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "comple
 # Utils -------------------------------------------------------------------
 
 
-.cor_sort_order_square <- function(m, distance = "correlation", hclust_method = "complete", ...) {
+.cor_sort_square <- function(m, distance = "correlation", hclust_method = "complete", ...) {
   if (distance == "correlation") {
     d <- stats::as.dist((1 - m) / 2) # r = -1 -> d = 1; r = 1 -> d = 0
   } else if (distance == "raw") {
@@ -113,7 +113,7 @@ cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "comple
 }
 
 
-.cor_sort_order_nonsquare <- function(m, distance = "euclidean", ...) {
+.cor_sort_nonsquare <- function(m, distance = "euclidean", ...) {
   # Step 1: Perform clustering on rows and columns independently
   row_dist <- dist(m, method = distance)           # Distance between rows
   col_dist <- dist(t(m), method = distance)        # Distance between columns
