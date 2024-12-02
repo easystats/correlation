@@ -78,7 +78,7 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
 
 #' @export
 cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "complete", ...) {
-  if(isSquare(x)) {
+  if(isSquare(x) & all(colnames(x) %in% rownames(x))) {
     i <- .cor_sort_square(x, distance = distance, hclust_method = hclust_method, ...)
   } else {
     i <- .cor_sort_nonsquare(x, distance = "euclidean", ...)
