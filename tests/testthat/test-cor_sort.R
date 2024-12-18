@@ -33,8 +33,9 @@ test_that("cor_sort", {
 
   # summary(correlation()) --------------------------------------------------
   # Square
-  # rez1sum <- summary(rez1)  # TODO: doesn't work with non-redundant
-  # rez1sumsort <- cor_sort(rez1sum)
+  rez1sum <- summary(rez1)  # TODO: doesn't work with non-redundant
+  # TODO: fix
+  expect_error(cor_sort(rez1sum))
 
   rez1sum <- summary(rez1, redundant=TRUE)
   rez1sumsort <- cor_sort(rez1sum)

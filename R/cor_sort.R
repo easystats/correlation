@@ -57,6 +57,13 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
   m <- x
   row.names(m) <- x$Parameter
   m <- as.matrix(m[names(m)[names(m) != "Parameter"]])
+
+  # If non-redundant matrix, fail (TODO: fix that)
+  if(any(is.na(m))) {
+    stop("Non-redundant matrices are not supported yet. Try again by setting summary(..., redundant = TRUE)")
+  }
+
+  # Get sorted matrix
   m <- cor_sort(m, distance = distance, hclust_method = hclust_method, ...)
 
   # Reorder
