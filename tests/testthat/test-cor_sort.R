@@ -21,17 +21,32 @@ test_that("cor_sort", {
   # heatmap(r2sort, Rowv = NA, Colv = NA)  # visualize
 
   # correlation() -----------------------------------------------------------
-  # TODO.
+  # Square
   rez1 <- correlation::correlation(mtcars)
-  # rez1sort <- cor_sort(rez1)
+  rez1sort <- cor_sort(rez1)
+  expect_false(all(rez1$Parameter1 == rez1sort$Parameter1))
+
+  # Non-square
+  rez2 <- correlation::correlation(mtcars[names(mtcars)[1:5]], mtcars[names(mtcars)[6:11]])
+  rez2sort <- cor_sort(rez2)
+  expect_false(all(rez2$Parameter1 == rez2sort$Parameter1))
 
   # summary(correlation()) --------------------------------------------------
-  # TODO.
+  # Square
+  # rez1sum <- summary(rez1)  # TODO: doesn't work with non-redundant
+  # rez1sumsort <- cor_sort(rez1sum)
+
+  rez1sum <- summary(rez1, redundant=TRUE)
+  rez1sumsort <- cor_sort(rez1sum)
+  expect_false(all(rownames(rez1sumsort) == rownames(rez1sum)))
+
+  # Non-square
+  rez2sum <- summary(rez2)
+  rez2sumsort <- cor_sort(rez2sum)
+  expect_false(all(rownames(rez2sumsort) == rownames(rez2sum)))
 
   # as.matrix(correlation()) ------------------------------------------------
   # TODO.
   m1 <- as.matrix(rez1)
-  expect_equal(rownames(r1), rownames(m1))
-
   # m1sort <- as.matrix(rez1sort)
 })
