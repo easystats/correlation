@@ -2,7 +2,8 @@
 #' @name display.easycormatrix
 #'
 #' @description Export tables (i.e. data frame) into different output formats.
-#'   `print_md()` is a alias for `display(format = "markdown")`.
+#'   `print_md()` is a alias for `display(format = "markdown")`. Note that
+#'   you can use `format()` to get the formatted table as a dataframe.
 #'
 #' @param object,x An object returned by
 #'   [`correlation()`][correlation] or its summary.
