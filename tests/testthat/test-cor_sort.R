@@ -30,5 +30,8 @@ test_that("cor_sort", {
 
   # as.matrix(correlation()) ------------------------------------------------
   # TODO.
-  # rez1m <- as.matrix(rez1sort)
+  m1 <- as.matrix(rez1)
+  expect_equal(rownames(r1), rownames(m1))
+
+  # m1sort <- as.matrix(rez1sort)
 })
