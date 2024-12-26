@@ -58,7 +58,7 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
   row.names(m) <- x$Parameter
   m <- as.matrix(m[names(m)[names(m) != "Parameter"]])
 
-  # If non-redundant matrix, fail (TODO: fix that)
+  # If non-redundant matrix, fail (## TODO: fix that)
   if (anyNA(m)) {
     insight::format_error("Non-redundant matrices are not supported yet. Try again by setting summary(..., redundant = TRUE)")
   }
