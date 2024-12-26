@@ -3,7 +3,7 @@
 
 #' @export
 print.easycorrelation <- function(x, ...) {
-  cat(insight::export_table(format(x, ...), format = "text", ...))
+  cat(insight::export_table(format(x, ...), ...))
   invisible(x)
 }
 
@@ -13,9 +13,9 @@ print.easycormatrix <- function(x, ...) {
   # If real matrix, print as matrix
   if (colnames(formatted)[1] == "Variables") {
     formatted$Variables <- NULL
-    print(as.matrix(formatted))
+    print(as.matrix(formatted), ...)
   } else {
-    cat(insight::export_table(format(x, ...), format = "text", ...))
+    cat(insight::export_table(format(x, ...), ...))
   }
   invisible(x)
 }
