@@ -61,7 +61,8 @@ will be a character vector in markdown-table format.
 }
 \description{
 Export tables (i.e. data frame) into different output formats.
-\code{print_md()} is a alias for \code{display(format = "markdown")}.
+\code{print_md()} is a alias for \code{display(format = "markdown")}. Note that
+you can use \code{format()} to get the formatted table as a dataframe.
 }
 \details{
 \code{display()} is useful when the table-output from functions,
