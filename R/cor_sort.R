@@ -92,7 +92,7 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
 
 #' @export
 cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "complete", ...) {
-  if(isSquare(x) & all(colnames(x) %in% rownames(x))) {
+  if (isSquare(x) && all(colnames(x) %in% rownames(x))) {
     i <- .cor_sort_square(x, distance = distance, hclust_method = hclust_method, ...)
   } else {
     i <- .cor_sort_nonsquare(x, distance = "euclidean", ...)
@@ -129,8 +129,8 @@ cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "comple
 
 .cor_sort_nonsquare <- function(m, distance = "euclidean", ...) {
   # Step 1: Perform clustering on rows and columns independently
-  row_dist <- dist(m, method = distance)           # Distance between rows
-  col_dist <- dist(t(m), method = distance)        # Distance between columns
+  row_dist <- stats::dist(m, method = distance)           # Distance between rows
+  col_dist <- stats::dist(t(m), method = distance)        # Distance between columns
 
   row_hclust <- stats::hclust(row_dist, method = "average")
   col_hclust <- stats::hclust(col_dist, method = "average")
