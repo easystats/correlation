@@ -76,6 +76,13 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
     attributes(reordered)
   )
 
+  # Reorder attributes (p-values) etc.
+  for(id in c("p", "CI", "CI_low", "CI_high", "BF", "Method", "n_Obs", "df_error", "t")) {
+    if(id %in% names(attributes(reordered))) {
+      attributes(reordered)[[id]] <- attributes(reordered)[[id]][order(x$Parameter), names(reordered)]
+    }
+  }
+
   # make sure Parameter columns are character
   reordered$Parameter <- as.character(reordered$Parameter)
 
