@@ -3,16 +3,18 @@
     Code
       display(summary(correlation(iris)))
     Output
-      
-      
-      Table: Correlation Matrix (pearson-method)
-      
-      |Parameter    | Petal.Width | Petal.Length | Sepal.Width |
-      |:------------|:-----------:|:------------:|:-----------:|
-      |Sepal.Length |     0.82*** |      0.87*** |       -0.12 |
-      |Sepal.Width  |    -0.37*** |     -0.43*** |             |
-      |Petal.Length |     0.96*** |              |             |
-      p-value adjustment method: Holm (1979)
+      [1] "Table: Correlation Matrix (pearson-method)"                
+      [2] ""                                                          
+      [3] "|Parameter    | Petal.Width | Petal.Length | Sepal.Width |"
+      [4] "|:------------|:-----------:|:------------:|:-----------:|"
+      [5] "|Sepal.Length |     0.82*** |      0.87*** |       -0.12 |"
+      [6] "|Sepal.Width  |    -0.37*** |     -0.43*** |             |"
+      [7] "|Petal.Length |     0.96*** |              |             |"
+      [8] "p-value adjustment method: Holm (1979)"                    
+      attr(,"format")
+      [1] "pipe"
+      attr(,"class")
+      [1] "knitr_kable" "character"  
 
 ---
 
@@ -27,20 +29,6 @@
       Sepal.Width  |    -0.37*** |     -0.43*** |            
       Petal.Length |     0.96*** |              |            
       
-      p-value adjustment method: Holm (1979)
-
-# display and print method works - html
-
-    Code
-      print(summary(correlation(iris)), format = "html")
-    Output
-      Correlation Matrix (pearson-method)
-      
-      Parameter    | Petal.Width | Petal.Length | Sepal.Width
-      -------------------------------------------------------
-      Sepal.Length |     0.82*** |      0.87*** |       -0.12
-      Sepal.Width  |    -0.37*** |     -0.43*** |            
-      Petal.Length |     0.96*** |              |            
       p-value adjustment method: Holm (1979)
 
 # as.matrix works
