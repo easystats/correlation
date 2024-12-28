@@ -156,10 +156,17 @@ format.easycormatrix <- function(x,
   # final new line
   footer <- paste0(footer, "\n")
 
-  # for html/markdown, create list
+  # for html/markdown, modify footer format
   if (!is.null(format) && format != "text") {
+    # no line break if not text format
     footer <- unlist(strsplit(footer, "\n", fixed = TRUE))
-    footer <- as.list(footer[nzchar(footer, keepNA = TRUE)])
+    # remove empty elements
+    footer <- footer[nzchar(footer, keepNA = TRUE)]
+    # create list or separate by ";"
+    footer <- switch(format,
+      "html" = paste(footer, collapse = "; "),
+      as.list(footer)
+    )
   }
 
   footer
