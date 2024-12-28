@@ -129,8 +129,8 @@ cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "comple
 
 .cor_sort_nonsquare <- function(m, distance = "euclidean", ...) {
   # Step 1: Perform clustering on rows and columns independently
-  row_dist <- stats::dist(m, method = distance)           # Distance between rows
-  col_dist <- stats::dist(t(m), method = distance)        # Distance between columns
+  row_dist <- stats::dist(m, method = distance) # Distance between rows
+  col_dist <- stats::dist(t(m), method = distance) # Distance between columns
 
   row_hclust <- stats::hclust(row_dist, method = "average")
   col_hclust <- stats::hclust(col_dist, method = "average")

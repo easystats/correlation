@@ -1,5 +1,4 @@
 test_that("cor_sort", {
-
   # Basic -------------------------------------------------------------------
 
   # Square
@@ -17,7 +16,7 @@ test_that("cor_sort", {
   # heatmap(r2, Rowv = NA, Colv = NA)  # visualize
 
   r2sort <- cor_sort(r2)
-  expect_equal(all(rownames(r2sort) == names(mtcars)[1:5]), FALSE)
+  expect_false(all(rownames(r2sort) == names(mtcars)[1:5]))
   # heatmap(r2sort, Rowv = NA, Colv = NA)  # visualize
 
   # correlation() -----------------------------------------------------------
@@ -33,11 +32,11 @@ test_that("cor_sort", {
 
   # summary(correlation()) --------------------------------------------------
   # Square
-  rez1sum <- summary(rez1)  # TODO: doesn't work with non-redundant
+  rez1sum <- summary(rez1) # TODO: doesn't work with non-redundant
   # TODO: fix
   expect_error(cor_sort(rez1sum))
 
-  rez1sum <- summary(rez1, redundant=TRUE)
+  rez1sum <- summary(rez1, redundant = TRUE)
   rez1sumsort <- cor_sort(rez1sum)
   expect_false(all(rownames(rez1sumsort) == rownames(rez1sum)))
 
