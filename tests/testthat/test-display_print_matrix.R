@@ -3,7 +3,6 @@
 test_that("display and print method works - markdown", {
   skip_on_cran()
   skip_if_not_or_load_if_installed("gt")
-  skip_if_not_or_load_if_installed("poorman")
   expect_snapshot(display(summary(correlation(iris))))
   expect_snapshot(print(summary(correlation(iris))))
 })

@@ -180,10 +180,9 @@
 #' `stats` package are supported.
 #' }
 #'
-#' @examplesIf requireNamespace("poorman", quietly = TRUE) && requireNamespace("psych", quietly = TRUE)
-#'
+#' @examplesIf all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0"
 #' library(correlation)
-#' library(poorman)
+#' data(iris)
 #'
 #' results <- correlation(iris)
 #'
@@ -192,22 +191,20 @@
 #' summary(results, redundant = TRUE)
 #'
 #' # pipe-friendly usage with  grouped dataframes from {dplyr} package
-#' iris %>%
+#' iris |>
 #'   correlation(select = "Petal.Width", select2 = "Sepal.Length")
 #'
 #' # Grouped dataframe
 #' # grouped correlations
-#' iris %>%
-#'   group_by(Species) %>%
+#' iris |>
+#'   datawizard::data_group(Species) |>
 #'   correlation()
 #'
 #' # selecting specific variables for correlation
-#' mtcars %>%
-#'   group_by(am) %>%
-#'   correlation(
-#'     select = c("cyl", "wt"),
-#'     select2 = c("hp")
-#'   )
+#' data(mtcars)
+#' mtcars |>
+#'   datawizard::data_group(am) |>
+#'   correlation(select = c("cyl", "wt"), select2 = "hp")
 #'
 #' # supplying custom variable names
 #' correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
