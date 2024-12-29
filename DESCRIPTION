@@ -1,7 +1,7 @@
 Type: Package
 Package: correlation
 Title: Methods for Correlation Analysis
-Version: 0.8.6
+Version: 0.8.6.1
 Authors@R:
     c(person(given = "Dominique",
              family = "Makowski",
@@ -57,8 +57,8 @@ Imports:
     bayestestR (>= 0.15.0),
     datasets,
     datawizard (>= 0.13.0),
-    insight (>= 0.20.5),
-    parameters (>= 0.22.2),
+    insight (>= 1.0.0),
+    parameters (>= 0.24.0),
     stats
 Suggests:
     BayesFactor,

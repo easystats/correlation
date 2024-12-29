@@ -1,7 +1,7 @@
 # as.list
 
     Code
-      as.list(correlation(mtcars))
+      print(out, table_width = Inf)
     Output
        r 
       ---
@@ -55,7 +55,7 @@
 ---
 
     Code
-      as.list(correlation(datawizard::data_group(msleep, "vore"), method = "spearman"))
+      print(out, table_width = Inf)
     Output
       =======
        carni 
@@ -213,8 +213,7 @@
 ---
 
     Code
-      as.list(correlation(datawizard::data_group(mtcars, "am"), select = c("cyl",
-        "wt"), select2 = "hp", method = "percentage"))
+      print(out, table_width = Inf)
     Output
       ===
        0 

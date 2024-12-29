@@ -156,10 +156,17 @@ format.easycormatrix <- function(x,
   # final new line
   footer <- paste0(footer, "\n")
 
-  # for html/markdown, create list
+  # for html/markdown, modify footer format
   if (!is.null(format) && format != "text") {
+    # no line break if not text format
     footer <- unlist(strsplit(footer, "\n", fixed = TRUE))
-    footer <- as.list(footer[nzchar(footer, keepNA = TRUE)])
+    # remove empty elements
+    footer <- footer[nzchar(footer, keepNA = TRUE)]
+    # create list or separate by ";"
+    footer <- switch(format,
+      html = paste(footer, collapse = "; "),
+      as.list(footer)
+    )
   }
 
   footer
@@ -168,7 +175,9 @@ format.easycormatrix <- function(x,
 
 #' @keywords internal
 .format_easycorrelation_caption <- function(x, format = NULL) {
-  if (!is.null(attributes(x)$method)) {
+  if (is.null(attributes(x)$method)) {
+    caption <- NULL
+  } else {
     if (isTRUE(attributes(x)$smoothed)) {
       prefix <- "Smoothed Correlation Matrix ("
     } else {
@@ -179,8 +188,6 @@ format.easycormatrix <- function(x,
     } else {
       caption <- paste0(prefix, unique(attributes(x)$method), "-method)")
     }
-  } else {
-    caption <- NULL
   }
 
   caption

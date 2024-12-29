@@ -3,7 +3,7 @@
 
 #' @export
 print.easycorrelation <- function(x, ...) {
-  cat(insight::export_table(format(x, ...), format = "text"))
+  cat(insight::export_table(format(x, ...), ...))
   invisible(x)
 }
 
@@ -13,9 +13,9 @@ print.easycormatrix <- function(x, ...) {
   # If real matrix, print as matrix
   if (colnames(formatted)[1] == "Variables") {
     formatted$Variables <- NULL
-    print(as.matrix(formatted))
+    print(as.matrix(formatted), ...)
   } else {
-    cat(insight::export_table(format(x, ...), format = "text"))
+    cat(insight::export_table(format(x, ...), ...))
   }
   invisible(x)
 }
@@ -31,7 +31,7 @@ print.easymatrixlist <- function(x, cols = "auto", ...) {
 
   for (i in cols) {
     cat(" ", i, " ", "\n", rep("-", nchar(i) + 2), "\n", sep = "")
-    print(x[[i]])
+    print(x[[i]], ...)
     cat("\n")
   }
 }
@@ -40,7 +40,7 @@ print.easymatrixlist <- function(x, cols = "auto", ...) {
 print.grouped_easymatrixlist <- function(x, cols = "auto", ...) {
   for (i in names(x)) {
     cat(rep("=", nchar(i) + 2), "\n ", i, " ", "\n", rep("=", nchar(i) + 2), "\n\n", sep = "")
-    print(x[[i]])
+    print(x[[i]], ...)
     cat("\n")
   }
 }

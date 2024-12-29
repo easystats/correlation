@@ -180,10 +180,9 @@
 #' `stats` package are supported.
 #' }
 #'
-#' @examplesIf requireNamespace("poorman", quietly = TRUE) && requireNamespace("psych", quietly = TRUE)
-#'
+#' @examplesIf all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0"
 #' library(correlation)
-#' library(poorman)
+#' data(iris)
 #'
 #' results <- correlation(iris)
 #'
@@ -192,22 +191,20 @@
 #' summary(results, redundant = TRUE)
 #'
 #' # pipe-friendly usage with  grouped dataframes from {dplyr} package
-#' iris %>%
+#' iris |>
 #'   correlation(select = "Petal.Width", select2 = "Sepal.Length")
 #'
 #' # Grouped dataframe
 #' # grouped correlations
-#' iris %>%
-#'   group_by(Species) %>%
+#' iris |>
+#'   datawizard::data_group(Species) |>
 #'   correlation()
 #'
 #' # selecting specific variables for correlation
-#' mtcars %>%
-#'   group_by(am) %>%
-#'   correlation(
-#'     select = c("cyl", "wt"),
-#'     select2 = c("hp")
-#'   )
+#' data(mtcars)
+#' mtcars |>
+#'   datawizard::data_group(am) |>
+#'   correlation(select = c("cyl", "wt"), select2 = "hp")
 #'
 #' # supplying custom variable names
 #' correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
@@ -425,8 +422,36 @@ correlation <- function(data,
   ungrouped_x <- as.data.frame(data)
   xlist <- split(ungrouped_x, ungrouped_x[groups], sep = " - ")
 
-  # If data 2 is provided
-  if (!is.null(data2)) {
+  # If data 2 is not provided
+  if (is.null(data2)) {
+    modelframe <- data.frame()
+    out <- data.frame()
+    for (i in names(xlist)) {
+      xlist[[i]][groups] <- NULL
+      rez <- .correlation(
+        xlist[[i]],
+        data2,
+        method = method,
+        p_adjust = p_adjust,
+        ci = ci,
+        bayesian = bayesian,
+        bayesian_prior = bayesian_prior,
+        bayesian_ci_method = bayesian_ci_method,
+        bayesian_test = bayesian_test,
+        redundant = redundant,
+        include_factors = include_factors,
+        partial = partial,
+        partial_bayesian = partial_bayesian,
+        multilevel = multilevel,
+        ranktransform = ranktransform,
+        winsorize = winsorize
+      )
+      modelframe_current <- rez$data
+      rez$params$Group <- modelframe_current$Group <- i
+      out <- rbind(out, rez$params)
+      modelframe <- rbind(modelframe, modelframe_current)
+    }
+  } else {
     if (inherits(data2, "grouped_df")) {
       groups2 <- setdiff(colnames(attributes(data2)$groups), ".rows")
       if (!all.equal(groups, groups2)) {
@@ -462,35 +487,6 @@ correlation <- function(data,
         out <- rbind(out, rez$params)
         modelframe <- rbind(modelframe, modelframe_current)
       }
-    }
-    # else
-  } else {
-    modelframe <- data.frame()
-    out <- data.frame()
-    for (i in names(xlist)) {
-      xlist[[i]][groups] <- NULL
-      rez <- .correlation(
-        xlist[[i]],
-        data2,
-        method = method,
-        p_adjust = p_adjust,
-        ci = ci,
-        bayesian = bayesian,
-        bayesian_prior = bayesian_prior,
-        bayesian_ci_method = bayesian_ci_method,
-        bayesian_test = bayesian_test,
-        redundant = redundant,
-        include_factors = include_factors,
-        partial = partial,
-        partial_bayesian = partial_bayesian,
-        multilevel = multilevel,
-        ranktransform = ranktransform,
-        winsorize = winsorize
-      )
-      modelframe_current <- rez$data
-      rez$params$Group <- modelframe_current$Group <- i
-      out <- rbind(out, rez$params)
-      modelframe <- rbind(modelframe, modelframe_current)
     }
   }
 
