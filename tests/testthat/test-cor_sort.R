@@ -13,10 +13,14 @@ test_that("cor_sort", {
   # Non-square
   r2 <- cor(mtcars[names(mtcars)[1:5]], mtcars[names(mtcars)[6:11]])
   expect_equal(rownames(r2), names(mtcars)[1:5])
+  expect_identical(colnames(r2), c("wt", "qsec", "vs", "am", "gear", "carb"))
+  expect_identical(rownames(r2), c("mpg", "cyl", "disp", "hp", "drat"))
   # heatmap(r2, Rowv = NA, Colv = NA)  # visualize
 
   r2sort <- cor_sort(r2)
   expect_false(all(rownames(r2sort) == names(mtcars)[1:5]))
+  expect_identical(colnames(r2sort), c("am", "gear", "qsec", "vs", "wt", "carb"))
+  expect_identical(rownames(r2sort), c("drat", "disp", "hp", "cyl", "mpg"))
   # heatmap(r2sort, Rowv = NA, Colv = NA)  # visualize
 
   # correlation() -----------------------------------------------------------
