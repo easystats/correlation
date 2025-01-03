@@ -1,4 +1,4 @@
-# correlation 0.8.6
+# correlation 0.8.7
 
 - The `format()` for objects of class `easycormatrix` gets a `zap_small` argument,
   to round very small numbers.
