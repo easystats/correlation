@@ -1,7 +1,7 @@
 # correlation 0.8.6
 
 - The `format()` for objects of class `easycormatrix` gets a `zap_small` argument,
-  which defaults to `TRUE`, to round very small numbers.
+  to round very small numbers.
 
 - `cor_sort()` can now deal with non-square matrices.
 
