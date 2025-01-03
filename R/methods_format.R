@@ -40,7 +40,7 @@ format.easycormatrix <- function(x,
                                  stars = NULL,
                                  include_significance = NULL,
                                  format = NULL,
-                                 zap_small = NULL,
+                                 zap_small = TRUE,
                                  bf_exact = TRUE,
                                  ...) {
   # If it's a real matrix
