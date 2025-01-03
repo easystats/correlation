@@ -198,3 +198,16 @@ test_that("as.data.frame for correlation output", {
   set.seed(123)
   expect_snapshot(as.data.frame(correlation(ggplot2::msleep)))
 })
+
+test_that("correlation output with zap_small", {
+  set.seed(123)
+  d <- data.frame(
+    x = rnorm(10000),
+    y = rnorm(10000),
+    z = rnorm(10000)
+  )
+  r <- correlation::correlation(d)
+
+  expect_snapshot(summary(r), variant = "windows")
+  expect_snapshot(summary(r, zap_small = FALSE), variant = "windows")
+})

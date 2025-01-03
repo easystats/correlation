@@ -40,6 +40,7 @@ format.easycormatrix <- function(x,
                                  stars = NULL,
                                  include_significance = NULL,
                                  format = NULL,
+                                 zap_small = NULL,
                                  bf_exact = TRUE,
                                  ...) {
   # If it's a real matrix
@@ -56,11 +57,13 @@ format.easycormatrix <- function(x,
   stars <- .retrieve_arg_from_attr(attri, stars, default = TRUE)
   include_significance <- .retrieve_arg_from_attr(attri, include_significance, default = FALSE)
   p_digits <- .retrieve_arg_from_attr(attri, p_digits, default = "apa")
+  zap_small <- .retrieve_arg_from_attr(attri, zap_small, default = TRUE)
 
 
   # Round and format values
   nums <- sapply(as.data.frame(x), is.numeric)
-  x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value, digits = digits)
+  x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value,
+                      digits = digits, zap_small = zap_small, ...)
 
 
   # Deduct if stars only
