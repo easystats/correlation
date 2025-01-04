@@ -4,7 +4,9 @@ test_that("display and print method works - markdown", {
   expect_identical(
     out[1:7],
     c(
-      "Table: Correlation Matrix (pearson-method)", "", "|Parameter1   |   Parameter2 |     r |         95% CI | t(148) |         p |",
+      "Table: Correlation Matrix (pearson-method)",
+      "",
+      "|Parameter1   |   Parameter2 |     r |         95% CI | t(148) |         p |",
       "|:------------|:------------:|:-----:|:--------------:|:------:|:---------:|",
       "|Sepal.Length |  Sepal.Width | -0.12 |  (-0.27, 0.04) |  -1.44 | 0.152     |",
       "|Sepal.Length | Petal.Length |  0.87 |   (0.83, 0.91) |  21.65 | < .001*** |",
