@@ -4,6 +4,7 @@ test_that("display and print method works - markdown", {
   skip_on_cran()
   skip_if_not_or_load_if_installed("knitr")
   expect_snapshot(display(summary(correlation(iris))))
+  expect_snapshot(print_md(summary(correlation(iris))))
 })
 
 # display and print method works - html -----------------------------
