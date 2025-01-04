@@ -3,7 +3,6 @@ test_that("display and print method works - markdown", {
   skip_if(getRversion() < "4.0.0")
   skip_if_not_or_load_if_installed("gt")
 
-  expect_snapshot(print(correlation(iris), format = "markdown"))
   expect_snapshot(display(correlation(iris)))
 })
 

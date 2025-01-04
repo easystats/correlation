@@ -39,13 +39,13 @@
     Output
       # Correlation Matrix (pearson-method)
       
-      Parameter   |   bodywt |  brainwt |     awake | sleep_cycle | sleep_rem
-      -----------------------------------------------------------------------
-      sleep_total |     0.04 |     0.05 | 3.63e-225 |        0.05 |  3.78e-11
-      sleep_rem   |     0.05 |     0.13 |  3.78e-11 |        0.12 |          
-      sleep_cycle |     0.05 | 2.66e-08 |      0.05 |             |          
-      awake       |     0.04 |     0.05 |           |             |          
-      brainwt     | 1.28e-24 |          |           |             |          
+      Parameter   | bodywt | brainwt | awake | sleep_cycle | sleep_rem
+      ----------------------------------------------------------------
+      sleep_total |   0.04 |    0.05 |  0.00 |        0.05 |      0.00
+      sleep_rem   |   0.05 |    0.13 |  0.00 |        0.12 |          
+      sleep_cycle |   0.05 |    0.00 |  0.05 |             |          
+      awake       |   0.04 |    0.05 |       |             |          
+      brainwt     |   0.00 |         |       |             |          
       
       p-value adjustment method: Holm (1979)
 
