@@ -4,12 +4,13 @@
 \alias{cor_diff}
 \title{Test differences between correlations}
 \usage{
-cor_diff(data, x, y, x2, y2, method = "parametric", ...)
+cor_diff(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ...)
 }
 \arguments{
 \item{data}{A data frame of observations.}
 
-\item{x, y, x2, y2}{The variable names in \code{data} to be used.}
+\item{x, y, x2, y2}{The variable names in \code{data} to be used. \code{x} and \code{y} can also
+be pairs of variables, in which case the second variable is used as \code{x2} and \code{y2}.}
 
 \item{method}{Can be \code{"parametric"} or \code{"bootstrapping"}. If \code{"parametric"},
 the \code{\link[psych:r.test]{psych::r.test()}} function is used. If \code{"bootstrapping"}, a bootstrapping
@@ -28,7 +29,9 @@ A significant p-value indicates that the correlation between \code{x} and \code{
 different from the correlation between \code{x2} and \code{y2}.
 }
 \examples{
-cor_diff(iris, "Sepal.Length", "Sepal.Width", "Sepal.Length", "Petal.Width")
-cor_diff(iris, "Sepal.Length", "Sepal.Width", "Sepal.Length", "Petal.Width",
+cor_diff(iris, c("Sepal.Length", "Sepal.Width"), c("Sepal.Length", "Petal.Width"))
+cor_diff(iris,
+         c("Sepal.Length", "Sepal.Width"),
+         c("Sepal.Length", "Petal.Width"),
          method = "bootstrapping", iterations = 100)
 }

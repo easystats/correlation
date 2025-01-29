@@ -10,7 +10,8 @@
 #' different from the correlation between `x2` and `y2`.
 #'
 #' @param data A data frame of observations.
-#' @param x,y,x2,y2 The variable names in `data` to be used.
+#' @param x,y,x2,y2 The variable names in `data` to be used. `x` and `y` can also
+#' be pairs of variables, in which case the second variable is used as `x2` and `y2`.
 #' @param method Can be `"parametric"` or `"bootstrapping"`. If `"parametric"`,
 #' the [psych::r.test()] function is used. If `"bootstrapping"`, a bootstrapping
 #' procedure is used.
@@ -18,11 +19,23 @@
 #' if method is bootstrapping.
 #'
 #' @examples
-#' cor_diff(iris, "Sepal.Length", "Sepal.Width", "Sepal.Length", "Petal.Width")
-#' cor_diff(iris, "Sepal.Length", "Sepal.Width", "Sepal.Length", "Petal.Width",
+#' cor_diff(iris, c("Sepal.Length", "Sepal.Width"), c("Sepal.Length", "Petal.Width"))
+#' cor_diff(iris,
+#'          c("Sepal.Length", "Sepal.Width"),
+#'          c("Sepal.Length", "Petal.Width"),
 #'          method = "bootstrapping", iterations = 100)
 #' @export
-cor_diff <- function(data, x, y, x2, y2, method = "parametric", ...) {
+cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ...) {
+
+  # If pairs are passed
+  if(length(x) == 2 & length(y) == 2) {
+    x2 <- x[2]
+    y2 <- y[2]
+    x <- x[1]
+    y <- y[1]
+  }
+
+  # Compute
   if(method %in% c("bootstrapping")) {
     out <- .cor_diff_bootstrapping(data, x, y, x2, y2, ...)
   } else {
