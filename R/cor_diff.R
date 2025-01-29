@@ -21,14 +21,14 @@
 #' @examples
 #' cor_diff(iris, c("Sepal.Length", "Sepal.Width"), c("Sepal.Length", "Petal.Width"))
 #' cor_diff(iris,
-#'          c("Sepal.Length", "Sepal.Width"),
-#'          c("Sepal.Length", "Petal.Width"),
-#'          method = "bootstrapping", iterations = 100)
+#'   c("Sepal.Length", "Sepal.Width"),
+#'   c("Sepal.Length", "Petal.Width"),
+#'   method = "bootstrapping", iterations = 100
+#' )
 #' @export
 cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ...) {
-
   # If pairs are passed
-  if(length(x) == 2 && length(y) == 2) {
+  if (length(x) == 2 && length(y) == 2) {
     x2 <- y[1]
     y2 <- y[2]
     y <- x[2]
@@ -36,7 +36,7 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
   }
 
   # Compute
-  if(method %in% c("bootstrapping")) {
+  if (method %in% c("bootstrapping")) {
     out <- .cor_diff_bootstrapping(data, x, y, x2, y2, ...)
   } else {
     out <- .cor_diff_parametric(data, x, y, x2, y2, ...)
@@ -53,14 +53,13 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
 
 #' @keywords internal
 .cor_diff_parametric <- function(data, x, y, x2, y2, ...) {
-
   insight::check_if_installed("psych", "for 'parametric' correlation difference method")
 
   args <- list(n = nrow(data), r12 = cor(data[[x]], data[[y]]))
-  if(x == x2 && y != y2) {
+  if (x == x2 && y != y2) {
     args$r13 <- cor(data[[x]], data[[y2]])
     args$r23 <- cor(data[[y]], data[[y2]])
-  } else if(y == y2 && x != x2) {
+  } else if (y == y2 && x != x2) {
     args$r13 <- cor(data[[y]], data[[x2]])
     args$r23 <- cor(data[[x]], data[[x2]])
   } else {
@@ -71,7 +70,7 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
   out <- data.frame(
     Method = "parametric"
   )
-  if("t" %in% names(test)){
+  if ("t" %in% names(test)) {
     out$t <- test$t
   } else {
     out$z <- test$z
@@ -81,11 +80,11 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
 }
 
 #' @keywords internal
-.cor_diff_bootstrapping <- function(data, x, y, x2, y2, iterations = 1000, robust = FALSE,  ...) {
-  diff <- rep(NA, iterations)  # Initialize vector
+.cor_diff_bootstrapping <- function(data, x, y, x2, y2, iterations = 1000, robust = FALSE, ...) {
+  diff <- rep(NA, iterations) # Initialize vector
 
   # Bootstrap
-  for(i in 1:iterations) {
+  for (i in 1:iterations) {
     # Take random sample of data
     dat <- data[sample(nrow(data), nrow(data), replace = TRUE), ]
     # Compute diff
@@ -93,7 +92,7 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
   }
 
   # Summarize
-  if(robust == FALSE) {
+  if (robust == FALSE) {
     out <- data.frame(
       Method = "bootstrapping",
       z = mean(diff) / sd(diff),
