@@ -29,10 +29,10 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
 
   # If pairs are passed
   if(length(x) == 2 & length(y) == 2) {
-    x2 <- x[2]
+    x2 <- y[1]
     y2 <- y[2]
+    y <- x[2]
     x <- x[1]
-    y <- y[1]
   }
 
   # Compute
