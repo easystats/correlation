@@ -28,7 +28,7 @@
 cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ...) {
 
   # If pairs are passed
-  if(length(x) == 2 & length(y) == 2) {
+  if(length(x) == 2 && length(y) == 2) {
     x2 <- y[1]
     y2 <- y[2]
     y <- x[2]
@@ -57,10 +57,10 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
   insight::check_if_installed("psych", "for 'parametric' correlation difference method")
 
   args <- list(n = nrow(data), r12 = cor(data[[x]], data[[y]]))
-  if(x == x2 & y != y2) {
+  if(x == x2 && y != y2) {
     args$r13 <- cor(data[[x]], data[[y2]])
     args$r23 <- cor(data[[y]], data[[y2]])
-  } else if(y == y2 & x != x2) {
+  } else if(y == y2 && x != x2) {
     args$r13 <- cor(data[[y]], data[[x2]])
     args$r23 <- cor(data[[x]], data[[x2]])
   } else {
