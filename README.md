@@ -3,7 +3,6 @@
 
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02306/status.svg)](https://doi.org/10.21105/joss.02306)
 [![total](https://cranlogs.r-pkg.org/badges/grand-total/correlation)](https://cranlogs.r-pkg.org/)
-[![status](https://tinyverse.netlify.com/badge/correlation)](https://CRAN.R-project.org/package=correlation)
 <!-- [![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation) -->
 
 `correlation` is an
@@ -41,9 +40,9 @@ badge](https://easystats.r-universe.dev/badges/correlation)](https://easystats.r
 The *correlation* package is available on CRAN, while its latest
 development version is available on R-universe (from *rOpenSci*).
 
-| Type        | Source     | Command                                                                       |
-|-------------|------------|-------------------------------------------------------------------------------|
-| Release     | CRAN       | `install.packages("correlation")`                                             |
+| Type | Source | Command |
+|----|----|----|
+| Release | CRAN | `install.packages("correlation")` |
 | Development | R-universe | `install.packages("correlation", repos = "https://easystats.r-universe.dev")` |
 
 Once you have downloaded the package, you can then load it using:
@@ -203,11 +202,11 @@ correlation(iris, bayesian = TRUE)
 ## 
 ## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF
 ## --------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.04] |  92.15% |    42.58% | Beta (3 +- 3) |       0.509
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.04] |  92.53% |    42.52% | Beta (3 +- 3) |       0.509
 ## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.74,  0.85] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
-## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.50, -0.21] | 100%*** |     0.12% | Beta (3 +- 3) | 5.29e+03***
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
+## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.27] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.22] | 100%*** |     0.03% | Beta (3 +- 3) | 5.29e+03***
 ## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
 ## 
 ## Observations: 150
