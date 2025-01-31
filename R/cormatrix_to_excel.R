@@ -62,17 +62,17 @@ cormatrix_to_excel <- function(data,
   p_val <- attr(cormatrix, "p")
 
   # Define colours
-  style_gray <- c(rgb = "C1CDCD")
-  style_black <- c(rgb = "000000")
-  style_pink <- c(rgb = "FBCAC0")
-  style_peach <- c(rgb = "F79681")
-  style_red <- c(rgb = "F65534")
-  style_lightblue <- c(rgb = "97FFFF")
-  style_midblue <- c(rgb = "0AF3FF")
-  style_darkblue <- c(rgb = "00BFFF")
-  style_green1 <- c(rgb = "698B22")
-  style_green2 <- c(rgb = "9ACD32")
-  style_green3 <- c(rgb = "B3EE3A")
+  style_gray <- openxlsx2::wb_colour(hex = "C1CDCD")
+  style_black <- openxlsx2::wb_colour(hex = "000000")
+  style_pink <- openxlsx2::wb_colour(hex = "FBCAC0")
+  style_peach <- openxlsx2::wb_colour(hex = "F79681")
+  style_red <- openxlsx2::wb_colour(hex = "F65534")
+  style_lightblue <- openxlsx2::wb_colour(hex = "97FFFF")
+  style_midblue <- openxlsx2::wb_colour(hex = "0AF3FF")
+  style_darkblue <- openxlsx2::wb_colour(hex = "00BFFF")
+  style_green1 <- openxlsx2::wb_colour(hex = "698B22")
+  style_green2 <- openxlsx2::wb_colour(hex = "9ACD32")
+  style_green3 <- openxlsx2::wb_colour(hex = "B3EE3A")
 
   # Colours
   gray_style <- openxlsx2::create_dxfs_style(
