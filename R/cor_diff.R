@@ -55,15 +55,15 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
 .cor_diff_parametric <- function(data, x, y, x2, y2, ...) {
   insight::check_if_installed("psych", "for 'parametric' correlation difference method")
 
-  args <- list(n = nrow(data), r12 = cor(data[[x]], data[[y]]))
+  args <- list(n = nrow(data), r12 = stats::cor(data[[x]], data[[y]]))
   if (x == x2 && y != y2) {
-    args$r13 <- cor(data[[x]], data[[y2]])
-    args$r23 <- cor(data[[y]], data[[y2]])
+    args$r13 <- stats::cor(data[[x]], data[[y2]])
+    args$r23 <- stats::cor(data[[y]], data[[y2]])
   } else if (y == y2 && x != x2) {
-    args$r13 <- cor(data[[y]], data[[x2]])
-    args$r23 <- cor(data[[x]], data[[x2]])
+    args$r13 <- stats::cor(data[[y]], data[[x2]])
+    args$r23 <- stats::cor(data[[x]], data[[x2]])
   } else {
-    args$r34 <- cor(data[[x2]], data[[y2]])
+    args$r34 <- stats::cor(data[[x2]], data[[y2]])
   }
   test <- do.call(psych::r.test, args)
 
@@ -88,20 +88,20 @@ cor_diff <- function(data, x, y, x2 = NULL, y2 = NULL, method = "parametric", ..
     # Take random sample of data
     dat <- data[sample(nrow(data), nrow(data), replace = TRUE), ]
     # Compute diff
-    diff[i] <- cor(dat[[x]], dat[[y]]) - cor(dat[[x2]], dat[[y2]])
+    diff[i] <- stats::cor(dat[[x]], dat[[y]]) - stats::cor(dat[[x2]], dat[[y2]])
   }
 
   # Summarize
   if (robust == FALSE) {
     out <- data.frame(
       Method = "bootstrapping",
-      z = mean(diff) / sd(diff),
+      z = mean(diff) / stats::sd(diff),
       p = bayestestR::pd_to_p(as.numeric(bayestestR::p_direction(diff)))
     )
   } else {
     out <- data.frame(
       Method = "bootstrapping_robust",
-      z = median(diff) / mad(diff),
+      z = stats::median(diff) / stats::mad(diff),
       p = bayestestR::pd_to_p(as.numeric(bayestestR::p_direction(diff)))
     )
   }

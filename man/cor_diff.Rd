@@ -31,7 +31,8 @@ different from the correlation between \code{x2} and \code{y2}.
 \examples{
 cor_diff(iris, c("Sepal.Length", "Sepal.Width"), c("Sepal.Length", "Petal.Width"))
 cor_diff(iris,
-         c("Sepal.Length", "Sepal.Width"),
-         c("Sepal.Length", "Petal.Width"),
-         method = "bootstrapping", iterations = 100)
+  c("Sepal.Length", "Sepal.Width"),
+  c("Sepal.Length", "Petal.Width"),
+  method = "bootstrapping", iterations = 100
+)
 }
