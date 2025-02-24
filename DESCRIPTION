@@ -1,7 +1,7 @@
 Type: Package
 Package: correlation
 Title: Methods for Correlation Analysis
-Version: 0.8.6.2
+Version: 0.8.7
 Authors@R:
     c(person(given = "Dominique",
              family = "Makowski",
@@ -56,7 +56,7 @@ Depends:
 Imports:
     bayestestR (>= 0.15.0),
     datasets,
-    datawizard (>= 0.13.0),
+    datawizard (>= 1.0.0),
     insight (>= 1.0.0),
     parameters (>= 0.24.0),
     stats
@@ -95,4 +95,3 @@ Config/Needs/website:
     rstudio/bslib,
     r-lib/pkgdown,
     easystats/easystatstemplate
-Remotes: easystats/insight
