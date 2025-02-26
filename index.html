@@ -85,7 +85,7 @@
 <img src="logo.png" class="logo" alt=""><h1 id="correlation-">correlation <a class="anchor" aria-label="anchor" href="#correlation-"></a>
 </h1>
 </div>
-<p><a href="https://doi.org/10.21105/joss.02306" class="external-link"><img src="https://joss.theoj.org/papers/10.21105/joss.02306/status.svg" alt="DOI"></a> <a href="https://cranlogs.r-pkg.org/" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/correlation" alt="total"></a> <!-- [![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation) --></p>
+<p><a href="https://doi.org/10.21105/joss.02306" class="external-link"><img src="https://joss.theoj.org/papers/10.21105/joss.02306/status.svg" alt="DOI"></a> <a href="https://cran.r-project.org/package=correlation" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/correlation" alt="downloads"></a> <a href="https://cranlogs.r-pkg.org/" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/correlation" alt="total"></a></p>
 <p><code>correlation</code> is an <a href="https://github.com/easystats/easystats" class="external-link"><strong>easystats</strong></a> package focused on correlation analysis. It’s lightweight, easy to use, and allows for the computation of many different kinds of correlations, such as <strong>partial</strong> correlations, <strong>Bayesian</strong> correlations, <strong>multilevel</strong> correlations, <strong>polychoric</strong> correlations, <strong>biweight</strong>, <strong>percentage bend</strong> or <strong>Sheperd’s Pi</strong> correlations (types of robust correlation), <strong>distance</strong> correlation (a type of non-linear correlation) and more, also allowing for combinations between them (for instance, <em>Bayesian partial multilevel correlation</em>).</p>
 </div>
 <div class="section level1">
@@ -98,7 +98,7 @@
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
-<p><a href="https://cran.r-project.org/package=correlation" class="external-link"><img src="http://www.r-pkg.org/badges/version/correlation" alt="CRAN"></a> <a href="https://easystats.r-universe.dev" class="external-link"><img src="https://easystats.r-universe.dev/badges/correlation" alt="correlation status badge"></a> <a href="https://github.com/easystats/correlation/actions" class="external-link"><img src="https://github.com/easystats/correlation/workflows/R-CMD-check/badge.svg?branch=main" alt="R-CMD-check"></a> <a href="https://app.codecov.io/gh/easystats/correlation" class="external-link"><img src="https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg" alt="codecov"></a></p>
+<p><a href="https://cran.r-project.org/package=correlation" class="external-link"><img src="https://www.r-pkg.org/badges/version/correlation" alt="CRAN"></a> <a href="https://easystats.r-universe.dev" class="external-link"><img src="https://easystats.r-universe.dev/badges/correlation" alt="correlation status badge"></a> <a href="https://app.codecov.io/gh/easystats/correlation" class="external-link"><img src="https://codecov.io/gh/easystats/correlation/branch/main/graph/badge.svg" alt="codecov"></a></p>
 <p>The <em>correlation</em> package is available on CRAN, while its latest development version is available on R-universe (from <em>rOpenSci</em>).</p>
 <table class="table">
 <colgroup>
@@ -129,13 +129,14 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://easystats.github.io/correlation/">"correlation"</a></span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p><strong>Tip</strong></p>
-<p><strong>Instead of <code><a href="https://easystats.github.io/correlation/">library(correlation)</a></code>, use <code><a href="https://easystats.github.io/easystats/" class="external-link">library(easystats)</a></code>.</strong> <strong>This will make all features of the easystats-ecosystem available.</strong></p>
-<p><strong>To stay updated, use <code>easystats::install_latest()</code>.</strong></p>
+<p>Instead of <code><a href="https://easystats.github.io/bayestestR/" class="external-link">library(bayestestR)</a></code>, use <code><a href="https://easystats.github.io/easystats/" class="external-link">library(easystats)</a></code>. This will make all features of the easystats-ecosystem available.</p>
+<p>To stay updated, use <code>easystats::install_latest()</code>.</p>
 </blockquote>
 </div>
 <div class="section level1">
 <h1 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h1>
+<p><a href="https://easystats.github.io/correlation/"><img src="https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63" alt="Documentation"></a> <a href="https://easystats.github.io/blog/posts/" class="external-link"><img src="https://img.shields.io/badge/blog-easystats-orange.svg?colorB=FF9800" alt="Blog"></a> <a href="https://easystats.github.io/correlation/reference/index.html"><img src="https://img.shields.io/badge/features-correlation-orange.svg?colorB=2196F3" alt="Features"></a></p>
 <p>Check out package <a href="https://easystats.github.io/correlation/">website</a> for documentation.</p>
 </div>
 <div class="section level1">
@@ -243,14 +244,23 @@
 <code class="sourceCode R"><span><span class="fu"><a href="reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">iris</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">## # Correlation Matrix (pearson-method)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF</span></span>
-<span><span class="co">## --------------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.26,  0.04] |  92.53% |    42.52% | Beta (3 +- 3) |       0.509</span></span>
-<span><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***</span></span>
-<span><span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***</span></span>
-<span><span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.27] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***</span></span>
-<span><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.48, -0.22] | 100%*** |     0.03% | Beta (3 +- 3) | 5.29e+03***</span></span>
-<span><span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***</span></span>
+<span><span class="co">## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE</span></span>
+<span><span class="co">## --------------------------------------------------------------------------</span></span>
+<span><span class="co">## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.04] |  92.70% |    42.83%</span></span>
+<span><span class="co">## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0%</span></span>
+<span><span class="co">## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0%</span></span>
+<span><span class="co">## Sepal.Width  | Petal.Length | -0.41 | [-0.55, -0.28] | 100%*** |        0%</span></span>
+<span><span class="co">## Sepal.Width  |  Petal.Width | -0.35 | [-0.49, -0.22] | 100%*** |        0%</span></span>
+<span><span class="co">## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0%</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Parameter1   |         Prior |          BF</span></span>
+<span><span class="co">## ------------------------------------------</span></span>
+<span><span class="co">## Sepal.Length | Beta (3 +- 3) |       0.509</span></span>
+<span><span class="co">## Sepal.Length | Beta (3 +- 3) | 2.14e+43***</span></span>
+<span><span class="co">## Sepal.Length | Beta (3 +- 3) | 2.62e+33***</span></span>
+<span><span class="co">## Sepal.Width  | Beta (3 +- 3) | 3.49e+05***</span></span>
+<span><span class="co">## Sepal.Width  | Beta (3 +- 3) | 5.29e+03***</span></span>
+<span><span class="co">## Petal.Length | Beta (3 +- 3) | 1.24e+80***</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Observations: 150</span></span></code></pre></div>
 </div>
