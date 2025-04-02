@@ -333,6 +333,7 @@ correlation <- function(data,
       data <- data[which(oo), ]
     } else {
       oo <- complete.cases(cbind(data, data2))
+      data <- data[which(oo), ]
       data2 <- data2[which(oo), ]
     }
   }
