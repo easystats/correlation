@@ -1,3 +1,7 @@
+# correlation 0.8.xxx
+
+- `correlation()` gains a `use=` argument, similar to `stats::cor(use=)`, for controlling how missing data is dealt with.
+
 # correlation 0.8.7
 
 - The `format()` method for objects of class `easycormatrix` gets a `zap_small`
