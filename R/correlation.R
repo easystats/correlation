@@ -397,8 +397,6 @@ correlation <- function(data,
 }
 
 
-
-
 #' @keywords internal
 .correlation_grouped_df <- function(data,
                                     data2 = NULL,
@@ -494,7 +492,6 @@ correlation <- function(data,
   out <- out[c("Group", names(out)[names(out) != "Group"])]
   list(params = out, data = modelframe)
 }
-
 
 
 #' @keywords internal
@@ -626,11 +623,6 @@ correlation <- function(data,
 
   list(params = params, data = data)
 }
-
-
-
-
-
 
 
 # plot ----------------------------

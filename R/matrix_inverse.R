@@ -37,7 +37,6 @@ matrix_inverse <- function(m, tol = .Machine$double.eps^(2 / 3)) {
 }
 
 
-
 #' @keywords internal
 .invert_matrix <- function(m, tol = .Machine$double.eps^(2 / 3)) {
   if (det(m) < tol) {

@@ -300,11 +300,7 @@ cor_test <- function(data,
 }
 
 
-
-
-
 # Utilities ---------------------------------------------------------------
-
 
 
 #' @keywords internal

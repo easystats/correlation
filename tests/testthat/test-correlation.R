@@ -101,7 +101,6 @@ test_that("comparison with other packages", {
 })
 
 
-
 # Size
 test_that("format checks", {
   skip_if_not_or_load_if_installed("psych")

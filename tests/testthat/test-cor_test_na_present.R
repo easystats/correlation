@@ -126,7 +126,6 @@ test_that("cor_test gaussian", {
 })
 
 
-
 # Additional arguments ----------------------------------------------------
 
 

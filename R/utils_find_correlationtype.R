@@ -26,7 +26,6 @@
 }
 
 
-
 #' @keywords internal
 .vartype <- function(x) {
   out <- list(
