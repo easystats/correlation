@@ -11,7 +11,7 @@ correlation(
   select2 = NULL,
   rename = NULL,
   method = "pearson",
-  use = c("pairwise.obs", "complete.obs"),
+  missing = "keep.pairwise",
   p_adjust = "holm",
   ci = 0.95,
   bayesian = FALSE,
@@ -65,13 +65,12 @@ dichotomous factors involved, point-biserial if one dichotomous and one
 continuous and pearson otherwise). See below the \strong{details} section for a
 description of these indices.}
 
-\item{use}{How should missing values be treated? If \code{"pairwise.obs"}
+\item{missing}{How should missing values be treated? If \code{"keep.pairwise"}
 (default) then the correlation between each pair of variables is computed
 using all complete pairs of observations on those variables. If
-\code{"complete.obs"} then missing values are handled by case-wise deletion, and
-correlations are computed using only observations with full data (based on
-\code{data2}/\code{select}/\code{select2} when applicable).
-Should correlations be computed for all available data for each pair description}
+\code{"keep.complete"} then missing values are handled by case-wise deletion,
+and correlations are computed using only observations with full data (based
+on \code{data2}/\code{select}/\code{select2} when applicable).}
 
 \item{p_adjust}{Correction method for frequentist correlations. Can be one of
 \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"},
