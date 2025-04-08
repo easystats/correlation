@@ -214,9 +214,6 @@ test_that("correlation output with zap_small", {
 
 
 test_that("missing values", {
-  library(correlation)
-  library(testthat)
-
   data <- mtcars
 
   data[1,1] <- NA
@@ -225,7 +222,7 @@ test_that("missing values", {
   r_complete <- stats::cor(data[,1:5], use = "complete")
 
   corr_pairwise <- correlation(data[,1:5])
-  corr_complete <- correlation(data[,1:5], missing = "keep.complete")
+  corr_complete <- correlation(data[,1:5], missing = "keep_complete")
 
   expect_equal(as.matrix(corr_pairwise), r_pairwise)
   expect_equal(as.matrix(corr_complete), r_complete)
@@ -236,7 +233,7 @@ test_that("missing values", {
   r_complete <- stats::cor(data[,1:2], data[,3:5], use = "complete")
 
   corr_pairwise <- correlation(data[,1:2], data[,3:5])
-  corr_complete <- correlation(data[,1:2], data[,3:5], missing = "keep.complete")
+  corr_complete <- correlation(data[,1:2], data[,3:5], missing = "keep_complete")
 
   expect_equal(as.matrix(corr_pairwise), r_pairwise)
   expect_equal(as.matrix(corr_complete), r_complete)

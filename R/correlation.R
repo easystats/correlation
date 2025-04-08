@@ -33,10 +33,10 @@
 #'   [insight::standardize_names()] on the output to get standardized column
 #'   names. This option can also be set globally by running
 #'   `options(easystats.standardize_names = TRUE)`.
-#' @param missing How should missing values be treated? If `"keep.pairwise"`
+#' @param missing How should missing values be treated? If `"keep_pairwise"`
 #'   (default) then the correlation between each pair of variables is computed
 #'   using all complete pairs of observations on those variables. If
-#'   `"keep.complete"` then missing values are handled by case-wise deletion,
+#'   `"keep_complete"` then missing values are handled by case-wise deletion,
 #'   and correlations are computed using only observations with full data (based
 #'   on `data2`/`select`/`select2` when applicable).
 #' @inheritParams cor_test
@@ -253,7 +253,7 @@ correlation <- function(data,
                         select2 = NULL,
                         rename = NULL,
                         method = "pearson",
-                        missing = "keep.pairwise",
+                        missing = "keep_pairwise",
                         p_adjust = "holm",
                         ci = 0.95,
                         bayesian = FALSE,
@@ -325,8 +325,8 @@ correlation <- function(data,
     }
   }
 
-  missing <- insight::validate_argument(missing, options = c("keep.pairwise", "keep.complete"))
-  if (missing == "keep.complete") {
+  missing <- insight::validate_argument(missing, options = c("keep_pairwise", "keep_complete"))
+  if (missing == "keep_complete") {
     if (is.null(data2)) {
       oo <- complete.cases(data)
       data <- data[which(oo), ]

@@ -65,10 +65,10 @@ dichotomous factors involved, point-biserial if one dichotomous and one
 continuous and pearson otherwise). See below the \strong{details} section for a
 description of these indices.}
 
-\item{missing}{How should missing values be treated? If \code{"keep.pairwise"}
+\item{missing}{How should missing values be treated? If \code{"keep_pairwise"}
 (default) then the correlation between each pair of variables is computed
 using all complete pairs of observations on those variables. If
-\code{"keep.complete"} then missing values are handled by case-wise deletion,
+\code{"keep_complete"} then missing values are handled by case-wise deletion,
 and correlations are computed using only observations with full data (based
 on \code{data2}/\code{select}/\code{select2} when applicable).}
 
