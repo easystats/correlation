@@ -398,7 +398,7 @@ correlation <- function(data,
       partial_bayesian = partial_bayesian,
       bayesian_prior = bayesian_prior,
       include_factors = include_factors,
-      use = use
+      missing = missing
     )
   )
 
