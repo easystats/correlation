@@ -328,10 +328,10 @@ correlation <- function(data,
   missing <- insight::validate_argument(missing, options = c("keep_pairwise", "keep_complete"))
   if (missing == "keep_complete") {
     if (is.null(data2)) {
-      oo <- complete.cases(data)
+      oo <- stats::complete.cases(data)
       data <- data[which(oo), ]
     } else {
-      oo <- complete.cases(cbind(data, data2))
+      oo <- stats::complete.cases(cbind(data, data2))
       data <- data[which(oo), ]
       data2 <- data2[which(oo), ]
     }
