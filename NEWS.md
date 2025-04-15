@@ -1,6 +1,6 @@
 # correlation 0.8.xxx
 
-- `correlation()` gains a `use=` argument, similar to `stats::cor(use=)`, for controlling how missing data is dealt with.
+- `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
 
 # correlation 0.8.7
 
