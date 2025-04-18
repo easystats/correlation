@@ -11,7 +11,7 @@ correlation(
   select2 = NULL,
   rename = NULL,
   method = "pearson",
-  missing = "keep.pairwise",
+  missing = "keep_pairwise",
   p_adjust = "holm",
   ci = 0.95,
   bayesian = FALSE,
