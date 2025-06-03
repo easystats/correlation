@@ -40,7 +40,6 @@
 }
 
 
-
 .extract_corr_parameters <- function(model) {
   data_names <- unlist(strsplit(model$data.name, " and ", fixed = TRUE))
   out <- data.frame(

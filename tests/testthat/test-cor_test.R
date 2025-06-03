@@ -168,7 +168,6 @@ test_that("cor_test gaussian", {
 })
 
 
-
 # Additional arguments ----------------------------------------------------
 
 
@@ -178,7 +177,6 @@ test_that("cor_test one-sided p value", {
   out <- cor_test(iris, "Petal.Length", "Petal.Width", alternative = "greater")
   expect_equal(out$p, baseline$p.value, tolerance = 0.000001)
 })
-
 
 
 # Edge cases --------------------------------------------------------------

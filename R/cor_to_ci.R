@@ -20,9 +20,6 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fiell
 }
 
 
-
-
-
 # Kendall -----------------------------------------------------------------
 .cor_to_ci_kendall <- function(cor, n, ci = 0.95, correction = "fieller", ...) {
   # by @tsbaguley (https://rpubs.com/seriousstats/616206)
