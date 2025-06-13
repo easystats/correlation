@@ -148,6 +148,11 @@ cor_test <- function(data,
     data[c(x, y)] <- datawizard::to_numeric(data[c(x, y)], dummy_factors = FALSE)
   }
 
+  # However, for poly, we need  factors!
+  if (method %in% c("poly", "polychoric")) {
+    data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
+  }
+
   # Partial
   if (!isFALSE(partial)) {
     # partial

@@ -88,6 +88,23 @@ test_that("cor_test tetrachoric", {
   out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
   expect_equal(out$rho, -0.403, tolerance = 0.01)
   out_psych <- psych::biserial(data[["Sepal.Width"]], data[["Petal.Width_binary"]])[1]
+
+  set.seed(123)
+  n <- 100
+  k <- 5
+  d <- data.frame(
+    x1 = sample.int(k, n, TRUE),
+    x2 = sample.int(k, n, TRUE),
+    x3 = sample.int(k, n, TRUE),
+    x4 = sample.int(k, n, TRUE)
+  )
+  expect_true(all(vapply(d, is.numeric, logical(1))))
+  out <- correlation(d, method = "polychoric")
+  expect_equal(
+    out$rho,
+    c(0.07729, -0.02453, -0.13999, 0.06508, -0.17158, 0.17863),
+    tolerance = 1e-3
+  )
 })
 
 
