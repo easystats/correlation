@@ -2,6 +2,8 @@
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
 
+- `correlation()` converts numeric input variables automatically into factors when `method = "polychoric"`.
+
 # correlation 0.8.7
 
 - The `format()` method for objects of class `easycormatrix` gets a `zap_small`
