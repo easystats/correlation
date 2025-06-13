@@ -554,7 +554,11 @@ correlation <- function(data,
   # definitely need factors for polychoric
   if (method == "polychoric") {
     multilevel <- TRUE
-    data <- datawizard::to_factor(data)
+    # convert all input to factors, but only if all input currently is numeric
+    # we allow mix of numeric and factors
+    if (all(vapply(data, is.numeric, FUN.VALUE = TRUE))) {
+      data <- datawizard::to_factor(data)
+    }
   }
 
   # Clean data and get combinations -------------
