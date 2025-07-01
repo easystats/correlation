@@ -1,4 +1,4 @@
-# correlation 0.8.xxx
+# correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
 
