@@ -34,7 +34,6 @@
 }
 
 
-
 #' @keywords internal
 .cor_test_biserial_pointbiserial <- function(data, x, y, continuous, binary, ci, ...) {
   out <- .cor_test_freq(data, continuous, binary, ci = ci, method = "pearson", ...)
@@ -47,7 +46,6 @@
 }
 
 
-
 #' @keywords internal
 .cor_test_biserial_biserial <- function(data, x, y, continuous, binary, ci) {
   var_x <- .complete_variable_x(data, continuous, binary)
@@ -56,11 +54,11 @@
 
   m1 <- mean(var_x[var_y == 1])
   m0 <- mean(var_x[var_y == 0])
-  q <- mean(var_y)
-  p <- 1 - q
-  zp <- stats::dnorm(stats::qnorm(q))
+  quan <- mean(var_y)
+  p <- 1 - quan
+  zp <- stats::dnorm(stats::qnorm(quan))
 
-  r <- (((m1 - m0) * (p * q / zp)) / stats::sd(var_x))
+  r <- (((m1 - m0) * (p * quan / zp)) / stats::sd(var_x))
 
   p <- cor_to_p(r, n = length(var_x))
   ci_vals <- cor_to_ci(r, n = length(var_x), ci = ci)

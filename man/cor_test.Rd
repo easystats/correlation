@@ -30,18 +30,17 @@ cor_test(
 \item{x, y}{Names of two variables present in the data.}
 
 \item{method}{A character string indicating which correlation coefficient is
-to be used for the test. One of \code{"pearson"} (default),
-\code{"kendall"}, \code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
-\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
-\code{"distance"}, \code{"percentage"} (for percentage bend correlation),
-\code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
-Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank
-correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
-\code{"auto"} will attempt at selecting the most relevant method
-(polychoric when ordinal factors involved, tetrachoric when dichotomous
-factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise). See below the \strong{details} section for a description of
-these indices.}
+to be used for the test. One of \code{"pearson"} (default), \code{"kendall"},
+\code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
+\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"}
+(for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's
+coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"}
+(for Gaussian Rank correlation) or \code{"shepherd"} (for Shepherd's Pi
+correlation). Setting \code{"auto"} will attempt at selecting the most relevant
+method (polychoric when ordinal factors involved, tetrachoric when
+dichotomous factors involved, point-biserial if one dichotomous and one
+continuous and pearson otherwise). See below the \strong{details} section for a
+description of these indices.}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
 set to \code{0.95} (\verb{95\%} CI).}
@@ -50,20 +49,19 @@ set to \code{0.95} (\verb{95\%} CI).}
 framework.}
 
 \item{bayesian_prior}{For the prior argument, several named values are
-recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and
-\code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)},
-\code{1/3}, \code{1/sqrt(3)} and \code{1}, respectively. See the
-\code{BayesFactor::correlationBF} function.}
+recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and \code{"ultrawide"}.
+These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(3)} and
+\code{1}, respectively. See the \code{BayesFactor::correlationBF} function.}
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in
-\code{\link[=parameters]{model_parameters()}} for \code{BayesFactor} tests.}
+\code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests.}
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually
-converted to numeric or used as random effects (depending of
-\code{multilevel}). If \code{FALSE}, factors are removed upfront.}
+converted to numeric or used as random effects (depending of \code{multilevel}).
+If \code{FALSE}, factors are removed upfront.}
 
-\item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and
-semi-partial correlations, respectively.}
+\item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and semi-partial
+correlations, respectively.}
 
 \item{partial_bayesian}{If partial correlations under a Bayesian framework
 are needed, you will also need to set \code{partial_bayesian} to \code{TRUE} to
@@ -77,17 +75,17 @@ simple regression model.}
 
 \item{ranktransform}{If \code{TRUE}, will rank-transform the variables prior to
 estimating the correlation, which is one way of making the analysis more
-resistant to extreme values (outliers). Note that, for instance, a Pearson's
-correlation on rank-transformed data is equivalent to a Spearman's rank
-correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
-redundant. Nonetheless, it is an easy option to increase the robustness of the
-correlation as well as flexible way to obtain Bayesian or multilevel
-Spearman-like rank correlations.}
+resistant to extreme values (outliers). Note that, for instance, a
+Pearson's correlation on rank-transformed data is equivalent to a
+Spearman's rank correlation. Thus, using \code{robust=TRUE} and
+\code{method="spearman"} is redundant. Nonetheless, it is an easy option to
+increase the robustness of the correlation as well as flexible way to
+obtain Bayesian or multilevel Spearman-like rank correlations.}
 
 \item{winsorize}{Another way of making the correlation more "robust" (i.e.,
-limiting the impact of extreme values). Can be either \code{FALSE} or a
-number between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired
-threshold. See the \code{\link[=winsorize]{winsorize()}} function for more details.}
+limiting the impact of extreme values). Can be either \code{FALSE} or a number
+between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired threshold.
+See the \code{\link[datawizard:winsorize]{datawizard::winsorize()}} function for more details.}
 
 \item{verbose}{Toggle warnings.}
 
@@ -271,7 +269,11 @@ if (require("psych", quietly = TRUE) && require("rstanarm", quietly = TRUE)) {
 
 # Partial
 cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
-cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
-cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
+if (require("lme4", quietly = TRUE)) {
+  cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
+}
+if (require("rstanarm", quietly = TRUE)) {
+  cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
+}
 }
 }

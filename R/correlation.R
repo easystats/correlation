@@ -33,6 +33,12 @@
 #'   [insight::standardize_names()] on the output to get standardized column
 #'   names. This option can also be set globally by running
 #'   `options(easystats.standardize_names = TRUE)`.
+#' @param missing How should missing values be treated? If `"keep_pairwise"`
+#'   (default) then the correlation between each pair of variables is computed
+#'   using all complete pairs of observations on those variables. If
+#'   `"keep_complete"` then missing values are handled by case-wise deletion,
+#'   and correlations are computed using only observations with full data (based
+#'   on `data2`/`select`/`select2` when applicable).
 #' @inheritParams cor_test
 #'
 #' @details
@@ -180,10 +186,9 @@
 #' `stats` package are supported.
 #' }
 #'
-#' @examplesIf requireNamespace("poorman", quietly = TRUE) && requireNamespace("psych", quietly = TRUE)
-#'
+#' @examplesIf all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0"
 #' library(correlation)
-#' library(poorman)
+#' data(iris)
 #'
 #' results <- correlation(iris)
 #'
@@ -192,22 +197,20 @@
 #' summary(results, redundant = TRUE)
 #'
 #' # pipe-friendly usage with  grouped dataframes from {dplyr} package
-#' iris %>%
+#' iris |>
 #'   correlation(select = "Petal.Width", select2 = "Sepal.Length")
 #'
 #' # Grouped dataframe
 #' # grouped correlations
-#' iris %>%
-#'   group_by(Species) %>%
+#' iris |>
+#'   datawizard::data_group(Species) |>
 #'   correlation()
 #'
 #' # selecting specific variables for correlation
-#' mtcars %>%
-#'   group_by(am) %>%
-#'   correlation(
-#'     select = c("cyl", "wt"),
-#'     select2 = c("hp")
-#'   )
+#' data(mtcars)
+#' mtcars |>
+#'   datawizard::data_group(am) |>
+#'   correlation(select = c("cyl", "wt"), select2 = "hp")
 #'
 #' # supplying custom variable names
 #' correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
@@ -250,6 +253,7 @@ correlation <- function(data,
                         select2 = NULL,
                         rename = NULL,
                         method = "pearson",
+                        missing = "keep_pairwise",
                         p_adjust = "holm",
                         ci = 0.95,
                         bayesian = FALSE,
@@ -321,6 +325,18 @@ correlation <- function(data,
     }
   }
 
+  missing <- insight::validate_argument(missing, options = c("keep_pairwise", "keep_complete"))
+  if (missing == "keep_complete") {
+    if (is.null(data2)) {
+      oo <- stats::complete.cases(data)
+      data <- data[which(oo), ]
+    } else {
+      oo <- stats::complete.cases(cbind(data, data2))
+      data <- data[which(oo), ]
+      data2 <- data2[which(oo), ]
+    }
+  }
+
   if (inherits(data, "grouped_df")) {
     rez <- .correlation_grouped_df(
       data,
@@ -369,19 +385,20 @@ correlation <- function(data,
   attributes(out) <- c(
     attributes(out),
     list(
-      "data" = data,
-      "data2" = data2,
-      "modelframe" = rez$data,
-      "ci" = ci,
-      "n" = nrow(data),
-      "method" = method,
-      "bayesian" = bayesian,
-      "p_adjust" = p_adjust,
-      "partial" = partial,
-      "multilevel" = multilevel,
-      "partial_bayesian" = partial_bayesian,
-      "bayesian_prior" = bayesian_prior,
-      "include_factors" = include_factors
+      data = data,
+      data2 = data2,
+      modelframe = rez$data,
+      ci = ci,
+      n = nrow(data),
+      method = method,
+      bayesian = bayesian,
+      p_adjust = p_adjust,
+      partial = partial,
+      multilevel = multilevel,
+      partial_bayesian = partial_bayesian,
+      bayesian_prior = bayesian_prior,
+      include_factors = include_factors,
+      missing = missing
     )
   )
 
@@ -398,8 +415,6 @@ correlation <- function(data,
   if (standardize_names) insight::standardize_names(out, ...)
   out
 }
-
-
 
 
 #' @keywords internal
@@ -425,47 +440,8 @@ correlation <- function(data,
   ungrouped_x <- as.data.frame(data)
   xlist <- split(ungrouped_x, ungrouped_x[groups], sep = " - ")
 
-  # If data 2 is provided
-  if (!is.null(data2)) {
-    if (inherits(data2, "grouped_df")) {
-      groups2 <- setdiff(colnames(attributes(data2)$groups), ".rows")
-      if (all.equal(groups, groups2)) {
-        ungrouped_y <- as.data.frame(data2)
-        ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
-        modelframe <- data.frame()
-        out <- data.frame()
-        for (i in names(xlist)) {
-          xlist[[i]][groups] <- NULL
-          ylist[[i]][groups] <- NULL
-          rez <- .correlation(
-            xlist[[i]],
-            data2 = ylist[[i]],
-            method = method,
-            p_adjust = p_adjust,
-            ci = ci,
-            bayesian = bayesian,
-            bayesian_prior = bayesian_prior,
-            bayesian_ci_method = bayesian_ci_method,
-            bayesian_test = bayesian_test,
-            redundant = redundant,
-            include_factors = include_factors,
-            partial = partial,
-            partial_bayesian = partial_bayesian,
-            multilevel = multilevel,
-            ranktransform = ranktransform,
-            winsorize = winsorize
-          )
-          modelframe_current <- rez$data
-          rez$params$Group <- modelframe_current$Group <- i
-          out <- rbind(out, rez$params)
-          modelframe <- rbind(modelframe, modelframe_current)
-        }
-      } else {
-        stop("'data2' should have the same grouping characteristics as data.", call. = FALSE)
-      }
-    }
-    # else
-  } else {
+  # If data 2 is not provided
+  if (is.null(data2)) {
     modelframe <- data.frame()
     out <- data.frame()
     for (i in names(xlist)) {
@@ -493,13 +469,49 @@ correlation <- function(data,
       out <- rbind(out, rez$params)
       modelframe <- rbind(modelframe, modelframe_current)
     }
+  } else {
+    if (inherits(data2, "grouped_df")) {
+      groups2 <- setdiff(colnames(attributes(data2)$groups), ".rows")
+      if (!all.equal(groups, groups2)) {
+        insight::format_error("'data2' should have the same grouping characteristics as data.")
+      }
+      ungrouped_y <- as.data.frame(data2)
+      ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
+      modelframe <- data.frame()
+      out <- data.frame()
+      for (i in names(xlist)) {
+        xlist[[i]][groups] <- NULL
+        ylist[[i]][groups] <- NULL
+        rez <- .correlation(
+          xlist[[i]],
+          data2 = ylist[[i]],
+          method = method,
+          p_adjust = p_adjust,
+          ci = ci,
+          bayesian = bayesian,
+          bayesian_prior = bayesian_prior,
+          bayesian_ci_method = bayesian_ci_method,
+          bayesian_test = bayesian_test,
+          redundant = redundant,
+          include_factors = include_factors,
+          partial = partial,
+          partial_bayesian = partial_bayesian,
+          multilevel = multilevel,
+          ranktransform = ranktransform,
+          winsorize = winsorize
+        )
+        modelframe_current <- rez$data
+        rez$params$Group <- modelframe_current$Group <- i
+        out <- rbind(out, rez$params)
+        modelframe <- rbind(modelframe, modelframe_current)
+      }
+    }
   }
 
   # Group as first column
   out <- out[c("Group", names(out)[names(out) != "Group"])]
   list(params = out, data = modelframe)
 }
-
 
 
 #' @keywords internal
@@ -539,7 +551,15 @@ correlation <- function(data,
     include_factors <- TRUE
   }
 
-  if (method == "polychoric") multilevel <- TRUE
+  # definitely need factors for polychoric
+  if (method == "polychoric") {
+    multilevel <- TRUE
+    # convert all input to factors, but only if all input currently is numeric
+    # we allow mix of numeric and factors
+    if (all(vapply(data, is.numeric, FUN.VALUE = TRUE))) {
+      data <- datawizard::to_factor(data)
+    }
+  }
 
   # Clean data and get combinations -------------
 
@@ -631,11 +651,6 @@ correlation <- function(data,
 
   list(params = params, data = data)
 }
-
-
-
-
-
 
 
 # plot ----------------------------

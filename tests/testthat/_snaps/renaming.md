@@ -1,10 +1,7 @@
 # renaming columns
 
     Code
-      correlation(anscombe, select = c("x1", "x2"), rename = c("var1"))
-    Condition
-      Warning:
-      Mismatch between number of variables and names.
+      print(out)
     Output
       # Correlation Matrix (pearson-method)
       

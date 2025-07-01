@@ -1,4 +1,24 @@
-# correlation Development
+# correlation 0.8.xxx
+
+- `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
+
+- `correlation()` converts numeric input variables automatically into factors when `method = "polychoric"`.
+
+# correlation 0.8.7
+
+- The `format()` method for objects of class `easycormatrix` gets a `zap_small`
+  argument, to round very small numbers.
+
+- `cor_sort()` can now deal with non-square matrices.
+
+- Updated required R version to >= 4.1.0 (released May 2021) to pass CRAN checks
+  on documentation
+
+# correlation 0.8.6
+
+- Fix CRAN check issues.
+
+# correlation 0.8.5
 
 - New `cormatrix_to_excel()` function for exporting correlation matrices to Excel with color formatting.
 - This release changes the licensing model of `{correlation}` to an MIT license.
@@ -206,4 +226,3 @@
 - Fixed issue in `correlation()` for correlation coefficients with less than
   four complete pairs of observations (in such cases, `cor_test()` now returns
   `NA` for the confidence intervals).
-

@@ -11,7 +11,7 @@ test_that("cor_test kendall", {
   skip_if_not_or_load_if_installed("ggplot2")
 
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "kendall")
-  out2 <- stats::cor.test(ggplot2::msleep$brainwt, ggplot2::msleep$sleep_rem, method = "kendall")
+  out2 <- suppressWarnings(stats::cor.test(ggplot2::msleep$brainwt, ggplot2::msleep$sleep_rem, method = "kendall"))
 
   expect_equal(out$tau, out2$estimate[[1]], tolerance = 0.001)
   expect_equal(out$p, out2$p.value[[1]], tolerance = 0.001)
@@ -22,7 +22,7 @@ test_that("cor_test bayesian", {
 
   set.seed(123)
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", bayesian = TRUE)
-  expect_equal(out$r, -0.1947696, tolerance = 0.01)
+  expect_equal(out$rho, -0.1947696, tolerance = 0.01)
 })
 
 test_that("cor_test tetrachoric", {
@@ -31,8 +31,8 @@ test_that("cor_test tetrachoric", {
   skip_if_not_or_load_if_installed("ggplot2")
 
   data <- ggplot2::msleep
-  data$brainwt_binary <- ifelse(data$brainwt > 3, 1, 0)
-  data$sleep_rem_binary <- ifelse(data$sleep_rem > 1.2, 1, 0)
+  data$brainwt_binary <- as.numeric(data$brainwt > 3)
+  data$sleep_rem_binary <- as.numeric(data$sleep_rem > 1.2)
 
   # With Factors / Binary
   expect_error(cor_test(data, "brainwt_binary", "sleep_rem_binary", method = "tetrachoric"))
@@ -40,7 +40,7 @@ test_that("cor_test tetrachoric", {
   data$sleep_rem_ordinal <- as.factor(round(data$sleep_rem))
   data$brainwt_ordinal <- as.factor(round(data$brainwt))
 
-  out <- cor_test(data, "brainwt", "brainwt_ordinal", method = "polychoric")
+  out <- suppressWarnings(cor_test(data, "brainwt", "brainwt_ordinal", method = "polychoric"))
   expect_equal(out$rho, 0.9999, tolerance = 0.01)
 
   # Biserial
@@ -122,9 +122,8 @@ test_that("cor_test gaussian", {
 
   skip_if_not_or_load_if_installed("BayesFactor")
   out <- cor_test(ggplot2::msleep, "brainwt", "sleep_rem", method = "gaussian", bayesian = TRUE)
-  expect_equal(out$r, -0.3269572, tolerance = 0.01)
+  expect_equal(out$rho, -0.3269572, tolerance = 0.01)
 })
-
 
 
 # Additional arguments ----------------------------------------------------

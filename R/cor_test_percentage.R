@@ -34,8 +34,6 @@
 }
 
 
-
-
 #' @keywords internal
 .pbos <- function(x, beta = 0.2) {
   temp <- sort(abs(x - stats::median(x)))

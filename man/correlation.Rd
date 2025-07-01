@@ -11,6 +11,7 @@ correlation(
   select2 = NULL,
   rename = NULL,
   method = "pearson",
+  missing = "keep_pairwise",
   p_adjust = "holm",
   ci = 0.95,
   bayesian = FALSE,
@@ -52,18 +53,24 @@ Note that the number of names should be equal to the number of columns
 selected. Ignored if \code{data2} is specified.}
 
 \item{method}{A character string indicating which correlation coefficient is
-to be used for the test. One of \code{"pearson"} (default),
-\code{"kendall"}, \code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
-\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"},
-\code{"distance"}, \code{"percentage"} (for percentage bend correlation),
-\code{"blomqvist"} (for Blomqvist's coefficient), \code{"hoeffding"} (for
-Hoeffding's D), \code{"gamma"}, \code{"gaussian"} (for Gaussian Rank
-correlation) or \code{"shepherd"} (for Shepherd's Pi correlation). Setting
-\code{"auto"} will attempt at selecting the most relevant method
-(polychoric when ordinal factors involved, tetrachoric when dichotomous
-factors involved, point-biserial if one dichotomous and one continuous and
-pearson otherwise). See below the \strong{details} section for a description of
-these indices.}
+to be used for the test. One of \code{"pearson"} (default), \code{"kendall"},
+\code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
+\code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"}
+(for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's
+coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"}
+(for Gaussian Rank correlation) or \code{"shepherd"} (for Shepherd's Pi
+correlation). Setting \code{"auto"} will attempt at selecting the most relevant
+method (polychoric when ordinal factors involved, tetrachoric when
+dichotomous factors involved, point-biserial if one dichotomous and one
+continuous and pearson otherwise). See below the \strong{details} section for a
+description of these indices.}
+
+\item{missing}{How should missing values be treated? If \code{"keep_pairwise"}
+(default) then the correlation between each pair of variables is computed
+using all complete pairs of observations on those variables. If
+\code{"keep_complete"} then missing values are handled by case-wise deletion,
+and correlations are computed using only observations with full data (based
+on \code{data2}/\code{select}/\code{select2} when applicable).}
 
 \item{p_adjust}{Correction method for frequentist correlations. Can be one of
 \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"},
@@ -78,23 +85,22 @@ set to \code{0.95} (\verb{95\%} CI).}
 framework.}
 
 \item{bayesian_prior}{For the prior argument, several named values are
-recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and
-\code{"ultrawide"}. These correspond to scale values of \code{1/sqrt(27)},
-\code{1/3}, \code{1/sqrt(3)} and \code{1}, respectively. See the
-\code{BayesFactor::correlationBF} function.}
+recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and \code{"ultrawide"}.
+These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(3)} and
+\code{1}, respectively. See the \code{BayesFactor::correlationBF} function.}
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in
-\code{\link[=parameters]{model_parameters()}} for \code{BayesFactor} tests.}
+\code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests.}
 
 \item{redundant}{Should the data include redundant rows (where each given
 correlation is repeated two times).}
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually
-converted to numeric or used as random effects (depending of
-\code{multilevel}). If \code{FALSE}, factors are removed upfront.}
+converted to numeric or used as random effects (depending of \code{multilevel}).
+If \code{FALSE}, factors are removed upfront.}
 
-\item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and
-semi-partial correlations, respectively.}
+\item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and semi-partial
+correlations, respectively.}
 
 \item{partial_bayesian}{If partial correlations under a Bayesian framework
 are needed, you will also need to set \code{partial_bayesian} to \code{TRUE} to
@@ -108,17 +114,17 @@ simple regression model.}
 
 \item{ranktransform}{If \code{TRUE}, will rank-transform the variables prior to
 estimating the correlation, which is one way of making the analysis more
-resistant to extreme values (outliers). Note that, for instance, a Pearson's
-correlation on rank-transformed data is equivalent to a Spearman's rank
-correlation. Thus, using \code{robust=TRUE} and \code{method="spearman"} is
-redundant. Nonetheless, it is an easy option to increase the robustness of the
-correlation as well as flexible way to obtain Bayesian or multilevel
-Spearman-like rank correlations.}
+resistant to extreme values (outliers). Note that, for instance, a
+Pearson's correlation on rank-transformed data is equivalent to a
+Spearman's rank correlation. Thus, using \code{robust=TRUE} and
+\code{method="spearman"} is redundant. Nonetheless, it is an easy option to
+increase the robustness of the correlation as well as flexible way to
+obtain Bayesian or multilevel Spearman-like rank correlations.}
 
 \item{winsorize}{Another way of making the correlation more "robust" (i.e.,
-limiting the impact of extreme values). Can be either \code{FALSE} or a
-number between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired
-threshold. See the \code{\link[=winsorize]{winsorize()}} function for more details.}
+limiting the impact of extreme values). Can be either \code{FALSE} or a number
+between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired threshold.
+See the \code{\link[datawizard:winsorize]{datawizard::winsorize()}} function for more details.}
 
 \item{verbose}{Toggle warnings.}
 
@@ -266,10 +272,9 @@ Bayesian rank correlations (which have different priors).
 }
 }
 \examples{
-\dontshow{if (requireNamespace("poorman", quietly = TRUE) && requireNamespace("psych", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-
+\dontshow{if (all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0") (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(correlation)
-library(poorman)
+data(iris)
 
 results <- correlation(iris)
 
@@ -278,22 +283,20 @@ summary(results)
 summary(results, redundant = TRUE)
 
 # pipe-friendly usage with  grouped dataframes from {dplyr} package
-iris \%>\%
+iris |>
   correlation(select = "Petal.Width", select2 = "Sepal.Length")
 
 # Grouped dataframe
 # grouped correlations
-iris \%>\%
-  group_by(Species) \%>\%
+iris |>
+  datawizard::data_group(Species) |>
   correlation()
 
 # selecting specific variables for correlation
-mtcars \%>\%
-  group_by(am) \%>\%
-  correlation(
-    select = c("cyl", "wt"),
-    select2 = c("hp")
-  )
+data(mtcars)
+mtcars |>
+  datawizard::data_group(am) |>
+  correlation(select = c("cyl", "wt"), select2 = "hp")
 
 # supplying custom variable names
 correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))

@@ -3,7 +3,21 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
 
-  if (!corrected) {
+  if (corrected) {
+    rez <- .cor_test_distance_corrected(var_x, var_y, ci = ci)
+    rez <- data.frame(
+      Parameter1 = x,
+      Parameter2 = y,
+      r = rez$r,
+      CI_low = rez$CI_low,
+      CI_high = rez$CI_high,
+      t = rez$t,
+      df_error = rez$df_error,
+      p = rez$p,
+      Method = "Distance (Bias Corrected)",
+      stringsAsFactors = FALSE
+    )
+  } else {
     rez <- .cor_test_distance_raw(var_x, var_y, index = 1)
     rez <- data.frame(
       Parameter1 = x,
@@ -17,26 +31,10 @@
       Method = "Distance",
       stringsAsFactors = FALSE
     )
-  } else {
-    rez <- .cor_test_distance_corrected(var_x, var_y, ci = ci)
-    rez <- data.frame(
-      Parameter1 = x,
-      Parameter2 = y,
-      r = rez$r,
-      CI_low = rez$CI_low,
-      CI_high = rez$CI_high,
-      t = rez$t,
-      df_error = rez$df,
-      p = rez$p,
-      Method = "Distance (Bias Corrected)",
-      stringsAsFactors = FALSE
-    )
   }
 
   rez
 }
-
-
 
 
 # Basis -------------------------------------------------------------------
@@ -60,22 +58,20 @@
   M <- n * (n - 3) / 2
   dof <- M - 1
 
-  t <- sqrt(M - 1) * r / sqrt(1 - r^2)
-  p <- 1 - stats::pt(t, df = dof)
+  tstat <- sqrt(M - 1) * r / sqrt(1 - r^2)
+  p <- 1 - stats::pt(tstat, df = dof)
 
   ci_vals <- cor_to_ci(r, n = n, ci = ci)
 
   list(
     r = r,
-    t = t,
+    t = tstat,
     df_error = dof,
     p = p,
     CI_low = ci_vals$CI_low,
     CI_high = ci_vals$CI_high
   )
 }
-
-
 
 
 #' @keywords internal
@@ -91,26 +87,20 @@
   A <- .A_kl(x, index)
   B <- .A_kl(y, index)
 
-  cov <- sqrt(mean(A * B))
+  cov_ab <- sqrt(mean(A * B))
   dVarX <- sqrt(mean(A * A))
   dVarY <- sqrt(mean(B * B))
   V <- sqrt(dVarX * dVarY)
   if (V > 0) {
-    r <- cov / V
+    r <- cov_ab / V
   } else {
     r <- 0
   }
-  list(r = r, cov = cov)
+  list(r = r, cov = cov_ab)
 }
 
 
-
-
-
 # Utils -------------------------------------------------------------------
-
-
-
 
 
 #' @keywords internal

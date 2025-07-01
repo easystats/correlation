@@ -17,7 +17,7 @@
     var_x <- datawizard::ranktransform(var_x, sign = TRUE, method = "average")
     var_y <- datawizard::ranktransform(var_y, sign = TRUE, method = "average")
     method <- "Bayesian Spearman"
-  } else if (tolower(method) %in% "gaussian") {
+  } else if (tolower(method) == "gaussian") {
     var_x <- stats::qnorm(rank(var_x) / (length(var_x) + 1))
     var_y <- stats::qnorm(rank(var_y) / (length(var_y) + 1))
     method <- "Bayesian Gaussian rank"
@@ -58,7 +58,11 @@
 
   if (x == y) {
     # Avoid error in the case of perfect correlation
-    rez <- BayesFactor::correlationBF(stats::rnorm(1000), stats::rnorm(1000), rscale = bayesian_prior)
+    rez <- suppressWarnings(BayesFactor::correlationBF(
+      stats::rnorm(1000),
+      stats::rnorm(1000),
+      rscale = bayesian_prior
+    ))
     params <- parameters::model_parameters(
       rez,
       dispersion = FALSE,
@@ -79,7 +83,11 @@
     if ("ROPE_Percentage" %in% names(params)) params$ROPE_Percentage <- 0
     if ("BF" %in% names(params)) params$BF <- Inf
   } else {
-    rez <- BayesFactor::correlationBF(var_x, var_y, rscale = bayesian_prior)
+    rez <- suppressWarnings(BayesFactor::correlationBF(
+      var_x,
+      var_y,
+      rscale = bayesian_prior
+    ))
     params <- parameters::model_parameters(
       rez,
       dispersion = FALSE,

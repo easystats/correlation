@@ -2,9 +2,8 @@
 # correlation <img src='man/figures/logo.png' align="right" height="139" />
 
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.02306/status.svg)](https://doi.org/10.21105/joss.02306)
+[![downloads](https://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation)
 [![total](https://cranlogs.r-pkg.org/badges/grand-total/correlation)](https://cranlogs.r-pkg.org/)
-[![status](https://tinyverse.netlify.com/badge/correlation)](https://CRAN.R-project.org/package=correlation)
-<!-- [![downloads](http://cranlogs.r-pkg.org/badges/correlation)](https://cran.r-project.org/package=correlation) -->
 
 `correlation` is an
 [**easystats**](https://github.com/easystats/easystats) package focused
@@ -32,18 +31,17 @@ work published 2020)
 
 # Installation
 
-[![CRAN](http://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
+[![CRAN](https://www.r-pkg.org/badges/version/correlation)](https://cran.r-project.org/package=correlation)
 [![correlation status
 badge](https://easystats.r-universe.dev/badges/correlation)](https://easystats.r-universe.dev)
-[![R-CMD-check](https://github.com/easystats/correlation/workflows/R-CMD-check/badge.svg?branch=main)](https://github.com/easystats/correlation/actions)
-[![codecov](https://codecov.io/gh/easystats/correlation/branch/master/graph/badge.svg)](https://app.codecov.io/gh/easystats/correlation)
+[![codecov](https://codecov.io/gh/easystats/correlation/branch/main/graph/badge.svg)](https://app.codecov.io/gh/easystats/correlation)
 
 The *correlation* package is available on CRAN, while its latest
 development version is available on R-universe (from *rOpenSci*).
 
-| Type        | Source     | Command                                                                       |
-|-------------|------------|-------------------------------------------------------------------------------|
-| Release     | CRAN       | `install.packages("correlation")`                                             |
+| Type | Source | Command |
+|----|----|----|
+| Release | CRAN | `install.packages("correlation")` |
 | Development | R-universe | `install.packages("correlation", repos = "https://easystats.r-universe.dev")` |
 
 Once you have downloaded the package, you can then load it using:
@@ -54,12 +52,16 @@ library("correlation")
 
 > **Tip**
 >
-> **Instead of `library(correlation)`, use `library(easystats)`.**
-> **This will make all features of the easystats-ecosystem available.**
+> Instead of `library(bayestestR)`, use `library(easystats)`. This will
+> make all features of the easystats-ecosystem available.
 >
-> **To stay updated, use `easystats::install_latest()`.**
+> To stay updated, use `easystats::install_latest()`.
 
 # Documentation
+
+[![Documentation](https://img.shields.io/badge/documentation-correlation-orange.svg?colorB=E91E63)](https://easystats.github.io/correlation/)
+[![Blog](https://img.shields.io/badge/blog-easystats-orange.svg?colorB=FF9800)](https://easystats.github.io/blog/posts/)
+[![Features](https://img.shields.io/badge/features-correlation-orange.svg?colorB=2196F3)](https://easystats.github.io/correlation/reference/index.html)
 
 Check out package [website](https://easystats.github.io/correlation/)
 for documentation.
@@ -201,14 +203,23 @@ It is very easy to switch to a **Bayesian framework**.
 correlation(iris, bayesian = TRUE)
 ## # Correlation Matrix (pearson-method)
 ## 
-## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE |         Prior |          BF
-## --------------------------------------------------------------------------------------------------------
-## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.04] |  92.15% |    42.58% | Beta (3 +- 3) |       0.509
-## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0% | Beta (3 +- 3) | 2.14e+43***
-## Sepal.Length |  Petal.Width |  0.81 | [ 0.74,  0.85] | 100%*** |        0% | Beta (3 +- 3) | 2.62e+33***
-## Sepal.Width  | Petal.Length | -0.41 | [-0.54, -0.28] | 100%*** |        0% | Beta (3 +- 3) | 3.49e+05***
-## Sepal.Width  |  Petal.Width | -0.35 | [-0.50, -0.21] | 100%*** |     0.12% | Beta (3 +- 3) | 5.29e+03***
-## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0% | Beta (3 +- 3) | 1.24e+80***
+## Parameter1   |   Parameter2 |   rho |         95% CI |      pd | % in ROPE
+## --------------------------------------------------------------------------
+## Sepal.Length |  Sepal.Width | -0.11 | [-0.27,  0.04] |  92.70% |    42.83%
+## Sepal.Length | Petal.Length |  0.86 | [ 0.82,  0.90] | 100%*** |        0%
+## Sepal.Length |  Petal.Width |  0.81 | [ 0.75,  0.86] | 100%*** |        0%
+## Sepal.Width  | Petal.Length | -0.41 | [-0.55, -0.28] | 100%*** |        0%
+## Sepal.Width  |  Petal.Width | -0.35 | [-0.49, -0.22] | 100%*** |        0%
+## Petal.Length |  Petal.Width |  0.96 | [ 0.95,  0.97] | 100%*** |        0%
+## 
+## Parameter1   |         Prior |          BF
+## ------------------------------------------
+## Sepal.Length | Beta (3 +- 3) |       0.509
+## Sepal.Length | Beta (3 +- 3) | 2.14e+43***
+## Sepal.Length | Beta (3 +- 3) | 2.62e+33***
+## Sepal.Width  | Beta (3 +- 3) | 3.49e+05***
+## Sepal.Width  | Beta (3 +- 3) | 5.29e+03***
+## Petal.Length | Beta (3 +- 3) | 1.24e+80***
 ## 
 ## Observations: 150
 ```

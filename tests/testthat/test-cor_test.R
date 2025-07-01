@@ -17,7 +17,7 @@ test_that("cor_test kendall", {
 test_that("cor_test bayesian", {
   skip_if_not_or_load_if_installed("BayesFactor")
   out <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
-  expect_equal(out$r, 0.9591191, tolerance = 0.01)
+  expect_equal(out$rho, 0.9591191, tolerance = 0.01)
 
   set.seed(123)
   df_1 <- cor_test(iris, "Petal.Length", "Petal.Width", bayesian = TRUE)
@@ -31,7 +31,7 @@ test_that("cor_test bayesian", {
 
   df <- iris
   df$Petal.Length2 <- df$Petal.Length
-  out3 <- cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE)
+  out3 <- suppressWarnings(cor_test(df, "Petal.Length", "Petal.Length2", bayesian = TRUE))
   expect_equal(out3$rho, 1.000, tolerance = 0.01)
 
   if (getRversion() >= "3.6") {
@@ -60,8 +60,8 @@ test_that("cor_test tetrachoric", {
   skip_if_not_or_load_if_installed("psych")
   skip_if_not_or_load_if_installed("polycor")
   data <- iris
-  data$Sepal.Width_binary <- ifelse(data$Sepal.Width > 3, 1, 0)
-  data$Petal.Width_binary <- ifelse(data$Petal.Width > 1.2, 1, 0)
+  data$Sepal.Width_binary <- as.numeric(data$Sepal.Width > 3)
+  data$Petal.Width_binary <- as.numeric(data$Petal.Width > 1.2)
 
   # With Factors / Binary
   out <- cor_test(data, "Sepal.Width_binary", "Petal.Width_binary", method = "tetrachoric")
@@ -88,6 +88,23 @@ test_that("cor_test tetrachoric", {
   out <- cor_test(data, "Sepal.Width", "Petal.Width_binary", method = "biserial")
   expect_equal(out$rho, -0.403, tolerance = 0.01)
   out_psych <- psych::biserial(data[["Sepal.Width"]], data[["Petal.Width_binary"]])[1]
+
+  set.seed(123)
+  n <- 100
+  k <- 5
+  d <- data.frame(
+    x1 = sample.int(k, n, TRUE),
+    x2 = sample.int(k, n, TRUE),
+    x3 = sample.int(k, n, TRUE),
+    x4 = sample.int(k, n, TRUE)
+  )
+  expect_true(all(vapply(d, is.numeric, logical(1))))
+  out <- correlation(d, method = "polychoric")
+  expect_equal(
+    out$rho,
+    c(0.07729, -0.02453, -0.13999, 0.06508, -0.17158, 0.17863),
+    tolerance = 1e-3
+  )
 })
 
 
@@ -121,7 +138,7 @@ test_that("cor_test percentage", {
 test_that("cor_test shepherd", {
   set.seed(333)
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "shepherd")
-  expect_equal(out$r, 0.94762, tolerance = 0.01)
+  expect_equal(out$rho, 0.94762, tolerance = 0.01)
 
   skip_if_not_or_load_if_installed("BayesFactor")
   set.seed(333)
@@ -164,9 +181,8 @@ test_that("cor_test gaussian", {
   expect_equal(out$r, 0.87137, tolerance = 0.01)
 
   out <- cor_test(iris, "Petal.Length", "Petal.Width", method = "gaussian", bayesian = TRUE)
-  expect_equal(out$r, 0.8620878, tolerance = 0.01)
+  expect_equal(out$rho, 0.8620878, tolerance = 0.01)
 })
-
 
 
 # Additional arguments ----------------------------------------------------
@@ -180,10 +196,9 @@ test_that("cor_test one-sided p value", {
 })
 
 
-
 # Edge cases --------------------------------------------------------------
 
 test_that("cor_test 2 valid observations", {
-  out <- correlation(data.frame(v2 = c(2, 1, 1, 2), v3 = c(1, 2, NA, NA)))
+  out <- suppressWarnings(correlation(data.frame(v2 = c(2, 1, 1, 2), v3 = c(1, 2, NA, NA))))
   expect_true(is.na(out$r))
 })

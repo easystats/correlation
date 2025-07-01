@@ -11,7 +11,7 @@ summary.easycorrelation <- function(object,
     redundant <- FALSE
   }
 
-  frame <- .get_matrix(object, square = redundant)
+  cormatrix <- .get_matrix(object, square = redundant)
 
   # Add redundant
   if (redundant) {
@@ -30,11 +30,11 @@ summary.easycorrelation <- function(object,
     }
   }
 
-  out <- .create_matrix(frame, object, column = target, redundant = redundant)
+  out <- .create_matrix(cormatrix, object, column = target, redundant = redundant)
 
   # Fill attributes
   for (i in names(object)[!names(object) %in% c("Group", "Parameter1", "Parameter2", target)]) {
-    attri <- .create_matrix(frame, object, column = i, redundant = redundant)
+    attri <- .create_matrix(cormatrix, object, column = i, redundant = redundant)
     attr(out, i) <- attri
   }
 
@@ -120,7 +120,7 @@ as.list.easycorrelation <- function(x, cols = NULL, redundant = FALSE, ...) {
 #' @export
 standardize_names.easycorrelation <- function(data, ...) {
   ori <- data
-  names(data)[names(data) == datawizard::data_find(data, select = "(rho|tau)", regex = TRUE, verbose = FALSE)] <- "r"
+  names(data)[names(data) == datawizard::extract_column_names(data, select = "(rho|tau)", regex = TRUE, verbose = FALSE)] <- "r"
   data <- insight::standardize_names(as.data.frame(data), ...)
   class(data) <- class(ori)
   data
@@ -134,8 +134,8 @@ standardize_names.easycorrelation <- function(data, ...) {
   if ("Group" %in% names(object)) {
     out <- data.frame()
     for (g in unique(object$Group)) {
-      data <- object[object$Group == g, ]
-      m <- .fill_matrix(frame, data, column = column, redundant = redundant)
+      my_data <- object[object$Group == g, ]
+      m <- .fill_matrix(frame, my_data, column = column, redundant = redundant)
       m$Group <- g
       out <- rbind(out, m)
     }

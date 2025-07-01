@@ -77,8 +77,6 @@ visualisation_recipe.easycor_test <- function(x,
 }
 
 
-
-
 # see_scatter -------------------------------------------------------------
 
 

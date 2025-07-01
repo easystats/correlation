@@ -8,18 +8,17 @@
 #' @param ci Confidence/Credible Interval level. If `"default"`, then it is
 #'   set to `0.95` (`95%` CI).
 #' @param method A character string indicating which correlation coefficient is
-#'   to be used for the test. One of `"pearson"` (default),
-#'   `"kendall"`, `"spearman"` (but see also the `robust` argument), `"biserial"`,
-#'   `"polychoric"`, `"tetrachoric"`, `"biweight"`,
-#'   `"distance"`, `"percentage"` (for percentage bend correlation),
-#'   `"blomqvist"` (for Blomqvist's coefficient), `"hoeffding"` (for
-#'   Hoeffding's D), `"gamma"`, `"gaussian"` (for Gaussian Rank
-#'   correlation) or `"shepherd"` (for Shepherd's Pi correlation). Setting
-#'   `"auto"` will attempt at selecting the most relevant method
-#'   (polychoric when ordinal factors involved, tetrachoric when dichotomous
-#'   factors involved, point-biserial if one dichotomous and one continuous and
-#'   pearson otherwise). See below the **details** section for a description of
-#'   these indices.
+#'   to be used for the test. One of `"pearson"` (default), `"kendall"`,
+#'   `"spearman"` (but see also the `robust` argument), `"biserial"`,
+#'   `"polychoric"`, `"tetrachoric"`, `"biweight"`, `"distance"`, `"percentage"`
+#'   (for percentage bend correlation), `"blomqvist"` (for Blomqvist's
+#'   coefficient), `"hoeffding"` (for Hoeffding's D), `"gamma"`, `"gaussian"`
+#'   (for Gaussian Rank correlation) or `"shepherd"` (for Shepherd's Pi
+#'   correlation). Setting `"auto"` will attempt at selecting the most relevant
+#'   method (polychoric when ordinal factors involved, tetrachoric when
+#'   dichotomous factors involved, point-biserial if one dichotomous and one
+#'   continuous and pearson otherwise). See below the **details** section for a
+#'   description of these indices.
 #' @param bayesian If `TRUE`, will run the correlations under a Bayesian
 #'   framework.
 #' @param partial_bayesian If partial correlations under a Bayesian framework
@@ -28,30 +27,29 @@
 #'   pseudo-Bayesian partial correlations (i.e., Bayesian correlation based on
 #'   frequentist partialization).
 #' @param include_factors If `TRUE`, the factors are kept and eventually
-#'   converted to numeric or used as random effects (depending of
-#'   `multilevel`). If `FALSE`, factors are removed upfront.
-#' @param partial Can be `TRUE` or `"semi"` for partial and
-#'   semi-partial correlations, respectively.
+#'   converted to numeric or used as random effects (depending of `multilevel`).
+#'   If `FALSE`, factors are removed upfront.
+#' @param partial Can be `TRUE` or `"semi"` for partial and semi-partial
+#'   correlations, respectively.
 #' @inheritParams datawizard::adjust
 #' @param bayesian_prior For the prior argument, several named values are
-#'   recognized: `"medium.narrow"`, `"medium"`, `"wide"`, and
-#'   `"ultrawide"`. These correspond to scale values of `1/sqrt(27)`,
-#'   `1/3`, `1/sqrt(3)` and `1`, respectively. See the
-#'   `BayesFactor::correlationBF` function.
+#'   recognized: `"medium.narrow"`, `"medium"`, `"wide"`, and `"ultrawide"`.
+#'   These correspond to scale values of `1/sqrt(27)`, `1/3`, `1/sqrt(3)` and
+#'   `1`, respectively. See the `BayesFactor::correlationBF` function.
 #' @param bayesian_ci_method,bayesian_test See arguments in
-#'   [`model_parameters()`][parameters] for `BayesFactor` tests.
+#'   [`parameters::model_parameters()`] for `BayesFactor` tests.
 #' @param ranktransform If `TRUE`, will rank-transform the variables prior to
 #'   estimating the correlation, which is one way of making the analysis more
-#'   resistant to extreme values (outliers). Note that, for instance, a Pearson's
-#'   correlation on rank-transformed data is equivalent to a Spearman's rank
-#'   correlation. Thus, using `robust=TRUE` and `method="spearman"` is
-#'   redundant. Nonetheless, it is an easy option to increase the robustness of the
-#'   correlation as well as flexible way to obtain Bayesian or multilevel
-#'   Spearman-like rank correlations.
+#'   resistant to extreme values (outliers). Note that, for instance, a
+#'   Pearson's correlation on rank-transformed data is equivalent to a
+#'   Spearman's rank correlation. Thus, using `robust=TRUE` and
+#'   `method="spearman"` is redundant. Nonetheless, it is an easy option to
+#'   increase the robustness of the correlation as well as flexible way to
+#'   obtain Bayesian or multilevel Spearman-like rank correlations.
 #' @param winsorize Another way of making the correlation more "robust" (i.e.,
-#'   limiting the impact of extreme values). Can be either `FALSE` or a
-#'   number between 0 and 1 (e.g., `0.2`) that corresponds to the desired
-#'   threshold. See the [`winsorize()`][winsorize] function for more details.
+#'   limiting the impact of extreme values). Can be either `FALSE` or a number
+#'   between 0 and 1 (e.g., `0.2`) that corresponds to the desired threshold.
+#'   See the [`datawizard::winsorize()`] function for more details.
 #' @param verbose Toggle warnings.
 #' @param ... Additional arguments (e.g., `alternative`) to be passed to
 #'   other methods. See `stats::cor.test` for further details.
@@ -112,8 +110,12 @@
 #'
 #' # Partial
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", partial = TRUE)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
-#' cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
+#' if (require("lme4", quietly = TRUE)) {
+#'   cor_test(iris, "Sepal.Length", "Sepal.Width", multilevel = TRUE)
+#' }
+#' if (require("rstanarm", quietly = TRUE)) {
+#'   cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
+#' }
 #' }
 #' @export
 cor_test <- function(data,
@@ -144,6 +146,13 @@ cor_test <- function(data,
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
     data[c(x, y)] <- datawizard::to_numeric(data[c(x, y)], dummy_factors = FALSE)
+  }
+
+  # However, for poly, we need factors!
+  if (method %in% c("poly", "polychoric") && all(vapply(data[c(x, y)], is.numeric, FUN.VALUE = TRUE))) {
+    # convert all input to factors, but only if all input currently is numeric
+    # we allow mix of numeric and factors
+    data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
   }
 
   # Partial
@@ -234,40 +243,38 @@ cor_test <- function(data,
     }
 
     # Bayesian
+  } else if (method %in% c("tetra", "tetrachoric")) {
+    insight::format_error("Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("poly", "polychoric")) {
+    insight::format_error("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
+    insight::format_error("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method == "biweight") {
+    insight::format_error("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method == "distance") {
+    insight::format_error("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
+    insight::format_error("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("blomqvist", "median", "medial")) {
+    insight::format_error("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
+  } else if (method == "hoeffding") {
+    insight::format_error("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
+  } else if (method == "gamma") {
+    insight::format_error("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
+  } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+    out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
   } else {
-    if (method %in% c("tetra", "tetrachoric")) {
-      insight::format_error("Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("poly", "polychoric")) {
-      insight::format_error("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
-      insight::format_error("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method == "biweight") {
-      insight::format_error("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method == "distance") {
-      insight::format_error("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
-      insight::format_error("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("blomqvist", "median", "medial")) {
-      insight::format_error("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
-    } else if (method == "hoeffding") {
-      insight::format_error("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
-    } else if (method == "gamma") {
-      insight::format_error("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
-    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
-      out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
-    } else {
-      out <- .cor_test_bayes(
-        data,
-        x,
-        y,
-        ci = ci,
-        method = method,
-        bayesian_prior = bayesian_prior,
-        bayesian_ci_method = bayesian_ci_method,
-        bayesian_test = bayesian_test,
-        ...
-      )
-    }
+    out <- .cor_test_bayes(
+      data,
+      x,
+      y,
+      ci = ci,
+      method = method,
+      bayesian_prior = bayesian_prior,
+      bayesian_ci_method = bayesian_ci_method,
+      bayesian_test = bayesian_test,
+      ...
+    )
   }
 
   # Replace by NANs if invalid
@@ -284,8 +291,11 @@ cor_test <- function(data,
 
   # Reorder columns
   if ("CI_low" %in% names(out)) {
-    order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high")
-    out <- out[c(order[order %in% names(out)], setdiff(colnames(out), order[order %in% names(out)]))]
+    col_order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high")
+    out <- out[c(
+      col_order[col_order %in% names(out)],
+      setdiff(colnames(out), col_order[col_order %in% names(out)])
+    )]
   }
 
   # Output
@@ -297,11 +307,7 @@ cor_test <- function(data,
 }
 
 
-
-
-
 # Utilities ---------------------------------------------------------------
-
 
 
 #' @keywords internal
