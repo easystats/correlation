@@ -54,11 +54,11 @@ BugReports: https://github.com/easystats/correlation/issues
 Depends:
     R (>= 4.1)
 Imports:
-    bayestestR (>= 0.16.1),
+    bayestestR (>= 0.17.0),
     datasets,
     datawizard (>= 1.2.0),
-    insight (>= 1.3.1),
-    parameters (>= 0.27.0),
+    insight (>= 1.4.1),
+    parameters (>= 0.28.1),
     stats
 Suggests:
     BayesFactor,
