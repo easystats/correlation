@@ -13,7 +13,6 @@
   p <- cor_to_p(r, n = length(var_x))
   ci_vals <- cor_to_ci(r, n = length(var_x), ci = ci)
 
-
   data.frame(
     Parameter1 = x,
     Parameter2 = y,

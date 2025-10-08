@@ -1,13 +1,15 @@
 #' @keywords internal
-.cor_test_bayes <- function(data,
-                            x,
-                            y,
-                            ci = 0.95,
-                            method = "pearson",
-                            bayesian_prior = "medium",
-                            bayesian_ci_method = "hdi",
-                            bayesian_test = c("pd", "rope", "bf"),
-                            ...) {
+.cor_test_bayes <- function(
+  data,
+  x,
+  y,
+  ci = 0.95,
+  method = "pearson",
+  bayesian_prior = "medium",
+  bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"),
+  ...
+) {
   insight::check_if_installed("BayesFactor")
 
   var_x <- .complete_variable_x(data, x, y)
@@ -44,16 +46,18 @@
 
 
 #' @keywords internal
-.cor_test_bayes_base <- function(x,
-                                 y,
-                                 var_x,
-                                 var_y,
-                                 ci = 0.95,
-                                 bayesian_prior = "medium",
-                                 bayesian_ci_method = "hdi",
-                                 bayesian_test = c("pd", "rope", "bf"),
-                                 method = "pearson",
-                                 ...) {
+.cor_test_bayes_base <- function(
+  x,
+  y,
+  var_x,
+  var_y,
+  ci = 0.95,
+  bayesian_prior = "medium",
+  bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"),
+  method = "pearson",
+  ...
+) {
   insight::check_if_installed("BayesFactor")
 
   if (x == y) {
@@ -72,15 +76,33 @@
       rope_ci = 1,
       ...
     )
-    if ("Median" %in% names(params)) params$Median <- 1
-    if ("Mean" %in% names(params)) params$Mean <- 1
-    if ("MAP" %in% names(params)) params$MAP <- 1
-    if ("SD" %in% names(params)) params$SD <- 0
-    if ("MAD" %in% names(params)) params$MAD <- 0
-    if ("CI_low" %in% names(params)) params$CI_low <- 1
-    if ("CI_high" %in% names(params)) params$CI_high <- 1
-    if ("pd" %in% names(params)) params$pd <- 1
-    if ("ROPE_Percentage" %in% names(params)) params$ROPE_Percentage <- 0
+    if ("Median" %in% names(params)) {
+      params$Median <- 1
+    }
+    if ("Mean" %in% names(params)) {
+      params$Mean <- 1
+    }
+    if ("MAP" %in% names(params)) {
+      params$MAP <- 1
+    }
+    if ("SD" %in% names(params)) {
+      params$SD <- 0
+    }
+    if ("MAD" %in% names(params)) {
+      params$MAD <- 0
+    }
+    if ("CI_low" %in% names(params)) {
+      params$CI_low <- 1
+    }
+    if ("CI_high" %in% names(params)) {
+      params$CI_high <- 1
+    }
+    if ("pd" %in% names(params)) {
+      params$pd <- 1
+    }
+    if ("ROPE_Percentage" %in% names(params)) {
+      params$ROPE_Percentage <- 0
+    }
     if ("BF" %in% names(params)) params$BF <- Inf
   } else {
     rez <- suppressWarnings(BayesFactor::correlationBF(

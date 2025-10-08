@@ -247,29 +247,31 @@
 #'   ordinal variables. American Sociological Review. 27 (6).
 #'
 #' @export
-correlation <- function(data,
-                        data2 = NULL,
-                        select = NULL,
-                        select2 = NULL,
-                        rename = NULL,
-                        method = "pearson",
-                        missing = "keep_pairwise",
-                        p_adjust = "holm",
-                        ci = 0.95,
-                        bayesian = FALSE,
-                        bayesian_prior = "medium",
-                        bayesian_ci_method = "hdi",
-                        bayesian_test = c("pd", "rope", "bf"),
-                        redundant = FALSE,
-                        include_factors = FALSE,
-                        partial = FALSE,
-                        partial_bayesian = FALSE,
-                        multilevel = FALSE,
-                        ranktransform = FALSE,
-                        winsorize = FALSE,
-                        verbose = TRUE,
-                        standardize_names = getOption("easystats.standardize_names", FALSE),
-                        ...) {
+correlation <- function(
+  data,
+  data2 = NULL,
+  select = NULL,
+  select2 = NULL,
+  rename = NULL,
+  method = "pearson",
+  missing = "keep_pairwise",
+  p_adjust = "holm",
+  ci = 0.95,
+  bayesian = FALSE,
+  bayesian_prior = "medium",
+  bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"),
+  redundant = FALSE,
+  include_factors = FALSE,
+  partial = FALSE,
+  partial_bayesian = FALSE,
+  multilevel = FALSE,
+  ranktransform = FALSE,
+  winsorize = FALSE,
+  verbose = TRUE,
+  standardize_names = getOption("easystats.standardize_names", FALSE),
+  ...
+) {
   # valid matrix checks
   if (!partial && multilevel) {
     partial <- TRUE
@@ -294,7 +296,11 @@ correlation <- function(data,
     not_in_data <- !all_selected %in% colnames(data)
     if (any(not_in_data)) {
       insight::format_error(
-        paste0("Following variables are not in the data: ", all_selected[not_in_data], collapse = ", ")
+        paste0(
+          "Following variables are not in the data: ",
+          all_selected[not_in_data],
+          collapse = ", "
+        )
       )
     }
 
@@ -307,7 +313,6 @@ correlation <- function(data,
     } else {
       grp_df <- NULL
     }
-
 
     data2 <- if (!is.null(select2)) data[select2]
     data <- data[select]
@@ -325,7 +330,10 @@ correlation <- function(data,
     }
   }
 
-  missing <- insight::validate_argument(missing, options = c("keep_pairwise", "keep_complete"))
+  missing <- insight::validate_argument(
+    missing,
+    options = c("keep_pairwise", "keep_complete")
+  )
   if (missing == "keep_complete") {
     if (is.null(data2)) {
       oo <- stats::complete.cases(data)
@@ -405,37 +413,54 @@ correlation <- function(data,
   attr(out, "additional_arguments") <- list(...)
 
   if (inherits(data, "grouped_df")) {
-    class(out) <- unique(c("easycorrelation", "see_easycorrelation", "grouped_easycorrelation", "parameters_model", class(out)))
+    class(out) <- unique(c(
+      "easycorrelation",
+      "see_easycorrelation",
+      "grouped_easycorrelation",
+      "parameters_model",
+      class(out)
+    ))
   } else {
-    class(out) <- unique(c("easycorrelation", "see_easycorrelation", "parameters_model", class(out)))
+    class(out) <- unique(c(
+      "easycorrelation",
+      "see_easycorrelation",
+      "parameters_model",
+      class(out)
+    ))
   }
 
-  if (convert_back_to_r) out <- pcor_to_cor(pcor = out) # Revert back to r if needed.
+  if (convert_back_to_r) {
+    out <- pcor_to_cor(pcor = out)
+  } # Revert back to r if needed.
 
-  if (standardize_names) insight::standardize_names(out, ...)
+  if (standardize_names) {
+    insight::standardize_names(out, ...)
+  }
   out
 }
 
 
 #' @keywords internal
-.correlation_grouped_df <- function(data,
-                                    data2 = NULL,
-                                    method = "pearson",
-                                    p_adjust = "holm",
-                                    ci = "default",
-                                    bayesian = FALSE,
-                                    bayesian_prior = "medium",
-                                    bayesian_ci_method = "hdi",
-                                    bayesian_test = c("pd", "rope", "bf"),
-                                    redundant = FALSE,
-                                    include_factors = TRUE,
-                                    partial = FALSE,
-                                    partial_bayesian = FALSE,
-                                    multilevel = FALSE,
-                                    ranktransform = FALSE,
-                                    winsorize = FALSE,
-                                    verbose = TRUE,
-                                    ...) {
+.correlation_grouped_df <- function(
+  data,
+  data2 = NULL,
+  method = "pearson",
+  p_adjust = "holm",
+  ci = "default",
+  bayesian = FALSE,
+  bayesian_prior = "medium",
+  bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"),
+  redundant = FALSE,
+  include_factors = TRUE,
+  partial = FALSE,
+  partial_bayesian = FALSE,
+  multilevel = FALSE,
+  ranktransform = FALSE,
+  winsorize = FALSE,
+  verbose = TRUE,
+  ...
+) {
   groups <- setdiff(colnames(attributes(data)$groups), ".rows")
   ungrouped_x <- as.data.frame(data)
   xlist <- split(ungrouped_x, ungrouped_x[groups], sep = " - ")
@@ -473,7 +498,9 @@ correlation <- function(data,
     if (inherits(data2, "grouped_df")) {
       groups2 <- setdiff(colnames(attributes(data2)$groups), ".rows")
       if (!all.equal(groups, groups2)) {
-        insight::format_error("'data2' should have the same grouping characteristics as data.")
+        insight::format_error(
+          "'data2' should have the same grouping characteristics as data."
+        )
       }
       ungrouped_y <- as.data.frame(data2)
       ylist <- split(ungrouped_y, ungrouped_y[groups], sep = " - ")
@@ -515,31 +542,35 @@ correlation <- function(data,
 
 
 #' @keywords internal
-.correlation <- function(data,
-                         data2 = NULL,
-                         method = "pearson",
-                         p_adjust = "holm",
-                         ci = "default",
-                         bayesian = FALSE,
-                         bayesian_prior = "medium",
-                         bayesian_ci_method = "hdi",
-                         bayesian_test = c("pd", "rope", "bf"),
-                         redundant = FALSE,
-                         include_factors = FALSE,
-                         partial = FALSE,
-                         partial_bayesian = FALSE,
-                         multilevel = FALSE,
-                         ranktransform = FALSE,
-                         winsorize = FALSE,
-                         verbose = TRUE,
-                         ...) {
+.correlation <- function(
+  data,
+  data2 = NULL,
+  method = "pearson",
+  p_adjust = "holm",
+  ci = "default",
+  bayesian = FALSE,
+  bayesian_prior = "medium",
+  bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"),
+  redundant = FALSE,
+  include_factors = FALSE,
+  partial = FALSE,
+  partial_bayesian = FALSE,
+  multilevel = FALSE,
+  ranktransform = FALSE,
+  winsorize = FALSE,
+  verbose = TRUE,
+  ...
+) {
   if (!is.null(data2)) {
     data <- cbind(data, data2)
   }
 
   if (ncol(data) <= 2L && any(sapply(data, is.factor)) && !include_factors) {
     if (isTRUE(verbose)) {
-      insight::format_warning("It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you.")
+      insight::format_warning(
+        "It seems like there is not enough continuous variables in your data. Maybe you want to include the factors? We're setting `include_factors=TRUE` for you."
+      )
     }
     include_factors <- TRUE
   }
@@ -547,7 +578,10 @@ correlation <- function(data,
   # valid matrix checks ----------------
 
   # What if only factors
-  if (sum(sapply(if (is.null(data2)) data else cbind(data, data2), is.numeric)) == 0) {
+  if (
+    sum(sapply(if (is.null(data2)) data else cbind(data, data2), is.numeric)) ==
+      0
+  ) {
     include_factors <- TRUE
   }
 
@@ -571,7 +605,11 @@ correlation <- function(data,
     multilevel = multilevel,
     method = method
   )
-  data <- .clean_data(data, include_factors = include_factors, multilevel = multilevel)
+  data <- .clean_data(
+    data,
+    include_factors = include_factors,
+    multilevel = multilevel
+  )
 
   # LOOP ----------------
 
@@ -613,7 +651,9 @@ correlation <- function(data,
         if ("r" %in% names(result) && !"r" %in% names(params)) {
           names(params)[names(params) %in% c("rho", "tau")] <- "r"
         }
-        if (!"r" %in% names(params) && any(c("rho", "tau") %in% names(result))) {
+        if (
+          !"r" %in% names(params) && any(c("rho", "tau") %in% names(result))
+        ) {
           names(params)[names(params) %in% c("rho", "tau")] <- "r"
           names(result)[names(result) %in% c("rho", "tau")] <- "r"
         }

@@ -1,10 +1,15 @@
 #' @keywords internal
 .remove_redundant <- function(params) {
-  if (all(params$Parameter1 %in% params$Parameter2) && all(params$Parameter2 %in% params$Parameter1)) {
+  if (
+    all(params$Parameter1 %in% params$Parameter2) &&
+      all(params$Parameter2 %in% params$Parameter1)
+  ) {
     m <- .get_matrix(params)
     m[upper.tri(m, diag = TRUE)] <- NA
     rows_NA <- .get_rows_non_NA(m)
-    out <- params[!paste0(params$Parameter1, "_", params$Parameter2) %in% rows_NA, ]
+    out <- params[
+      !paste0(params$Parameter1, "_", params$Parameter2) %in% rows_NA,
+    ]
   } else {
     # Might be some edgecases here
     out <- params
@@ -23,7 +28,10 @@
 
   # inverse parameters
   inversed <- params
-  inversed[, c("Parameter1", "Parameter2")] <- params[, c("Parameter2", "Parameter1")]
+  inversed[, c("Parameter1", "Parameter2")] <- params[, c(
+    "Parameter2",
+    "Parameter1"
+  )]
 
   # bind and get diagonal data
   params <- rbind(params, inversed)
@@ -38,7 +46,12 @@
 
   # Reorder
   if (!is.null(data)) {
-    params <- params[order(match(params$Parameter1, names(data)), match(params$Parameter2, names(data))), ]
+    params <- params[
+      order(
+        match(params$Parameter1, names(data)),
+        match(params$Parameter2, names(data))
+      ),
+    ]
   }
 
   params

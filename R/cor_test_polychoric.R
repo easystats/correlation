@@ -7,9 +7,10 @@
 
   # valid matrix check
   if (!is.factor(var_x) && !is.factor(var_y)) {
-    insight::format_error("Polychoric correlations can only be ran on ordinal factors.")
+    insight::format_error(
+      "Polychoric correlations can only be ran on ordinal factors."
+    )
   }
-
 
   if (!is.factor(var_x) || !is.factor(var_y)) {
     insight::check_if_installed("polycor", "for 'polyserial' correlations")
