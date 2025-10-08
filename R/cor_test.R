@@ -118,38 +118,53 @@
 #' }
 #' }
 #' @export
-cor_test <- function(data,
-                     x,
-                     y,
-                     method = "pearson",
-                     ci = 0.95,
-                     bayesian = FALSE,
-                     bayesian_prior = "medium",
-                     bayesian_ci_method = "hdi",
-                     bayesian_test = c("pd", "rope", "bf"),
-                     include_factors = FALSE,
-                     partial = FALSE,
-                     partial_bayesian = FALSE,
-                     multilevel = FALSE,
-                     ranktransform = FALSE,
-                     winsorize = FALSE,
-                     verbose = TRUE,
-                     ...) {
+cor_test <- function(
+  data,
+  x,
+  y,
+  method = "pearson",
+  ci = 0.95,
+  bayesian = FALSE,
+  bayesian_prior = "medium",
+  bayesian_ci_method = "hdi",
+  bayesian_test = c("pd", "rope", "bf"),
+  include_factors = FALSE,
+  partial = FALSE,
+  partial_bayesian = FALSE,
+  multilevel = FALSE,
+  ranktransform = FALSE,
+  winsorize = FALSE,
+  verbose = TRUE,
+  ...
+) {
   # valid matrix checks
   if (!all(x %in% names(data)) || !all(y %in% names(data))) {
-    insight::format_error("The names you entered for x and y are not available in the dataset. Make sure there are no typos!")
+    insight::format_error(
+      "The names you entered for x and y are not available in the dataset. Make sure there are no typos!"
+    )
   }
 
-  if (ci == "default") ci <- 0.95
-  if (!partial && (partial_bayesian || multilevel)) partial <- TRUE
+  if (ci == "default") {
+    ci <- 0.95
+  }
+  if (!partial && (partial_bayesian || multilevel)) {
+    partial <- TRUE
+  }
 
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
-    data[c(x, y)] <- datawizard::to_numeric(data[c(x, y)], dummy_factors = FALSE)
+    data[c(x, y)] <- datawizard::to_numeric(
+      data[c(x, y)],
+      dummy_factors = FALSE
+    )
   }
 
   # However, for poly, we need factors!
-  if (method %in% c("poly", "polychoric") && all(vapply(data[c(x, y)], is.numeric, FUN.VALUE = TRUE))) {
+  if (
+    method %in%
+      c("poly", "polychoric") &&
+      all(vapply(data[c(x, y)], is.numeric, FUN.VALUE = TRUE))
+  ) {
     # convert all input to factors, but only if all input currently is numeric
     # we allow mix of numeric and factors
     data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
@@ -159,13 +174,23 @@ cor_test <- function(data,
   if (!isFALSE(partial)) {
     # partial
     if (isTRUE(partial)) {
-      data[[x]] <- datawizard::adjust(data[names(data) != y], multilevel = multilevel, bayesian = partial_bayesian)[[x]]
-      data[[y]] <- datawizard::adjust(data[names(data) != x], multilevel = multilevel, bayesian = partial_bayesian)[[y]]
+      data[[x]] <- datawizard::adjust(
+        data[names(data) != y],
+        multilevel = multilevel,
+        bayesian = partial_bayesian
+      )[[x]]
+      data[[y]] <- datawizard::adjust(
+        data[names(data) != x],
+        multilevel = multilevel,
+        bayesian = partial_bayesian
+      )[[y]]
     }
 
     # semi-partial
     if (partial == "semi") {
-      insight::format_error("Semi-partial correlations are not supported yet. Get in touch if you want to contribute.")
+      insight::format_error(
+        "Semi-partial correlations are not supported yet. Get in touch if you want to contribute."
+      )
     }
   }
 
@@ -178,7 +203,8 @@ cor_test <- function(data,
 
     # winsorization would otherwise fail in case of NAs present
     data <- as.data.frame(
-      datawizard::winsorize(stats::na.omit(data[c(x, y)]),
+      datawizard::winsorize(
+        stats::na.omit(data[c(x, y)]),
         threshold = winsorize,
         verbose = verbose
       )
@@ -187,7 +213,11 @@ cor_test <- function(data,
 
   # Rank transform (i.e., "robust")
   if (ranktransform) {
-    data[c(x, y)] <- datawizard::ranktransform(data[c(x, y)], sign = FALSE, method = "average")
+    data[c(x, y)] <- datawizard::ranktransform(
+      data[c(x, y)],
+      sign = FALSE,
+      method = "average"
+    )
   }
 
   # check if enough no. of obs ------------------------------
@@ -197,7 +227,12 @@ cor_test <- function(data,
   invalid <- FALSE
   if (n_obs < 3L) {
     if (isTRUE(verbose)) {
-      insight::format_warning(paste(x, "and", y, "have less than 3 complete observations. Returning NA."))
+      insight::format_warning(paste(
+        x,
+        "and",
+        y,
+        "have less than 3 complete observations. Returning NA."
+      ))
     }
     invalid <- TRUE
     original_info <- list(data = data, x = x, y = y)
@@ -206,11 +241,14 @@ cor_test <- function(data,
     y <- "disp"
   }
 
-
   # Find method
   method <- tolower(method)
-  if (method == "auto" && !bayesian) method <- .find_correlationtype(data, x, y)
-  if (method == "auto" && bayesian) method <- "pearson"
+  if (method == "auto" && !bayesian) {
+    method <- .find_correlationtype(data, x, y)
+  }
+  if (method == "auto" && bayesian) {
+    method <- "pearson"
+  }
 
   # Frequentist
   if (!bayesian) {
@@ -224,7 +262,9 @@ cor_test <- function(data,
       out <- .cor_test_biweight(data, x, y, ci = ci, ...)
     } else if (method == "distance") {
       out <- .cor_test_distance(data, x, y, ci = ci, ...)
-    } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
+    } else if (
+      method %in% c("percentage", "percentage_bend", "percentagebend", "pb")
+    ) {
       out <- .cor_test_percentage(data, x, y, ci = ci, ...)
     } else if (method %in% c("blomqvist", "median", "medial")) {
       out <- .cor_test_blomqvist(data, x, y, ci = ci, ...)
@@ -244,23 +284,43 @@ cor_test <- function(data,
 
     # Bayesian
   } else if (method %in% c("tetra", "tetrachoric")) {
-    insight::format_error("Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+    insight::format_error(
+      "Tetrachoric Bayesian correlations are not supported yet. Get in touch if you want to contribute."
+    )
   } else if (method %in% c("poly", "polychoric")) {
-    insight::format_error("Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+    insight::format_error(
+      "Polychoric Bayesian correlations are not supported yet. Get in touch if you want to contribute."
+    )
   } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
-    insight::format_error("Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+    insight::format_error(
+      "Biserial Bayesian correlations are not supported yet. Get in touch if you want to contribute."
+    )
   } else if (method == "biweight") {
-    insight::format_error("Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute.")
+    insight::format_error(
+      "Biweight Bayesian correlations are not supported yet. Get in touch if you want to contribute."
+    )
   } else if (method == "distance") {
-    insight::format_error("Bayesian distance correlations are not supported yet. Get in touch if you want to contribute.")
-  } else if (method %in% c("percentage", "percentage_bend", "percentagebend", "pb")) {
-    insight::format_error("Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute.")
+    insight::format_error(
+      "Bayesian distance correlations are not supported yet. Get in touch if you want to contribute."
+    )
+  } else if (
+    method %in% c("percentage", "percentage_bend", "percentagebend", "pb")
+  ) {
+    insight::format_error(
+      "Bayesian Percentage Bend correlations are not supported yet. Get in touch if you want to contribute."
+    )
   } else if (method %in% c("blomqvist", "median", "medial")) {
-    insight::format_error("Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
+    insight::format_error(
+      "Bayesian Blomqvist correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor)."
+    )
   } else if (method == "hoeffding") {
-    insight::format_error("Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor).")
+    insight::format_error(
+      "Bayesian Hoeffding's correlations are not supported yet. Check-out the BBcor package (https://github.com/donaldRwilliams/BBcor)."
+    )
   } else if (method == "gamma") {
-    insight::format_error("Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute.")
+    insight::format_error(
+      "Bayesian gamma correlations are not supported yet. Get in touch if you want to contribute."
+    )
   } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
     out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = TRUE, ...)
   } else {
@@ -291,7 +351,17 @@ cor_test <- function(data,
 
   # Reorder columns
   if ("CI_low" %in% names(out)) {
-    col_order <- c("Parameter1", "Parameter2", "r", "rho", "tau", "Dxy", "CI", "CI_low", "CI_high")
+    col_order <- c(
+      "Parameter1",
+      "Parameter2",
+      "r",
+      "rho",
+      "tau",
+      "Dxy",
+      "CI",
+      "CI_low",
+      "CI_high"
+    )
     out <- out[c(
       col_order[col_order %in% names(out)],
       setdiff(colnames(out), col_order[col_order %in% names(out)])
@@ -299,16 +369,22 @@ cor_test <- function(data,
   }
 
   # Output
-  attr(out, "coefficient_name") <- c("rho", "r", "tau", "Dxy")[c("rho", "r", "tau", "Dxy") %in% names(out)][1]
+  attr(out, "coefficient_name") <- c("rho", "r", "tau", "Dxy")[
+    c("rho", "r", "tau", "Dxy") %in% names(out)
+  ][1]
   attr(out, "ci") <- ci
   attr(out, "data") <- data
-  class(out) <- unique(c("easycor_test", "easycorrelation", "parameters_model", class(out)))
+  class(out) <- unique(c(
+    "easycor_test",
+    "easycorrelation",
+    "parameters_model",
+    class(out)
+  ))
   out
 }
 
 
 # Utilities ---------------------------------------------------------------
-
 
 #' @keywords internal
 .complete_variable_x <- function(data, x, y) {

@@ -1,6 +1,7 @@
 test_that("cormatrix_to_excel select", {
   skip_if_not_or_load_if_installed("openxlsx2")
-  expect_snapshot(suppressWarnings(cormatrix_to_excel(mtcars,
+  expect_snapshot(suppressWarnings(cormatrix_to_excel(
+    mtcars,
     filename = "cormatrix1",
     overwrite = TRUE,
     p_adjust = "none",
@@ -13,7 +14,8 @@ test_that("cormatrix_to_excel select", {
 
 test_that("cormatrix_to_excel p_adjust", {
   skip_if_not_or_load_if_installed("openxlsx2")
-  expect_snapshot(suppressWarnings(cormatrix_to_excel(airquality,
+  expect_snapshot(suppressWarnings(cormatrix_to_excel(
+    airquality,
     filename = "cormatrix1",
     overwrite = FALSE,
     p_adjust = "holm",

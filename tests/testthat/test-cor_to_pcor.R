@@ -9,7 +9,11 @@ test_that("pcor_to_cor", {
   pcormat <- summary(out, redundant = TRUE)
 
   ppcor <- ppcor::pcor(iris[1:4])
-  expect_equal(max(as.matrix(pcormat[2:5]) - as.matrix(ppcor$estimate)), 0, tolerance = 0.01)
+  expect_equal(
+    max(as.matrix(pcormat[2:5]) - as.matrix(ppcor$estimate)),
+    0,
+    tolerance = 0.01
+  )
 
   # TODO: fix
   # cormat <- pcor_to_cor(pcormat)
@@ -22,9 +26,16 @@ test_that("pcor_to_cor", {
   # expect_equal(mean(p - hmisc$P, na.rm = TRUE), 0, tolerance = 0.001)
 
   # easycorrelation
-  cormat <- summary(pcor_to_cor(correlation(iris, partial = TRUE)), redundant = TRUE)
+  cormat <- summary(
+    pcor_to_cor(correlation(iris, partial = TRUE)),
+    redundant = TRUE
+  )
 
-  expect_equal(max(as.matrix(cormat[2:5]) - as.matrix(cor(iris[1:4]))), 0, tolerance = 0.01)
+  expect_equal(
+    max(as.matrix(cormat[2:5]) - as.matrix(cor(iris[1:4]))),
+    0,
+    tolerance = 0.01
+  )
 
   hmisc <- Hmisc::rcorr(as.matrix(iris[1:4]), type = c("pearson"))
   expect_equal(mean(as.matrix(cormat[2:5]) - hmisc$r), 0, tolerance = 0.0001)

@@ -1,5 +1,12 @@
 #' @keywords internal
-.cor_test_biserial <- function(data, x, y, ci = 0.95, method = "biserial", ...) {
+.cor_test_biserial <- function(
+  data,
+  x,
+  y,
+  ci = 0.95,
+  method = "biserial",
+  ...
+) {
   # valid matrix
   if (.vartype(data[[x]])$is_binary && !.vartype(data[[y]])$is_binary) {
     binary <- x
@@ -14,7 +21,9 @@
   }
 
   # Rescale to 0-1
-  if (.vartype(data[[binary]])$is_factor || .vartype(data[[binary]])$is_character) {
+  if (
+    .vartype(data[[binary]])$is_factor || .vartype(data[[binary]])$is_character
+  ) {
     data[[binary]] <- as.numeric(as.factor(data[[binary]]))
   }
 
@@ -27,7 +36,15 @@
   if (method == "biserial") {
     out <- .cor_test_biserial_biserial(data, x, y, continuous, binary, ci)
   } else {
-    out <- .cor_test_biserial_pointbiserial(data, x, y, continuous, binary, ci, ...)
+    out <- .cor_test_biserial_pointbiserial(
+      data,
+      x,
+      y,
+      continuous,
+      binary,
+      ci,
+      ...
+    )
   }
 
   out
@@ -35,8 +52,23 @@
 
 
 #' @keywords internal
-.cor_test_biserial_pointbiserial <- function(data, x, y, continuous, binary, ci, ...) {
-  out <- .cor_test_freq(data, continuous, binary, ci = ci, method = "pearson", ...)
+.cor_test_biserial_pointbiserial <- function(
+  data,
+  x,
+  y,
+  continuous,
+  binary,
+  ci,
+  ...
+) {
+  out <- .cor_test_freq(
+    data,
+    continuous,
+    binary,
+    ci = ci,
+    method = "pearson",
+    ...
+  )
   names(out)[names(out) == "r"] <- "rho"
   out$Parameter1 <- x
   out$Parameter2 <- y
@@ -50,7 +82,6 @@
 .cor_test_biserial_biserial <- function(data, x, y, continuous, binary, ci) {
   var_x <- .complete_variable_x(data, continuous, binary)
   var_y <- .complete_variable_y(data, continuous, binary)
-
 
   m1 <- mean(var_x[var_y == 1])
   m0 <- mean(var_x[var_y == 0])

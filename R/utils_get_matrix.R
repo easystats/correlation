@@ -1,6 +1,10 @@
 #' @keywords internal
 .get_matrix <- function(data, square = FALSE) {
-  if ((all(data$Parameter1 %in% data$Parameter2) && all(data$Parameter2 %in% data$Parameter1)) || square) {
+  if (
+    (all(data$Parameter1 %in% data$Parameter2) &&
+      all(data$Parameter2 %in% data$Parameter1)) ||
+      square
+  ) {
     vars <- as.character(unique(c(data$Parameter1, data$Parameter2)))
     dim <- length(vars)
     m <- matrix(nrow = dim, ncol = dim, dimnames = list(vars, vars))

@@ -41,13 +41,17 @@
 #' \dontshow{
 #' setwd(.old_wd)
 #' }
-cormatrix_to_excel <- function(data,
-                               filename,
-                               overwrite = TRUE,
-                               print.mat = TRUE,
-                               ...) {
+cormatrix_to_excel <- function(
+  data,
+  filename,
+  overwrite = TRUE,
+  print.mat = TRUE,
+  ...
+) {
   if (missing(filename)) {
-    insight::format_error("Argument 'filename' required (as per CRAN policies).")
+    insight::format_error(
+      "Argument 'filename' required (as per CRAN policies)."
+    )
   }
 
   insight::check_if_installed("openxlsx2")
@@ -409,7 +413,8 @@ cormatrix_to_excel <- function(data,
 
   # Save Excel
   cat(paste0(
-    "\n\n [Correlation matrix '", filename,
+    "\n\n [Correlation matrix '",
+    filename,
     ".xlsx' has been saved to working directory (or where specified).]"
   ))
   openxlsx2::wb_save(wb, file = paste0(filename, ".xlsx"), overwrite = TRUE)

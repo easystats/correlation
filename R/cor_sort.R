@@ -20,13 +20,28 @@
 #' cor_sort(x, hclust_method = "ward.D2") # It can also reorder the long form output
 #' cor_sort(summary(x, redundant = TRUE)) # As well as from the summary
 #' @export
-cor_sort <- function(x, distance = "correlation", hclust_method = "complete", ...) {
+cor_sort <- function(
+  x,
+  distance = "correlation",
+  hclust_method = "complete",
+  ...
+) {
   UseMethod("cor_sort")
 }
 
 #' @export
-cor_sort.easycorrelation <- function(x, distance = "correlation", hclust_method = "complete", ...) {
-  m <- cor_sort(as.matrix(x), distance = distance, hclust_method = hclust_method, ...)
+cor_sort.easycorrelation <- function(
+  x,
+  distance = "correlation",
+  hclust_method = "complete",
+  ...
+) {
+  m <- cor_sort(
+    as.matrix(x),
+    distance = distance,
+    hclust_method = hclust_method,
+    ...
+  )
   x$Parameter1 <- factor(x$Parameter1, levels = rownames(m))
   x$Parameter2 <- factor(x$Parameter2, levels = colnames(m))
   reordered <- x[order(x$Parameter1, x$Parameter2), ]
@@ -48,7 +63,12 @@ cor_sort.easycorrelation <- function(x, distance = "correlation", hclust_method 
 
 
 #' @export
-cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = "complete", ...) {
+cor_sort.easycormatrix <- function(
+  x,
+  distance = "correlation",
+  hclust_method = "complete",
+  ...
+) {
   if (!"Parameter" %in% colnames(x)) {
     return(NextMethod())
   }
@@ -60,7 +80,9 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
 
   # If non-redundant matrix, fail (## TODO: fix that)
   if (anyNA(m)) {
-    insight::format_error("Non-redundant matrices are not supported yet. Try again by setting summary(..., redundant = TRUE)")
+    insight::format_error(
+      "Non-redundant matrices are not supported yet. Try again by setting summary(..., redundant = TRUE)"
+    )
   }
 
   # Get sorted matrix
@@ -77,9 +99,22 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
   )
 
   # Reorder attributes (p-values) etc.
-  for (id in c("p", "CI", "CI_low", "CI_high", "BF", "Method", "n_Obs", "df_error", "t")) {
+  for (id in c(
+    "p",
+    "CI",
+    "CI_low",
+    "CI_high",
+    "BF",
+    "Method",
+    "n_Obs",
+    "df_error",
+    "t"
+  )) {
     if (id %in% names(attributes(reordered))) {
-      attributes(reordered)[[id]] <- attributes(reordered)[[id]][order(x$Parameter), names(reordered)]
+      attributes(reordered)[[id]] <- attributes(reordered)[[id]][
+        order(x$Parameter),
+        names(reordered)
+      ]
     }
   }
 
@@ -91,9 +126,19 @@ cor_sort.easycormatrix <- function(x, distance = "correlation", hclust_method = 
 
 
 #' @export
-cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "complete", ...) {
+cor_sort.matrix <- function(
+  x,
+  distance = "correlation",
+  hclust_method = "complete",
+  ...
+) {
   if (isSquare(x) && all(colnames(x) %in% rownames(x))) {
-    i <- .cor_sort_square(x, distance = distance, hclust_method = hclust_method, ...)
+    i <- .cor_sort_square(
+      x,
+      distance = distance,
+      hclust_method = hclust_method,
+      ...
+    )
   } else {
     i <- .cor_sort_nonsquare(x, distance = "euclidean", ...)
   }
@@ -111,8 +156,12 @@ cor_sort.matrix <- function(x, distance = "correlation", hclust_method = "comple
 
 # Utils -------------------------------------------------------------------
 
-
-.cor_sort_square <- function(m, distance = "correlation", hclust_method = "complete", ...) {
+.cor_sort_square <- function(
+  m,
+  distance = "correlation",
+  hclust_method = "complete",
+  ...
+) {
   if (distance == "correlation") {
     d <- stats::as.dist((1 - m) / 2) # r = -1 -> d = 1; r = 1 -> d = 0
   } else if (distance == "raw") {

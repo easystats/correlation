@@ -5,8 +5,19 @@
 #'   better, though the Bishara and Hittner (2017) paper favours the Fieller
 #'   correction. Both are generally very similar.
 #' @export
-cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fieller", ...) {
-  method <- match.arg(tolower(method), c("pearson", "kendall", "spearman"), several.ok = FALSE)
+cor_to_ci <- function(
+  cor,
+  n,
+  ci = 0.95,
+  method = "pearson",
+  correction = "fieller",
+  ...
+) {
+  method <- match.arg(
+    tolower(method),
+    c("pearson", "kendall", "spearman"),
+    several.ok = FALSE
+  )
 
   if (method == "kendall") {
     out <- .cor_to_ci_kendall(cor, n, ci = ci, correction = correction, ...)
@@ -43,7 +54,13 @@ cor_to_ci <- function(cor, n, ci = 0.95, method = "pearson", correction = "fiell
 
 
 # Spearman -----------------------------------------------------------------
-.cor_to_ci_spearman <- function(cor, n, ci = 0.95, correction = "fieller", ...) {
+.cor_to_ci_spearman <- function(
+  cor,
+  n,
+  ci = 0.95,
+  correction = "fieller",
+  ...
+) {
   # by @tsbaguley (https://rpubs.com/seriousstats/616206)
 
   if (correction == "fieller") {

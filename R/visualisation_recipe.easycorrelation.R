@@ -26,13 +26,18 @@ visualisation_recipe.easycorrelation <- function(x, ...) {
   layers[["l2"]] <- list(geom = "ggraph::geom_node_point", size = 22)
   layers[["l3"]] <- list(
     geom = "ggraph::geom_node_text",
-    aes = list(label = "name"), colour = "white"
+    aes = list(label = "name"),
+    colour = "white"
   )
   layers[["l4"]] <- list(geom = "ggraph::theme_graph", base_family = "sans")
   layers[["l5"]] <- list(geom = "guides", edge_width = "none")
 
   # Out
-  class(layers) <- c("visualisation_recipe", "see_visualisation_recipe", class(layers))
+  class(layers) <- c(
+    "visualisation_recipe",
+    "see_visualisation_recipe",
+    class(layers)
+  )
   attr(layers, "data") <- data
   attr(layers, "layout") <- "kk"
   attr(layers, "ggraph") <- TRUE
