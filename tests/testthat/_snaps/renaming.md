@@ -5,9 +5,9 @@
     Output
       # Correlation Matrix (pearson-method)
       
-      Parameter1 | Parameter2 |    r |       95% CI | t(9) |         p
-      ----------------------------------------------------------------
-      x1         |         x2 | 1.00 | [1.00, 1.00] |  Inf | < .001***
+      Parameter1 | Parameter2 | r |       95% CI | t(9) |         p
+      -------------------------------------------------------------
+      x1         |         x2 | 1 | [1.00, 1.00] |  Inf | < .001***
       
       p-value adjustment method: Holm (1979)
       Observations: 11
@@ -19,9 +19,9 @@
     Output
       # Correlation Matrix (pearson-method)
       
-      Parameter1 | Parameter2 |    r |       95% CI | t(9) |         p
-      ----------------------------------------------------------------
-      var1       |       var2 | 1.00 | [1.00, 1.00] |  Inf | < .001***
+      Parameter1 | Parameter2 | r |       95% CI | t(9) |         p
+      -------------------------------------------------------------
+      var1       |       var2 | 1 | [1.00, 1.00] |  Inf | < .001***
       
       p-value adjustment method: Holm (1979)
       Observations: 11
