@@ -247,37 +247,37 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .05)",
+    rule = "AND(B2 <= .2, B2 > 0, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .05)",
     style = "one_star_pink"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .2, p_values!B2 < .05)",
+    rule = "AND(B2 >= .2, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .05)",
     style = "one_star_peach"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .05)",
+    rule = "AND(B2 >= .4, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .05)",
     style = "one_star_red"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .05)",
+    rule = "AND(B2 >= -.2, B2 < 0, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .05)",
     style = "one_star_lightblue"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .05)",
+    rule = "AND(B2 <= -.2, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .05)",
     style = "one_star_midblue"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .05)",
+    rule = "AND(B2 <= -.4, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .05)",
     style = "one_star_darkblue"
   )
 
@@ -285,37 +285,37 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .01)",
+    rule = "AND(B2 <= .2, B2 > 0, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .01)",
     style = "two_stars_pink"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .2, p_values!B2 < .01)",
+    rule = "AND(B2 >= .2, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .01)",
     style = "two_stars_peach"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .01)",
+    rule = "AND(B2 >= .4, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .01)",
     style = "two_stars_red"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.02, r_values!B2 < 0, p_values!B2 < .01)",
+    rule = "AND(B2 >= -.02, B2 < 0, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .01)",
     style = "two_stars_lightblue"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .01)",
+    rule = "AND(B2 <= -.2, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .01)",
     style = "two_stars_midblue"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .01)",
+    rule = "AND(B2 <= -.4, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .01)",
     style = "two_stars_darkblue"
   )
 
@@ -323,37 +323,37 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .001)",
+    rule = "AND(B2 <= .2, B2 > 0, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .001)",
     style = "three_stars_pink"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .2, p_values!B2 < .001)",
+    rule = "AND(B2 >= .2, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .001)",
     style = "three_stars_peach"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .001)",
+    rule = "AND(B2 >= .4, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .001)",
     style = "three_stars_red"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .001)",
+    rule = "AND(B2 >= -.2, B2 < 0, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .001)",
     style = "three_stars_lightblue"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .001)",
+    rule = "AND(B2 <= -.2, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .001)",
     style = "three_stars_midblue"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .001)",
+    rule = "AND(B2 <= -.4, INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) < .001)",
     style = "three_stars_darkblue"
   )
 
@@ -361,13 +361,13 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 = 1)",
+    rule = "AND(B2 = 1)",
     style = "gray_style"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(p_values!B2 >= .05)",
+    rule = "AND(INDIRECT(\"p_values!\"&ADDRESS(ROW(),COLUMN())) >= .05)",
     style = "no_star"
   )
 
