@@ -252,12 +252,12 @@ cormatrix_to_excel <- function(data,
     style = "gray_style"
   )
   
-  # three stars (applied second for p < .001)
+  # three stars (p < .001) - most specific color ranges first
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .001)",
-    style = "three_stars_pink"
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .001)",
+    style = "three_stars_red"
   )
   wb$add_conditional_formatting(
     "r_values",
@@ -268,14 +268,14 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .001)",
-    style = "three_stars_red"
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .001)",
+    style = "three_stars_pink"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .001)",
-    style = "three_stars_lightblue"
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .001)",
+    style = "three_stars_darkblue"
   )
   wb$add_conditional_formatting(
     "r_values",
@@ -286,16 +286,16 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .001)",
-    style = "three_stars_darkblue"
+    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .001)",
+    style = "three_stars_lightblue"
   )
 
-  # two stars
+  # two stars (p < .01) - most specific color ranges first
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .01)",
-    style = "two_stars_pink"
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .01)",
+    style = "two_stars_red"
   )
   wb$add_conditional_formatting(
     "r_values",
@@ -306,14 +306,14 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .01)",
-    style = "two_stars_red"
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .01)",
+    style = "two_stars_pink"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.02, r_values!B2 < 0, p_values!B2 < .01)",
-    style = "two_stars_lightblue"
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .01)",
+    style = "two_stars_darkblue"
   )
   wb$add_conditional_formatting(
     "r_values",
@@ -324,16 +324,16 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .01)",
-    style = "two_stars_darkblue"
+    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .01)",
+    style = "two_stars_lightblue"
   )
 
-  # one star
+  # one star (p < .05) - most specific color ranges first
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .05)",
-    style = "one_star_pink"
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .05)",
+    style = "one_star_red"
   )
   wb$add_conditional_formatting(
     "r_values",
@@ -344,14 +344,14 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .05)",
-    style = "one_star_red"
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .05)",
+    style = "one_star_pink"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .05)",
-    style = "one_star_lightblue"
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .05)",
+    style = "one_star_darkblue"
   )
   wb$add_conditional_formatting(
     "r_values",
@@ -362,8 +362,8 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .05)",
-    style = "one_star_darkblue"
+    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .05)",
+    style = "one_star_lightblue"
   )
 
   # no stars (for non-significant correlations)
