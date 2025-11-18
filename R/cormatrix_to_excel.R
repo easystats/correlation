@@ -244,7 +244,15 @@ cormatrix_to_excel <- function(data,
   # Compute the cell range for styling
   dims_fmt <- openxlsx2::wb_dims(cols = all.columns, rows = all.columns)
   
-  # three stars (most specific, applied first so it wins for p < .001)
+  # gray diagonal (most specific, must be first to win for r = 1)
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 = 1)",
+    style = "gray_style"
+  )
+  
+  # three stars (applied second for p < .001)
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
@@ -358,13 +366,7 @@ cormatrix_to_excel <- function(data,
     style = "one_star_darkblue"
   )
 
-  # Other formatting
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 = 1)",
-    style = "gray_style"
-  )
+  # no stars (for non-significant correlations)
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
