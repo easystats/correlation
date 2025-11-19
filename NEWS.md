@@ -2,14 +2,9 @@
 
 ## Bug Fixes
 
-- `cormatrix_to_excel()` now works correctly with openxlsx2 v1.21+. Fixed
-  conditional formatting rule ordering to accommodate the new waterfall
-  application mode where the first matching rule wins (previously rules were
-  applied in reverse order). All formatting rules are now ordered from most
-  to least specific to ensure correct display of significance stars, colors,
-  and diagonal formatting (#361).
-
-
+- `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
+  conditional formatting rule ordering to accommodate openxlsx2's new waterfall
+  strategy (#361).
 
 # correlation 0.8.8
 
