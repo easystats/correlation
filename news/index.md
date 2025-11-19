@@ -1,5 +1,15 @@
 # Changelog
 
+## correlation 0.8.9
+
+### Bug Fixes
+
+- [`cormatrix_to_excel()`](https://easystats.github.io/correlation/reference/cormatrix_to_excel.md)
+  now works correctly with openxlsx2 v1.16+. Fixed conditional
+  formatting rule ordering to accommodate openxlsx2’s new waterfall
+  strategy
+  ([\#361](https://github.com/easystats/correlation/issues/361)).
+
 ## correlation 0.8.8
 
 CRAN release: 2025-07-08
