@@ -252,7 +252,7 @@ cormatrix_to_excel <- function(
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 = 1)",
+    rule = "r_values!B2 = 1",
     style = "gray_style"
   )
 
