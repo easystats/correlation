@@ -1,7 +1,7 @@
 Type: Package
 Package: correlation
 Title: Methods for Correlation Analysis
-Version: 0.8.8
+Version: 0.8.8.1
 Authors@R:
     c(person(given = "Dominique",
              family = "Makowski",
@@ -88,7 +88,7 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-US
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 Config/Needs/website:

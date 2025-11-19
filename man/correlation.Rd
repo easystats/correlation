@@ -272,7 +272,7 @@ Bayesian rank correlations (which have different priors).
 }
 }
 \examples{
-\dontshow{if (all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0") (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0") withAutoprint(\{ # examplesIf}
 library(correlation)
 data(iris)
 
