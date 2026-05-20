@@ -142,3 +142,29 @@ test_that("discovr-chap_7.4", {
     )
   )
 })
+
+
+test_that("discovr-chap_7.5", {
+  data(exam_anxiety, package = "discovr")
+  exam_tib <- discovr::exam_anxiety
+  out <- correlation(
+    exam_tib,
+    select = c("exam_grade", "revise", "anxiety"),
+    partial = TRUE
+  )
+  expect_identical(
+    capture.output(out),
+    c(
+      "# Correlation Matrix (pearson-method)",
+      "",
+      "Parameter1 | Parameter2 |     r |         95% CI | t(101) |         p",
+      "---------------------------------------------------------------------",
+      "exam_grade |     revise |  0.13 | [-0.06,  0.32] |   1.35 | 0.182    ",
+      "exam_grade |    anxiety | -0.25 | [-0.42, -0.06] |  -2.56 | 0.024*   ",
+      "revise     |    anxiety | -0.65 | [-0.75, -0.52] |  -8.56 | < .001***",
+      "",
+      "p-value adjustment method: Holm (1979)",
+      "Observations: 103"
+    )
+  )
+})
