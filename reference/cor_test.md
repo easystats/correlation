@@ -367,7 +367,7 @@ if (require("BayesFactor", quietly = TRUE)) {
   cor_test(iris, "Sepal.Length", "Sepal.Width", bayesian = TRUE)
 }
 #> ************
-#> Welcome to BayesFactor 0.9.12-4.7. If you have questions, please contact Richard Morey (richarddmorey@gmail.com).
+#> Welcome to BayesFactor 0.9.12-4.8. If you have questions, please contact Richard Morey (richarddmorey@gmail.com).
 #> 
 #> Type BFManual() to open the manual.
 #> ************

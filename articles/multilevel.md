@@ -46,12 +46,12 @@ data <- simulate_simpson(n = 100, groups = 10)
 summary(data)
 ```
 
-    ##        V1              V2            Group          
-    ##  Min.   :-1.67   Min.   :-12.40   Length:1000       
-    ##  1st Qu.: 2.96   1st Qu.: -7.98   Class :character  
-    ##  Median : 5.58   Median : -5.48   Mode  :character  
-    ##  Mean   : 5.50   Mean   : -5.50                     
-    ##  3rd Qu.: 7.99   3rd Qu.: -2.98                     
+    ##        V1              V2               Group     
+    ##  Min.   :-1.67   Min.   :-12.40   Length   :1000  
+    ##  1st Qu.: 2.96   1st Qu.: -7.98   N.unique :  10  
+    ##  Median : 5.58   Median : -5.48   N.blank  :   0  
+    ##  Mean   : 5.50   Mean   : -5.50   Min.nchar:   4  
+    ##  3rd Qu.: 7.99   3rd Qu.: -2.98   Max.nchar:   4  
     ##  Max.   :12.18   Max.   :  1.76
 
 Now let’s visualize the two variables:
