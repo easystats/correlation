@@ -39,7 +39,6 @@
 
 # Basis -------------------------------------------------------------------
 
-
 #' @keywords internal
 .cor_test_distance_corrected <- function(x, y, ci = 0.95) {
   x <- as.matrix(stats::dist(x))
@@ -102,7 +101,6 @@
 
 # Utils -------------------------------------------------------------------
 
-
 #' @keywords internal
 .A_kl <- function(x, index) {
   d <- as.matrix(x)^index
@@ -121,7 +119,9 @@
   ## denoted A* (or B*) in JMVA t-test paper (2013)
   d <- as.matrix(d)
   n <- nrow(d)
-  if (n != ncol(d)) stop("Argument d should be distance", call. = FALSE)
+  if (n != ncol(d)) {
+    stop("Argument d should be distance", call. = FALSE)
+  }
   m <- rowMeans(d)
   M <- mean(d)
   a <- sweep(d, 1, m)

@@ -62,13 +62,15 @@ cor_to_pcor.easycormatrix <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
 
 #' @export
 
-cor_to_pcor.easycorrelation <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
+cor_to_pcor.easycorrelation <- function(
+  cor,
+  tol = .Machine$double.eps^(2 / 3)
+) {
   .cor_to_pcor_easycorrelation(cor = cor, tol = tol)
 }
 
 
 # pcor to cor -------------------------------------------------------------
-
 
 #' @rdname cor_to_pcor
 #' @export
@@ -95,7 +97,10 @@ pcor_to_cor.easycormatrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
 
 
 #' @export
-pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
+pcor_to_cor.easycorrelation <- function(
+  pcor,
+  tol = .Machine$double.eps^(2 / 3)
+) {
   .cor_to_pcor_easycorrelation(pcor = pcor, tol = tol)
 }
 
@@ -103,7 +108,11 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 # Convenience Functions --------------------------------------------------------
 
 #' @keywords internal
-.cor_to_pcor_easycorrelation <- function(pcor = NULL, cor = NULL, tol = .Machine$double.eps^(2 / 3)) {
+.cor_to_pcor_easycorrelation <- function(
+  pcor = NULL,
+  cor = NULL,
+  tol = .Machine$double.eps^(2 / 3)
+) {
   if (is.null(cor)) {
     r <- .pcor_to_cor(.get_cor(summary(pcor, redundant = TRUE), cov = NULL))
     cor <- pcor
@@ -155,7 +164,7 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
   # Format
   newdata <- cbind(cor[1:2], newdata)
   cor <- cor[, seq_len(ncol(newdata))]
-  cor[, ] <- newdata
+  cor[,] <- newdata
   names(cor) <- names(newdata)
 
   # P-values adjustments
@@ -167,7 +176,11 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
 
 #' @keywords internal
-.cor_to_pcor_easycormatrix <- function(pcor = NULL, cor = NULL, tol = .Machine$double.eps^(2 / 3)) {
+.cor_to_pcor_easycormatrix <- function(
+  pcor = NULL,
+  cor = NULL,
+  tol = .Machine$double.eps^(2 / 3)
+) {
   if (is.null(cor)) {
     r <- .pcor_to_cor(.get_cor(pcor, cov = NULL))
     cor <- pcor
@@ -190,8 +203,16 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
   # P-values adjustments
   n_comp <- sum(upper.tri(p$p))
-  p$p[upper.tri(p$p)] <- stats::p.adjust(p$p[upper.tri(p$p)], method = p_adjust, n = n_comp)
-  p$p[lower.tri(p$p)] <- stats::p.adjust(p$p[lower.tri(p$p)], method = p_adjust, n = n_comp)
+  p$p[upper.tri(p$p)] <- stats::p.adjust(
+    p$p[upper.tri(p$p)],
+    method = p_adjust,
+    n = n_comp
+  )
+  p$p[lower.tri(p$p)] <- stats::p.adjust(
+    p$p[lower.tri(p$p)],
+    method = p_adjust,
+    n = n_comp
+  )
   attributes(cor)$p_adjust <- p_adjust
 
   # Statistic and p-value
@@ -243,7 +264,9 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
       insight::format_error("A correlation or covariance matrix is required.")
     }
     cor <- stats::cov2cor(cov)
-  } else if (inherits(cor, "easycormatrix") && colnames(cor)[1] == "Parameter") {
+  } else if (
+    inherits(cor, "easycormatrix") && colnames(cor)[1] == "Parameter"
+  ) {
     row.names(cor) <- cor$Parameter
     cor <- as.matrix(cor[-1])
   }

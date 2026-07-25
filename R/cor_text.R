@@ -16,11 +16,21 @@
 #'
 #' cor_text(rez)
 #' @export
-cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, ...) {
+cor_text <- function(
+  x,
+  show_ci = TRUE,
+  show_statistic = TRUE,
+  show_sig = TRUE,
+  ...
+) {
   # Estimate
   candidates <- c("rho", "r", "tau", "Difference", "r_rank_biserial")
   estimate <- candidates[candidates %in% names(x)][1]
-  out_text <- paste0(tolower(estimate), " = ", insight::format_value(x[[estimate]]))
+  out_text <- paste0(
+    tolower(estimate),
+    " = ",
+    insight::format_value(x[[estimate]])
+  )
 
   # CI
   if (show_ci && all(c("CI_high", "CI_low") %in% names(x))) {
@@ -29,7 +39,11 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
       out_text <- paste0(
         out_text,
         ", ",
-        insight::format_ci(x$CI_low, x$CI_high, ci = attributes(x$conf.int)$conf.level)
+        insight::format_ci(
+          x$CI_low,
+          x$CI_high,
+          ci = attributes(x$conf.int)$conf.level
+        )
       )
     } else if ("CI" %in% names(x)) {
       # param
@@ -72,11 +86,21 @@ cor_text <- function(x, show_ci = TRUE, show_statistic = TRUE, show_sig = TRUE, 
   # Significance
   if (show_sig) {
     if ("p" %in% names(x)) {
-      out_text <- paste0(out_text, ", ", insight::format_p(x$p, digits = "apa", ...))
+      out_text <- paste0(
+        out_text,
+        ", ",
+        insight::format_p(x$p, digits = "apa", ...)
+      )
     } else if ("BF" %in% names(x)) {
       exact <- match.call()[["exact"]]
-      if (is.null(exact)) exact <- TRUE
-      out_text <- paste0(out_text, ", ", insight::format_bf(x$BF, exact = exact, ...))
+      if (is.null(exact)) {
+        exact <- TRUE
+      }
+      out_text <- paste0(
+        out_text,
+        ", ",
+        insight::format_bf(x$BF, exact = exact, ...)
+      )
     } else if ("pd" %in% names(x)) {
       out_text <- paste0(out_text, ", ", insight::format_pd(x$pd, ...))
     }

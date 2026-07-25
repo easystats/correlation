@@ -1,12 +1,14 @@
 # Correlation table ---------------------------------------------------------
 
 #' @export
-format.easycorrelation <- function(x,
-                                   digits = NULL,
-                                   p_digits = NULL,
-                                   stars = NULL,
-                                   format = NULL,
-                                   ...) {
+format.easycorrelation <- function(
+  x,
+  digits = NULL,
+  p_digits = NULL,
+  stars = NULL,
+  format = NULL,
+  ...
+) {
   if (nrow(x) == 0) {
     warning("The table is empty, no rows left to print.", call. = FALSE)
     return(as.data.frame(x))
@@ -14,7 +16,8 @@ format.easycorrelation <- function(x,
 
   attri <- attributes(x)
 
-  out <- insight::format_table(x,
+  out <- insight::format_table(
+    x,
     digits = .retrieve_arg_from_attr(attri, digits, default = 2),
     stars = .retrieve_arg_from_attr(attri, stars, default = TRUE),
     p_digits = .retrieve_arg_from_attr(attri, p_digits, default = "apa"),
@@ -24,25 +27,32 @@ format.easycorrelation <- function(x,
   out$Method <- NULL
   out$n_Obs <- NULL
 
-  attr(out, "table_footer") <- .format_easycorrelation_footer(x, format = format)
-  attr(out, "table_caption") <- .format_easycorrelation_caption(x, format = format)
+  attr(out, "table_footer") <- .format_easycorrelation_footer(
+    x,
+    format = format
+  )
+  attr(out, "table_caption") <- .format_easycorrelation_caption(
+    x,
+    format = format
+  )
   out
 }
 
 
 # Correlation matrix -----------------------------------------------------------
 
-
 #' @export
-format.easycormatrix <- function(x,
-                                 digits = NULL,
-                                 p_digits = NULL,
-                                 stars = NULL,
-                                 include_significance = NULL,
-                                 format = NULL,
-                                 zap_small = NULL,
-                                 bf_exact = TRUE,
-                                 ...) {
+format.easycormatrix <- function(
+  x,
+  digits = NULL,
+  p_digits = NULL,
+  stars = NULL,
+  include_significance = NULL,
+  format = NULL,
+  zap_small = NULL,
+  bf_exact = TRUE,
+  ...
+) {
   # If it's a real matrix
   if (!"Parameter" %in% colnames(x)) {
     m <- as.data.frame(x)
@@ -55,26 +65,29 @@ format.easycormatrix <- function(x,
   # Retrieve arguments from attributes (or assign default)
   digits <- .retrieve_arg_from_attr(attri, digits, default = 2)
   stars <- .retrieve_arg_from_attr(attri, stars, default = TRUE)
-  include_significance <- .retrieve_arg_from_attr(attri, include_significance, default = FALSE)
+  include_significance <- .retrieve_arg_from_attr(
+    attri,
+    include_significance,
+    default = FALSE
+  )
   p_digits <- .retrieve_arg_from_attr(attri, p_digits, default = "apa")
   zap_small <- .retrieve_arg_from_attr(attri, zap_small, default = TRUE)
-
 
   # Round and format values
   nums <- sapply(as.data.frame(x), is.numeric)
   x[, nums] <- sapply(
     as.data.frame(x)[, nums],
     insight::format_value,
-    digits = digits, zap_small = zap_small, ...
+    digits = digits,
+    zap_small = zap_small,
+    ...
   )
-
 
   # Deduct if stars only
   stars_only <- FALSE
   if (!include_significance && stars) {
     stars_only <- TRUE
   }
-
 
   # Significance
   type <- names(attri)[names(attri) %in% c("BF", "pd", "p")][1]
@@ -111,11 +124,16 @@ format.easycormatrix <- function(x,
     }
 
     if (!stars_only) {
-      sig[, nums] <- sapply(sig[, nums], function(x) ifelse(x != "", paste0(" (", x, ")"), "")) # nolint
+      sig[, nums] <- sapply(sig[, nums], function(x) {
+        ifelse(x != "", paste0(" (", x, ")"), "")
+      }) # nolint
     }
 
     if (include_significance || stars) {
-      x[, nums] <- paste0(as.matrix(as.data.frame(x)[, nums]), as.matrix(sig[, nums]))
+      x[, nums] <- paste0(
+        as.matrix(as.data.frame(x)[, nums]),
+        as.matrix(sig[, nums])
+      )
     }
   }
 
@@ -129,8 +147,14 @@ format.easycormatrix <- function(x,
     }
   }
 
-  attr(out, "table_footer") <- .format_easycorrelation_footer(x, format = format)
-  attr(out, "table_caption") <- .format_easycorrelation_caption(x, format = format)
+  attr(out, "table_footer") <- .format_easycorrelation_footer(
+    x,
+    format = format
+  )
+  attr(out, "table_caption") <- .format_easycorrelation_caption(
+    x,
+    format = format
+  )
   out
 }
 
@@ -169,7 +193,8 @@ format.easycormatrix <- function(x,
     # remove empty elements
     footer <- footer[nzchar(footer, keepNA = TRUE)]
     # create list or separate by ";"
-    footer <- switch(format,
+    footer <- switch(
+      format,
       html = paste(footer, collapse = "; "),
       as.list(footer)
     )
@@ -190,7 +215,10 @@ format.easycormatrix <- function(x,
       prefix <- "Correlation Matrix ("
     }
     if (is.null(format) || format == "text") {
-      caption <- c(paste0("# ", prefix, unique(attributes(x)$method), "-method)"), "blue")
+      caption <- c(
+        paste0("# ", prefix, unique(attributes(x)$method), "-method)"),
+        "blue"
+      )
     } else {
       caption <- paste0(prefix, unique(attributes(x)$method), "-method)")
     }
@@ -201,7 +229,6 @@ format.easycormatrix <- function(x,
 
 # Arguments retrieving ----------------------------------------------------
 
-
 #' @keywords internal
 .retrieve_arg_from_attr <- function(attri, arg, default) {
   arg_name <- deparse(substitute(arg))
@@ -209,7 +236,11 @@ format.easycormatrix <- function(x,
   if (is.null(arg)) {
     if (arg_name %in% names(attri)) {
       arg <- attri[[arg_name]]
-    } else if ("additional_arguments" %in% names(attri) && arg_name %in% names(attri$additional_arguments)) {
+    } else if (
+      "additional_arguments" %in%
+        names(attri) &&
+        arg_name %in% names(attri$additional_arguments)
+    ) {
       arg <- attri$additional_arguments[[arg_name]]
     } else {
       arg <- default # That's the real default
