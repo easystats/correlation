@@ -33,7 +33,7 @@ correlation coefficients colour-coded based on effect size
 for small (.10), medium (.30), and large (.50) correlation sizes.
 }
 \examples{
-\dontshow{if (requireNamespace("openxlsx2", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("openxlsx2", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 \dontshow{
 .old_wd <- setwd(tempdir())
 }

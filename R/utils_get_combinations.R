@@ -16,7 +16,6 @@
   }
 
 
-
   # Find pairs
   if (is.null(data2)) {
     vars2 <- vars

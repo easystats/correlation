@@ -31,7 +31,7 @@ cor_test(
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default), \code{"kendall"},
-\code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
+\code{"spearman"} (but see also the \code{ranktransform} argument), \code{"biserial"},
 \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"}
 (for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's
 coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"}
@@ -77,7 +77,7 @@ simple regression model.}
 estimating the correlation, which is one way of making the analysis more
 resistant to extreme values (outliers). Note that, for instance, a
 Pearson's correlation on rank-transformed data is equivalent to a
-Spearman's rank correlation. Thus, using \code{robust=TRUE} and
+Spearman's rank correlation. Thus, using \code{ranktransform=TRUE} and
 \code{method="spearman"} is redundant. Nonetheless, it is an easy option to
 increase the robustness of the correlation as well as flexible way to
 obtain Bayesian or multilevel Spearman-like rank correlations.}

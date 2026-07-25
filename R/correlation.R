@@ -23,8 +23,7 @@
 #'   selected. Ignored if `data2` is specified.
 #' @param p_adjust Correction method for frequentist correlations. Can be one of
 #'   `"holm"` (default), `"hochberg"`, `"hommel"`,
-#'   `"bonferroni"`, `"BH"`, `"BY"`, `"fdr"`,
-#'   `"somers"` or `"none"`. See
+#'   `"bonferroni"`, `"BH"`, `"BY"`, `"fdr"` or `"none"`. See
 #'   [stats::p.adjust()] for further details.
 #' @param redundant Should the data include redundant rows (where each given
 #'   correlation is repeated two times).
@@ -33,6 +32,12 @@
 #'   [insight::standardize_names()] on the output to get standardized column
 #'   names. This option can also be set globally by running
 #'   `options(easystats.standardize_names = TRUE)`.
+#' @param missing How should missing values be treated? If `"keep_pairwise"`
+#'   (default) then the correlation between each pair of variables is computed
+#'   using all complete pairs of observations on those variables. If
+#'   `"keep_complete"` then missing values are handled by case-wise deletion,
+#'   and correlations are computed using only observations with full data (based
+#'   on `data2`/`select`/`select2` when applicable).
 #' @inheritParams cor_test
 #'
 #' @details
@@ -247,6 +252,7 @@ correlation <- function(data,
                         select2 = NULL,
                         rename = NULL,
                         method = "pearson",
+                        missing = "keep_pairwise",
                         p_adjust = "holm",
                         ci = 0.95,
                         bayesian = FALSE,
@@ -318,6 +324,18 @@ correlation <- function(data,
     }
   }
 
+  missing <- insight::validate_argument(missing, options = c("keep_pairwise", "keep_complete"))
+  if (missing == "keep_complete") {
+    if (is.null(data2)) {
+      oo <- stats::complete.cases(data)
+      data <- data[which(oo), ]
+    } else {
+      oo <- stats::complete.cases(cbind(data, data2))
+      data <- data[which(oo), ]
+      data2 <- data2[which(oo), ]
+    }
+  }
+
   if (inherits(data, "grouped_df")) {
     rez <- .correlation_grouped_df(
       data,
@@ -378,7 +396,8 @@ correlation <- function(data,
       multilevel = multilevel,
       partial_bayesian = partial_bayesian,
       bayesian_prior = bayesian_prior,
-      include_factors = include_factors
+      include_factors = include_factors,
+      missing = missing
     )
   )
 
@@ -395,8 +414,6 @@ correlation <- function(data,
   if (standardize_names) insight::standardize_names(out, ...)
   out
 }
-
-
 
 
 #' @keywords internal
@@ -496,7 +513,6 @@ correlation <- function(data,
 }
 
 
-
 #' @keywords internal
 .correlation <- function(data,
                          data2 = NULL,
@@ -534,7 +550,15 @@ correlation <- function(data,
     include_factors <- TRUE
   }
 
-  if (method == "polychoric") multilevel <- TRUE
+  # definitely need factors for polychoric
+  if (method == "polychoric") {
+    multilevel <- TRUE
+    # convert all input to factors, but only if all input currently is numeric
+    # we allow mix of numeric and factors
+    if (all(vapply(data, is.numeric, FUN.VALUE = TRUE))) {
+      data <- datawizard::to_factor(data)
+    }
+  }
 
   # Clean data and get combinations -------------
 
@@ -626,11 +650,6 @@ correlation <- function(data,
 
   list(params = params, data = data)
 }
-
-
-
-
-
 
 
 # plot ----------------------------

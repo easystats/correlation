@@ -101,7 +101,6 @@ test_that("comparison with other packages", {
 })
 
 
-
 # Size
 test_that("format checks", {
   skip_if_not_or_load_if_installed("psych")
@@ -210,4 +209,31 @@ test_that("correlation output with zap_small", {
 
   expect_snapshot(summary(r), variant = "windows")
   expect_snapshot(summary(r, zap_small = FALSE), variant = "windows")
+})
+
+
+test_that("missing values", {
+  data <- mtcars
+
+  data[1,1] <- NA
+
+  r_pairwise <- stats::cor(data[,1:5], use = "pairwise")
+  r_complete <- stats::cor(data[,1:5], use = "complete")
+
+  corr_pairwise <- correlation(data[,1:5])
+  corr_complete <- correlation(data[,1:5], missing = "keep_complete")
+
+  expect_equal(as.matrix(corr_pairwise), r_pairwise)
+  expect_equal(as.matrix(corr_complete), r_complete)
+
+
+
+  r_pairwise <- stats::cor(data[,1:2], data[,3:5], use = "pairwise")
+  r_complete <- stats::cor(data[,1:2], data[,3:5], use = "complete")
+
+  corr_pairwise <- correlation(data[,1:2], data[,3:5])
+  corr_complete <- correlation(data[,1:2], data[,3:5], missing = "keep_complete")
+
+  expect_equal(as.matrix(corr_pairwise), r_pairwise)
+  expect_equal(as.matrix(corr_complete), r_complete)
 })

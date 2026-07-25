@@ -1,9 +1,33 @@
+# correlation (devel)
+
+## Changes
+
+- Documentation was updated and corrected in several places.
+
+## Bug Fixes
+
+- `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
+  conditional formatting rule ordering to accommodate openxlsx2's new waterfall
+  strategy (#361).
+
+- Fixed issue in `correlation()` when using `method = "auto"` if there is missing
+  data.
+
+# correlation 0.8.8
+
+- `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
+
+- `correlation()` converts numeric input variables automatically into factors when `method = "polychoric"`.
+
 # correlation 0.8.7
 
 - The `format()` method for objects of class `easycormatrix` gets a `zap_small`
   argument, to round very small numbers.
 
 - `cor_sort()` can now deal with non-square matrices.
+
+- Updated required R version to >= 4.1.0 (released May 2021) to pass CRAN checks
+  on documentation
 
 # correlation 0.8.6
 

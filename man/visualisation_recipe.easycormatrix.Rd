@@ -61,7 +61,7 @@ the arguments described below.
 See examples \href{https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples}{\strong{here}}.
 }
 \examples{
-\dontshow{if (require("see")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("see")) withAutoprint(\{ # examplesIf}
 \donttest{
 rez <- cor_test(mtcars, "mpg", "wt")
 
@@ -77,7 +77,7 @@ plot(rez,
 )
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("see")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("see")) withAutoprint(\{ # examplesIf}
 \donttest{
 rez <- correlation(mtcars)
 
@@ -106,7 +106,7 @@ layers <- visualisation_recipe(x,
 plot(layers) + theme_modern()
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (require("see") && require("tidygraph") && require("ggraph")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (require("see") && require("tidygraph") && require("ggraph")) withAutoprint(\{ # examplesIf}
 \donttest{
 rez <- correlation(iris)
 

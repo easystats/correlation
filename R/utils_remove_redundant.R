@@ -16,7 +16,6 @@
 }
 
 
-
 #' @keywords internal
 .add_redundant <- function(params, data = NULL) {
   # save in case of failure
@@ -44,7 +43,6 @@
 
   params
 }
-
 
 
 #' @keywords internal

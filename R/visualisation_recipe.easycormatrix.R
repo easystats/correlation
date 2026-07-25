@@ -168,7 +168,6 @@ visualisation_recipe.easycormatrix <- function(x,
   }
 
 
-
   # Add text
   if (!is.null(show_text) && !isFALSE(show_text)) {
     layers[[paste0("l", l)]] <- .visualisation_easycormatrix_text(
@@ -221,7 +220,6 @@ visualisation_recipe.easycormatrix <- function(x,
 }
 
 
-
 # Layer - Data -------------------------------------------------------------
 
 .visualisation_easycormatrix_data <- function(type = "tile",
@@ -263,7 +261,6 @@ visualisation_recipe.easycormatrix <- function(x,
   if (!is.null(args)) out <- utils::modifyList(out, args) # Update with additional args
   out
 }
-
 
 
 # Layer - Scale Fill -------------------------------------------------------------

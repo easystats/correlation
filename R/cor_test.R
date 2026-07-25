@@ -9,7 +9,7 @@
 #'   set to `0.95` (`95%` CI).
 #' @param method A character string indicating which correlation coefficient is
 #'   to be used for the test. One of `"pearson"` (default), `"kendall"`,
-#'   `"spearman"` (but see also the `robust` argument), `"biserial"`,
+#'   `"spearman"` (but see also the `ranktransform` argument), `"biserial"`,
 #'   `"polychoric"`, `"tetrachoric"`, `"biweight"`, `"distance"`, `"percentage"`
 #'   (for percentage bend correlation), `"blomqvist"` (for Blomqvist's
 #'   coefficient), `"hoeffding"` (for Hoeffding's D), `"gamma"`, `"gaussian"`
@@ -42,7 +42,7 @@
 #'   estimating the correlation, which is one way of making the analysis more
 #'   resistant to extreme values (outliers). Note that, for instance, a
 #'   Pearson's correlation on rank-transformed data is equivalent to a
-#'   Spearman's rank correlation. Thus, using `robust=TRUE` and
+#'   Spearman's rank correlation. Thus, using `ranktransform=TRUE` and
 #'   `method="spearman"` is redundant. Nonetheless, it is an easy option to
 #'   increase the robustness of the correlation as well as flexible way to
 #'   obtain Bayesian or multilevel Spearman-like rank correlations.
@@ -146,6 +146,13 @@ cor_test <- function(data,
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
     data[c(x, y)] <- datawizard::to_numeric(data[c(x, y)], dummy_factors = FALSE)
+  }
+
+  # However, for poly, we need factors!
+  if (method %in% c("poly", "polychoric") && all(vapply(data[c(x, y)], is.numeric, FUN.VALUE = TRUE))) {
+    # convert all input to factors, but only if all input currently is numeric
+    # we allow mix of numeric and factors
+    data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
   }
 
   # Partial
@@ -300,11 +307,7 @@ cor_test <- function(data,
 }
 
 
-
-
-
 # Utilities ---------------------------------------------------------------
-
 
 
 #' @keywords internal

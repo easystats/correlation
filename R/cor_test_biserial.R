@@ -34,7 +34,6 @@
 }
 
 
-
 #' @keywords internal
 .cor_test_biserial_pointbiserial <- function(data, x, y, continuous, binary, ci, ...) {
   out <- .cor_test_freq(data, continuous, binary, ci = ci, method = "pearson", ...)
@@ -45,7 +44,6 @@
 
   out
 }
-
 
 
 #' @keywords internal

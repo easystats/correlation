@@ -109,7 +109,6 @@ print_html.easycorrelation <- function(x,
 }
 
 
-
 .print_md_html_easycormatrix <- function(x,
                                          digits = NULL,
                                          p_digits = NULL,

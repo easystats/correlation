@@ -94,7 +94,6 @@ pcor_to_cor.easycormatrix <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
 }
 
 
-
 #' @export
 pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
   .cor_to_pcor_easycorrelation(pcor = pcor, tol = tol)
@@ -167,7 +166,6 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 }
 
 
-
 #' @keywords internal
 .cor_to_pcor_easycormatrix <- function(pcor = NULL, cor = NULL, tol = .Machine$double.eps^(2 / 3)) {
   if (is.null(cor)) {
@@ -208,8 +206,6 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 }
 
 
-
-
 #' @keywords internal
 .cor_to_pcor <- function(cor, tol = .Machine$double.eps^(2 / 3)) {
   # Get cor
@@ -224,8 +220,6 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 }
 
 
-
-
 #' @keywords internal
 .pcor_to_cor <- function(pcor, tol = .Machine$double.eps^(2 / 3)) {
   # negate off-diagonal entries, then invert
@@ -237,7 +231,6 @@ pcor_to_cor.easycorrelation <- function(pcor, tol = .Machine$double.eps^(2 / 3))
 
   out
 }
-
 
 
 # Internals ---------------------------------------------------------------

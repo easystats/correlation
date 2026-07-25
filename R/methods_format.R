@@ -62,8 +62,11 @@ format.easycormatrix <- function(x,
 
   # Round and format values
   nums <- sapply(as.data.frame(x), is.numeric)
-  x[, nums] <- sapply(as.data.frame(x)[, nums], insight::format_value,
-                      digits = digits, zap_small = zap_small, ...)
+  x[, nums] <- sapply(
+    as.data.frame(x)[, nums],
+    insight::format_value,
+    digits = digits, zap_small = zap_small, ...
+  )
 
 
   # Deduct if stars only
