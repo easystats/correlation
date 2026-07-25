@@ -16,10 +16,10 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{bayestestR}{\code{\link[bayestestR]{simulate_simpson}}}
+  \item{bayestestR}{\code{\link[bayestestR:simulate_simpson]{simulate_simpson()}}}
 
-  \item{datawizard}{\code{\link[datawizard]{visualisation_recipe}}}
+  \item{datawizard}{\code{\link[datawizard:visualisation_recipe]{visualisation_recipe()}}}
 
-  \item{insight}{\code{\link[insight]{display}}, \code{\link[insight:display]{print_html}}, \code{\link[insight:display]{print_md}}, \code{\link[insight]{standardize_names}}}
+  \item{insight}{\code{\link[insight:display]{display()}}, \code{\link[insight:print_html]{print_html()}}, \code{\link[insight:print_md]{print_md()}}, \code{\link[insight:standardize_names]{standardize_names()}}}
 }}
 
