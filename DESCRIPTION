@@ -54,11 +54,11 @@ BugReports: https://github.com/easystats/correlation/issues
 Depends:
     R (>= 4.1)
 Imports:
-    bayestestR (>= 0.17.0),
+    bayestestR (>= 0.18.1),
     datasets,
-    datawizard (>= 1.3.0),
-    insight (>= 1.4.5),
-    parameters (>= 0.28.3),
+    datawizard (>= 1.3.1),
+    insight (>= 1.5.2),
+    parameters (>= 0.29.2),
     stats
 Suggests:
     BayesFactor,
@@ -89,10 +89,10 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-US
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 Config/Needs/website:
     rstudio/bslib,
     r-lib/pkgdown,
     easystats/easystatstemplate
+Config/roxygen2/version: 8.0.0

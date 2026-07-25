@@ -47,11 +47,17 @@
 \item{format}{String, indicating the output format. Can be \code{"markdown"}
 (default) or \code{"html"}.}
 
-\item{digits, p_digits}{To do...}
+\item{digits, p_digits}{Number of digits used for the correlation
+coefficients and for the significance values. \code{p_digits} also accepts
+\code{"apa"}, to format p-values in APA style.}
 
-\item{stars}{To do...}
+\item{stars}{Logical, if \code{TRUE}, significance stars are added to the
+coefficients.}
 
-\item{include_significance}{To do...}
+\item{include_significance}{Logical, if \code{TRUE}, the significance values
+themselves (p-values, probability of direction or Bayes factors, depending
+on the correlation) are shown in parentheses next to the coefficients. If
+\code{FALSE} and \code{stars = TRUE}, only the stars are shown.}
 
 \item{...}{Currently not used.}
 }
