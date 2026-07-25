@@ -30,17 +30,17 @@ cor_to_p(cor, n, method = "pearson")
 
   A character string indicating which correlation coefficient is to be
   used for the test. One of `"pearson"` (default), `"kendall"`,
-  `"spearman"` (but see also the `robust` argument), `"biserial"`,
-  `"polychoric"`, `"tetrachoric"`, `"biweight"`, `"distance"`,
-  `"percentage"` (for percentage bend correlation), `"blomqvist"` (for
-  Blomqvist's coefficient), `"hoeffding"` (for Hoeffding's D),
-  `"gamma"`, `"gaussian"` (for Gaussian Rank correlation) or
-  `"shepherd"` (for Shepherd's Pi correlation). Setting `"auto"` will
-  attempt at selecting the most relevant method (polychoric when ordinal
-  factors involved, tetrachoric when dichotomous factors involved,
-  point-biserial if one dichotomous and one continuous and pearson
-  otherwise). See below the **details** section for a description of
-  these indices.
+  `"spearman"` (but see also the `ranktransform` argument),
+  `"biserial"`, `"polychoric"`, `"tetrachoric"`, `"biweight"`,
+  `"distance"`, `"percentage"` (for percentage bend correlation),
+  `"blomqvist"` (for Blomqvist's coefficient), `"hoeffding"` (for
+  Hoeffding's D), `"gamma"`, `"gaussian"` (for Gaussian Rank
+  correlation) or `"shepherd"` (for Shepherd's Pi correlation). Setting
+  `"auto"` will attempt at selecting the most relevant method
+  (polychoric when ordinal factors involved, tetrachoric when
+  dichotomous factors involved, point-biserial if one dichotomous and
+  one continuous and pearson otherwise). See below the **details**
+  section for a description of these indices.
 
 - correction:
 

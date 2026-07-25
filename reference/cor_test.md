@@ -44,17 +44,17 @@ cor_test(
 
   A character string indicating which correlation coefficient is to be
   used for the test. One of `"pearson"` (default), `"kendall"`,
-  `"spearman"` (but see also the `robust` argument), `"biserial"`,
-  `"polychoric"`, `"tetrachoric"`, `"biweight"`, `"distance"`,
-  `"percentage"` (for percentage bend correlation), `"blomqvist"` (for
-  Blomqvist's coefficient), `"hoeffding"` (for Hoeffding's D),
-  `"gamma"`, `"gaussian"` (for Gaussian Rank correlation) or
-  `"shepherd"` (for Shepherd's Pi correlation). Setting `"auto"` will
-  attempt at selecting the most relevant method (polychoric when ordinal
-  factors involved, tetrachoric when dichotomous factors involved,
-  point-biserial if one dichotomous and one continuous and pearson
-  otherwise). See below the **details** section for a description of
-  these indices.
+  `"spearman"` (but see also the `ranktransform` argument),
+  `"biserial"`, `"polychoric"`, `"tetrachoric"`, `"biweight"`,
+  `"distance"`, `"percentage"` (for percentage bend correlation),
+  `"blomqvist"` (for Blomqvist's coefficient), `"hoeffding"` (for
+  Hoeffding's D), `"gamma"`, `"gaussian"` (for Gaussian Rank
+  correlation) or `"shepherd"` (for Shepherd's Pi correlation). Setting
+  `"auto"` will attempt at selecting the most relevant method
+  (polychoric when ordinal factors involved, tetrachoric when
+  dichotomous factors involved, point-biserial if one dichotomous and
+  one continuous and pearson otherwise). See below the **details**
+  section for a description of these indices.
 
 - ci:
 
@@ -111,10 +111,10 @@ cor_test(
   correlation, which is one way of making the analysis more resistant to
   extreme values (outliers). Note that, for instance, a Pearson's
   correlation on rank-transformed data is equivalent to a Spearman's
-  rank correlation. Thus, using `robust=TRUE` and `method="spearman"` is
-  redundant. Nonetheless, it is an easy option to increase the
-  robustness of the correlation as well as flexible way to obtain
-  Bayesian or multilevel Spearman-like rank correlations.
+  rank correlation. Thus, using `ranktransform=TRUE` and
+  `method="spearman"` is redundant. Nonetheless, it is an easy option to
+  increase the robustness of the correlation as well as flexible way to
+  obtain Bayesian or multilevel Spearman-like rank correlations.
 
 - winsorize:
 

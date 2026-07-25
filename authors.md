@@ -35,28 +35,20 @@ S. (2022). correlation: Methods for correlation analysis (0.8.3) \[R
 package\]. https://CRAN.R-project.org/package=correlation (Original work
 published 2020)
 
-    @Misc{correlationPackage,
-      title = {{{correlation}}: Methods for Correlation Analysis},
-      shorttitle = {{{correlation}}},
-      author = {Dominique Makowski and Brenton M. Wiernik and Indrajeet Patil and Daniel Lüdecke and Mattan S. Ben-Shachar},
-      year = {2022},
-      month = {oct},
-      note = {Version 0.8.3},
-      url = {https://CRAN.R-project.org/package=correlation},
-    }
+@Misc{correlationPackage, title = {{{correlation}}: Methods for
+Correlation Analysis}, shorttitle = {{{correlation}}}, author =
+{Dominique Makowski and Brenton M. Wiernik and Indrajeet Patil and
+Daniel Lüdecke and Mattan S. Ben-Shachar}, year = {2022}, month = {oct},
+note = {Version 0.8.3}, url =
+{https://CRAN.R-project.org/package=correlation}, }
 
 Makowski, D., Ben-Shachar, M. S., Patil, I., & Lüdecke, D. (2019).
 Methods and algorithms for correlation analysis in R. Journal of Open
 Source Software, 5(51), 2306. https://doi.org/10.21105/joss.02306
 
-    @Article{correlationArticle,
-      title = {Methods and Algorithms for Correlation Analysis in {{R}}},
-      author = {Dominique Makowski and Mattan S. Ben-Shachar and Indrajeet Patil and Daniel Lüdecke},
-      doi = {10.21105/joss.02306},
-      year = {2020},
-      journal = {Journal of Open Source Software},
-      number = {51},
-      volume = {5},
-      pages = {2306},
-      url = {https://joss.theoj.org/papers/10.21105/joss.02306},
-    }
+@Article{correlationArticle, title = {Methods and Algorithms for
+Correlation Analysis in {{R}}}, author = {Dominique Makowski and Mattan
+S. Ben-Shachar and Indrajeet Patil and Daniel Lüdecke}, doi =
+{10.21105/joss.02306}, year = {2020}, journal = {Journal of Open Source
+Software}, number = {51}, volume = {5}, pages = {2306}, url =
+{https://joss.theoj.org/papers/10.21105/joss.02306}, }

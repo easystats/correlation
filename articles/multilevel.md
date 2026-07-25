@@ -4,10 +4,7 @@
 
 This vignette can be cited as:
 
-``` r
-
-citation("correlation")
-```
+[`citation`](https://rdrr.io/r/utils/citation.html)`(``"correlation"``)`
 
     ## To cite package 'correlation' in publications use:
     ## 
@@ -37,14 +34,7 @@ We will generate data using the
 [`simulate_simpson()`](https://easystats.github.io/bayestestR/reference/simulate_simpson.html)
 function from this package and look at its summary:
 
-``` r
-
-library(correlation)
-
-data <- simulate_simpson(n = 100, groups = 10)
-
-summary(data)
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`correlation`](https://easystats.github.io/correlation/)`)`` `` ``data`` ``<-`` `[`simulate_simpson`](https://easystats.github.io/bayestestR/reference/simulate_simpson.html)`(``n ``=`` ``100``, groups ``=`` ``10``)`` `` `[`summary`](https://rdrr.io/r/base/summary.html)`(``data``)`
 
     ##        V1              V2               Group     
     ##  Min.   :-1.67   Min.   :-12.40   Length   :1000  
@@ -56,15 +46,7 @@ summary(data)
 
 Now let’s visualize the two variables:
 
-``` r
-
-library(ggplot2)
-
-ggplot(data, aes(x = V1, y = V2)) +
-  geom_point() +
-  geom_smooth(colour = "black", method = "lm", se = FALSE) +
-  theme_classic()
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``V1``, y ``=`` ``V2``)``)`` ``+`` `` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`` `` `[`geom_smooth`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)`(``colour ``=`` ``"black"``, method ``=`` ``"lm"``, se ``=`` ``FALSE``)`` ``+`` `` `[`theme_classic`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``)`
 
     ## `geom_smooth()` using formula = 'y ~ x'
 
@@ -75,10 +57,7 @@ correlation** between V1 and V2. Let’s test this.
 
 ## Simple correlation
 
-``` r
-
-correlation(data)
-```
+[`correlation`](https://easystats.github.io/correlation/reference/correlation.md)`(``data``)`
 
     ## # Correlation Matrix (pearson-method)
     ## 
@@ -101,16 +80,7 @@ Paradox**](https://en.wikipedia.org/wiki/Simpson%27s_paradox)?
 
 Let’s colour our datapoints by group (by individuals):
 
-``` r
-
-library(ggplot2)
-
-ggplot(data, aes(x = V1, y = V2)) +
-  geom_point(aes(colour = Group)) +
-  geom_smooth(aes(colour = Group), method = "lm", se = FALSE) +
-  geom_smooth(colour = "black", method = "lm", se = FALSE) +
-  theme_classic()
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``V1``, y ``=`` ``V2``)``)`` ``+`` `` `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``colour ``=`` ``Group``)``)`` ``+`` `` `[`geom_smooth`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``colour ``=`` ``Group``)``, method ``=`` ``"lm"``, se ``=`` ``FALSE``)`` ``+`` `` `[`geom_smooth`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)`(``colour ``=`` ``"black"``, method ``=`` ``"lm"``, se ``=`` ``FALSE``)`` ``+`` `` `[`theme_classic`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``)`
 
     ## `geom_smooth()` using formula = 'y ~ x'
     ## `geom_smooth()` using formula = 'y ~ x'
@@ -129,10 +99,7 @@ You can compute them with the
 [**correlations**](https://github.com/easystats/correlation) package by
 setting the `multilevel` argument to `TRUE`.
 
-``` r
-
-correlation(data, multilevel = TRUE)
-```
+[`correlation`](https://easystats.github.io/correlation/reference/correlation.md)`(``data``, multilevel ``=`` ``TRUE``)`
 
     ## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
     ## ------------------------------------------------------------------
@@ -142,10 +109,7 @@ correlation(data, multilevel = TRUE)
 
 For completeness, let’s also see if its Bayesian cousin agrees with it:
 
-``` r
-
-correlation(data, multilevel = TRUE, bayesian = TRUE)
-```
+[`correlation`](https://easystats.github.io/correlation/reference/correlation.md)`(``data``, multilevel ``=`` ``TRUE``, bayesian ``=`` ``TRUE``)`
 
     ## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
     ## ------------------------------------------------------------------
