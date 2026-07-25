@@ -11,7 +11,7 @@ you can use format() to get the formatted table as a dataframe.'><meta property=
 
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,20 +114,26 @@ you can use <code><a href="https://rdrr.io/r/base/format.html" class="external-l
 
 
 <dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
-<dd><p>String, indicating the output format. Currently, only
-<code>"markdown"</code> is supported.</p></dd>
+<dd><p>String, indicating the output format. Can be <code>"markdown"</code>
+(default) or <code>"html"</code>.</p></dd>
 
 
 <dt id="arg-digits-p-digits">digits, p_digits<a class="anchor" aria-label="anchor" href="#arg-digits-p-digits"></a></dt>
-<dd><p>To do...</p></dd>
+<dd><p>Number of digits used for the correlation
+coefficients and for the significance values. <code>p_digits</code> also accepts
+<code>"apa"</code>, to format p-values in APA style.</p></dd>
 
 
 <dt id="arg-stars">stars<a class="anchor" aria-label="anchor" href="#arg-stars"></a></dt>
-<dd><p>To do...</p></dd>
+<dd><p>Logical, if <code>TRUE</code>, significance stars are added to the
+coefficients.</p></dd>
 
 
 <dt id="arg-include-significance">include_significance<a class="anchor" aria-label="anchor" href="#arg-include-significance"></a></dt>
-<dd><p>To do...</p></dd>
+<dd><p>Logical, if <code>TRUE</code>, the significance values
+themselves (p-values, probability of direction or Bayes factors, depending
+on the correlation) are shown in parentheses next to the coefficients. If
+<code>FALSE</code> and <code>stars = TRUE</code>, only the stars are shown.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

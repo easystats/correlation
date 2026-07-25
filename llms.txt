@@ -50,9 +50,9 @@ Once you have downloaded the package, you can then load it using:
 > **Tip**
 >
 > Instead of
-> [`library(bayestestR)`](https://easystats.github.io/bayestestR/), use
-> [`library(easystats)`](https://easystats.github.io/easystats/). This
-> will make all features of the easystats-ecosystem available.
+> [`library(correlation)`](https://easystats.github.io/correlation/),
+> use [`library(easystats)`](https://easystats.github.io/easystats/).
+> This will make all features of the easystats-ecosystem available.
 >
 > To stay updated, use `easystats::install_latest()`.
 

@@ -95,7 +95,7 @@ correlation(
 
   Correction method for frequentist correlations. Can be one of `"holm"`
   (default), `"hochberg"`, `"hommel"`, `"bonferroni"`, `"BH"`, `"BY"`,
-  `"fdr"`, `"somers"` or `"none"`. See
+  `"fdr"` or `"none"`. See
   [`stats::p.adjust()`](https://rdrr.io/r/stats/p.adjust.html) for
   further details.
 

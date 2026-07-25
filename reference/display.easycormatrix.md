@@ -57,20 +57,25 @@ print_html(
 
 - format:
 
-  String, indicating the output format. Currently, only `"markdown"` is
-  supported.
+  String, indicating the output format. Can be `"markdown"` (default) or
+  `"html"`.
 
 - digits, p_digits:
 
-  To do...
+  Number of digits used for the correlation coefficients and for the
+  significance values. `p_digits` also accepts `"apa"`, to format
+  p-values in APA style.
 
 - stars:
 
-  To do...
+  Logical, if `TRUE`, significance stars are added to the coefficients.
 
 - include_significance:
 
-  To do...
+  Logical, if `TRUE`, the significance values themselves (p-values,
+  probability of direction or Bayes factors, depending on the
+  correlation) are shown in parentheses next to the coefficients. If
+  `FALSE` and `stars = TRUE`, only the stars are shown.
 
 - ...:
 
