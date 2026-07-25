@@ -52,7 +52,7 @@ library("correlation")
 
 > **Tip**
 >
-> Instead of `library(bayestestR)`, use `library(easystats)`. This will
+> Instead of `library(correlation)`, use `library(easystats)`. This will
 > make all features of the easystats-ecosystem available.
 >
 > To stay updated, use `easystats::install_latest()`.

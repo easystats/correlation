@@ -7,8 +7,8 @@
 #'
 #' @param object,x An object returned by
 #'   [`correlation()`][correlation] or its summary.
-#' @param format String, indicating the output format. Currently, only
-#'   `"markdown"` is supported.
+#' @param format String, indicating the output format. Can be `"markdown"`
+#'   (default) or `"html"`.
 #' @param digits,p_digits To do...
 #' @param stars To do...
 #' @param include_significance To do...
