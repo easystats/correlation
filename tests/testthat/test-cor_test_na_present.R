@@ -39,12 +39,12 @@ test_that("cor_test tetrachoric", {
   data$sleep_rem_binary <- as.numeric(data$sleep_rem > 1.2)
 
   # With Factors / Binary
-  expect_error(cor_test(
+  expect_warning(expect_error(cor_test(
     data,
     "brainwt_binary",
     "sleep_rem_binary",
     method = "tetrachoric"
-  ))
+  )))
 
   data$sleep_rem_ordinal <- as.factor(round(data$sleep_rem))
   data$brainwt_ordinal <- as.factor(round(data$brainwt))
