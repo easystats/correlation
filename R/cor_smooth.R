@@ -30,47 +30,66 @@ cor_smooth <- function(x, method = "psych", verbose = TRUE, ...) {
 
 
 #' @export
-cor_smooth.easycorrelation <- function(x,
-                                       method = "psych",
-                                       verbose = TRUE,
-                                       tol = 10^-12,
-                                       ...) {
-  m <- cor_smooth(as.matrix(x), method = method, verbose = verbose, tol = tol, ...)
+cor_smooth.easycorrelation <- function(
+  x,
+  method = "psych",
+  verbose = TRUE,
+  tol = 10^-12,
+  ...
+) {
+  m <- cor_smooth(
+    as.matrix(x),
+    method = method,
+    verbose = verbose,
+    tol = tol,
+    ...
+  )
 
   if (isTRUE(attributes(m)$smoothed)) {
     estim <- names(x)[names(x) %in% c("r", "rho", "tau", "D")][1]
 
     for (param1 in row.names(m)) {
       for (param2 in colnames(m)) {
-        if (nrow(x[x$Parameter1 == param1 & x$Parameter2 == param2, ]) == 0) next
+        if (nrow(x[x$Parameter1 == param1 & x$Parameter2 == param2, ]) == 0) {
+          next
+        }
         # Print changes
         if (verbose) {
           val1 <- x[x$Parameter1 == param1 & x$Parameter2 == param2, estim]
           val2 <- m[param1, param2]
           if (round(val1 - val2, digits = 2) == 0) {
-            insight::print_color(paste0(
-              param1,
-              " - ",
-              param2,
-              ": no change (",
-              insight::format_value(val1),
-              ")\n"
-            ), "green")
+            insight::print_color(
+              paste0(
+                param1,
+                " - ",
+                param2,
+                ": no change (",
+                insight::format_value(val1),
+                ")\n"
+              ),
+              "green"
+            )
           } else {
-            insight::print_color(paste0(
-              param1,
-              " - ",
-              param2,
-              ": ",
-              insight::format_value(val1),
-              " -> ",
-              insight::format_value(val2),
-              "\n"
-            ), "red")
+            insight::print_color(
+              paste0(
+                param1,
+                " - ",
+                param2,
+                ": ",
+                insight::format_value(val1),
+                " -> ",
+                insight::format_value(val2),
+                "\n"
+              ),
+              "red"
+            )
           }
           cat("\n")
         }
-        x[x$Parameter1 == param1 & x$Parameter2 == param2, estim] <- m[param1, param2]
+        x[x$Parameter1 == param1 & x$Parameter2 == param2, estim] <- m[
+          param1,
+          param2
+        ]
       }
     }
 
@@ -87,16 +106,20 @@ cor_smooth.easycorrelation <- function(x,
 
 
 #' @export
-cor_smooth.matrix <- function(x,
-                              method = "psych",
-                              verbose = TRUE,
-                              tol = 10^-12,
-                              ...) {
+cor_smooth.matrix <- function(
+  x,
+  method = "psych",
+  verbose = TRUE,
+  tol = 10^-12,
+  ...
+) {
   method <- match.arg(method, choices = c("psych", "hj", "lrs"))
 
   # Already positive definite
   if (is.positive_definite(x, tol = tol, ...)) {
-    if (verbose) message("Matrix is positive definite, smoothing was not needed.")
+    if (verbose) {
+      message("Matrix is positive definite, smoothing was not needed.")
+    }
     return(x)
   }
 
@@ -104,7 +127,10 @@ cor_smooth.matrix <- function(x,
     insight::check_if_installed("psych")
     x <- suppressWarnings(psych::cor.smooth(x, eig.tol = tol, ...))
   } else {
-    out <- try(suppressMessages(mbend::bend(x, method = method, ...)), silent = TRUE)
+    out <- try(
+      suppressMessages(mbend::bend(x, method = method, ...)),
+      silent = TRUE
+    )
     if (inherits(out, "try-error")) {
       return(x)
     }
@@ -134,9 +160,12 @@ is.positive_definite.matrix <- function(x, tol = 10^-12, ...) {
 
   # validation checks
   if (inherits(eigens, "try-error")) {
-    stop(insight::format_message(
-      "There is something seriously wrong with the correlation matrix, as some of the eigen values are NA."
-    ), call. = FALSE)
+    stop(
+      insight::format_message(
+        "There is something seriously wrong with the correlation matrix, as some of the eigen values are NA."
+      ),
+      call. = FALSE
+    )
   }
 
   # Find out

@@ -1,6 +1,5 @@
 # Console -----------------------------------------------------------------
 
-
 #' @export
 print.easycorrelation <- function(x, ...) {
   cat(insight::export_table(format(x, ...), ...))
@@ -39,7 +38,16 @@ print.easymatrixlist <- function(x, cols = "auto", ...) {
 #' @export
 print.grouped_easymatrixlist <- function(x, cols = "auto", ...) {
   for (i in names(x)) {
-    cat(rep("=", nchar(i) + 2), "\n ", i, " ", "\n", rep("=", nchar(i) + 2), "\n\n", sep = "")
+    cat(
+      rep("=", nchar(i) + 2),
+      "\n ",
+      i,
+      " ",
+      "\n",
+      rep("=", nchar(i) + 2),
+      "\n\n",
+      sep = ""
+    )
     print(x[[i]], ...)
     cat("\n")
   }
@@ -47,12 +55,14 @@ print.grouped_easymatrixlist <- function(x, cols = "auto", ...) {
 
 # MD and HTML --------------------------------------------------------------
 
-.print_md_html_easycorrelation <- function(x,
-                                           digits = NULL,
-                                           p_digits = NULL,
-                                           stars = NULL,
-                                           format = "markdown",
-                                           ...) {
+.print_md_html_easycorrelation <- function(
+  x,
+  digits = NULL,
+  p_digits = NULL,
+  stars = NULL,
+  format = "markdown",
+  ...
+) {
   formatted_table <- format(
     x,
     digits = digits,
@@ -75,11 +85,13 @@ print.grouped_easymatrixlist <- function(x, cols = "auto", ...) {
 
 #' @rdname display.easycormatrix
 #' @export
-print_md.easycorrelation <- function(x,
-                                     digits = NULL,
-                                     p_digits = NULL,
-                                     stars = NULL,
-                                     ...) {
+print_md.easycorrelation <- function(
+  x,
+  digits = NULL,
+  p_digits = NULL,
+  stars = NULL,
+  ...
+) {
   .print_md_html_easycorrelation(
     x,
     digits = digits,
@@ -93,11 +105,13 @@ print_md.easycorrelation <- function(x,
 
 #' @rdname display.easycormatrix
 #' @export
-print_html.easycorrelation <- function(x,
-                                       digits = NULL,
-                                       p_digits = NULL,
-                                       stars = NULL,
-                                       ...) {
+print_html.easycorrelation <- function(
+  x,
+  digits = NULL,
+  p_digits = NULL,
+  stars = NULL,
+  ...
+) {
   .print_md_html_easycorrelation(
     x,
     digits = digits,
@@ -109,13 +123,15 @@ print_html.easycorrelation <- function(x,
 }
 
 
-.print_md_html_easycormatrix <- function(x,
-                                         digits = NULL,
-                                         p_digits = NULL,
-                                         stars = NULL,
-                                         include_significance = NULL,
-                                         format = "markdown",
-                                         ...) {
+.print_md_html_easycormatrix <- function(
+  x,
+  digits = NULL,
+  p_digits = NULL,
+  stars = NULL,
+  include_significance = NULL,
+  format = "markdown",
+  ...
+) {
   formatted_table <- format(
     x,
     digits = digits,
@@ -139,12 +155,14 @@ print_html.easycorrelation <- function(x,
 
 #' @rdname display.easycormatrix
 #' @export
-print_md.easycormatrix <- function(x,
-                                   digits = NULL,
-                                   p_digits = NULL,
-                                   stars = NULL,
-                                   include_significance = NULL,
-                                   ...) {
+print_md.easycormatrix <- function(
+  x,
+  digits = NULL,
+  p_digits = NULL,
+  stars = NULL,
+  include_significance = NULL,
+  ...
+) {
   .print_md_html_easycormatrix(
     x,
     digits = digits,
@@ -159,12 +177,14 @@ print_md.easycormatrix <- function(x,
 
 #' @rdname display.easycormatrix
 #' @export
-print_html.easycormatrix <- function(x,
-                                     digits = NULL,
-                                     p_digits = NULL,
-                                     stars = NULL,
-                                     include_significance = NULL,
-                                     ...) {
+print_html.easycormatrix <- function(
+  x,
+  digits = NULL,
+  p_digits = NULL,
+  stars = NULL,
+  include_significance = NULL,
+  ...
+) {
   .print_md_html_easycormatrix(
     x,
     digits = digits,

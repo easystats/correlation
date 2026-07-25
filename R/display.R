@@ -36,13 +36,15 @@
 #' s <- summary(corr)
 #' display(s)
 #' @export
-display.easycormatrix <- function(object,
-                                  format = "markdown",
-                                  digits = 2,
-                                  p_digits = 3,
-                                  stars = TRUE,
-                                  include_significance = NULL,
-                                  ...) {
+display.easycormatrix <- function(
+  object,
+  format = "markdown",
+  digits = 2,
+  p_digits = 3,
+  stars = TRUE,
+  include_significance = NULL,
+  ...
+) {
   if (format == "markdown") {
     print_md(
       x = object,
@@ -66,12 +68,14 @@ display.easycormatrix <- function(object,
 
 
 #' @export
-display.easycorrelation <- function(object,
-                                    format = "markdown",
-                                    digits = 2,
-                                    p_digits = 3,
-                                    stars = TRUE,
-                                    ...) {
+display.easycorrelation <- function(
+  object,
+  format = "markdown",
+  digits = 2,
+  p_digits = 3,
+  stars = TRUE,
+  ...
+) {
   if (format == "markdown") {
     print_md(
       x = object,
