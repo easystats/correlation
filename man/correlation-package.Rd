@@ -28,6 +28,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Brenton M. Wiernik \email{brenton@wiernik.org} (\href{https://orcid.org/0000-0001-9560-6336}{ORCID})
   \item Dominique Makowski \email{dom.makowski@gmail.com} (\href{https://orcid.org/0000-0001-5375-9967}{ORCID}) [inventor]
   \item Indrajeet Patil \email{patilindrajeet.science@gmail.com} (\href{https://orcid.org/0000-0003-1995-6531}{ORCID})
   \item Daniel Lüdecke \email{d.luedecke@uke.de} (\href{https://orcid.org/0000-0002-8895-3206}{ORCID})
