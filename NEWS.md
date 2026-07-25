@@ -1,4 +1,4 @@
-# correlation 0.8.9
+# correlation (devel)
 
 ## Changes
 
@@ -9,6 +9,9 @@
 - `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
   conditional formatting rule ordering to accommodate openxlsx2's new waterfall
   strategy (#361).
+
+- Fixed issue in `correlation()` when using `method = "auto"` if there is missing
+  data.
 
 # correlation 0.8.8
 
