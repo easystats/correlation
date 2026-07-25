@@ -3,7 +3,6 @@ library(correlation)
 library(see)
 
 
-
 # Figure 1 ----------------------------------------------------------------
 
 # Generate data
@@ -15,7 +14,11 @@ data <- arrange(data, V2)
 
 # Outliers
 data$V2[c(150, 185)] <- c(max(data$V2) * 1, max(data$V2) * 1)
-data$V2[c(1, 5, 10)] <- c(min(data$V2) * 2, max(data$V2) * 1, min(data$V2) * 1.5)
+data$V2[c(1, 5, 10)] <- c(
+  min(data$V2) * 2,
+  max(data$V2) * 1,
+  min(data$V2) * 1.5
+)
 
 # Rescale to match coef
 data$V2 <- datawizard::data_rescale(data$V2, to = c(0, 1))
@@ -23,14 +26,64 @@ data$V2 <- datawizard::data_rescale(data$V2, to = c(0, 1))
 
 # Correlation results
 rez <- rbind(
-  select(cor_test(data, "V1", "V2", method = "Pearson"), r, CI_low, CI_high, Method),
-  select(cor_test(data, "V1", "V2", method = "Spearman"), r = rho, CI_low, CI_high, Method),
-  select(cor_test(data, "V1", "V2", method = "Kendall"), r = tau, CI_low, CI_high, Method),
-  select(cor_test(data, "V1", "V2", method = "biweight"), r, CI_low, CI_high, Method),
-  select(cor_test(data, "V1", "V2", method = "percentage"), r, CI_low, CI_high, Method),
-  select(cor_test(data, "V1", "V2", method = "distance", corrected = FALSE), r, CI_low, CI_high, Method),
-  select(cor_test(data, "V1", "V2", method = "shepherd"), r = rho, CI_low, CI_high, Method),
-  mutate(select(cor_test(data, "V1", "V2", method = "Pearson", bayesian = TRUE), r = rho, CI_low, CI_high), Method = "Bayesian")
+  select(
+    cor_test(data, "V1", "V2", method = "Pearson"),
+    r,
+    CI_low,
+    CI_high,
+    Method
+  ),
+  select(
+    cor_test(data, "V1", "V2", method = "Spearman"),
+    r = rho,
+    CI_low,
+    CI_high,
+    Method
+  ),
+  select(
+    cor_test(data, "V1", "V2", method = "Kendall"),
+    r = tau,
+    CI_low,
+    CI_high,
+    Method
+  ),
+  select(
+    cor_test(data, "V1", "V2", method = "biweight"),
+    r,
+    CI_low,
+    CI_high,
+    Method
+  ),
+  select(
+    cor_test(data, "V1", "V2", method = "percentage"),
+    r,
+    CI_low,
+    CI_high,
+    Method
+  ),
+  select(
+    cor_test(data, "V1", "V2", method = "distance", corrected = FALSE),
+    r,
+    CI_low,
+    CI_high,
+    Method
+  ),
+  select(
+    cor_test(data, "V1", "V2", method = "shepherd"),
+    r = rho,
+    CI_low,
+    CI_high,
+    Method
+  ),
+  mutate(
+    select(
+      cor_test(data, "V1", "V2", method = "Pearson", bayesian = TRUE),
+      r = rho,
+      CI_low,
+      CI_high
+    ),
+    Method = "Bayesian"
+  )
 )
 
 # Format correlation to match data input from scatter
@@ -39,7 +92,10 @@ rez <- rez %>%
   mutate(
     Method = forcats::fct_reorder(as.factor(Method), r),
     V2 = r,
-    x = stringr::str_remove_all(levels(ggplot2::cut_interval(data$V1, n = n())), "[\\(\\[\\]]")
+    x = stringr::str_remove_all(
+      levels(ggplot2::cut_interval(data$V1, n = n())),
+      "[\\(\\[\\]]"
+    )
   ) %>%
   separate(x, into = c("low", "high"), sep = ",") %>%
   mutate(V1 = (as.numeric(high) + as.numeric(low)) / 2)
@@ -47,7 +103,6 @@ rez <- rez %>%
 # Fill empty CIs
 # rez[rez$Method=="Spearman", c("CI_low", "CI_high")] <- rep(rez[rez$Method=="Spearman", "r"], 2)
 # rez[rez$Method=="Kendall", c("CI_low", "CI_high")] <- rep(rez[rez$Method=="Kendall", "r"], 2)
-
 
 # Initialize plot
 fig1 <- ggplot(data, aes(x = V1, y = V2)) +
@@ -60,7 +115,13 @@ fig1 <- ggplot(data, aes(x = V1, y = V2)) +
   scale_colour_material_d("rainbow") +
 
   # rez plot
-  geom_segment(data = rez, aes(xend = V1, yend = -Inf, colour = Method), size = 20, alpha = 0.6, key_glyph = "point") +
+  geom_segment(
+    data = rez,
+    aes(xend = V1, yend = -Inf, colour = Method),
+    size = 20,
+    alpha = 0.6,
+    key_glyph = "point"
+  ) +
   # geom_bar(data=rez, aes(fill=Method), stat = "identity")
   geom_errorbar(
     data = rez,
@@ -79,14 +140,6 @@ fig1 <- ggplot(data, aes(x = V1, y = V2)) +
 fig1
 
 ggsave("figure1.png", fig1, height = 6, width = see::golden_ratio(6), dpi = 300)
-
-
-
-
-
-
-
-
 
 
 # Figure 2 ----------------------------------------------------------------

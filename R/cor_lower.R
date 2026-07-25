@@ -45,7 +45,10 @@ cor_lower.easycorrelation <- function(x, diag = FALSE, ...) {
   for (param1 in rownames(m)) {
     for (param2 in colnames(m)) {
       if (tri[param1, param2]) {
-        tokeep <- c(tokeep, which(x$Parameter1 == param1 & x$Parameter2 == param2))
+        tokeep <- c(
+          tokeep,
+          which(x$Parameter1 == param1 & x$Parameter2 == param2)
+        )
       }
     }
   }

@@ -45,18 +45,20 @@
 #' plot(layers) + theme_modern()
 #' }
 #' @export
-visualisation_recipe.easycormatrix <- function(x,
-                                               show_data = "tile",
-                                               show_text = "text",
-                                               show_legend = TRUE,
-                                               tile = NULL,
-                                               point = NULL,
-                                               text = NULL,
-                                               scale = NULL,
-                                               scale_fill = NULL,
-                                               labs = NULL,
-                                               type = show_data,
-                                               ...) {
+visualisation_recipe.easycormatrix <- function(
+  x,
+  show_data = "tile",
+  show_text = "text",
+  show_legend = TRUE,
+  tile = NULL,
+  point = NULL,
+  text = NULL,
+  scale = NULL,
+  scale_fill = NULL,
+  labs = NULL,
+  type = show_data,
+  ...
+) {
   # handle alias
   if (!missing(type)) {
     show_data <- type
@@ -95,7 +97,8 @@ visualisation_recipe.easycormatrix <- function(x,
   colnames <- names(x)[names(x) != "Parameter1"]
 
   # Reshape to long
-  data <- datawizard::reshape_longer(x,
+  data <- datawizard::reshape_longer(
+    x,
     select = colnames,
     names_to = "Parameter2",
     values_to = "r"
@@ -105,7 +108,8 @@ visualisation_recipe.easycormatrix <- function(x,
   if (is.null(data_text)) {
     data$Text <- paste0(insight::format_value(data$r, zap_small = TRUE))
   } else {
-    temp <- datawizard::reshape_longer(data_text,
+    temp <- datawizard::reshape_longer(
+      data_text,
       select = colnames,
       names_to = "Parameter2",
       values_to = "Text"
@@ -146,7 +150,8 @@ visualisation_recipe.easycormatrix <- function(x,
     if (isTRUE(show_data) || show_data %in% c("tile", "tiles")) {
       layers[[paste0("l", l)]] <- .visualisation_easycormatrix_data(
         type = "tile",
-        data, x = "Parameter2",
+        data,
+        x = "Parameter2",
         y = "Parameter1",
         fill = "r",
         args = tile,
@@ -166,7 +171,6 @@ visualisation_recipe.easycormatrix <- function(x,
     }
     l <- l + 1
   }
-
 
   # Add text
   if (!is.null(show_text) && !isFALSE(show_text)) {
@@ -201,12 +205,21 @@ visualisation_recipe.easycormatrix <- function(x,
 
   # Origin at 0
   if (!is.null(show_data) && show_data %in% c("tile", "tiles")) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "x_discrete", scale = scale)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(
+      which = "x_discrete",
+      scale = scale
+    )
     l <- l + 1
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "y_discrete", scale = scale)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(
+      which = "y_discrete",
+      scale = scale
+    )
     l <- l + 1
   } else if (show_data %in% c("point", "points")) {
-    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(which = "size", scale = scale)
+    layers[[paste0("l", l)]] <- .visualisation_easycormatrix_scale(
+      which = "size",
+      scale = scale
+    )
     l <- l + 1
   }
 
@@ -214,7 +227,11 @@ visualisation_recipe.easycormatrix <- function(x,
   layers[[paste0("l", l)]] <- .visualisation_easycormatrix_labs(labs)
 
   # Out
-  class(layers) <- c("visualisation_recipe", "see_visualisation_recipe", class(layers))
+  class(layers) <- c(
+    "visualisation_recipe",
+    "see_visualisation_recipe",
+    class(layers)
+  )
   attr(layers, "data") <- data
   layers
 }
@@ -222,14 +239,16 @@ visualisation_recipe.easycormatrix <- function(x,
 
 # Layer - Data -------------------------------------------------------------
 
-.visualisation_easycormatrix_data <- function(type = "tile",
-                                              data,
-                                              x,
-                                              y,
-                                              fill,
-                                              args = NULL,
-                                              dot_args = NULL,
-                                              abs_fill = NULL) {
+.visualisation_easycormatrix_data <- function(
+  type = "tile",
+  data,
+  x,
+  y,
+  fill,
+  args = NULL,
+  dot_args = NULL,
+  abs_fill = NULL
+) {
   out <- list(
     geom = type,
     data = data,
@@ -258,14 +277,21 @@ visualisation_recipe.easycormatrix <- function(x,
   } else {
     out$aes$fill <- fill
   }
-  if (!is.null(args)) out <- utils::modifyList(out, args) # Update with additional args
+  if (!is.null(args)) {
+    out <- utils::modifyList(out, args)
+  } # Update with additional args
   out
 }
 
 
 # Layer - Scale Fill -------------------------------------------------------------
 
-.visualisation_easycormatrix_scale_fill <- function(type = "fill", data, scale_fill = NULL, show_legend = TRUE) {
+.visualisation_easycormatrix_scale_fill <- function(
+  type = "fill",
+  data,
+  scale_fill = NULL,
+  show_legend = TRUE
+) {
   low_lim <- ifelse(min(data$r, na.rm = TRUE) < 0, -1, 0)
   high_lim <- ifelse(max(data$r, na.rm = TRUE) > 0, 1, 0)
 
@@ -281,14 +307,23 @@ visualisation_recipe.easycormatrix <- function(x,
     name = "Correlation",
     guide = ifelse(isFALSE(show_legend), "none", "legend")
   )
-  if (!is.null(scale_fill)) out <- utils::modifyList(out, scale_fill) # Update with additional args
+  if (!is.null(scale_fill)) {
+    out <- utils::modifyList(out, scale_fill)
+  } # Update with additional args
   out
 }
 
 
 # Layer - Text -------------------------------------------------------------
 
-.visualisation_easycormatrix_text <- function(data, x, y, label, show_text = "text", text = NULL) {
+.visualisation_easycormatrix_text <- function(
+  data,
+  x,
+  y,
+  label,
+  show_text = "text",
+  text = NULL
+) {
   out <- list(
     geom = show_text,
     data = data,
@@ -298,15 +333,19 @@ visualisation_recipe.easycormatrix <- function(x,
       label = label
     )
   )
-  if (!is.null(text)) out <- utils::modifyList(out, text) # Update with additional args
+  if (!is.null(text)) {
+    out <- utils::modifyList(out, text)
+  } # Update with additional args
   out
 }
 
 
 # Layer - Scale -------------------------------------------------------------------
 
-
-.visualisation_easycormatrix_scale <- function(which = "x_discrete", scale = NULL) {
+.visualisation_easycormatrix_scale <- function(
+  which = "x_discrete",
+  scale = NULL
+) {
   if (which == "size") {
     out <- list(
       geom = "scale_size",
@@ -319,13 +358,14 @@ visualisation_recipe.easycormatrix <- function(x,
     )
   }
 
-  if (!is.null(scale)) out <- utils::modifyList(out, scale) # Update with additional args
+  if (!is.null(scale)) {
+    out <- utils::modifyList(out, scale)
+  } # Update with additional args
   out
 }
 
 
 # Layer - Labs -------------------------------------------------------------------
-
 
 .visualisation_easycormatrix_labs <- function(labs = NULL) {
   out <- list(
@@ -334,6 +374,8 @@ visualisation_recipe.easycormatrix <- function(x,
     y = NULL,
     title = "Correlation Matrix"
   )
-  if (!is.null(labs)) out <- utils::modifyList(out, labs) # Update with additional args
+  if (!is.null(labs)) {
+    out <- utils::modifyList(out, labs)
+  } # Update with additional args
   out
 }

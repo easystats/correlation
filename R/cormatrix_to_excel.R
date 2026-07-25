@@ -41,13 +41,17 @@
 #' \dontshow{
 #' setwd(.old_wd)
 #' }
-cormatrix_to_excel <- function(data,
-                               filename,
-                               overwrite = TRUE,
-                               print.mat = TRUE,
-                               ...) {
+cormatrix_to_excel <- function(
+  data,
+  filename,
+  overwrite = TRUE,
+  print.mat = TRUE,
+  ...
+) {
   if (missing(filename)) {
-    insight::format_error("Argument 'filename' required (as per CRAN policies).")
+    insight::format_error(
+      "Argument 'filename' required (as per CRAN policies)."
+    )
   }
 
   insight::check_if_installed("openxlsx2")
@@ -241,90 +245,23 @@ cormatrix_to_excel <- function(data,
   wb$add_worksheet("p_values")$add_data(x = p_val)
 
   # create conditional formatting for the stars (as well as colours as we have no)
-  # one star
   # Compute the cell range for styling
   dims_fmt <- openxlsx2::wb_dims(cols = all.columns, rows = all.columns)
+
+  # gray diagonal (most specific, must be first to win for r = 1)
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .05)",
-    style = "one_star_pink"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .2, p_values!B2 < .05)",
-    style = "one_star_peach"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .05)",
-    style = "one_star_red"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .05)",
-    style = "one_star_lightblue"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .05)",
-    style = "one_star_midblue"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .05)",
-    style = "one_star_darkblue"
+    rule = "r_values!B2 = 1",
+    style = "gray_style"
   )
 
-  # two stars
+  # three stars (p < .001) - most specific color ranges first
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .01)",
-    style = "two_stars_pink"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .2, p_values!B2 < .01)",
-    style = "two_stars_peach"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .01)",
-    style = "two_stars_red"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.02, r_values!B2 < 0, p_values!B2 < .01)",
-    style = "two_stars_lightblue"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .01)",
-    style = "two_stars_midblue"
-  )
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .01)",
-    style = "two_stars_darkblue"
-  )
-
-  # three stars
-  wb$add_conditional_formatting(
-    "r_values",
-    dims = dims_fmt,
-    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .001)",
-    style = "three_stars_pink"
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .001)",
+    style = "three_stars_red"
   )
   wb$add_conditional_formatting(
     "r_values",
@@ -335,14 +272,14 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= .4, p_values!B2 < .001)",
-    style = "three_stars_red"
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .001)",
+    style = "three_stars_pink"
   )
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .001)",
-    style = "three_stars_lightblue"
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .001)",
+    style = "three_stars_darkblue"
   )
   wb$add_conditional_formatting(
     "r_values",
@@ -353,17 +290,87 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .001)",
-    style = "three_stars_darkblue"
+    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .001)",
+    style = "three_stars_lightblue"
   )
 
-  # Other formatting
+  # two stars (p < .01) - most specific color ranges first
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
-    rule = "AND(r_values!B2 = 1)",
-    style = "gray_style"
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .01)",
+    style = "two_stars_red"
   )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 >= .2, p_values!B2 < .01)",
+    style = "two_stars_peach"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .01)",
+    style = "two_stars_pink"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .01)",
+    style = "two_stars_darkblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .01)",
+    style = "two_stars_midblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .01)",
+    style = "two_stars_lightblue"
+  )
+
+  # one star (p < .05) - most specific color ranges first
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 >= .4, p_values!B2 < .05)",
+    style = "one_star_red"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 >= .2, p_values!B2 < .05)",
+    style = "one_star_peach"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 <= .2, r_values!B2 > 0, p_values!B2 < .05)",
+    style = "one_star_pink"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 <= -.4, p_values!B2 < .05)",
+    style = "one_star_darkblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 <= -.2, p_values!B2 < .05)",
+    style = "one_star_midblue"
+  )
+  wb$add_conditional_formatting(
+    "r_values",
+    dims = dims_fmt,
+    rule = "AND(r_values!B2 >= -.2, r_values!B2 < 0, p_values!B2 < .05)",
+    style = "one_star_lightblue"
+  )
+
+  # no stars (for non-significant correlations)
   wb$add_conditional_formatting(
     "r_values",
     dims = dims_fmt,
@@ -371,24 +378,12 @@ cormatrix_to_excel <- function(data,
     style = "no_star"
   )
 
-  # p-values
+  # p-values (most specific first)
   wb$add_conditional_formatting(
     "p_values",
     dims = dims_fmt,
-    rule = "< 10",
-    style = "p_style"
-  )
-  wb$add_conditional_formatting(
-    "p_values",
-    dims = dims_fmt,
-    rule = "< .05",
-    style = "p_style1"
-  )
-  wb$add_conditional_formatting(
-    "p_values",
-    dims = dims_fmt,
-    rule = "< .01",
-    style = "p_style2"
+    rule = "== 0",
+    style = "gray_style"
   )
   wb$add_conditional_formatting(
     "p_values",
@@ -399,8 +394,20 @@ cormatrix_to_excel <- function(data,
   wb$add_conditional_formatting(
     "p_values",
     dims = dims_fmt,
-    rule = "== 0",
-    style = "gray_style"
+    rule = "< .01",
+    style = "p_style2"
+  )
+  wb$add_conditional_formatting(
+    "p_values",
+    dims = dims_fmt,
+    rule = "< .05",
+    style = "p_style1"
+  )
+  wb$add_conditional_formatting(
+    "p_values",
+    dims = dims_fmt,
+    rule = "< 10",
+    style = "p_style"
   )
 
   ## Freeze Panes
@@ -409,7 +416,8 @@ cormatrix_to_excel <- function(data,
 
   # Save Excel
   cat(paste0(
-    "\n\n [Correlation matrix '", filename,
+    "\n\n [Correlation matrix '",
+    filename,
     ".xlsx' has been saved to working directory (or where specified).]"
   ))
   openxlsx2::wb_save(wb, file = paste0(filename, ".xlsx"), overwrite = TRUE)

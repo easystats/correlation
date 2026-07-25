@@ -54,7 +54,7 @@ selected. Ignored if \code{data2} is specified.}
 
 \item{method}{A character string indicating which correlation coefficient is
 to be used for the test. One of \code{"pearson"} (default), \code{"kendall"},
-\code{"spearman"} (but see also the \code{robust} argument), \code{"biserial"},
+\code{"spearman"} (but see also the \code{ranktransform} argument), \code{"biserial"},
 \code{"polychoric"}, \code{"tetrachoric"}, \code{"biweight"}, \code{"distance"}, \code{"percentage"}
 (for percentage bend correlation), \code{"blomqvist"} (for Blomqvist's
 coefficient), \code{"hoeffding"} (for Hoeffding's D), \code{"gamma"}, \code{"gaussian"}
@@ -74,8 +74,7 @@ on \code{data2}/\code{select}/\code{select2} when applicable).}
 
 \item{p_adjust}{Correction method for frequentist correlations. Can be one of
 \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"},
-\code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"},
-\code{"somers"} or \code{"none"}. See
+\code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"} or \code{"none"}. See
 \code{\link[stats:p.adjust]{stats::p.adjust()}} for further details.}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is
@@ -116,7 +115,7 @@ simple regression model.}
 estimating the correlation, which is one way of making the analysis more
 resistant to extreme values (outliers). Note that, for instance, a
 Pearson's correlation on rank-transformed data is equivalent to a
-Spearman's rank correlation. Thus, using \code{robust=TRUE} and
+Spearman's rank correlation. Thus, using \code{ranktransform=TRUE} and
 \code{method="spearman"} is redundant. Nonetheless, it is an easy option to
 increase the robustness of the correlation as well as flexible way to
 obtain Bayesian or multilevel Spearman-like rank correlations.}
@@ -272,7 +271,7 @@ Bayesian rank correlations (which have different priors).
 }
 }
 \examples{
-\dontshow{if (all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0") (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0") withAutoprint(\{ # examplesIf}
 library(correlation)
 data(iris)
 

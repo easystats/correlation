@@ -8,10 +8,20 @@
 
   if (bayesian) {
     data <- data[not_outliers, ]
-    data[c(x, y)] <- datawizard::ranktransform(data[c(x, y)], sign = TRUE, method = "average")
+    data[c(x, y)] <- datawizard::ranktransform(
+      data[c(x, y)],
+      sign = TRUE,
+      method = "average"
+    )
     out <- .cor_test_bayes(data, x, y, ci = ci)
   } else {
-    out <- .cor_test_freq(data[not_outliers, ], x, y, ci = ci, method = "spearman")
+    out <- .cor_test_freq(
+      data[not_outliers, ],
+      x,
+      y,
+      ci = ci,
+      method = "spearman"
+    )
   }
   out$Method <- "Shepherd's Pi"
   out

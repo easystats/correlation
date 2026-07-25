@@ -14,7 +14,11 @@
     stop("Matrix must be squared to be re-arranged.")
   }
 
-  reorder_distance <- stats::as.dist((1 - reorder_distance) / 2, diag = TRUE, upper = TRUE)
+  reorder_distance <- stats::as.dist(
+    (1 - reorder_distance) / 2,
+    diag = TRUE,
+    upper = TRUE
+  )
   hc <- stats::hclust(reorder_distance, method = method)
   x <- x[hc$order, hc$order]
   x
