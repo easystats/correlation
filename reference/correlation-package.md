@@ -27,6 +27,9 @@ Useful links:
 
 Authors:
 
+- Brenton M. Wiernik <brenton@wiernik.org>
+  ([ORCID](https://orcid.org/0000-0001-9560-6336))
+
 - Dominique Makowski <dom.makowski@gmail.com>
   ([ORCID](https://orcid.org/0000-0001-5375-9967)) \[inventor\]
 
