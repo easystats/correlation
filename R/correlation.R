@@ -23,8 +23,7 @@
 #'   selected. Ignored if `data2` is specified.
 #' @param p_adjust Correction method for frequentist correlations. Can be one of
 #'   `"holm"` (default), `"hochberg"`, `"hommel"`,
-#'   `"bonferroni"`, `"BH"`, `"BY"`, `"fdr"`,
-#'   `"somers"` or `"none"`. See
+#'   `"bonferroni"`, `"BH"`, `"BY"`, `"fdr"` or `"none"`. See
 #'   [stats::p.adjust()] for further details.
 #' @param redundant Should the data include redundant rows (where each given
 #'   correlation is repeated two times).

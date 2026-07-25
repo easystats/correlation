@@ -7,8 +7,8 @@
 #'
 #' @param object,x An object returned by
 #'   [`correlation()`][correlation] or its summary.
-#' @param format String, indicating the output format. Currently, only
-#'   `"markdown"` is supported.
+#' @param format String, indicating the output format. Can be `"markdown"`
+#'   (default) or `"html"`.
 #' @param digits,p_digits Number of digits used for the correlation
 #'   coefficients and for the significance values. `p_digits` also accepts
 #'   `"apa"`, to format p-values in APA style.

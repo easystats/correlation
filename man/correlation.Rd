@@ -74,8 +74,7 @@ on \code{data2}/\code{select}/\code{select2} when applicable).}
 
 \item{p_adjust}{Correction method for frequentist correlations. Can be one of
 \code{"holm"} (default), \code{"hochberg"}, \code{"hommel"},
-\code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"},
-\code{"somers"} or \code{"none"}. See
+\code{"bonferroni"}, \code{"BH"}, \code{"BY"}, \code{"fdr"} or \code{"none"}. See
 \code{\link[stats:p.adjust]{stats::p.adjust()}} for further details.}
 
 \item{ci}{Confidence/Credible Interval level. If \code{"default"}, then it is

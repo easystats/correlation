@@ -44,8 +44,8 @@
 \item{object, x}{An object returned by
 \code{\link[=correlation]{correlation()}} or its summary.}
 
-\item{format}{String, indicating the output format. Currently, only
-\code{"markdown"} is supported.}
+\item{format}{String, indicating the output format. Can be \code{"markdown"}
+(default) or \code{"html"}.}
 
 \item{digits, p_digits}{Number of digits used for the correlation
 coefficients and for the significance values. \code{p_digits} also accepts
