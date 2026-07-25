@@ -9,9 +9,15 @@
 #'   [`correlation()`][correlation] or its summary.
 #' @param format String, indicating the output format. Currently, only
 #'   `"markdown"` is supported.
-#' @param digits,p_digits To do...
-#' @param stars To do...
-#' @param include_significance To do...
+#' @param digits,p_digits Number of digits used for the correlation
+#'   coefficients and for the significance values. `p_digits` also accepts
+#'   `"apa"`, to format p-values in APA style.
+#' @param stars Logical, if `TRUE`, significance stars are added to the
+#'   coefficients.
+#' @param include_significance Logical, if `TRUE`, the significance values
+#'   themselves (p-values, probability of direction or Bayes factors, depending
+#'   on the correlation) are shown in parentheses next to the coefficients. If
+#'   `FALSE` and `stars = TRUE`, only the stars are shown.
 #' @param ... Currently not used.
 #'
 #' @return A character vector. If `format = "markdown"`, the return value

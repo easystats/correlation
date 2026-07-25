@@ -1,5 +1,9 @@
 # correlation 0.8.9
 
+## Changes
+
+- Documentation was updated and corrected in several places.
+
 ## Bug Fixes
 
 - `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
