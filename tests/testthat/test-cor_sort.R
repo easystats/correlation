@@ -70,12 +70,15 @@ make_disjoint_data <- function(n = 100) {
   set.seed(1)
   data.frame(
     a = rnorm(n),
-    b = c(rnorm(n / 2), rep(NA, n / 2)),
-    c = c(rep(NA, n / 2), rnorm(n / 2))
+    b = c(rnorm(n %/% 2), rep(NA, n - n %/% 2)),
+    c = c(rep(NA, n %/% 2), rnorm(n - n %/% 2))
   )
 }
 
 test_that("cor_sort works with undefined correlations", {
+  # the helper splits the sample evenly, whether or not n is even
+  expect_identical(nrow(make_disjoint_data(101)), 101L)
+
   d <- make_disjoint_data()
   rez <- correlation(d, redundant = TRUE)
   m <- summary(rez, redundant = TRUE)
@@ -226,6 +229,20 @@ test_that("cor_sort completion handles degenerate cases", {
   inferred <- correlation:::.complete_cormatrix(m)
   expect_false(anyNA(inferred))
   expect_true(all(abs(inferred) <= 1))
+
+  # An undefined diagonal is a self-correlation, not an undefined pair, so it
+  # must not disqualify the variable
+  m3 <- cor(mtcars[1:4])
+  diag(m3)[2] <- NA
+  expect_identical(
+    rownames(cor_sort(m3, na_action = "omit")),
+    rownames(cor_sort(cor(mtcars[1:4])))
+  )
+  expect_identical(
+    rownames(cor_sort(m3)),
+    rownames(cor_sort(cor(mtcars[1:4])))
+  )
+  expect_no_error(cor_sort(m3, na_action = "error"))
 
   # Everything undefined: "omit" cannot sort, and says so
   m2 <- matrix(

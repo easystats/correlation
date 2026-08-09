@@ -237,6 +237,15 @@ cor_sort.matrix <- function(
 ) {
   na_action <- match.arg(na_action, c("infer", "zero", "omit", "error"))
 
+  # The diagonal is discarded when the matrix is turned into distances, so an
+  # undefined self-correlation must not count as an undefined pair. Not for the
+  # dist()-based distances, where the matrix holds data rather than distances.
+  if (distance == "correlation") {
+    diag(m)[is.na(diag(m))] <- 1
+  } else if (distance == "raw") {
+    diag(m)[is.na(diag(m))] <- 0
+  }
+
   if (anyNA(m)) {
     if (na_action == "error") {
       insight::format_error(

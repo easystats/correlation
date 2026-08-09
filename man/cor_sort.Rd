@@ -48,14 +48,14 @@ that were observed with both members of the pair, as
 \eqn{r_{bc} = r_{bS} R_{SS}^{-1} R_{Sc}}. This is the maximum-entropy
 (maximum-determinant) positive-definite completion of the matrix, i.e. the
 value that sets the partial correlation of the pair, given the remaining
-variables, to zero (Dempster, 1972). When no variable was observed with both
-members of the pair, or when the estimate cannot be computed, it falls back
-to \code{0} for that pair. With a single mediating variable it reduces to
+variables, to zero (Dempster, 1972). When no variable was observed with
+both members of the pair, or when the estimate cannot be computed, it falls
+back to \code{0} for that pair. With a single mediating variable it reduces to
 \eqn{r_{ab} \times r_{ac}}.
 \item \code{"zero"} treats every undefined correlation as \code{0}. Cheaper and fully
-transparent, but it asserts that the pair is unrelated, which can pull apart
-variables that the rest of the matrix suggests belong together (especially
-with \code{hclust_method = "complete"}).
+transparent, but it asserts that the pair is unrelated, which can pull
+apart variables that the rest of the matrix suggests belong together
+(especially with \code{hclust_method = "complete"}).
 \item \code{"omit"} computes the ordering on the complete-case submatrix, and appends
 the variables involved in undefined pairs at the end, in their original
 order.
