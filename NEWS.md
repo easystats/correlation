@@ -4,7 +4,20 @@
 
 - Documentation was updated and corrected in several places.
 
+- `cor_sort()` gains a `na_action` argument, controlling how undefined
+  correlations (which arise when two variables were never observed together) are
+  handled when computing the ordering. Defaults to `"infer"`, which estimates
+  them from the variables observed with both members of the pair (the
+  maximum-entropy positive-definite completion). The sorted matrix that is
+  returned keeps its `NA` values.
+
 ## Bug Fixes
+
+- `cor_sort()` no longer fails with `NA/NaN/Inf in foreign function call` when
+  the matrix contains undefined correlations.
+
+- `cor_sort()` no longer mistakes a redundant matrix containing undefined
+  correlations for a non-redundant one.
 
 - `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
   conditional formatting rule ordering to accommodate openxlsx2's new waterfall

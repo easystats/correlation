@@ -66,7 +66,9 @@ export(visualisation_recipe)
 export(z_fisher)
 importFrom(bayestestR,simulate_simpson)
 importFrom(datawizard,visualisation_recipe)
-importFrom(insight,display)
-importFrom(insight,print_html)
-importFrom(insight,print_md)
-importFrom(insight,standardize_names)
+importFrom(insight,
+  display,
+  print_html,
+  print_md,
+  standardize_names
+)

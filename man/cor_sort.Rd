@@ -4,7 +4,13 @@
 \alias{cor_sort}
 \title{Sort a correlation matrix to improve readability of groups and clusters}
 \usage{
-cor_sort(x, distance = "correlation", hclust_method = "complete", ...)
+cor_sort(
+  x,
+  distance = "correlation",
+  hclust_method = "complete",
+  na_action = "infer",
+  ...
+)
 }
 \arguments{
 \item{x}{A correlation matrix.}
@@ -19,15 +25,71 @@ arguments for it).}
 
 \item{hclust_method}{Argument passed down into the \code{method} argument of \code{\link[=hclust]{hclust()}}.}
 
+\item{na_action}{How to deal with undefined correlations, i.e. \code{NA} values in
+the matrix (which typically arise when two variables were never observed
+together). Can be \code{"infer"} (default), \code{"zero"}, \code{"omit"} or \code{"error"}. See
+the \emph{Undefined correlations} section below.}
+
 \item{...}{Other arguments to be passed to or from other functions.}
 }
 \description{
 Sort a correlation matrix based on \code{\link[=hclust]{hclust()}}.
 }
+\section{Undefined correlations}{
+
+
+Clustering requires a complete distance matrix, so undefined correlations
+have to be resolved before \code{\link[=hclust]{hclust()}} can be run. Note that this only
+affects the \emph{ordering}: the matrix that is returned keeps its \code{NA} values,
+and no imputed value is ever reported as a coefficient.
+\itemize{
+\item \code{"infer"} (default) estimates each undefined correlation from the variables
+that were observed with both members of the pair, as
+\eqn{r_{bc} = r_{bS} R_{SS}^{-1} R_{Sc}}. This is the maximum-entropy
+(maximum-determinant) positive-definite completion of the matrix, i.e. the
+value that sets the partial correlation of the pair, given the remaining
+variables, to zero (Dempster, 1972). When no variable was observed with
+both members of the pair, or when the estimate cannot be computed, it falls
+back to \code{0} for that pair. With a single mediating variable it reduces to
+\eqn{r_{ab} \times r_{ac}}.
+\item \code{"zero"} treats every undefined correlation as \code{0}. Cheaper and fully
+transparent, but it asserts that the pair is unrelated, which can pull
+apart variables that the rest of the matrix suggests belong together
+(especially with \code{hclust_method = "complete"}).
+\item \code{"omit"} computes the ordering on the complete-case submatrix, and appends
+the variables involved in undefined pairs at the end, in their original
+order.
+\item \code{"error"} throws an error listing the undefined pairs.
+}
+
+\code{"infer"} is only available for square correlation matrices (i.e., with
+\code{distance = "correlation"}). For other distances, and for non-square
+matrices, undefined distances are replaced by the average of the defined
+ones unless \code{na_action = "error"}.
+}
+
 \examples{
 x <- correlation(mtcars)
 
 cor_sort(as.matrix(x))
 cor_sort(x, hclust_method = "ward.D2") # It can also reorder the long form output
 cor_sort(summary(x, redundant = TRUE)) # As well as from the summary
+
+# Matrices with undefined correlations (e.g., variables that were never
+# observed together) can be sorted too
+d <- data.frame(
+  a = rnorm(50),
+  b = c(rnorm(25), rep(NA, 25)),
+  c = c(rep(NA, 25), rnorm(25))
+)
+rez <- correlation(d)
+cor_sort(rez)
+cor_sort(rez, na_action = "omit")
+}
+\references{
+Dempster, A. P. (1972). Covariance selection. \emph{Biometrics}, 28(1), 157-175.
+
+Grone, R., Johnson, C. R., Sá, E. M., & Wolkowicz, H. (1984). Positive
+definite completions of partial Hermitian matrices. \emph{Linear Algebra and its
+Applications}, 58, 109-124.
 }
