@@ -277,10 +277,12 @@ cor_test <- function(
       winsorize <- 0.2
     }
 
-    # winsorization would otherwise fail in case of NAs present
-    data <- as.data.frame(
+    # winsorize the complete cases of x and y in place, keeping the other
+    # columns (the cluster column among them) and the incomplete rows
+    complete <- stats::complete.cases(data[c(x, y)])
+    data[complete, c(x, y)] <- as.data.frame(
       datawizard::winsorize(
-        stats::na.omit(data[c(x, y)]),
+        data[complete, c(x, y)],
         threshold = winsorize,
         verbose = verbose
       )

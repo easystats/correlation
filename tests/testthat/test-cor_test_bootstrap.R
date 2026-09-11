@@ -348,6 +348,165 @@ test_that("AC2: cluster = row number reproduces the plain bootstrap", {
   expect_identical(attr(plain, "ci_method"), "bootstrap")
 })
 
+# AC3 -------------------------------------------------------------------------
+
+for (spec in method_sweep) {
+  test_that(
+    paste("AC3: bootstrap runs for every frequentist method:", spec$label),
+    {
+      skip_sweep_entry(spec)
+      d <- iris_boot()
+      boot <- seeded(
+        301,
+        cor_test(
+          d,
+          spec$x,
+          spec$y,
+          method = spec$method,
+          bootstrap = TRUE,
+          iterations = 50
+        )
+      )
+      plain <- seeded(
+        301,
+        cor_test(d, spec$x, spec$y, method = spec$method, bootstrap = FALSE)
+      )
+      expect_true(is.finite(boot$CI_low))
+      expect_true(is.finite(boot$CI_high))
+      expect_lte(boot$CI_low, boot$CI_high)
+      expect_identical(boot[[spec$coef]], plain[[spec$coef]])
+      if (spec$method %in% c("distance", "hoeffding")) {
+        expect_identical(boot$p, NA_real_)
+      } else {
+        expect_true(is.finite(boot$p))
+      }
+      if (spec$method %in% c("pearson", "spearman", "kendall")) {
+        expect_lt(boot$CI_low, boot$CI_high)
+      }
+      expect_identical(attr(boot, "ci_method"), "bootstrap")
+      # the analytic statistic and its df are set to NA
+      for (stat in intersect(c("t", "S", "z", "df_error"), names(boot))) {
+        expect_true(is.na(boot[[stat]]), label = stat)
+      }
+    }
+  )
+}
+
+# AC4: argument errors and warnings ----------------------------------------------
+
+test_that("AC4: bootstrap is refused for Bayesian, partial, and multilevel correlations", {
+  expect_error(
+    cor_test(
+      iris,
+      "Sepal.Length",
+      "Petal.Length",
+      bootstrap = TRUE,
+      bayesian = TRUE
+    ),
+    "not available for Bayesian"
+  )
+  expect_error(
+    cor_test(
+      iris,
+      "Sepal.Length",
+      "Petal.Length",
+      bootstrap = TRUE,
+      partial = TRUE
+    ),
+    "not available for partial"
+  )
+  expect_error(
+    cor_test(
+      iris,
+      "Sepal.Length",
+      "Petal.Length",
+      bootstrap = TRUE,
+      multilevel = TRUE
+    ),
+    "not available for partial"
+  )
+})
+
+test_that("AC4: cluster and iterations are validated", {
+  expect_error(
+    cor_test(iris, "Sepal.Length", "Petal.Length", cluster = "no_such_column"),
+    "name of one column"
+  )
+  d <- iris
+  d$one <- 1L
+  expect_error(
+    cor_test(d, "Sepal.Length", "Petal.Length", cluster = "one"),
+    "at least 2 distinct values"
+  )
+  expect_error(
+    cor_test(
+      iris,
+      "Sepal.Length",
+      "Petal.Length",
+      bootstrap = TRUE,
+      iterations = 1
+    ),
+    "`iterations` must be a single number of at least 2"
+  )
+  expect_error(
+    cor_test(
+      iris,
+      "Sepal.Length",
+      "Petal.Length",
+      bootstrap = TRUE,
+      iterations = "many"
+    ),
+    "`iterations` must be a single number of at least 2"
+  )
+})
+
+test_that("AC4: fewer than 20 clusters warns", {
+  d <- iris
+  d$g <- rep(seq_len(10), length.out = nrow(d))
+  expect_warning(
+    cor_test(d, "Sepal.Length", "Petal.Length", cluster = "g", iterations = 50),
+    "only 10 distinct values"
+  )
+})
+
+test_that("AC4: winsorize keeps the cluster column and matches winsorizing beforehand", {
+  d <- iris
+  d$g <- rep(seq_len(30), length.out = nrow(d))
+  inline <- seeded(
+    403,
+    cor_test(
+      d,
+      "Sepal.Length",
+      "Petal.Length",
+      winsorize = 0.2,
+      cluster = "g",
+      iterations = 200
+    )
+  )
+  pre <- d
+  pre[c("Sepal.Length", "Petal.Length")] <- as.data.frame(
+    datawizard::winsorize(
+      pre[c("Sepal.Length", "Petal.Length")],
+      threshold = 0.2
+    )
+  )
+  before <- seeded(
+    403,
+    cor_test(
+      pre,
+      "Sepal.Length",
+      "Petal.Length",
+      cluster = "g",
+      iterations = 200
+    )
+  )
+  expect_identical(attr(inline, "ci_method"), "cluster-bootstrap")
+  expect_identical(
+    attr(inline, "bootstrap_replicates"),
+    attr(before, "bootstrap_replicates")
+  )
+})
+
 # AC4: dropped replicates -------------------------------------------------------
 
 test_that("AC4: NA replicates are dropped with one warning naming the kept count", {
