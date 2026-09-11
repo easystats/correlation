@@ -18,8 +18,9 @@
 # O4  | invariant | "AC2: cluster = row number reproduces the plain bootstrap"
 #       | sample.int(G, G, TRUE) over split() order makes both draws identical.
 # O5  | closed-form | "AC6: SE and p are recomputed from the replicates"
-#       | SE = sd of kept replicates (Efron & Tibshirani 1993 eq. 6.6); p in the
-#       (count + 1) / (B + 1) form (Davison & Hinkley 1997 section 4.2.1).
+#       | SE = sd of kept replicates (Efron & Tibshirani 1993 eq. 6.6, p. 47);
+#       p in the (count + 1) / (B + 1) form (Davison & Hinkley 1997 eq. 4.11,
+#       p. 141); see cairn/references/efron1993.md and davison1997.md.
 # O6  | simulation-coverage | "AC6: type-I error at rho = 0 is near nominal"
 #       | expected rejection rate 0.065 at n = 50 for the percentile p under
 #       bivariate normality (RR01 section 1 table); bounds [0.02, 0.10].
@@ -29,10 +30,10 @@
 # O8  | closed-form | "AC6: SE agrees with (1 - r^2) / sqrt(n) at n = 2000"
 #       | large-sample sd of Pearson r under bivariate normality.
 # O9  | frozen (published) | "AC6: law-school SE matches Efron & Tibshirani"
-#       | Efron & Tibshirani (1993) Table 3.1 (the 15 law schools' LSAT and
-#       GPA) and Table 6.1 (bootstrap SE 0.132 at B = 3200); transcribed from
-#       RR01 pending a read of the shelved PDF at T5 (observed 2026-09-10);
-#       the sample correlation 0.776 is checked as a transcription control.
+#       | Efron & Tibshirani (1993) Table 3.1, p. 19 (the 15 law schools' LSAT
+#       and GPA) and Table 6.1, p. 50 (bootstrap SE .132 at B = 3200); values
+#       read against the source (cairn/references/efron1993.md); the sample
+#       correlation .776 (p. 50) is checked as a transcription control.
 # O10 | invariant | "AC6: sign flip and affine map of y", the definition's
 #       invariances: negating y negates and swaps the endpoints and keeps SE
 #       and p; 2 * y + 5 changes nothing for the listed methods.

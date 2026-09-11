@@ -253,12 +253,13 @@ rows of the data (or, with \code{cluster}, whole clusters of rows) are resampled
 with replacement \code{iterations} times and the coefficient is recomputed on
 each resample. \code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
 \code{1 - (1 - ci) / 2} quantiles of the replicates (the percentile interval;
-Efron & Tibshirani, 1993, chapter 13); \code{SE} is the standard deviation of the
-replicates (Efron & Tibshirani, 1993, chapter 6); and \code{p} is the two-sided
-significance level implied by the percentile interval,
+Efron & Tibshirani, 1993, section 13.3, pp. 170-171); \code{SE} is the standard
+deviation of the replicates (Efron & Tibshirani, 1993, eq. 6.6, p. 47); and
+\code{p} is the two-sided significance level implied by the percentile interval,
 \code{2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)} capped at 1, where
-\code{t} are the \code{B} kept replicates (Davison & Hinkley, 1997, section 4.2.1;
-Efron & Tibshirani, 1993, chapter 16). This p-value tests whether the
+\code{t} are the \code{B} kept replicates (Efron & Tibshirani, 1993, section 15.4,
+pp. 214-215; the \code{+ 1} form is the Monte Carlo p-value of Davison &
+Hinkley, 1997, eq. 4.11, p. 141). This p-value tests whether the
 population coefficient is 0. It is approximate, somewhat above nominal in
 small samples, and can never be smaller than \code{2 / (iterations + 1)}. The
 analytic test statistic and its degrees of freedom are set to \code{NA}.
@@ -278,9 +279,10 @@ The cluster bootstrap (\code{cluster}) resamples whole clusters, so the
 dependence within a cluster (repeated measures of one participant, say)
 is kept intact. Its accuracy is driven by the number of clusters, not the
 number of rows: a warning is raised below 20 clusters, and very unequal
-cluster sizes lower the coverage of the interval (Field & Welsh, 2007;
-Davison & Hinkley, 1997, section 3.8). Giving each row its own cluster
-reproduces the plain bootstrap.
+cluster sizes lower the coverage of the interval (Davison & Hinkley, 1997,
+section 3.8, pp. 100-102; Field & Welsh, 2007, section 3.3, p. 383, whose
+cluster bootstrap this is). Giving each row its own cluster reproduces the
+plain bootstrap.
 
 In \code{correlation()}, p-values adjusted for multiple comparisons cannot fall
 below \code{2 * m / (iterations + 1)} for \code{m} pairs, so with many pairs raise
