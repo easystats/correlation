@@ -1,4 +1,20 @@
 #' @keywords internal
+.validate_iterations <- function(iterations) {
+  if (
+    !is.numeric(iterations) ||
+      length(iterations) != 1L ||
+      is.na(iterations) ||
+      iterations < 2 ||
+      iterations > .Machine$integer.max
+  ) {
+    insight::format_error(
+      "`iterations` must be a single number of at least 2 (and at most 2147483647)."
+    )
+  }
+  as.integer(floor(iterations))
+}
+
+#' @keywords internal
 .cor_test_bootstrap <- function(
   out,
   data,
@@ -21,7 +37,8 @@
     groups <- NULL
     n_units <- n
   } else {
-    groups <- split(seq_len(n), data[[cluster]])
+    # drop = TRUE: a factor cluster column resamples only its observed levels
+    groups <- split(seq_len(n), data[[cluster]], drop = TRUE)
     n_units <- length(groups)
   }
 
@@ -29,24 +46,23 @@
   .one_replicate <- function() {
     idx <- sample.int(n_units, n_units, replace = TRUE)
     rows <- if (is.null(groups)) idx else unlist(groups[idx], use.names = FALSE)
-    rez <- tryCatch(
-      suppressWarnings(suppressMessages(
-        .cor_test_frequentist(
-          data[rows, , drop = FALSE],
-          x,
-          y,
-          ci = ci,
-          method = method,
-          ...
-        )
-      )),
-      error = function(e) NULL
+    tryCatch(
+      {
+        rez <- suppressWarnings(suppressMessages(
+          .cor_test_frequentist(
+            data[rows, , drop = FALSE],
+            x,
+            y,
+            ci = ci,
+            method = method,
+            ...
+          )
+        ))
+        coef_name <- intersect(c("r", "rho", "tau", "Dxy"), names(rez))[1]
+        as.numeric(rez[[coef_name]][1])
+      },
+      error = function(e) NA_real_
     )
-    if (is.null(rez)) {
-      return(NA_real_)
-    }
-    coef_name <- intersect(c("r", "rho", "tau", "Dxy"), names(rez))[1]
-    as.numeric(rez[[coef_name]][1])
   }
 
   replicates <- vapply(seq_len(iterations), function(i) .one_replicate(), 1)

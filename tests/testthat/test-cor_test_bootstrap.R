@@ -846,6 +846,88 @@ for (spec in method_sweep[vapply(
   })
 }
 
+# Review findings ---------------------------------------------------------------
+
+test_that("rows with a missing cluster value are dropped before the estimate", {
+  d <- iris
+  d$g <- rep(seq_len(30), 5)
+  d$g[d$Species == "setosa"] <- NA
+  out <- seeded(
+    801,
+    cor_test(d, "Sepal.Length", "Petal.Length", cluster = "g", iterations = 200)
+  )
+  kept <- d[!is.na(d$g), ]
+  expect_identical(out$n_Obs, nrow(kept))
+  expect_equal(out$r, stats::cor(kept$Sepal.Length, kept$Petal.Length))
+  expect_true(out$CI_low <= out$r && out$r <= out$CI_high)
+})
+
+test_that("a factor cluster column resamples only its observed levels", {
+  d <- iris
+  d$g_all <- factor(rep(seq_len(30), 5), levels = seq_len(60))
+  d$g_used <- droplevels(d$g_all)
+  used <- seeded(
+    802,
+    cor_test(d, "Sepal.Length", "Petal.Length", cluster = "g_used", iterations = 100)
+  )
+  all_levels <- seeded(
+    802,
+    cor_test(d, "Sepal.Length", "Petal.Length", cluster = "g_all", iterations = 100)
+  )
+  expect_identical(
+    attr(all_levels, "bootstrap_replicates"),
+    attr(used, "bootstrap_replicates")
+  )
+  expect_identical(attr(all_levels, "iterations"), 100L)
+})
+
+test_that("a one-sided alternative is refused under bootstrap", {
+  expect_error(
+    cor_test(
+      iris,
+      "Sepal.Length",
+      "Petal.Length",
+      bootstrap = TRUE,
+      iterations = 20,
+      alternative = "less"
+    ),
+    "two.sided"
+  )
+})
+
+test_that("correlation() validates iterations as cor_test() does", {
+  out <- seeded(
+    803,
+    correlation(iris[1:3], bootstrap = TRUE, iterations = 20.7)
+  )
+  expect_identical(attr(out, "iterations"), 20L)
+  expect_error(
+    correlation(iris[1:3], bootstrap = TRUE, iterations = 3e9),
+    "`iterations` must be a single number of at least 2"
+  )
+  expect_error(
+    cor_test(
+      iris,
+      "Sepal.Length",
+      "Petal.Length",
+      bootstrap = TRUE,
+      iterations = 3e9
+    ),
+    "`iterations` must be a single number of at least 2"
+  )
+})
+
+test_that("correlation() refuses a cluster column among the selected variables", {
+  expect_error(
+    correlation(
+      iris,
+      select = c("Sepal.Length", "Sepal.Width"),
+      cluster = "Sepal.Width"
+    ),
+    "cannot be one of the selected variables"
+  )
+})
+
 # Extra invariants beyond the criteria -----------------------------------------
 
 test_that("coherence: p and the interval agree on excluding 0", {

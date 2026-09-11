@@ -55,13 +55,15 @@
 #'   the analytic formulas: rows are resampled with replacement `iterations`
 #'   times and the coefficient is recomputed on each resample. See the
 #'   'Bootstrap' section. Not available for Bayesian, partial, or multilevel
-#'   correlations.
+#'   correlations; the interval and p-value are two-sided, so `alternative`
+#'   (passed through `...`) must be `"two.sided"`, the default.
 #' @param iterations Number of bootstrap resamples (default `1000`). Only used
 #'   when `bootstrap = TRUE` or `cluster` is given.
 #' @param cluster Name of a column in `data` identifying clusters of rows
 #'   (for example, participants with repeated measures). If given, a cluster
 #'   bootstrap is run (`bootstrap` is set to `TRUE`): whole clusters, rather
-#'   than rows, are resampled with replacement. See the 'Bootstrap' section.
+#'   than rows, are resampled with replacement; rows with a missing cluster
+#'   value are dropped. See the 'Bootstrap' section.
 #' @param verbose Toggle warnings.
 #' @param ... Additional arguments (e.g., `alternative`) to be passed to
 #'   other methods. See `stats::cor.test` for further details.
@@ -204,17 +206,17 @@ cor_test <- function(
         "Bootstrap confidence intervals are not available for partial or multilevel correlations (`partial`, `partial_bayesian`, or `multilevel`)."
       )
     }
+    iterations <- .validate_iterations(iterations)
+    # the bootstrap interval and p-value are two-sided; a one-sided
+    # `alternative` passed on to the analytic test would be silently ignored
+    dots <- list(...)
     if (
-      !is.numeric(iterations) ||
-        length(iterations) != 1L ||
-        is.na(iterations) ||
-        iterations < 2
+      !is.null(dots$alternative) && !identical(dots$alternative, "two.sided")
     ) {
       insight::format_error(
-        "`iterations` must be a single number of at least 2."
+        "Bootstrap confidence intervals are two-sided; `alternative` must be \"two.sided\" (the default) when `bootstrap = TRUE` or `cluster` is given."
       )
     }
-    iterations <- as.integer(floor(iterations))
     if (!is.null(cluster)) {
       if (
         !is.character(cluster) ||
@@ -230,6 +232,9 @@ cor_test <- function(
           "`cluster` must name a column other than `x` and `y`."
         )
       }
+      # rows with a missing cluster value cannot be resampled: drop them
+      # here so the estimate, `n_Obs`, and the interval use the same rows
+      data <- data[!is.na(data[[cluster]]), , drop = FALSE]
       n_clusters <- length(unique(data[[cluster]][
         stats::complete.cases(data[c(x, y, cluster)])
       ]))

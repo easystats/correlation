@@ -209,8 +209,10 @@
 #' Replicates on which the coefficient cannot be computed (for instance, a
 #' resample in which a variable is constant or loses a category) are dropped
 #' with a warning naming the number kept; if fewer than half survive, an
-#' error is raised. The `winsorize` and `ranktransform` transformations are
-#' applied once, to the full data, before resampling.
+#' error is raised. In `correlation()`, this warning is shown for the first
+#' pair only, as for every other warning it raises. The `winsorize` and
+#' `ranktransform` transformations are applied once, to the full data, before
+#' resampling.
 #'
 #' The cluster bootstrap (`cluster`) resamples whole clusters, so the
 #' dependence within a cluster (repeated measures of one participant, say)
@@ -389,6 +391,14 @@ correlation <- function(
         "`cluster` cannot be one of the grouping variables of the data."
       )
     }
+    if (cluster %in% c(select, select2, character(0))) {
+      insight::format_error(
+        "`cluster` cannot be one of the selected variables (`select`, `select2`)."
+      )
+    }
+    iterations <- .validate_iterations(iterations)
+  } else if (isTRUE(bootstrap)) {
+    iterations <- .validate_iterations(iterations)
   }
 
   if (is.null(data2) && !is.null(select)) {
@@ -521,8 +531,11 @@ correlation <- function(
     )
   )
 
-  # bootstrap attributes: the per-pair replicates are not kept; `iterations`
-  # is the number requested for every pair
+  # bootstrap attributes: `params <- result` above carried the first pair's
+  # `ci_method`, `iterations` (kept), and `bootstrap_replicates` into `out`;
+  # overwrite the first two with the whole-table values (`iterations` is the
+  # number requested for every pair) and clear the replicates, which are
+  # per-pair and not kept
   if (isTRUE(bootstrap)) {
     attr(out, "ci_method") <- if (is.null(cluster)) {
       "bootstrap"

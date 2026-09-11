@@ -95,7 +95,8 @@ p-value are obtained from a nonparametric percentile bootstrap instead of
 the analytic formulas: rows are resampled with replacement \code{iterations}
 times and the coefficient is recomputed on each resample. See the
 'Bootstrap' section. Not available for Bayesian, partial, or multilevel
-correlations.}
+correlations; the interval and p-value are two-sided, so \code{alternative}
+(passed through \code{...}) must be \code{"two.sided"}, the default.}
 
 \item{iterations}{Number of bootstrap resamples (default \code{1000}). Only used
 when \code{bootstrap = TRUE} or \code{cluster} is given.}
@@ -103,7 +104,8 @@ when \code{bootstrap = TRUE} or \code{cluster} is given.}
 \item{cluster}{Name of a column in \code{data} identifying clusters of rows
 (for example, participants with repeated measures). If given, a cluster
 bootstrap is run (\code{bootstrap} is set to \code{TRUE}): whole clusters, rather
-than rows, are resampled with replacement. See the 'Bootstrap' section.}
+than rows, are resampled with replacement; rows with a missing cluster
+value are dropped. See the 'Bootstrap' section.}
 
 \item{verbose}{Toggle warnings.}
 
@@ -281,8 +283,10 @@ error are reliable only when an association is present.
 Replicates on which the coefficient cannot be computed (for instance, a
 resample in which a variable is constant or loses a category) are dropped
 with a warning naming the number kept; if fewer than half survive, an
-error is raised. The \code{winsorize} and \code{ranktransform} transformations are
-applied once, to the full data, before resampling.
+error is raised. In \code{correlation()}, this warning is shown for the first
+pair only, as for every other warning it raises. The \code{winsorize} and
+\code{ranktransform} transformations are applied once, to the full data, before
+resampling.
 
 The cluster bootstrap (\code{cluster}) resamples whole clusters, so the
 dependence within a cluster (repeated measures of one participant, say)
