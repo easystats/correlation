@@ -86,10 +86,14 @@ framework.}
 \item{bayesian_prior}{For the prior argument, several named values are
 recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and \code{"ultrawide"}.
 These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(3)} and
-\code{1}, respectively. See the \code{BayesFactor::correlationBF} function.}
+\code{1}, respectively. See the \code{BayesFactor::correlationBF} function. The
+scale sets the shape parameter of the stretched beta prior on the
+correlation as alpha = 1/scale; for \code{method = "kendall"} that prior is
+carried over to Kendall's tau (see the Notes section of \code{\link[=correlation]{correlation()}}).}
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in
-\code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests.}
+\code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests. For
+\code{method = "kendall"}, \code{bayesian_ci_method} must be \code{"hdi"} or \code{"eti"}.}
 
 \item{redundant}{Should the data include redundant rows (where each given
 correlation is repeated two times).}
@@ -265,9 +269,23 @@ Bayesian scores, set \code{partial = TRUE}.
 }
 
 \subsection{Notes}{
-Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technically
-Pearson Bayesian correlations of rank transformed data, rather than pure
-Bayesian rank correlations (which have different priors).
+Spearman and Gaussian-rank correlations when \code{bayesian=TRUE}: These are
+technically Pearson Bayesian correlations of rank-transformed data, rather
+than pure Bayesian rank correlations (which have different priors).
+
+Kendall correlations when \code{bayesian=TRUE} follow the model of van Doorn,
+Ly, Marsman and Wagenmakers (2018): the observed tau-b (as reported by
+\code{stats::cor(method = "kendall")}) is standardized to the statistic T*, whose
+likelihood is normal with mean 1.5 tau sqrt(n) and variance 1, and combined
+with the prior on tau induced by a symmetric stretched beta prior on the
+Pearson correlation through tau = (2/pi) asin(rho). The reported \code{tau} is the
+posterior median, the interval is the highest-density (\code{"hdi"}, the default)
+or equal-tailed (\code{"eti"}) interval of that posterior, and \code{BF} is the
+Savage-Dickey ratio of the prior to the posterior density at tau = 0. The
+\code{bayesian_prior} scale maps to the stretched-beta shape parameter as
+alpha = 1/scale (so \code{"medium"} is alpha = 3 and a scale of 1 is the paper's
+default), the same mapping \code{BayesFactor::correlationBF()} applies to its
+\code{rscale}. \code{bayesian_ci_method} must be \code{"hdi"} or \code{"eti"} for this method.
 }
 }
 \examples{
@@ -313,6 +331,9 @@ correlation estimator: robustness properties. Statistics and Computing,
 (2019). Using a Gaussian graphical model to explore relationships between
 items and variables in environmental psychology research. Frontiers in
 psychology, 10, 1050.
+\item van Doorn, J., Ly, A., Marsman, M., & Wagenmakers, E.-J. (2018). Bayesian
+inference for Kendall's rank correlation coefficient. The American
+Statistician, 72(4), 303-308. \doi{10.1080/00031305.2016.1264998}
 \item Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
 correlations when data are not normal. Behavior research methods, 49(1),
 294-309.

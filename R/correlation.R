@@ -169,9 +169,23 @@
 #' }
 #'
 #' \subsection{Notes}{
-#' Kendall and Spearman correlations when `bayesian=TRUE`: These are technically
-#' Pearson Bayesian correlations of rank transformed data, rather than pure
-#' Bayesian rank correlations (which have different priors).
+#' Spearman and Gaussian-rank correlations when `bayesian=TRUE`: These are
+#' technically Pearson Bayesian correlations of rank-transformed data, rather
+#' than pure Bayesian rank correlations (which have different priors).
+#'
+#' Kendall correlations when `bayesian=TRUE` follow the model of van Doorn,
+#' Ly, Marsman and Wagenmakers (2018): the observed tau-b (as reported by
+#' `stats::cor(method = "kendall")`) is standardized to the statistic T*, whose
+#' likelihood is normal with mean 1.5 tau sqrt(n) and variance 1, and combined
+#' with the prior on tau induced by a symmetric stretched beta prior on the
+#' Pearson correlation through tau = (2/pi) asin(rho). The reported `tau` is the
+#' posterior median, the interval is the highest-density (`"hdi"`, the default)
+#' or equal-tailed (`"eti"`) interval of that posterior, and `BF` is the
+#' Savage-Dickey ratio of the prior to the posterior density at tau = 0. The
+#' `bayesian_prior` scale maps to the stretched-beta shape parameter as
+#' alpha = 1/scale (so `"medium"` is alpha = 3 and a scale of 1 is the paper's
+#' default), the same mapping `BayesFactor::correlationBF()` applies to its
+#' `rscale`. `bayesian_ci_method` must be `"hdi"` or `"eti"` for this method.
 #' }
 #'
 #' @return
@@ -227,6 +241,10 @@
 #'   (2019). Using a Gaussian graphical model to explore relationships between
 #'   items and variables in environmental psychology research. Frontiers in
 #'   psychology, 10, 1050.
+#'
+#' - van Doorn, J., Ly, A., Marsman, M., & Wagenmakers, E.-J. (2018). Bayesian
+#'   inference for Kendall's rank correlation coefficient. The American
+#'   Statistician, 72(4), 303-308. \doi{10.1080/00031305.2016.1264998}
 #'
 #' - Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
 #'   correlations when data are not normal. Behavior research methods, 49(1),
