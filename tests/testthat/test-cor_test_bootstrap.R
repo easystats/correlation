@@ -622,6 +622,73 @@ test_that("AC4: verbose = FALSE suppresses the cluster and dropped-replicate war
   expect_lt(attr(out, "iterations"), 200L)
 })
 
+# AC5 -------------------------------------------------------------------------
+
+test_that("AC5: correlation() runs the cluster bootstrap per pair", {
+  d <- iris[1:3]
+  d$id <- rep(seq_len(30), length.out = nrow(d))
+  out <- seeded(501, correlation(d, cluster = "id", iterations = 100))
+  expect_identical(nrow(out), 3L)
+  expect_false("id" %in% c(out$Parameter1, out$Parameter2))
+  expect_identical(attr(out, "ci_method"), "cluster-bootstrap")
+
+  single <- seeded(
+    501,
+    cor_test(
+      d,
+      out$Parameter1[1],
+      out$Parameter2[1],
+      cluster = "id",
+      iterations = 100
+    )
+  )
+  expect_lt(abs(out$CI_low[1] - single$CI_low), 0.02)
+  expect_lt(abs(out$CI_high[1] - single$CI_high), 0.02)
+  expect_lt(abs(out$SE[1] - single$SE), 0.02)
+
+  plain <- seeded(
+    502,
+    correlation(iris[1:3], bootstrap = TRUE, iterations = 20)
+  )
+  expect_identical(attr(plain, "ci_method"), "bootstrap")
+  expect_null(attr(correlation(iris[1:3]), "ci_method"))
+})
+
+test_that("AC5: the printed footer names the bootstrap", {
+  d <- iris[1:3]
+  d$id <- rep(seq_len(30), length.out = nrow(d))
+  out <- seeded(503, correlation(d, cluster = "id", iterations = 100))
+  expect_snapshot(print(out))
+})
+
+test_that("AC5: grouped data keeps the cluster column out of every group", {
+  d <- iris
+  d$id <- rep(seq_len(30), length.out = nrow(d))
+  g <- datawizard::data_group(d, "Species")
+  out <- seeded(504, correlation(g, cluster = "id", iterations = 20))
+  expect_false("id" %in% c(out$Parameter1, out$Parameter2))
+  expect_identical(sort(unique(out$Group)), sort(levels(iris$Species)))
+  expect_identical(attr(out, "ci_method"), "cluster-bootstrap")
+  expect_error(
+    correlation(g, cluster = "Species"),
+    "cannot be one of the grouping variables"
+  )
+})
+
+test_that("AC5: distance correlation returns NA p-values under adjustment", {
+  out <- seeded(
+    505,
+    correlation(
+      iris[1:3],
+      method = "distance",
+      bootstrap = TRUE,
+      iterations = 20
+    )
+  )
+  expect_true(all(is.na(out$p)))
+  expect_identical(nrow(out), 3L)
+})
+
 # AC6 -------------------------------------------------------------------------
 
 for (spec in method_sweep) {

@@ -267,6 +267,9 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   standardize_names = getOption("easystats.standardize_names", FALSE),
   ...
@@ -287,6 +290,29 @@ correlation <- function(
   # CI
   if (ci == "default") {
     ci <- 0.95
+  }
+
+  # Bootstrap: the cluster column identifies resampling units and is never
+  # itself correlated; it must be a column of `data` and not a grouping variable
+  if (!is.null(cluster)) {
+    bootstrap <- TRUE
+    if (
+      !is.character(cluster) ||
+        length(cluster) != 1L ||
+        !cluster %in% colnames(data)
+    ) {
+      insight::format_error(
+        "`cluster` must be the name of one column in the data."
+      )
+    }
+    if (
+      inherits(data, "grouped_df") &&
+        cluster %in% setdiff(colnames(attributes(data)$groups), ".rows")
+    ) {
+      insight::format_error(
+        "`cluster` cannot be one of the grouping variables of the data."
+      )
+    }
   }
 
   if (is.null(data2) && !is.null(select)) {
@@ -313,6 +339,9 @@ correlation <- function(
       grp_df <- NULL
     }
 
+    # the cluster column travels with the data without being selected
+    select <- unique(c(select, cluster))
+
     data2 <- if (!is.null(select2)) data[select2]
     data <- data[select]
 
@@ -322,10 +351,11 @@ correlation <- function(
 
   # renaming the columns if so desired
   if (!is.null(rename)) {
-    if (length(data) != length(rename)) {
+    to_rename <- setdiff(colnames(data), cluster)
+    if (length(to_rename) != length(rename)) {
       insight::format_warning("Mismatch between number of variables and names.")
     } else {
-      colnames(data) <- rename
+      colnames(data)[colnames(data) %in% to_rename] <- rename
     }
   }
 
@@ -362,6 +392,9 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      bootstrap = bootstrap,
+      iterations = iterations,
+      cluster = cluster,
       verbose = verbose,
       ...
     )
@@ -383,6 +416,9 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      bootstrap = bootstrap,
+      iterations = iterations,
+      cluster = cluster,
       verbose = verbose,
       ...
     )
@@ -408,6 +444,18 @@ correlation <- function(
       missing = missing
     )
   )
+
+  # bootstrap attributes: the per-pair replicates are not kept; `iterations`
+  # is the number requested for every pair
+  if (isTRUE(bootstrap)) {
+    attr(out, "ci_method") <- if (is.null(cluster)) {
+      "bootstrap"
+    } else {
+      "cluster-bootstrap"
+    }
+    attr(out, "iterations") <- iterations
+    attr(out, "bootstrap_replicates") <- NULL
+  }
 
   attr(out, "additional_arguments") <- list(...)
 
@@ -457,6 +505,9 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   ...
 ) {
@@ -486,7 +537,10 @@ correlation <- function(
         partial_bayesian = partial_bayesian,
         multilevel = multilevel,
         ranktransform = ranktransform,
-        winsorize = winsorize
+        winsorize = winsorize,
+        bootstrap = bootstrap,
+        iterations = iterations,
+        cluster = cluster
       )
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
@@ -524,7 +578,10 @@ correlation <- function(
           partial_bayesian = partial_bayesian,
           multilevel = multilevel,
           ranktransform = ranktransform,
-          winsorize = winsorize
+          winsorize = winsorize,
+          bootstrap = bootstrap,
+          iterations = iterations,
+          cluster = cluster
         )
         modelframe_current <- rez$data
         rez$params$Group <- modelframe_current$Group <- i
@@ -558,11 +615,21 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   ...
 ) {
   if (!is.null(data2)) {
     data <- cbind(data, data2)
+  }
+
+  # set the cluster column aside: it is not a variable to correlate, and the
+  # cleaning below would drop or dummy-code a non-numeric one
+  if (!is.null(cluster)) {
+    cluster_column <- data[cluster]
+    data[[cluster]] <- NULL
   }
 
   if (ncol(data) <= 2L && any(sapply(data, is.factor)) && !include_factors) {
@@ -609,6 +676,9 @@ correlation <- function(
     include_factors = include_factors,
     multilevel = multilevel
   )
+  if (!is.null(cluster)) {
+    data <- cbind(data, cluster_column)
+  }
 
   # LOOP ----------------
 
@@ -635,6 +705,9 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      bootstrap = bootstrap,
+      iterations = iterations,
+      cluster = cluster,
       verbose = verbose,
       ...
     )

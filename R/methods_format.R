@@ -173,6 +173,22 @@ format.easycormatrix <- function(
     )
   }
 
+  # Bootstrap
+  if (!is.null(attributes(x)$ci_method)) {
+    footer <- paste0(
+      footer,
+      "\nConfidence intervals: percentile ",
+      switch(
+        attributes(x)$ci_method,
+        `cluster-bootstrap` = "cluster bootstrap",
+        "bootstrap"
+      ),
+      " (",
+      attributes(x)$iterations,
+      " iterations)"
+    )
+  }
+
   # N-obs
   if (!is.null(x$n_Obs)) {
     if (length(unique(x$n_Obs)) == 1) {
