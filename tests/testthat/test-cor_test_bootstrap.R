@@ -786,9 +786,26 @@ for (spec in method_sweep[vapply(
       )
     )
 
-    # wdm's Blomqvist coefficient counts ties at the median asymmetrically, so
-    # the estimator itself is not odd under negation on resamples with ties
-    if (spec$method != "blomqvist") {
+    # wdm's Blomqvist (bbeta.hpp) places observations equal to a median in the
+    # lower half, so the estimator is not odd under negation on resamples that
+    # tie at the y median; it is symmetric in x and y, so the swap is checked
+    if (spec$method == "blomqvist") {
+      swapped <- seeded(
+        606,
+        cor_test(
+          d,
+          spec$y,
+          spec$x,
+          method = spec$method,
+          bootstrap = TRUE,
+          iterations = 50
+        )
+      )
+      expect_equal(swapped$CI_low, original$CI_low, tolerance = 1e-8)
+      expect_equal(swapped$CI_high, original$CI_high, tolerance = 1e-8)
+      expect_equal(swapped$SE, original$SE, tolerance = 1e-8)
+      expect_equal(swapped$p, original$p, tolerance = 1e-8)
+    } else {
       neg <- d
       neg[[spec$y]] <- -neg[[spec$y]]
       flipped <- seeded(

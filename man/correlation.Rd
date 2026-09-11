@@ -213,7 +213,9 @@ distance).
 referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
 median-based non-parametric correlation that has some advantages over
 measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
-2006).
+2006). It is computed by \code{wdm::wdm()}, which places observations equal to
+a median in the lower half, so on tied data the coefficient is not exactly
+sign-symmetric.
 \item \strong{Hoeffding’s D}: The Hoeffding’s D statistics is a
 non-parametric rank based measure of association that detects more general
 departures from independence (Hoeffding 1948), including non-linear
