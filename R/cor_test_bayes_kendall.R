@@ -18,6 +18,7 @@
   var_y <- .complete_variable_y(data, x, y)
   n <- length(var_x)
   alpha <- 1 / .bayes_kendall_scale(bayesian_prior)
+  bayesian_ci_method <- .bayes_kendall_ci_method(bayesian_ci_method)
 
   if (x == y) {
     # Same convention as the Bayesian Pearson path for a perfect correlation
@@ -86,7 +87,7 @@
 #' @param n Number of complete pairs.
 #' @param tau Observed Kendall's tau (tau-b, as `stats::cor()` reports it).
 #' @param scale Prior scale: one of the named scales of `bayesian_prior` or a
-#'   positive number. The stretched-beta parameter is `alpha = 1 / scale`.
+#'   number in (0, 2]. The stretched-beta parameter is `alpha = 1 / scale`.
 #' @param ci Interval level.
 #' @param ci_method `"hdi"` or `"eti"`.
 #' @return A list with `tau` (the posterior median), `CI_low`, `CI_high`,
@@ -103,16 +104,11 @@
   ci_method = "hdi"
 ) {
   alpha <- 1 / .bayes_kendall_scale(scale)
-  ci_method <- tolower(ci_method)
-  if (!ci_method %in% c("hdi", "eti")) {
-    insight::format_error(
-      "`bayesian_ci_method` must be \"hdi\" or \"eti\" for the Bayesian Kendall correlation."
-    )
-  }
+  ci_method <- .bayes_kendall_ci_method(ci_method)
 
   # T*, eq. (6), with the numerator taken as tau * n(n - 1)/2 (the concordance
   # count only when there are no ties), over sqrt(n(n - 1)(2n + 5)/18); both
-  # reference implementations do the same
+  # reference implementations do the same, so tied data are not tie-corrected
   t_star <- tau * (n * (n - 1) / 2) / sqrt(n * (n - 1) * (2 * n + 5) / 18)
 
   # Prior on tau, eq. (9): pi * 2^(-2 alpha) / B(alpha, alpha) * cos(pi tau / 2)^(2 alpha - 1)
@@ -167,13 +163,18 @@
   rope <- cdf(0.1) - cdf(-0.1)
 
   median <- quantile(0.5)
-  if (ci_method == "eti") {
+  if (ci >= 1) {
+    # The whole support; the hdi search below has no room at ci = 1
+    ci_low <- -1
+    ci_high <- 1
+  } else if (ci_method == "eti") {
     ci_low <- quantile((1 - ci) / 2)
     ci_high <- quantile((1 + ci) / 2)
   } else {
     # Highest-density interval: the interval of mass `ci` with the smallest
     # width, searched over its lower end (the posterior is unimodal for
-    # alpha >= 1/2, i.e. every named prior and any scale <= 2)
+    # alpha >= 1/2, i.e. every named prior and any scale <= 2, which
+    # .bayes_kendall_scale() enforces)
     width <- function(a) quantile(cdf(a) + ci) - a
     a_max <- quantile(1 - ci)
     ci_low <- stats::optimize(width, c(-1, a_max), tol = 1e-8)$minimum
@@ -204,12 +205,30 @@
   if (is.character(scale) && length(scale) == 1 && scale %in% names(named)) {
     return(unname(named[scale]))
   }
+  # A scale above 2 is alpha < 1/2: the prior of eq. (9) is then unbounded at
+  # tau = +-1, the quadrature can fail, and the posterior need not be unimodal
   if (
-    is.numeric(scale) && length(scale) == 1 && is.finite(scale) && scale > 0
+    is.numeric(scale) &&
+      length(scale) == 1 &&
+      is.finite(scale) &&
+      scale > 0 &&
+      scale <= 2
   ) {
     return(scale)
   }
   insight::format_error(
-    "`bayesian_prior` must be one of \"medium.narrow\", \"medium\", \"wide\", \"ultrawide\", or a positive number."
+    "`bayesian_prior` must be one of \"medium.narrow\", \"medium\", \"wide\", \"ultrawide\", or a number in (0, 2] for the Bayesian Kendall correlation."
   )
+}
+
+
+#' @keywords internal
+.bayes_kendall_ci_method <- function(ci_method) {
+  ci_method <- tolower(ci_method)
+  if (!(length(ci_method) == 1 && ci_method %in% c("hdi", "eti"))) {
+    insight::format_error(
+      "`bayesian_ci_method` must be \"hdi\" or \"eti\" for the Bayesian Kendall correlation."
+    )
+  }
+  ci_method
 }

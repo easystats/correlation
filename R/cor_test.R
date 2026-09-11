@@ -37,8 +37,10 @@
 #'   These correspond to scale values of `1/sqrt(27)`, `1/3`, `1/sqrt(3)` and
 #'   `1`, respectively. See the `BayesFactor::correlationBF` function. The
 #'   scale sets the shape parameter of the stretched beta prior on the
-#'   correlation as alpha = 1/scale; for `method = "kendall"` that prior is
-#'   carried over to Kendall's tau (see the Notes section of [correlation()]).
+#'   correlation as alpha = 1/scale; a positive number is accepted as the scale
+#'   directly. For `method = "kendall"` that prior is carried over to Kendall's
+#'   tau and a numeric scale must lie in (0, 2] (see the Notes section of
+#'   [correlation()]).
 #' @param bayesian_ci_method,bayesian_test See arguments in
 #'   [`parameters::model_parameters()`] for `BayesFactor` tests. For
 #'   `method = "kendall"`, `bayesian_ci_method` must be `"hdi"` or `"eti"`.

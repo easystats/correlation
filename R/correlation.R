@@ -186,7 +186,12 @@
 #' `bayesian_prior` scale maps to the stretched-beta shape parameter as
 #' alpha = 1/scale (so `"medium"` is alpha = 3 and a scale of 1 is the paper's
 #' default), the same mapping `BayesFactor::correlationBF()` applies to its
-#' `rscale`. `bayesian_ci_method` must be `"hdi"` or `"eti"` for this method.
+#' `rscale`; a numeric scale must lie in (0, 2] for this method, so that the
+#' prior stays bounded and the posterior unimodal. `bayesian_ci_method` must
+#' be `"hdi"` or `"eti"` for this method. T* is computed from tau-b as the
+#' authors' own code does, so ties are not corrected for: on data with many
+#' ties the Bayes factor is larger and the interval narrower than a
+#' tie-corrected statistic would give.
 #' }
 #'
 #' @return

@@ -9,12 +9,13 @@
   instead of the Bayesian Pearson correlation of the raw data (#224). This
   method does not require the `BayesFactor` package.
 
-- `cor_test()` accepts the same variable for `x` and `y` again (it errored with
-  "duplicate subscripts for columns").
-
 - Documentation was updated and corrected in several places.
 
 ## Bug Fixes
+
+- `cor_test()` accepts the same variable for `x` and `y` again for plain
+  (non-partial, non-multilevel) correlations; it errored with "duplicate
+  subscripts for columns".
 
 - `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
   conditional formatting rule ordering to accommodate openxlsx2's new waterfall

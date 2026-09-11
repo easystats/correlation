@@ -88,8 +88,10 @@ recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and \code{"u
 These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(3)} and
 \code{1}, respectively. See the \code{BayesFactor::correlationBF} function. The
 scale sets the shape parameter of the stretched beta prior on the
-correlation as alpha = 1/scale; for \code{method = "kendall"} that prior is
-carried over to Kendall's tau (see the Notes section of \code{\link[=correlation]{correlation()}}).}
+correlation as alpha = 1/scale; a positive number is accepted as the scale
+directly. For \code{method = "kendall"} that prior is carried over to Kendall's
+tau and a numeric scale must lie in (0, 2] (see the Notes section of
+\code{\link[=correlation]{correlation()}}).}
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in
 \code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests. For
@@ -286,7 +288,12 @@ Savage-Dickey ratio of the prior to the posterior density at tau = 0. The
 \code{bayesian_prior} scale maps to the stretched-beta shape parameter as
 alpha = 1/scale (so \code{"medium"} is alpha = 3 and a scale of 1 is the paper's
 default), the same mapping \code{BayesFactor::correlationBF()} applies to its
-\code{rscale}. \code{bayesian_ci_method} must be \code{"hdi"} or \code{"eti"} for this method.
+\code{rscale}; a numeric scale must lie in (0, 2] for this method, so that the
+prior stays bounded and the posterior unimodal. \code{bayesian_ci_method} must
+be \code{"hdi"} or \code{"eti"} for this method. T* is computed from tau-b as the
+authors' own code does, so ties are not corrected for: on data with many
+ties the Bayes factor is larger and the interval narrower than a
+tie-corrected statistic would give.
 }
 }
 \examples{
