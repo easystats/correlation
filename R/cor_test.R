@@ -50,12 +50,38 @@
 #'   limiting the impact of extreme values). Can be either `FALSE` or a number
 #'   between 0 and 1 (e.g., `0.2`) that corresponds to the desired threshold.
 #'   See the [`datawizard::winsorize()`] function for more details.
+#' @param bootstrap If `TRUE`, the confidence interval, standard error, and
+#'   p-value are obtained from a nonparametric percentile bootstrap instead of
+#'   the analytic formulas: rows are resampled with replacement `iterations`
+#'   times and the coefficient is recomputed on each resample. See the
+#'   'Bootstrap' section. Not available for Bayesian, partial, or multilevel
+#'   correlations; the interval and p-value are two-sided, so `alternative`
+#'   (passed through `...`) must be `"two.sided"`, the default.
+#' @param iterations Number of bootstrap resamples (default `1000`). Only used
+#'   when `bootstrap = TRUE` or `cluster` is given.
+#' @param cluster Name of a column in `data` identifying clusters of rows
+#'   (for example, participants with repeated measures). If given, a cluster
+#'   bootstrap is run (`bootstrap` is set to `TRUE`): whole clusters, rather
+#'   than rows, are resampled with replacement; rows with a missing cluster
+#'   value are dropped. See the 'Bootstrap' section.
 #' @param verbose Toggle warnings.
 #' @param ... Additional arguments (e.g., `alternative`) to be passed to
 #'   other methods. See `stats::cor.test` for further details.
 #'
 #'
 #' @inherit correlation details
+#' @inherit correlation references
+#'
+#' @return A data frame of class `easycor_test` with the coefficient, its
+#'   confidence interval, the test statistic, and the p-value. Under bootstrap
+#'   (`bootstrap = TRUE` or `cluster`), the object also has an `SE` column and
+#'   three attributes: `ci_method` (`"bootstrap"` or `"cluster-bootstrap"`),
+#'   `iterations` (the number of replicates kept after dropping the failed
+#'   ones), and `bootstrap_replicates` (the kept replicate coefficients, from
+#'   which `CI_low`, `CI_high`, `SE`, and, except for distance correlation and
+#'   Hoeffding's D, `p` are computed). With fewer than three complete
+#'   observations the bootstrap is skipped and neither the `SE` column nor
+#'   these attributes are added.
 #'
 #' @examples
 #' library(correlation)
@@ -63,6 +89,14 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 #' \donttest{
+#' # Bootstrap confidence interval, standard error, and p-value
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", bootstrap = TRUE, iterations = 200)
+#'
+#' # Cluster bootstrap: rows of the same cluster are resampled together
+#' data <- iris
+#' data$id <- rep(1:30, 5)
+#' cor_test(data, "Sepal.Length", "Sepal.Width", cluster = "id", iterations = 200)
+#'
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
@@ -134,6 +168,9 @@ cor_test <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   ...
 ) {
@@ -149,6 +186,70 @@ cor_test <- function(
   }
   if (!partial && (partial_bayesian || multilevel)) {
     partial <- TRUE
+  }
+
+  # Bootstrap arguments
+  if (!is.null(cluster)) {
+    bootstrap <- TRUE
+  }
+  if (!isTRUE(bootstrap) && !isFALSE(bootstrap)) {
+    insight::format_error("`bootstrap` must be `TRUE` or `FALSE`.")
+  }
+  if (bootstrap) {
+    if (bayesian) {
+      insight::format_error(
+        "Bootstrap confidence intervals are not available for Bayesian correlations (`bayesian = TRUE`)."
+      )
+    }
+    if (!isFALSE(partial) || multilevel) {
+      insight::format_error(
+        "Bootstrap confidence intervals are not available for partial or multilevel correlations (`partial`, `partial_bayesian`, or `multilevel`)."
+      )
+    }
+    iterations <- .validate_iterations(iterations)
+    # the bootstrap interval and p-value are two-sided; a one-sided
+    # `alternative` passed on to the analytic test would be silently ignored
+    dots <- list(...)
+    if (
+      !is.null(dots$alternative) && !identical(dots$alternative, "two.sided")
+    ) {
+      insight::format_error(
+        "Bootstrap confidence intervals are two-sided; `alternative` must be \"two.sided\" (the default) when `bootstrap = TRUE` or `cluster` is given."
+      )
+    }
+    if (!is.null(cluster)) {
+      if (
+        !is.character(cluster) ||
+          length(cluster) != 1L ||
+          !cluster %in% names(data)
+      ) {
+        insight::format_error(
+          "`cluster` must be the name of one column in the data."
+        )
+      }
+      if (cluster %in% c(x, y)) {
+        insight::format_error(
+          "`cluster` must name a column other than `x` and `y`."
+        )
+      }
+      # rows with a missing cluster value cannot be resampled: drop them
+      # here so the estimate, `n_Obs`, and the interval use the same rows
+      data <- data[!is.na(data[[cluster]]), , drop = FALSE]
+      n_clusters <- length(unique(data[[cluster]][
+        stats::complete.cases(data[c(x, y, cluster)])
+      ]))
+      if (n_clusters < 2L) {
+        insight::format_error(
+          "`cluster` must have at least 2 distinct values among the complete cases."
+        )
+      }
+      if (n_clusters < 20L && isTRUE(verbose)) {
+        insight::format_warning(sprintf(
+          "`cluster` has only %d distinct values. The accuracy of the cluster bootstrap is driven by the number of clusters, not the number of rows; with fewer than 20 clusters the interval can undercover.",
+          n_clusters
+        ))
+      }
+    }
   }
 
   # Make sure factor is no factor
@@ -201,10 +302,12 @@ cor_test <- function(
       winsorize <- 0.2
     }
 
-    # winsorization would otherwise fail in case of NAs present
-    data <- as.data.frame(
+    # winsorize the complete cases of x and y in place, keeping the other
+    # columns (the cluster column among them) and the incomplete rows
+    complete <- stats::complete.cases(data[c(x, y)])
+    data[complete, c(x, y)] <- as.data.frame(
       datawizard::winsorize(
-        stats::na.omit(data[c(x, y)]),
+        data[complete, c(x, y)],
         threshold = winsorize,
         verbose = verbose
       )
@@ -252,34 +355,28 @@ cor_test <- function(
 
   # Frequentist
   if (!bayesian) {
-    if (method %in% c("tetra", "tetrachoric")) {
-      out <- .cor_test_tetrachoric(data, x, y, ci = ci, ...)
-    } else if (method %in% c("poly", "polychoric")) {
-      out <- .cor_test_polychoric(data, x, y, ci = ci, ...)
-    } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
-      out <- .cor_test_biserial(data, x, y, ci = ci, method = method, ...)
-    } else if (method == "biweight") {
-      out <- .cor_test_biweight(data, x, y, ci = ci, ...)
-    } else if (method == "distance") {
-      out <- .cor_test_distance(data, x, y, ci = ci, ...)
-    } else if (
-      method %in% c("percentage", "percentage_bend", "percentagebend", "pb")
-    ) {
-      out <- .cor_test_percentage(data, x, y, ci = ci, ...)
-    } else if (method %in% c("blomqvist", "median", "medial")) {
-      out <- .cor_test_blomqvist(data, x, y, ci = ci, ...)
-    } else if (method == "hoeffding") {
-      out <- .cor_test_hoeffding(data, x, y, ci = ci, ...)
-    } else if (method == "somers") {
-      out <- .cor_test_somers(data, x, y, ci = ci, ...)
-    } else if (method == "gamma") {
-      out <- .cor_test_gamma(data, x, y, ci = ci, ...)
-    } else if (method == "gaussian") {
-      out <- .cor_test_gaussian(data, x, y, ci = ci, ...)
-    } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
-      out <- .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
-    } else {
-      out <- .cor_test_freq(data, x, y, ci = ci, method = method, ...)
+    out <- .cor_test_frequentist(data, x, y, ci = ci, method = method, ...)
+
+    # Bootstrap: replace the analytic CI, SE, and p by resampled ones
+    if (bootstrap && !invalid) {
+      out <- .cor_test_bootstrap(
+        out,
+        data,
+        x,
+        y,
+        ci = ci,
+        method = method,
+        cluster = cluster,
+        iterations = iterations,
+        verbose = verbose,
+        ...
+      )
+      # column reordering below drops custom attributes; re-attach at the end
+      bootstrap_attributes <- attributes(out)[c(
+        "ci_method",
+        "iterations",
+        "bootstrap_replicates"
+      )]
     }
 
     # Bayesian
@@ -358,6 +455,7 @@ cor_test <- function(
       "rho",
       "tau",
       "Dxy",
+      "SE",
       "CI",
       "CI_low",
       "CI_high"
@@ -374,6 +472,9 @@ cor_test <- function(
   ][1]
   attr(out, "ci") <- ci
   attr(out, "data") <- data
+  if (bootstrap && !invalid) {
+    attributes(out) <- c(attributes(out), bootstrap_attributes)
+  }
   class(out) <- unique(c(
     "easycor_test",
     "easycorrelation",
@@ -385,6 +486,46 @@ cor_test <- function(
 
 
 # Utilities ---------------------------------------------------------------
+
+#' @keywords internal
+.cor_test_frequentist <- function(
+  data,
+  x,
+  y,
+  ci = 0.95,
+  method = "pearson",
+  ...
+) {
+  if (method %in% c("tetra", "tetrachoric")) {
+    .cor_test_tetrachoric(data, x, y, ci = ci, ...)
+  } else if (method %in% c("poly", "polychoric")) {
+    .cor_test_polychoric(data, x, y, ci = ci, ...)
+  } else if (method %in% c("biserial", "pointbiserial", "point-biserial")) {
+    .cor_test_biserial(data, x, y, ci = ci, method = method, ...)
+  } else if (method == "biweight") {
+    .cor_test_biweight(data, x, y, ci = ci, ...)
+  } else if (method == "distance") {
+    .cor_test_distance(data, x, y, ci = ci, ...)
+  } else if (
+    method %in% c("percentage", "percentage_bend", "percentagebend", "pb")
+  ) {
+    .cor_test_percentage(data, x, y, ci = ci, ...)
+  } else if (method %in% c("blomqvist", "median", "medial")) {
+    .cor_test_blomqvist(data, x, y, ci = ci, ...)
+  } else if (method == "hoeffding") {
+    .cor_test_hoeffding(data, x, y, ci = ci, ...)
+  } else if (method == "somers") {
+    .cor_test_somers(data, x, y, ci = ci, ...)
+  } else if (method == "gamma") {
+    .cor_test_gamma(data, x, y, ci = ci, ...)
+  } else if (method == "gaussian") {
+    .cor_test_gaussian(data, x, y, ci = ci, ...)
+  } else if (method %in% c("shepherd", "sheperd", "shepherdspi", "pi")) {
+    .cor_test_shepherd(data, x, y, ci = ci, bayesian = FALSE, ...)
+  } else {
+    .cor_test_freq(data, x, y, ci = ci, method = method, ...)
+  }
+}
 
 #' @keywords internal
 .complete_variable_x <- function(data, x, y) {
