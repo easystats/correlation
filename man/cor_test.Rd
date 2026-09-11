@@ -20,6 +20,9 @@ cor_test(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   ...
 )
@@ -86,6 +89,21 @@ obtain Bayesian or multilevel Spearman-like rank correlations.}
 limiting the impact of extreme values). Can be either \code{FALSE} or a number
 between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired threshold.
 See the \code{\link[datawizard:winsorize]{datawizard::winsorize()}} function for more details.}
+
+\item{bootstrap}{If \code{TRUE}, the confidence interval, standard error, and
+p-value are obtained from a nonparametric percentile bootstrap instead of
+the analytic formulas: rows are resampled with replacement \code{iterations}
+times and the coefficient is recomputed on each resample. See the
+'Bootstrap' section. Not available for Bayesian, partial, or multilevel
+correlations.}
+
+\item{iterations}{Number of bootstrap resamples (default \code{1000}). Only used
+when \code{bootstrap = TRUE} or \code{cluster} is given.}
+
+\item{cluster}{Name of a column in \code{data} identifying clusters of rows
+(for example, participants with repeated measures). If given, a cluster
+bootstrap is run (\code{bootstrap} is set to \code{TRUE}): whole clusters, rather
+than rows, are resampled with replacement. See the 'Bootstrap' section.}
 
 \item{verbose}{Toggle warnings.}
 
