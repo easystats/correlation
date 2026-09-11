@@ -113,7 +113,7 @@ test_that("AC1: cor_test and correlation report a Bayesian Kendall row", {
   expect_true(all(abs(ken$tau - pea$rho) > 1e-3))
 })
 
-test_that("AC1: bayesian_test selects the reported tests as the Pearson row does", {
+test_that("AC1: bayesian_test drops the unrequested tests and keeps BF, as the Pearson row does", {
   out <- cor_test(
     mtcars,
     "mpg",
@@ -124,7 +124,11 @@ test_that("AC1: bayesian_test selects the reported tests as the Pearson row does
   )
   expect_true("pd" %in% names(out))
   expect_false("ROPE_Percentage" %in% names(out))
-  expect_true(is.na(out$BF))
+  expect_true(is.finite(out$BF))
+  skip_if_not_installed("BayesFactor")
+  pea <- cor_test(mtcars, "mpg", "cyl", bayesian = TRUE, bayesian_test = "pd")
+  expect_false("ROPE_Percentage" %in% names(pea))
+  expect_true(is.finite(pea$BF))
 })
 
 test_that("Bayesian Kendall rejects an unknown prior or interval method", {
@@ -382,8 +386,9 @@ test_that("AC7: x == y and perfectly monotone pairs", {
   expect_identical(same$pd, 1)
   expect_identical(same$ROPE_Percentage, 0)
   expect_identical(same$BF, Inf)
-  # cor_test() errored on x == y for every method since #244 ("duplicate
-  # subscripts for columns"); the frequentist row is the control.
+  # cor_test() errored on x == y for every method that coerces the columns (all
+  # but "tetrachoric") since 463ec99 ("duplicate subscripts for columns"); the
+  # frequentist row is the control.
   freq <- cor_test(mtcars, "mpg", "mpg", method = "kendall")
   expect_identical(freq$tau, 1)
 

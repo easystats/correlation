@@ -68,16 +68,14 @@
     stringsAsFactors = FALSE
   )
 
-  # Keep the tests that were asked for, as the Pearson row does
+  # Drop pd and ROPE_Percentage when they were not asked for; BF is always
+  # reported. Both as the Pearson row does.
   tests <- tolower(bayesian_test)
   if (!"pd" %in% tests) {
     out$pd <- NULL
   }
   if (!"rope" %in% tests) {
     out$ROPE_Percentage <- NULL
-  }
-  if (!"bf" %in% tests) {
-    out$BF <- NA
   }
   out
 }
@@ -112,7 +110,9 @@
     )
   }
 
-  # T*, eq. (6): the concordance count over sqrt(n(n - 1)(2n + 5)/18)
+  # T*, eq. (6), with the numerator taken as tau * n(n - 1)/2 (the concordance
+  # count only when there are no ties), over sqrt(n(n - 1)(2n + 5)/18); both
+  # reference implementations do the same
   t_star <- tau * (n * (n - 1) / 2) / sqrt(n * (n - 1) * (2 * n + 5) / 18)
 
   # Prior on tau, eq. (9): pi * 2^(-2 alpha) / B(alpha, alpha) * cos(pi tau / 2)^(2 alpha - 1)
@@ -172,7 +172,8 @@
     ci_high <- quantile((1 + ci) / 2)
   } else {
     # Highest-density interval: the interval of mass `ci` with the smallest
-    # width, searched over its lower end (the posterior is unimodal)
+    # width, searched over its lower end (the posterior is unimodal for
+    # alpha >= 1/2, i.e. every named prior and any scale <= 2)
     width <- function(a) quantile(cdf(a) + ci) - a
     a_max <- quantile(1 - ci)
     ci_low <- stats::optimize(width, c(-1, a_max), tol = 1e-8)$minimum

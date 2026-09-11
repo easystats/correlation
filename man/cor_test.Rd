@@ -215,9 +215,10 @@ Bayesian scores, set \code{partial = TRUE}.
 }
 
 \subsection{Notes}{
-Spearman and Gaussian-rank correlations when \code{bayesian=TRUE}: These are
-technically Pearson Bayesian correlations of rank-transformed data, rather
-than pure Bayesian rank correlations (which have different priors).
+Spearman correlations when \code{bayesian=TRUE} are technically Pearson Bayesian
+correlations of rank-transformed data, and Gaussian-rank correlations
+Pearson Bayesian correlations of the normal scores of the ranks, rather than
+pure Bayesian rank correlations (which have different priors).
 
 Kendall correlations when \code{bayesian=TRUE} follow the model of van Doorn,
 Ly, Marsman and Wagenmakers (2018): the observed tau-b (as reported by
