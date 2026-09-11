@@ -110,6 +110,15 @@ than rows, are resampled with replacement. See the 'Bootstrap' section.}
 \item{...}{Additional arguments (e.g., \code{alternative}) to be passed to
 other methods. See \code{stats::cor.test} for further details.}
 }
+\value{
+A data frame of class \code{easycor_test} with the coefficient, its
+confidence interval, the test statistic, and the p-value. Under bootstrap
+(\code{bootstrap = TRUE} or \code{cluster}), the object also has an \code{SE} column and
+three attributes: \code{ci_method} (\code{"bootstrap"} or \code{"cluster-bootstrap"}),
+\code{iterations} (the number of replicates kept after dropping the failed
+ones), and \code{bootstrap_replicates} (the kept replicate coefficients, from
+which \code{CI_low}, \code{CI_high}, \code{SE}, and \code{p} are computed).
+}
 \description{
 This function performs a correlation test between two variables.
 You can easily visualize the result using \code{\link[=visualisation_recipe.easycormatrix]{plot()}} (see examples \href{https://easystats.github.io/correlation/reference/visualisation_recipe.easycormatrix.html#ref-examples}{\strong{here}}).
@@ -233,6 +242,51 @@ Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technical
 Pearson Bayesian correlations of rank transformed data, rather than pure
 Bayesian rank correlations (which have different priors).
 }
+
+\subsection{Bootstrap confidence intervals}{
+With \code{bootstrap = TRUE}, or when \code{cluster} names a column, the confidence
+interval, standard error, and p-value of every non-Bayesian method are
+obtained by resampling instead of from the analytic formulas above. The
+rows of the data (or, with \code{cluster}, whole clusters of rows) are resampled
+with replacement \code{iterations} times and the coefficient is recomputed on
+each resample. \code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
+\code{1 - (1 - ci) / 2} quantiles of the replicates (the percentile interval;
+Efron & Tibshirani, 1993, chapter 13); \code{SE} is the standard deviation of the
+replicates (Efron & Tibshirani, 1993, chapter 6); and \code{p} is the two-sided
+significance level implied by the percentile interval,
+\code{2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)} capped at 1, where
+\code{t} are the \code{B} kept replicates (Davison & Hinkley, 1997, section 4.2.1;
+Efron & Tibshirani, 1993, chapter 16). This p-value tests whether the
+population coefficient is 0. It is approximate, somewhat above nominal in
+small samples, and can never be smaller than \code{2 / (iterations + 1)}. The
+analytic test statistic and its degrees of freedom are set to \code{NA}.
+
+Distance correlation and Hoeffding's D are degenerate under independence,
+so the bootstrap cannot test whether they are 0: their \code{p} is \code{NA} under
+bootstrap (use the analytic test instead), and their interval and standard
+error are reliable only when an association is present.
+
+Replicates on which the coefficient cannot be computed (for instance, a
+resample in which a variable is constant or loses a category) are dropped
+with a warning naming the number kept; if fewer than half survive, an
+error is raised. The \code{winsorize} and \code{ranktransform} transformations are
+applied once, to the full data, before resampling.
+
+The cluster bootstrap (\code{cluster}) resamples whole clusters, so the
+dependence within a cluster (repeated measures of one participant, say)
+is kept intact. Its accuracy is driven by the number of clusters, not the
+number of rows: a warning is raised below 20 clusters, and very unequal
+cluster sizes lower the coverage of the interval (Field & Welsh, 2007;
+Davison & Hinkley, 1997, section 3.8). Giving each row its own cluster
+reproduces the plain bootstrap.
+
+In \code{correlation()}, p-values adjusted for multiple comparisons cannot fall
+below \code{2 * m / (iterations + 1)} for \code{m} pairs, so with many pairs raise
+\code{iterations} (to at least \code{2 * m / alpha} for a threshold \code{alpha}) or use
+\code{p_adjust = "none"}. Hoeffding's D and Shepherd's Pi are slow under
+bootstrap: each replicate recomputes a statistic quadratic in the number of
+rows, or an inner 1000-sample outlier bootstrap.
+}
 }
 \examples{
 library(correlation)
@@ -240,6 +294,14 @@ library(correlation)
 cor_test(iris, "Sepal.Length", "Sepal.Width")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 \donttest{
+# Bootstrap confidence interval, standard error, and p-value
+cor_test(iris, "Sepal.Length", "Sepal.Width", bootstrap = TRUE, iterations = 200)
+
+# Cluster bootstrap: rows of the same cluster are resampled together
+data <- iris
+data$id <- rep(1:30, 5)
+cor_test(data, "Sepal.Length", "Sepal.Width", cluster = "id", iterations = 200)
+
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")
@@ -293,5 +355,34 @@ if (require("lme4", quietly = TRUE)) {
 if (require("rstanarm", quietly = TRUE)) {
   cor_test(iris, "Sepal.Length", "Sepal.Width", partial_bayesian = TRUE)
 }
+}
+}
+\references{
+\itemize{
+\item Davison, A. C., & Hinkley, D. V. (1997). Bootstrap methods and their
+application. Cambridge University Press.
+\item Efron, B., & Tibshirani, R. J. (1993). An introduction to the bootstrap.
+Chapman & Hall.
+\item Field, C. A., & Welsh, A. H. (2007). Bootstrapping clustered data. Journal
+of the Royal Statistical Society: Series B, 69(3), 369-390.
+\item Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank
+correlation estimator: robustness properties. Statistics and Computing,
+22(2), 471-483.
+\item Bhushan, N., Mohnert, F., Sloot, D., Jans, L., Albers, C., & Steg, L.
+(2019). Using a Gaussian graphical model to explore relationships between
+items and variables in environmental psychology research. Frontiers in
+psychology, 10, 1050.
+\item Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
+correlations when data are not normal. Behavior research methods, 49(1),
+294-309.
+\item Fieller, E. C., Hartley, H. O., & Pearson, E. S. (1957). Tests for
+rank correlation coefficients. I. Biometrika, 44(3/4), 470-481.
+\item Langfelder, P., & Horvath, S. (2012). Fast R functions for robust
+correlations and hierarchical clustering. Journal of statistical software,
+46(11).
+\item Blomqvist, N. (1950). On a measure of dependence between two random
+variables,Annals of Mathematical Statistics,21, 593–600
+\item Somers, R. H. (1962). A new asymmetric measure of association for
+ordinal variables. American Sociological Review. 27 (6).
 }
 }

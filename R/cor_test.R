@@ -68,6 +68,15 @@
 #'
 #'
 #' @inherit correlation details
+#' @inherit correlation references
+#'
+#' @return A data frame of class `easycor_test` with the coefficient, its
+#'   confidence interval, the test statistic, and the p-value. Under bootstrap
+#'   (`bootstrap = TRUE` or `cluster`), the object also has an `SE` column and
+#'   three attributes: `ci_method` (`"bootstrap"` or `"cluster-bootstrap"`),
+#'   `iterations` (the number of replicates kept after dropping the failed
+#'   ones), and `bootstrap_replicates` (the kept replicate coefficients, from
+#'   which `CI_low`, `CI_high`, `SE`, and `p` are computed).
 #'
 #' @examples
 #' library(correlation)
@@ -75,6 +84,14 @@
 #' cor_test(iris, "Sepal.Length", "Sepal.Width")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 #' \donttest{
+#' # Bootstrap confidence interval, standard error, and p-value
+#' cor_test(iris, "Sepal.Length", "Sepal.Width", bootstrap = TRUE, iterations = 200)
+#'
+#' # Cluster bootstrap: rows of the same cluster are resampled together
+#' data <- iris
+#' data$id <- rep(1:30, 5)
+#' cor_test(data, "Sepal.Length", "Sepal.Width", cluster = "id", iterations = 200)
+#'
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "biweight")
 #' cor_test(iris, "Sepal.Length", "Sepal.Width", method = "distance")

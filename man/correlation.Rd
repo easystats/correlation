@@ -155,7 +155,10 @@ other methods. See \code{stats::cor.test} for further details.}
 }
 \value{
 A correlation object that can be displayed using the \code{print}, \code{summary} or
-\code{table} methods.
+\code{table} methods. Under bootstrap (\code{bootstrap = TRUE} or \code{cluster}), the
+object has an \code{SE} column and the attributes \code{ci_method} (\code{"bootstrap"} or
+\code{"cluster-bootstrap"}) and \code{iterations} (the number of replicates requested
+for each pair); the per-pair replicates are not kept.
 
 \subsection{Multiple tests correction}{
 The \code{p_adjust} argument can be used to adjust p-values for multiple
@@ -287,6 +290,51 @@ Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technical
 Pearson Bayesian correlations of rank transformed data, rather than pure
 Bayesian rank correlations (which have different priors).
 }
+
+\subsection{Bootstrap confidence intervals}{
+With \code{bootstrap = TRUE}, or when \code{cluster} names a column, the confidence
+interval, standard error, and p-value of every non-Bayesian method are
+obtained by resampling instead of from the analytic formulas above. The
+rows of the data (or, with \code{cluster}, whole clusters of rows) are resampled
+with replacement \code{iterations} times and the coefficient is recomputed on
+each resample. \code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
+\code{1 - (1 - ci) / 2} quantiles of the replicates (the percentile interval;
+Efron & Tibshirani, 1993, chapter 13); \code{SE} is the standard deviation of the
+replicates (Efron & Tibshirani, 1993, chapter 6); and \code{p} is the two-sided
+significance level implied by the percentile interval,
+\code{2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)} capped at 1, where
+\code{t} are the \code{B} kept replicates (Davison & Hinkley, 1997, section 4.2.1;
+Efron & Tibshirani, 1993, chapter 16). This p-value tests whether the
+population coefficient is 0. It is approximate, somewhat above nominal in
+small samples, and can never be smaller than \code{2 / (iterations + 1)}. The
+analytic test statistic and its degrees of freedom are set to \code{NA}.
+
+Distance correlation and Hoeffding's D are degenerate under independence,
+so the bootstrap cannot test whether they are 0: their \code{p} is \code{NA} under
+bootstrap (use the analytic test instead), and their interval and standard
+error are reliable only when an association is present.
+
+Replicates on which the coefficient cannot be computed (for instance, a
+resample in which a variable is constant or loses a category) are dropped
+with a warning naming the number kept; if fewer than half survive, an
+error is raised. The \code{winsorize} and \code{ranktransform} transformations are
+applied once, to the full data, before resampling.
+
+The cluster bootstrap (\code{cluster}) resamples whole clusters, so the
+dependence within a cluster (repeated measures of one participant, say)
+is kept intact. Its accuracy is driven by the number of clusters, not the
+number of rows: a warning is raised below 20 clusters, and very unequal
+cluster sizes lower the coverage of the interval (Field & Welsh, 2007;
+Davison & Hinkley, 1997, section 3.8). Giving each row its own cluster
+reproduces the plain bootstrap.
+
+In \code{correlation()}, p-values adjusted for multiple comparisons cannot fall
+below \code{2 * m / (iterations + 1)} for \code{m} pairs, so with many pairs raise
+\code{iterations} (to at least \code{2 * m / alpha} for a threshold \code{alpha}) or use
+\code{p_adjust = "none"}. Hoeffding's D and Shepherd's Pi are slow under
+bootstrap: each replicate recomputes a statistic quadratic in the number of
+rows, or an inner 1000-sample outlier bootstrap.
+}
 }
 \examples{
 \dontshow{if (all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0") withAutoprint(\{ # examplesIf}
@@ -320,10 +368,21 @@ correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
 
 # automatic selection of correlation method
 correlation(mtcars[-2], method = "auto")
+
+# bootstrap confidence intervals, and a cluster bootstrap
+correlation(iris[1:4], bootstrap = TRUE, iterations = 200)
+iris$id <- rep(1:30, 5)
+correlation(iris, select = c("Sepal.Length", "Petal.Length"), cluster = "id", iterations = 200)
 \dontshow{\}) # examplesIf}
 }
 \references{
 \itemize{
+\item Davison, A. C., & Hinkley, D. V. (1997). Bootstrap methods and their
+application. Cambridge University Press.
+\item Efron, B., & Tibshirani, R. J. (1993). An introduction to the bootstrap.
+Chapman & Hall.
+\item Field, C. A., & Welsh, A. H. (2007). Bootstrapping clustered data. Journal
+of the Royal Statistical Society: Series B, 69(3), 369-390.
 \item Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank
 correlation estimator: robustness properties. Statistics and Computing,
 22(2), 471-483.
