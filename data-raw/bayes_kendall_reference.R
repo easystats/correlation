@@ -38,13 +38,19 @@ bstats_dir <- Sys.getenv(
 # Each source in its own environment: both define priorTau() and posteriorTau()
 # with different signatures.
 osf <- new.env()
+grDevices::pdf(NULL) # the OSF script ends by plotting; keep that off disk
 sys.source(osf_file, envir = osf)
+grDevices::dev.off()
 bstats <- new.env()
 for (f in list.files(bstats_dir, pattern = "\\.R$", full.names = TRUE)) {
   sys.source(f, envir = bstats)
 }
 
-grid <- expand.grid(n = c(10, 20, 50), tau = c(-0.3, 0, 0.2, 0.5), scale = c(1 / 3, 1))
+grid <- expand.grid(
+  n = c(10, 20, 50),
+  tau = c(-0.3, 0, 0.2, 0.5),
+  scale = c(1 / 3, 1)
+)
 grid <- grid[order(grid$scale, grid$n, grid$tau), ]
 rows <- lapply(seq_len(nrow(grid)), function(i) {
   n <- grid$n[i]
@@ -54,9 +60,17 @@ rows <- lapply(seq_len(nrow(grid)), function(i) {
   o_ci <- osf$credibleIntervalKendallTau(kentau = tau, n = n, kappa = scale)
   b <- bstats$computeKendallBCor(n = n, tauObs = tau, kappa = scale)$two.sided
   data.frame(
-    n = n, tau = tau, scale = scale,
-    osf_bf = o_bf, osf_median = o_ci$median, osf_low = o_ci$lowerCI, osf_high = o_ci$upperCI,
-    bstats_bf = b$bf, bstats_median = b$posteriorMedian, bstats_low = b$lowerCi, bstats_high = b$upperCi
+    n = n,
+    tau = tau,
+    scale = scale,
+    osf_bf = o_bf,
+    osf_median = o_ci$median,
+    osf_low = o_ci$lowerCI,
+    osf_high = o_ci$upperCI,
+    bstats_bf = b$bf,
+    bstats_median = b$posteriorMedian,
+    bstats_low = b$lowerCi,
+    bstats_high = b$upperCi
   )
 })
 ref <- do.call(rbind, rows)
@@ -69,7 +83,15 @@ for (col in names(ref)) {
   } else {
     formatC(ref[[col]], digits = 6, format = "g")
   }
-  cat("  ", col, " = c(", paste(vals, collapse = ", "), ")",
-      if (col != names(ref)[length(ref)]) "," else "", "\n", sep = "")
+  cat(
+    "  ",
+    col,
+    " = c(",
+    paste(vals, collapse = ", "),
+    ")",
+    if (col != names(ref)[length(ref)]) "," else "",
+    "\n",
+    sep = ""
+  )
 }
 cat(")\n")
