@@ -76,7 +76,10 @@
 #'   three attributes: `ci_method` (`"bootstrap"` or `"cluster-bootstrap"`),
 #'   `iterations` (the number of replicates kept after dropping the failed
 #'   ones), and `bootstrap_replicates` (the kept replicate coefficients, from
-#'   which `CI_low`, `CI_high`, `SE`, and `p` are computed).
+#'   which `CI_low`, `CI_high`, `SE`, and, except for distance correlation and
+#'   Hoeffding's D, `p` are computed). With fewer than three complete
+#'   observations the bootstrap is skipped and neither the `SE` column nor
+#'   these attributes are added.
 #'
 #' @examples
 #' library(correlation)

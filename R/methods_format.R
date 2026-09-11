@@ -173,8 +173,10 @@ format.easycormatrix <- function(
     )
   }
 
-  # Bootstrap
-  if (!is.null(attributes(x)$ci_method)) {
+  # Bootstrap (Bayesian output can carry a `ci_method` of its own)
+  if (
+    isTRUE(attributes(x)$ci_method %in% c("bootstrap", "cluster-bootstrap"))
+  ) {
     footer <- paste0(
       footer,
       "\nConfidence intervals: percentile ",

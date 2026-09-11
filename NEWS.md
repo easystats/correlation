@@ -7,10 +7,10 @@
   standard error (new `SE` column), and p-value of every non-Bayesian
   correlation method come from a percentile bootstrap over resampled rows;
   `cluster` names a column whose whole clusters are resampled instead, for
-  dependent rows such as repeated measures. The p-value is the significance
-  level implied by the percentile interval and is `NA` for distance
-  correlation and Hoeffding's D, whose bootstrap cannot test independence
-  (#14, #167, #168).
+  dependent rows such as repeated measures. The p-value is the achieved
+  significance level of the bootstrap distribution for a zero coefficient
+  and is `NA` for distance correlation and Hoeffding's D, whose bootstrap
+  cannot test independence (#14, #167, #168).
 
 ## Changes
 

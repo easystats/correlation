@@ -117,7 +117,10 @@ confidence interval, the test statistic, and the p-value. Under bootstrap
 three attributes: \code{ci_method} (\code{"bootstrap"} or \code{"cluster-bootstrap"}),
 \code{iterations} (the number of replicates kept after dropping the failed
 ones), and \code{bootstrap_replicates} (the kept replicate coefficients, from
-which \code{CI_low}, \code{CI_high}, \code{SE}, and \code{p} are computed).
+which \code{CI_low}, \code{CI_high}, \code{SE}, and, except for distance correlation and
+Hoeffding's D, \code{p} are computed). With fewer than three complete
+observations the bootstrap is skipped and neither the \code{SE} column nor
+these attributes are added.
 }
 \description{
 This function performs a correlation test between two variables.
@@ -165,8 +168,10 @@ distance).
 referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
 median-based non-parametric correlation that has some advantages over
 measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
-2006). It is computed by \code{wdm::wdm()}, which places observations equal to
-a median in the lower half, so on tied data the coefficient is not exactly
+2006). It is computed by \code{wdm::wdm()}, which splits each variable at its
+median by average rank (observations with rank at or below \code{(n + 1) / 2} go
+in the lower half), so when an observation sits exactly at the split (an odd
+number of rows, or ties spanning the median) the coefficient is not exactly
 sign-symmetric.
 \item \strong{Hoeffding’s D}: The Hoeffding’s D statistics is a
 non-parametric rank based measure of association that detects more general
@@ -249,20 +254,24 @@ Bayesian rank correlations (which have different priors).
 With \code{bootstrap = TRUE}, or when \code{cluster} names a column, the confidence
 interval, standard error, and p-value of every non-Bayesian method are
 obtained by resampling instead of from the analytic formulas above. The
-rows of the data (or, with \code{cluster}, whole clusters of rows) are resampled
-with replacement \code{iterations} times and the coefficient is recomputed on
-each resample. \code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
+rows with complete data on both variables (and on \code{cluster}, if given) or,
+with \code{cluster}, whole clusters of such rows, are resampled with replacement
+\code{iterations} times and the coefficient is recomputed on each resample.
+\code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
 \code{1 - (1 - ci) / 2} quantiles of the replicates (the percentile interval;
 Efron & Tibshirani, 1993, section 13.3, pp. 170-171); \code{SE} is the standard
 deviation of the replicates (Efron & Tibshirani, 1993, eq. 6.6, p. 47); and
-\code{p} is the two-sided significance level implied by the percentile interval,
-\code{2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)} capped at 1, where
-\code{t} are the \code{B} kept replicates (Efron & Tibshirani, 1993, section 15.4,
-pp. 214-215; the \code{+ 1} form is the Monte Carlo p-value of Davison &
-Hinkley, 1997, eq. 4.11, p. 141). This p-value tests whether the
+\code{p} is the two-sided achieved significance level of the same replicate
+distribution, \code{2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)} capped
+at 1, where \code{t} are the \code{B} kept replicates (Efron & Tibshirani, 1993,
+section 15.4, pp. 214-215; the \code{+ 1} form is the Monte Carlo p-value of
+Davison & Hinkley, 1997, eq. 4.11, p. 141). This p-value tests whether the
 population coefficient is 0. It is approximate, somewhat above nominal in
-small samples, and can never be smaller than \code{2 / (iterations + 1)}. The
-analytic test statistic and its degrees of freedom are set to \code{NA}.
+small samples, and can never be smaller than \code{2 / (iterations + 1)}; the
+\code{+ 1} makes it slightly conservative relative to the percentile interval,
+so near the boundary an interval that excludes 0 can go with a \code{p} just
+above \code{1 - ci}. The analytic test statistic and its degrees of freedom are
+set to \code{NA}.
 
 Distance correlation and Hoeffding's D are degenerate under independence,
 so the bootstrap cannot test whether they are 0: their \code{p} is \code{NA} under
@@ -281,13 +290,17 @@ is kept intact. Its accuracy is driven by the number of clusters, not the
 number of rows: a warning is raised below 20 clusters, and very unequal
 cluster sizes lower the coverage of the interval (Davison & Hinkley, 1997,
 section 3.8, pp. 100-102; Field & Welsh, 2007, section 3.3, p. 383, whose
-cluster bootstrap this is). Giving each row its own cluster reproduces the
-plain bootstrap.
+cluster bootstrap this is). Giving each row its own cluster, numbered in
+row order, reproduces the plain bootstrap's replicates (the result is still
+labelled \code{"cluster-bootstrap"} and the fewer-than-20-clusters warning
+applies).
 
-In \code{correlation()}, p-values adjusted for multiple comparisons cannot fall
-below \code{2 * m / (iterations + 1)} for \code{m} pairs, so with many pairs raise
+In \code{correlation()} with \code{p_adjust = "holm"} (the default) or
+\code{"bonferroni"}, adjusted p-values cannot fall below
+\code{2 * m / (iterations + 1)} for \code{m} pairs, so with many pairs raise
 \code{iterations} (to at least \code{2 * m / alpha} for a threshold \code{alpha}) or use
-\code{p_adjust = "none"}. Hoeffding's D and Shepherd's Pi are slow under
+\code{p_adjust = "none"}; the other adjustment methods have a lower floor, but
+never below \code{2 / (iterations + 1)}. Hoeffding's D and Shepherd's Pi are slow under
 bootstrap: each replicate recomputes a statistic quadratic in the number of
 rows, or an inner 1000-sample outlier bootstrap.
 }

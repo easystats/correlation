@@ -787,9 +787,9 @@ for (spec in method_sweep[vapply(
       )
     )
 
-    # wdm's Blomqvist (bbeta.hpp) places observations equal to a median in the
-    # lower half, so the estimator is not odd under negation on resamples that
-    # tie at the y median; it is symmetric in x and y, so the swap is checked
+    # wdm's Blomqvist (bbeta.hpp) splits each variable at its median by average
+    # rank, so the estimator is not odd under negation on resamples with an
+    # observation at the split; it is symmetric in x and y, so the swap is checked
     if (spec$method == "blomqvist") {
       swapped <- seeded(
         606,
