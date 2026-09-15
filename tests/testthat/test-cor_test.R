@@ -66,7 +66,9 @@ test_that("cor_test bayesian", {
   }
 
   # ci is respected (#382)
+  set.seed(123)
   out_95 <- cor_test(mtcars, "wt", "mpg", bayesian = TRUE)
+  set.seed(123)
   out_50 <- cor_test(mtcars, "wt", "mpg", bayesian = TRUE, ci = 0.5)
   expect_identical(out_50$CI, 0.5)
   expect_lt(out_50$CI_high - out_50$CI_low, out_95$CI_high - out_95$CI_low)
