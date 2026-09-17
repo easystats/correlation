@@ -35,9 +35,15 @@
 #' @param bayesian_prior For the prior argument, several named values are
 #'   recognized: `"medium.narrow"`, `"medium"`, `"wide"`, and `"ultrawide"`.
 #'   These correspond to scale values of `1/sqrt(27)`, `1/3`, `1/sqrt(3)` and
-#'   `1`, respectively. See the `BayesFactor::correlationBF` function.
+#'   `1`, respectively. See the `BayesFactor::correlationBF` function. The
+#'   scale sets the shape parameter of the stretched beta prior on the
+#'   correlation as alpha = 1/scale; a positive number is accepted as the scale
+#'   directly. For `method = "kendall"` that prior is carried over to Kendall's
+#'   tau and a numeric scale must lie in (0, 2] (see the Notes section of
+#'   [correlation()]).
 #' @param bayesian_ci_method,bayesian_test See arguments in
-#'   [`parameters::model_parameters()`] for `BayesFactor` tests.
+#'   [`parameters::model_parameters()`] for `BayesFactor` tests. For
+#'   `method = "kendall"`, `bayesian_ci_method` must be `"hdi"` or `"eti"`.
 #' @param ranktransform If `TRUE`, will rank-transform the variables prior to
 #'   estimating the correlation, which is one way of making the analysis more
 #'   resistant to extreme values (outliers). Note that, for instance, a
@@ -151,10 +157,14 @@ cor_test <- function(
     partial <- TRUE
   }
 
+  # The two columns; one column when x == y (a duplicated name cannot be
+  # assigned to a data frame)
+  vars <- unique(c(x, y))
+
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
-    data[c(x, y)] <- datawizard::to_numeric(
-      data[c(x, y)],
+    data[vars] <- datawizard::to_numeric(
+      data[vars],
       dummy_factors = FALSE
     )
   }
@@ -163,11 +173,11 @@ cor_test <- function(
   if (
     method %in%
       c("poly", "polychoric") &&
-      all(vapply(data[c(x, y)], is.numeric, FUN.VALUE = TRUE))
+      all(vapply(data[vars], is.numeric, FUN.VALUE = TRUE))
   ) {
     # convert all input to factors, but only if all input currently is numeric
     # we allow mix of numeric and factors
-    data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
+    data[vars] <- datawizard::to_factor(data[vars])
   }
 
   # Partial
@@ -204,7 +214,7 @@ cor_test <- function(
     # winsorization would otherwise fail in case of NAs present
     data <- as.data.frame(
       datawizard::winsorize(
-        stats::na.omit(data[c(x, y)]),
+        stats::na.omit(data[vars]),
         threshold = winsorize,
         verbose = verbose
       )
@@ -213,8 +223,8 @@ cor_test <- function(
 
   # Rank transform (i.e., "robust")
   if (ranktransform) {
-    data[c(x, y)] <- datawizard::ranktransform(
-      data[c(x, y)],
+    data[vars] <- datawizard::ranktransform(
+      data[vars],
       sign = FALSE,
       method = "average"
     )
