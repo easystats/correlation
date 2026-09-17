@@ -4,6 +4,7 @@
 
 This vignette can be cited as:
 
+\
 [`citation`](https://rdrr.io/r/utils/citation.html)`(``"correlation"``)`
 
     > To cite package 'correlation' in publications use:
@@ -152,19 +153,94 @@ different link strengths and link types.
 
 Let’s first load the required libraries for this analysis.
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`correlation`](https://easystats.github.io/correlation/)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`bayestestR`](https://easystats.github.io/bayestestR/)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`see`](https://easystats.github.io/see/)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`datawizard`](https://easystats.github.io/datawizard/)`)`` `[`library`](https://rdrr.io/r/base/library.html)`(`[`poorman`](https://nathaneastwood.github.io/poorman/)`)`
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`correlation`](https://easystats.github.io/correlation/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`bayestestR`](https://easystats.github.io/bayestestR/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`see`](https://easystats.github.io/see/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`datawizard`](https://easystats.github.io/datawizard/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`poorman`](https://nathaneastwood.github.io/poorman/)`)`
 
 #### Utility functions
 
-`generate_results`` ``<-`` ``function``(``r``, ``n`` ``=`` ``100``, ``transformation`` ``=`` ``"none"``)`` ``{`` `` ``data`` ``<-`` ``bayestestR``::`[`simulate_correlation`](https://easystats.github.io/bayestestR/reference/simulate_correlation.html)`(`[`round`](https://rdrr.io/r/base/Round.html)`(``n``)``, r ``=`` ``r``)`` `` `` ``if`` ``(``transformation`` ``!=`` ``"none"``)`` ``{`` `` ``var`` ``<-`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(`[`grepl`](https://rdrr.io/r/base/grep.html)`(``"("``, ``transformation``, fixed ``=`` ``TRUE``)``, ``"data$V2)"``, ``"data$V2"``)`` `` ``transformation`` ``<-`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``transformation``, ``var``)`` `` ``data``$``V2`` ``<-`` `[`eval`](https://rdrr.io/r/base/eval.html)`(`[`parse`](https://rdrr.io/r/base/parse.html)`(``text ``=`` ``transformation``)``)`` `` ``}`` `` `` ``out`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``n ``=`` ``n``, transformation ``=`` ``transformation``, r ``=`` ``r``)`` `` `` ``out``$``Pearson`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"pearson"``)``$``r`` `` ``out``$``Spearman`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"spearman"``)``$``rho`` `` ``out``$``Kendall`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"kendall"``)``$``tau`` `` ``out``$``Biweight`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"biweight"``)``$``r`` `` ``out``$``Distance`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"distance"``)``$``r`` `` ``out``$``Distance`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"distance"``)``$``r`` `` `` ``out`` ``}`
+\
+`generate_results`` ``<-`` ``function``(``r``, ``n`` ``=`` ``100``, ``transformation`` ``=`` ``"none"``)`` ``{`\
+`  ``data`` ``<-`` ``bayestestR``::`[`simulate_correlation`](https://easystats.github.io/bayestestR/reference/simulate_correlation.html)`(`[`round`](https://rdrr.io/r/base/Round.html)`(``n``)``, r ``=`` ``r``)`\
+\
+`  ``if`` ``(``transformation`` ``!=`` ``"none"``)`` ``{`\
+`    ``var`` ``<-`` `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(`[`grepl`](https://rdrr.io/r/base/grep.html)`(``"("``, ``transformation``, fixed ``=`` ``TRUE``)``, ``"data$V2)"``, ``"data$V2"``)`\
+`    ``transformation`` ``<-`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``transformation``, ``var``)`\
+`    ``data``$``V2`` ``<-`` `[`eval`](https://rdrr.io/r/base/eval.html)`(`[`parse`](https://rdrr.io/r/base/parse.html)`(``text ``=`` ``transformation``)``)`\
+`  ``}`\
+\
+`  ``out`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``n ``=`` ``n``, transformation ``=`` ``transformation``, r ``=`` ``r``)`\
+\
+`  ``out``$``Pearson`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"pearson"``)``$``r`\
+`  ``out``$``Spearman`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"spearman"``)``$``rho`\
+`  ``out``$``Kendall`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"kendall"``)``$``tau`\
+`  ``out``$``Biweight`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"biweight"``)``$``r`\
+`  ``out``$``Distance`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"distance"``)``$``r`\
+`  ``out``$``Distance`` ``<-`` `[`cor_test`](https://easystats.github.io/correlation/reference/cor_test.md)`(``data``, ``"V1"``, ``"V2"``, method ``=`` ``"distance"``)``$``r`\
+\
+`  ``out`\
+`}`
 
 #### Effect of Relationship Type
 
-`data`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``)`` ``for`` ``(``r`` ``in`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``0``, ``0.999``, length.out ``=`` ``200``)``)`` ``{`` `` ``for`` ``(``n`` ``in`` ``100``)`` ``{`` `` ``for`` ``(``transformation`` ``in`` `[`c`](https://rdrr.io/r/base/c.html)`(`` `` ``"none"``,`` `` ``"exp("``,`` `` ``"log10(1+max(abs(data$V2))+"``,`` `` ``"1/"``,`` `` ``"tan("``,`` `` ``"sin("``,`` `` ``"cos("``,`` `` ``"cos(2*"``,`` `` ``"abs("``,`` `` ``"data$V2*"``,`` `` ``"data$V2*data$V2*"``,`` `` ``"ifelse(data$V2>0, 1, 0)*("`` `` ``)``)`` ``{`` `` ``data`` ``<-`` `[`rbind`](https://rdrr.io/r/base/cbind.html)`(``data``, ``generate_results``(``r``, ``n``, transformation ``=`` ``transformation``)``)`` `` ``}`` `` ``}`` ``}`` `` ``data`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)` `` ``datawizard``::`[`reshape_longer`](https://easystats.github.io/datawizard/reference/data_to_long.html)`(`` `` select ``=`` ``-`[`c`](https://rdrr.io/r/base/c.html)`(``"n"``, ``"r"``, ``"transformation"``)``,`` `` names_to ``=`` ``"Type"``,`` `` values_to ``=`` ``"Estimation"`` `` ``)`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)` `` `[`mutate`](https://nathaneastwood.github.io/poorman/reference/mutate.html)`(``Type ``=`` `[`relevel`](https://rdrr.io/r/stats/relevel.html)`(`[`as.factor`](https://rdrr.io/r/base/factor.html)`(``Type``)``, ``"Pearson"``, ``"Spearman"``, ``"Kendall"``, ``"Biweight"``, ``"Distance"``)``)`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)` `` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``r``, y ``=`` ``Estimation``, fill ``=`` ``Type``)``)`` ``+`` `` `[`geom_smooth`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``color ``=`` ``Type``)``, method ``=`` ``"loess"``, alpha ``=`` ``0``, na.rm ``=`` ``TRUE``)`` ``+`` `` `[`geom_vline`](https://ggplot2.tidyverse.org/reference/geom_abline.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``xintercept ``=`` ``0.5``)``, linetype ``=`` ``"dashed"``)`` ``+`` `` `[`geom_hline`](https://ggplot2.tidyverse.org/reference/geom_abline.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``yintercept ``=`` ``0.5``)``, linetype ``=`` ``"dashed"``)`` ``+`` `` `[`guides`](https://ggplot2.tidyverse.org/reference/guides.html)`(``colour ``=`` `[`guide_legend`](https://ggplot2.tidyverse.org/reference/guide_legend.html)`(``override.aes ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``alpha ``=`` ``1``)``)``)`` ``+`` `` ``see``::`[`theme_modern`](https://easystats.github.io/see/reference/theme_modern.html)`(``)`` ``+`` `` `[`scale_color_flat_d`](https://easystats.github.io/see/reference/scale_color_flat.html)`(``palette ``=`` ``"rainbow"``)`` ``+`` `` `[`scale_fill_flat_d`](https://easystats.github.io/see/reference/scale_color_flat.html)`(``palette ``=`` ``"rainbow"``)`` ``+`` `` `[`guides`](https://ggplot2.tidyverse.org/reference/guides.html)`(``colour ``=`` `[`guide_legend`](https://ggplot2.tidyverse.org/reference/guide_legend.html)`(``override.aes ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``alpha ``=`` ``1``)``)``)`` ``+`` `` `[`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html)`(``~``transformation``)`
+\
+`data`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``)`\
+`for`` ``(``r`` ``in`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``0``, ``0.999``, length.out ``=`` ``200``)``)`` ``{`\
+`  ``for`` ``(``n`` ``in`` ``100``)`` ``{`\
+`    ``for`` ``(``transformation`` ``in`` `[`c`](https://rdrr.io/r/base/c.html)`(`\
+`      ``"none"``,`\
+`      ``"exp("``,`\
+`      ``"log10(1+max(abs(data$V2))+"``,`\
+`      ``"1/"``,`\
+`      ``"tan("``,`\
+`      ``"sin("``,`\
+`      ``"cos("``,`\
+`      ``"cos(2*"``,`\
+`      ``"abs("``,`\
+`      ``"data$V2*"``,`\
+`      ``"data$V2*data$V2*"``,`\
+`      ``"ifelse(data$V2>0, 1, 0)*("`\
+`    ``)``)`` ``{`\
+`      ``data`` ``<-`` `[`rbind`](https://rdrr.io/r/base/cbind.html)`(``data``, ``generate_results``(``r``, ``n``, transformation ``=`` ``transformation``)``)`\
+`    ``}`\
+`  ``}`\
+`}`\
+\
+`data`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)\
+`  ``datawizard``::`[`reshape_longer`](https://easystats.github.io/datawizard/reference/data_to_long.html)`(`\
+`    select ``=`` ``-`[`c`](https://rdrr.io/r/base/c.html)`(``"n"``, ``"r"``, ``"transformation"``)``,`\
+`    names_to ``=`` ``"Type"``,`\
+`    values_to ``=`` ``"Estimation"`\
+`  ``)`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)\
+`  `[`mutate`](https://nathaneastwood.github.io/poorman/reference/mutate.html)`(``Type ``=`` `[`relevel`](https://rdrr.io/r/stats/relevel.html)`(`[`as.factor`](https://rdrr.io/r/base/factor.html)`(``Type``)``, ``"Pearson"``, ``"Spearman"``, ``"Kendall"``, ``"Biweight"``, ``"Distance"``)``)`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)\
+`  `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``r``, y ``=`` ``Estimation``, fill ``=`` ``Type``)``)`` ``+`\
+`  `[`geom_smooth`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``color ``=`` ``Type``)``, method ``=`` ``"loess"``, alpha ``=`` ``0``, na.rm ``=`` ``TRUE``)`` ``+`\
+`  `[`geom_vline`](https://ggplot2.tidyverse.org/reference/geom_abline.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``xintercept ``=`` ``0.5``)``, linetype ``=`` ``"dashed"``)`` ``+`\
+`  `[`geom_hline`](https://ggplot2.tidyverse.org/reference/geom_abline.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``yintercept ``=`` ``0.5``)``, linetype ``=`` ``"dashed"``)`` ``+`\
+`  `[`guides`](https://ggplot2.tidyverse.org/reference/guides.html)`(``colour ``=`` `[`guide_legend`](https://ggplot2.tidyverse.org/reference/guide_legend.html)`(``override.aes ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``alpha ``=`` ``1``)``)``)`` ``+`\
+`  ``see``::`[`theme_modern`](https://easystats.github.io/see/reference/theme_modern.html)`(``)`` ``+`\
+`  `[`scale_color_flat_d`](https://easystats.github.io/see/reference/scale_color_flat.html)`(``palette ``=`` ``"rainbow"``)`` ``+`\
+`  `[`scale_fill_flat_d`](https://easystats.github.io/see/reference/scale_color_flat.html)`(``palette ``=`` ``"rainbow"``)`` ``+`\
+`  `[`guides`](https://ggplot2.tidyverse.org/reference/guides.html)`(``colour ``=`` `[`guide_legend`](https://ggplot2.tidyverse.org/reference/guide_legend.html)`(``override.aes ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``alpha ``=`` ``1``)``)``)`` ``+`\
+`  `[`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html)`(``~``transformation``)`
 
 ![](types_files/figure-html/unnamed-chunk-4-1.png)
 
-`model`` ``<-`` ``data`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)` `` ``datawizard``::`[`reshape_longer`](https://easystats.github.io/datawizard/reference/data_to_long.html)`(`` `` select ``=`` ``-`[`c`](https://rdrr.io/r/base/c.html)`(``"n"``, ``"r"``, ``"transformation"``)``,`` `` names_to ``=`` ``"Type"``,`` `` values_to ``=`` ``"Estimation"`` `` ``)`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)` `` `[`lm`](https://rdrr.io/r/stats/lm.html)`(``r`` ``~`` ``Type`` ``/`` ``Estimation``, data ``=`` ``.``)`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)` `` ``parameters``::`[`parameters`](https://easystats.github.io/parameters/reference/model_parameters.html)`(``)`` `` `[`arrange`](https://nathaneastwood.github.io/poorman/reference/arrange.html)`(``model``[``6``:``10``, ``]``, `[`desc`](https://nathaneastwood.github.io/poorman/reference/desc.html)`(``Coefficient``)``)`
+\
+`model`` ``<-`` ``data`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)\
+`  ``datawizard``::`[`reshape_longer`](https://easystats.github.io/datawizard/reference/data_to_long.html)`(`\
+`    select ``=`` ``-`[`c`](https://rdrr.io/r/base/c.html)`(``"n"``, ``"r"``, ``"transformation"``)``,`\
+`    names_to ``=`` ``"Type"``,`\
+`    values_to ``=`` ``"Estimation"`\
+`  ``)`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)\
+`  `[`lm`](https://rdrr.io/r/stats/lm.html)`(``r`` ``~`` ``Type`` ``/`` ``Estimation``, data ``=`` ``.``)`` `[`%>%`](https://nathaneastwood.github.io/poorman/reference/pipe.html)\
+`  ``parameters``::`[`parameters`](https://easystats.github.io/parameters/reference/model_parameters.html)`(``)`\
+\
+[`arrange`](https://nathaneastwood.github.io/poorman/reference/arrange.html)`(``model``[``6``:``10``, ``]``, `[`desc`](https://nathaneastwood.github.io/poorman/reference/desc.html)`(``Coefficient``)``)`
 
     > Parameter                    | Coefficient |   SE |       95% CI | t(11903) |      p
     > ------------------------------------------------------------------------------------
