@@ -928,43 +928,6 @@ test_that("correlation() refuses a cluster column among the selected variables",
   )
 })
 
-# Extra invariants beyond the criteria -----------------------------------------
-
-test_that("coherence: p and the interval agree on excluding 0", {
-  skip_on_cran()
-  set.seed(701)
-  for (i in seq_len(100)) {
-    d <- sim_bvn(50, 0.2)
-    out <- cor_test(d, "x", "y", bootstrap = TRUE, iterations = 200, ci = 0.95)
-    B <- attr(out, "iterations")
-    if (abs(out$p - 0.05) < 4 / (B + 1)) {
-      next
-    }
-    expect_identical(out$p < 0.05, out$CI_low > 0 || out$CI_high < 0)
-  }
-})
-
-test_that("negative control: y = x^2 + noise", {
-  skip_on_cran()
-  set.seed(702)
-  res <- vapply(
-    seq_len(200),
-    function(i) {
-      x <- stats::rnorm(50)
-      d <- data.frame(x = x, y = x^2 + stats::rnorm(50))
-      c(
-        boot = cor_test(d, "x", "y", bootstrap = TRUE, iterations = 200)$p <
-          0.05,
-        fisher = cor_test(d, "x", "y", bootstrap = FALSE)$p < 0.05
-      )
-    },
-    c(boot = NA, fisher = NA)
-  )
-  expect_gte(mean(res["boot", ]), 0.02)
-  expect_lte(mean(res["boot", ]), 0.11)
-  expect_gt(mean(res["fisher", ]), 0.20)
-})
-
 test_that("redundant = TRUE works under bootstrap, with NA on the diagonal SE", {
   out <- seeded(
     811,
@@ -1043,4 +1006,90 @@ test_that("correlation() bootstraps polychoric correlations", {
   expect_identical(nrow(out), 3L)
   expect_identical(attr(out, "ci_method"), "bootstrap")
   expect_true(all(is.finite(out$CI_low)))
+})
+
+test_that("correlation() keeps a pair with too few complete rows as an NA row", {
+  d <- iris[1:3]
+  d$Sepal.Width[3:150] <- NA
+  expect_warning(
+    out <- seeded(814, correlation(d, bootstrap = TRUE, iterations = 10)),
+    "less than 3 complete"
+  )
+  expect_identical(nrow(out), 3L)
+  short <- out$Parameter1 == "Sepal.Width" | out$Parameter2 == "Sepal.Width"
+  expect_true(all(is.na(out$SE[short])))
+  expect_true(all(is.finite(out$SE[!short])))
+})
+
+test_that("an abbreviated one-sided `alternative` is refused under bootstrap", {
+  expect_error(
+    cor_test(
+      iris,
+      "Sepal.Length",
+      "Sepal.Width",
+      bootstrap = TRUE,
+      iterations = 20,
+      alt = "less"
+    ),
+    "two.sided"
+  )
+})
+
+test_that("fewer than two kept replicates is an error", {
+  d <- data.frame(x = c(1, 1, 1, 2), y = c(1, 2, 3, 4))
+  # with iterations = 2, one kept replicate is half, but has no SD
+  found <- FALSE
+  for (s in 1:200) {
+    res <- tryCatch(
+      seeded(
+        s,
+        cor_test(d, "x", "y", bootstrap = TRUE, iterations = 2, verbose = FALSE)
+      ),
+      error = function(e) conditionMessage(e)
+    )
+    if (is.character(res)) {
+      found <- TRUE
+      expect_match(res, "bootstrap replicates")
+    } else {
+      expect_false(is.na(res$SE))
+    }
+  }
+  expect_true(found)
+})
+
+# Extra invariants beyond the criteria -----------------------------------------
+
+test_that("coherence: p and the interval agree on excluding 0", {
+  skip_on_cran()
+  set.seed(701)
+  for (i in seq_len(100)) {
+    d <- sim_bvn(50, 0.2)
+    out <- cor_test(d, "x", "y", bootstrap = TRUE, iterations = 200, ci = 0.95)
+    B <- attr(out, "iterations")
+    if (abs(out$p - 0.05) < 4 / (B + 1)) {
+      next
+    }
+    expect_identical(out$p < 0.05, out$CI_low > 0 || out$CI_high < 0)
+  }
+})
+
+test_that("negative control: y = x^2 + noise", {
+  skip_on_cran()
+  set.seed(702)
+  res <- vapply(
+    seq_len(200),
+    function(i) {
+      x <- stats::rnorm(50)
+      d <- data.frame(x = x, y = x^2 + stats::rnorm(50))
+      c(
+        boot = cor_test(d, "x", "y", bootstrap = TRUE, iterations = 200)$p <
+          0.05,
+        fisher = cor_test(d, "x", "y", bootstrap = FALSE)$p < 0.05
+      )
+    },
+    c(boot = NA, fisher = NA)
+  )
+  expect_gte(mean(res["boot", ]), 0.02)
+  expect_lte(mean(res["boot", ]), 0.11)
+  expect_gt(mean(res["fisher", ]), 0.20)
 })

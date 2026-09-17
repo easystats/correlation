@@ -209,9 +209,17 @@ cor_test <- function(
     iterations <- .validate_iterations(iterations)
     # the bootstrap interval and p-value are two-sided; a one-sided
     # `alternative` passed on to the analytic test would be silently ignored
+    # (matched as stats::cor.test() would, so that `alt = "less"` is caught)
     dots <- list(...)
+    dots_names <- names(dots)
+    if (is.null(dots_names)) {
+      dots_names <- character(length(dots))
+    }
+    is_alternative <- nzchar(dots_names) &
+      startsWith("alternative", dots_names)
     if (
-      !is.null(dots$alternative) && !identical(dots$alternative, "two.sided")
+      any(is_alternative) &&
+        !identical(dots[[which(is_alternative)[1]]], "two.sided")
     ) {
       insight::format_error(
         "Bootstrap confidence intervals are two-sided; `alternative` must be \"two.sided\" (the default) when `bootstrap = TRUE` or `cluster` is given."
@@ -440,6 +448,10 @@ cor_test <- function(
     out$Parameter1 <- original_info$x
     out$Parameter2 <- original_info$y
     out[!names(out) %in% c("Parameter1", "Parameter2")] <- NA
+    # same columns as a bootstrapped row, so correlation() can bind the pairs
+    if (bootstrap) {
+      out$SE <- NA_real_
+    }
   }
 
   # Number of observations and CI

@@ -394,7 +394,7 @@ correlation <- function(
         "`cluster` cannot be one of the grouping variables of the data."
       )
     }
-    if (cluster %in% c(select, select2, character(0))) {
+    if (cluster %in% c(select, select2)) {
       insight::format_error(
         "`cluster` cannot be one of the selected variables (`select`, `select2`)."
       )
@@ -804,7 +804,11 @@ correlation <- function(
       bayesian_ci_method = bayesian_ci_method,
       bayesian_test = bayesian_test,
       partial = partial,
-      multilevel = if (isTRUE(bootstrap)) multilevel_user else multilevel,
+      multilevel = if (isTRUE(bootstrap) && method == "polychoric") {
+        multilevel_user
+      } else {
+        multilevel
+      },
       ranktransform = ranktransform,
       winsorize = winsorize,
       bootstrap = bootstrap,

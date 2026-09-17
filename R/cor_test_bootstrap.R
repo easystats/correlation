@@ -69,9 +69,10 @@
   kept <- replicates[!is.na(replicates)]
   n_kept <- length(kept)
 
-  if (n_kept < iterations / 2) {
+  # at least half, and at least two: one replicate has no standard deviation
+  if (n_kept < max(2, iterations / 2)) {
     insight::format_error(sprintf(
-      "Only %d of the %d bootstrap replicates returned a coefficient (fewer than half). Check that the data support `method = \"%s\"` in resamples (for example, variables that are constant or lose a category when rows or clusters are resampled).",
+      "Only %d of the %d bootstrap replicates returned a coefficient (fewer than half, or fewer than two). Check that the data support `method = \"%s\"` in resamples (for example, variables that are constant or lose a category when rows or clusters are resampled).",
       n_kept,
       iterations,
       method
