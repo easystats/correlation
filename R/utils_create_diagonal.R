@@ -44,6 +44,11 @@
   if ("CI_high" %in% names(params)) {
     diagonal$CI_high <- 1
   }
+  # bootstrap standard error: the diagonal rows are built here, not resampled,
+  # so they have no replicates to take a standard deviation of
+  if ("SE" %in% names(params)) {
+    diagonal$SE <- NA_real_
+  }
   if ("Method" %in% names(params)) {
     diagonal$Method <- unique(params$Method)[1]
   }
