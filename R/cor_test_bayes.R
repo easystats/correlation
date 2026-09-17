@@ -70,6 +70,7 @@
     params <- parameters::model_parameters(
       rez,
       dispersion = FALSE,
+      ci = ci,
       ci_method = bayesian_ci_method,
       test = bayesian_test,
       rope_range = c(-0.1, 0.1),
@@ -113,6 +114,7 @@
     params <- parameters::model_parameters(
       rez,
       dispersion = FALSE,
+      ci = ci,
       ci_method = bayesian_ci_method,
       test = bayesian_test,
       rope_range = c(-0.1, 0.1),
