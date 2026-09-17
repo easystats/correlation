@@ -189,11 +189,11 @@ cor_test <- function(
   }
 
   # Bootstrap arguments
-  if (!is.null(cluster)) {
-    bootstrap <- TRUE
-  }
   if (!isTRUE(bootstrap) && !isFALSE(bootstrap)) {
     insight::format_error("`bootstrap` must be `TRUE` or `FALSE`.")
+  }
+  if (!is.null(cluster)) {
+    bootstrap <- TRUE
   }
   if (bootstrap) {
     if (bayesian) {

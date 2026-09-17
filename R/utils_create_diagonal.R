@@ -44,6 +44,10 @@
   if ("CI_high" %in% names(params)) {
     diagonal$CI_high <- 1
   }
+  # bootstrap standard error: a variable's correlation with itself has none
+  if ("SE" %in% names(params)) {
+    diagonal$SE <- NA_real_
+  }
   if ("Method" %in% names(params)) {
     diagonal$Method <- unique(params$Method)[1]
   }

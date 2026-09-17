@@ -964,3 +964,81 @@ test_that("negative control: y = x^2 + noise", {
   expect_lte(mean(res["boot", ]), 0.11)
   expect_gt(mean(res["fisher", ]), 0.20)
 })
+
+test_that("redundant = TRUE works under bootstrap, with NA on the diagonal SE", {
+  out <- seeded(
+    811,
+    correlation(iris[1:3], bootstrap = TRUE, iterations = 20, redundant = TRUE)
+  )
+  expect_identical(nrow(out), 9L)
+  diagonal <- out$Parameter1 == out$Parameter2
+  expect_true(all(is.na(out$SE[diagonal])))
+  expect_true(all(is.finite(out$SE[!diagonal])))
+})
+
+test_that("grouped correlation() forwards `...` and `verbose` to cor_test()", {
+  g <- datawizard::data_group(iris, "Species")
+  expect_error(
+    correlation(
+      g,
+      select = c("Sepal.Length", "Sepal.Width"),
+      bootstrap = TRUE,
+      iterations = 20,
+      alternative = "less"
+    ),
+    "two.sided"
+  )
+  expect_error(
+    correlation(
+      g,
+      select = "Sepal.Length",
+      select2 = "Sepal.Width",
+      bootstrap = TRUE,
+      iterations = 20,
+      alternative = "less"
+    ),
+    "two.sided"
+  )
+  d <- iris
+  d$cl <- rep(1:5, 30)
+  gd <- datawizard::data_group(d, "Species")
+  expect_warning(
+    seeded(812, correlation(gd, cluster = "cl", iterations = 20)),
+    "clusters"
+  )
+  expect_no_warning(
+    seeded(
+      812,
+      correlation(gd, cluster = "cl", iterations = 20, verbose = FALSE)
+    )
+  )
+})
+
+test_that("`bootstrap` is validated even when `cluster` is given", {
+  d <- iris
+  d$cl <- rep(1:30, 5)
+  expect_error(
+    cor_test(d, "Sepal.Length", "Sepal.Width", bootstrap = "yes", cluster = "cl"),
+    "`bootstrap` must be"
+  )
+  expect_error(
+    correlation(d, bootstrap = NA, cluster = "cl"),
+    "`bootstrap` must be"
+  )
+})
+
+test_that("correlation() bootstraps polychoric correlations", {
+  skip_if_not_installed("psych")
+  o <- data.frame(
+    a = cut(iris$Sepal.Length, 3),
+    b = cut(iris$Petal.Length, 3),
+    c = cut(iris$Petal.Width, 3)
+  )
+  out <- seeded(
+    813,
+    correlation(o, method = "polychoric", bootstrap = TRUE, iterations = 20)
+  )
+  expect_identical(nrow(out), 3L)
+  expect_identical(attr(out, "ci_method"), "bootstrap")
+  expect_true(all(is.finite(out$CI_low)))
+})

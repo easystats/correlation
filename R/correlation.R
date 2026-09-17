@@ -372,6 +372,9 @@ correlation <- function(
 
   # Bootstrap: the cluster column identifies resampling units and is never
   # itself correlated; it must be a column of `data` and not a grouping variable
+  if (!isTRUE(bootstrap) && !isFALSE(bootstrap)) {
+    insight::format_error("`bootstrap` must be `TRUE` or `FALSE`.")
+  }
   if (!is.null(cluster)) {
     bootstrap <- TRUE
     if (
@@ -629,7 +632,9 @@ correlation <- function(
         winsorize = winsorize,
         bootstrap = bootstrap,
         iterations = iterations,
-        cluster = cluster
+        cluster = cluster,
+        verbose = verbose,
+        ...
       )
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
@@ -670,7 +675,9 @@ correlation <- function(
           winsorize = winsorize,
           bootstrap = bootstrap,
           iterations = iterations,
-          cluster = cluster
+          cluster = cluster,
+          verbose = verbose,
+          ...
         )
         modelframe_current <- rez$data
         rez$params$Group <- modelframe_current$Group <- i
@@ -740,6 +747,10 @@ correlation <- function(
     include_factors <- TRUE
   }
 
+  # `multilevel` doubles as the keep-factors flag below; cor_test() gets the
+  # user's value under bootstrap, which it refuses for multilevel correlations
+  multilevel_user <- multilevel
+
   # definitely need factors for polychoric
   if (method == "polychoric") {
     multilevel <- TRUE
@@ -791,7 +802,7 @@ correlation <- function(
       bayesian_ci_method = bayesian_ci_method,
       bayesian_test = bayesian_test,
       partial = partial,
-      multilevel = multilevel,
+      multilevel = if (isTRUE(bootstrap)) multilevel_user else multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
       bootstrap = bootstrap,
