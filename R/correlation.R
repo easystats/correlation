@@ -747,8 +747,10 @@ correlation <- function(
     include_factors <- TRUE
   }
 
-  # `multilevel` doubles as the keep-factors flag below; cor_test() gets the
-  # user's value under bootstrap, which it refuses for multilevel correlations
+  # below, `multilevel = TRUE` also means "do not convert factors to numeric",
+  # which polychoric needs; cor_test() errors on multilevel with bootstrap, so
+  # when `bootstrap` is TRUE (correlation() sets it when `cluster` is given) it
+  # gets the user's value instead
   multilevel_user <- multilevel
 
   # definitely need factors for polychoric

@@ -976,7 +976,7 @@ test_that("redundant = TRUE works under bootstrap, with NA on the diagonal SE", 
   expect_true(all(is.finite(out$SE[!diagonal])))
 })
 
-test_that("grouped correlation() forwards `...` and `verbose` to cor_test()", {
+test_that("grouped correlation() forwards `...` and `verbose` through to cor_test()", {
   g <- datawizard::data_group(iris, "Species")
   expect_error(
     correlation(
@@ -1002,10 +1002,12 @@ test_that("grouped correlation() forwards `...` and `verbose` to cor_test()", {
   d <- iris
   d$cl <- rep(1:5, 30)
   gd <- datawizard::data_group(d, "Species")
-  expect_warning(
-    seeded(812, correlation(gd, cluster = "cl", iterations = 20)),
-    "clusters"
+  # one warning per group: each group has its own cluster count
+  w <- capture_warnings(
+    seeded(812, correlation(gd, cluster = "cl", iterations = 20))
   )
+  expect_length(w, 3L)
+  expect_match(w, "clusters")
   expect_no_warning(
     seeded(
       812,

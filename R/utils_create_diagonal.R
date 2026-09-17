@@ -44,7 +44,8 @@
   if ("CI_high" %in% names(params)) {
     diagonal$CI_high <- 1
   }
-  # bootstrap standard error: a variable's correlation with itself has none
+  # bootstrap standard error: the diagonal rows are built here, not resampled,
+  # so they have no replicates to take a standard deviation of
   if ("SE" %in% names(params)) {
     diagonal$SE <- NA_real_
   }
