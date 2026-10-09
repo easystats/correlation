@@ -71,8 +71,10 @@ of it :)**
 - Run:
 
   - `styler::style_pkg()`: Automatic style formatting
-  - `lintr::lint_package()`: Style checks
-  - `devtools::check()`: General checks
+  - [`lintr::lint_package()`](https://lintr.r-lib.org/reference/lint.html):
+    Style checks
+  - [`devtools::check()`](https://devtools.r-lib.org/reference/check.html):
+    General checks
 
 ## Useful Materials
 
