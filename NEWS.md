@@ -21,6 +21,10 @@
   the function split the factor into one column per level and then failed with
   an error (#180).
 
+- Subsetting the rows or columns of a correlation matrix from `summary()` now
+  keeps its p-values, intervals, and other attributes, so the subset still
+  prints with significance stars and the table footer (#26).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
