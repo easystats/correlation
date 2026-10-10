@@ -17,6 +17,7 @@
   var_x <- .complete_variable_x(data, x, y)
   var_y <- .complete_variable_y(data, x, y)
   n <- length(var_x)
+  .bayes_kendall_ci(ci)
   alpha <- 1 / .bayes_kendall_scale(bayesian_prior)
   bayesian_ci_method <- .bayes_kendall_ci_method(bayesian_ci_method)
 
@@ -163,7 +164,7 @@
   rope <- cdf(0.1) - cdf(-0.1)
 
   median <- quantile(0.5)
-  if (ci >= 1) {
+  if (ci == 1) {
     # The whole support; the hdi search below has no room at ci = 1
     ci_low <- -1
     ci_high <- 1
@@ -219,6 +220,19 @@
   insight::format_error(
     "`bayesian_prior` must be one of \"medium.narrow\", \"medium\", \"wide\", \"ultrawide\", or a number in (0, 2] for the Bayesian Kendall correlation."
   )
+}
+
+
+#' @keywords internal
+.bayes_kendall_ci <- function(ci) {
+  if (
+    !(is.numeric(ci) && length(ci) == 1 && is.finite(ci) && ci > 0 && ci <= 1)
+  ) {
+    insight::format_error(
+      "`ci` must be a single number in (0, 1] for the Bayesian Kendall correlation."
+    )
+  }
+  invisible(ci)
 }
 
 

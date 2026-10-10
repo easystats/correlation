@@ -105,12 +105,14 @@ test_that("AC1: cor_test and correlation report a Bayesian Kendall row", {
   expect_equal(out$BF, ref$BF)
   expect_equal(out$tau, ref$tau)
 
-  skip_if_not_installed("BayesFactor")
+  # The Kendall rows need no BayesFactor; only the Pearson comparison does
   ken <- correlation(mtcars[, 1:3], method = "kendall", bayesian = TRUE)
-  pea <- correlation(mtcars[, 1:3], method = "pearson", bayesian = TRUE)
   expect_identical(nrow(ken), 3L)
   expect_true(all(ken$Method == "Bayesian Kendall correlation"))
   expect_true("tau" %in% names(ken))
+
+  skip_if_not_installed("BayesFactor")
+  pea <- correlation(mtcars[, 1:3], method = "pearson", bayesian = TRUE)
   # The #224 reprex: every row differs from the Bayesian Pearson estimate.
   expect_true(all(abs(ken$tau - pea$rho) > 1e-3))
 })
@@ -219,6 +221,38 @@ test_that("Bayesian Kendall rejects an unknown prior or interval method", {
   ))
   expect_true(is.na(out$tau))
   expect_true(is.na(out$BF))
+})
+
+test_that("Bayesian Kendall rejects an interval level outside (0, 1]", {
+  for (level in list(1.1, 0, -0.5, "0.95")) {
+    expect_error(
+      cor_test(
+        mtcars,
+        "mpg",
+        "cyl",
+        method = "kendall",
+        bayesian = TRUE,
+        ci = level
+      ),
+      regexp = "`ci` must be",
+      label = paste("ci =", deparse(level))
+    )
+  }
+  # The x == y branch validates the level too
+  expect_error(
+    cor_test(mtcars, "mpg", "mpg", method = "kendall", bayesian = TRUE, ci = 2),
+    regexp = "`ci` must be"
+  )
+  out <- cor_test(
+    mtcars,
+    "mpg",
+    "cyl",
+    method = "kendall",
+    bayesian = TRUE,
+    ci = 1
+  )
+  expect_identical(out$CI_low, -1)
+  expect_identical(out$CI_high, 1)
 })
 
 test_that("AC2: the helper matches the paper's OSF code and bstats on the 36-cell grid", {
