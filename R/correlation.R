@@ -594,9 +594,11 @@ correlation <- function(
     }
   }
 
-  # biserial needs a dichotomous factor as one numeric column, not dummy-coded
+  # biserial needs a dichotomous factor as one numeric column, not dummy-coded;
+  # with multilevel, factors are the grouping variables and stay factors
   if (
     include_factors &&
+      !multilevel &&
       tolower(method) %in% c("biserial", "pointbiserial", "point-biserial")
   ) {
     data <- datawizard::to_numeric(data, dummy_factors = FALSE)
