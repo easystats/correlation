@@ -408,3 +408,49 @@ test_that("missing values", {
   expect_equal(as.matrix(corr_pairwise), r_pairwise)
   expect_equal(as.matrix(corr_complete), r_complete)
 })
+
+
+test_that("biserial correlations accept a dichotomous factor", {
+  d <- mtcars[c("am", "hp")]
+  d$am <- as.factor(d$am)
+
+  for (m in c("biserial", "pointbiserial")) {
+    out <- suppressWarnings(correlation(d, method = m))
+    ref <- cor_test(d, "am", "hp", method = m)
+    expect_identical(nrow(out), 1L)
+    expect_identical(c(out$Parameter1, out$Parameter2), c("am", "hp"))
+    expect_equal(out$rho, ref$rho, tolerance = 1e-10)
+  }
+})
+
+
+test_that("biserial correlations keep the multilevel grouping factor", {
+  skip_if_not_or_load_if_installed("lme4")
+  # equal 0s and 1s in each group, so the multilevel adjustment keeps `am`
+  # dichotomous
+  cyl <- factor(rep(1:6, each = 20))
+  am <- rep(0:1, 60)
+  d <- data.frame(am = am, hp = sin(1:120) + as.numeric(cyl) + am, cyl = cyl)
+
+  for (m in c("biserial", "pointbiserial")) {
+    with_factors <- suppressMessages(suppressWarnings(correlation(
+      d,
+      method = m,
+      multilevel = TRUE,
+      partial = TRUE,
+      include_factors = TRUE
+    )))
+    ref <- suppressMessages(suppressWarnings(correlation(
+      d,
+      method = m,
+      multilevel = TRUE,
+      partial = TRUE
+    )))
+    expect_identical(nrow(with_factors), 1L)
+    expect_identical(
+      c(with_factors$Parameter1, with_factors$Parameter2),
+      c("am", "hp")
+    )
+    expect_equal(with_factors$rho, ref$rho, tolerance = 1e-10)
+  }
+})

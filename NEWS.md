@@ -16,6 +16,11 @@
 - `cor_test()` and `correlation()` now respect the `ci` argument when
   `bayesian = TRUE`. Previously, credible intervals were always 95% (#382).
 
+- If the dichotomous variable is a factor, `correlation()` with
+  `method = "biserial"` or `method = "pointbiserial"` now works. Previously,
+  the function split the factor into one column per level and then failed with
+  an error (#180).
+
 - With `method = "auto"`, `cor_test()` and `correlation()` now use a
   polychoric correlation for two ordered factors with three or more levels.
   For one such factor and a numeric variable, they use a polyserial
