@@ -21,6 +21,12 @@
   the function split the factor into one column per level and then failed with
   an error (#180).
 
+- With `method = "auto"`, `cor_test()` and `correlation()` now use a
+  polychoric correlation for two ordered factors with three or more levels.
+  For one such factor and a numeric variable, they use a polyserial
+  correlation. Previously, they converted the factors to numbers and used a
+  Pearson correlation (#260).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.

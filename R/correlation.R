@@ -606,18 +606,27 @@ correlation <- function(
 
   # Clean data and get combinations -------------
 
+  # with "auto", ordered factors stay factors so that `cor_test()` can pick a
+  # polychoric correlation (not for partial or Bayesian correlations, where
+  # `cor_test()` does not pick it)
+  keep_ordinal <- tolower(method) == "auto" &&
+    isFALSE(partial) &&
+    !isTRUE(partial_bayesian) &&
+    !isTRUE(bayesian)
   combinations <- .get_combinations(
     data,
     data2 = NULL,
     redundant = FALSE,
     include_factors = include_factors,
     multilevel = multilevel,
-    method = method
+    method = method,
+    keep_ordinal = keep_ordinal
   )
   data <- .clean_data(
     data,
     include_factors = include_factors,
-    multilevel = multilevel
+    multilevel = multilevel,
+    keep_ordinal = keep_ordinal
   )
 
   # LOOP ----------------

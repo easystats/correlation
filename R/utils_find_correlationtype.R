@@ -63,3 +63,8 @@
 
   out
 }
+
+#' @keywords internal
+.is_ordinal <- function(x) {
+  is.ordered(x) && nlevels(x) > 2
+}

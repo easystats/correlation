@@ -245,6 +245,109 @@ test_that("specific types", {
   )
 })
 
+test_that("method = 'auto' uses polychoric for ordered factors", {
+  skip_if_not_or_load_if_installed("psych")
+  skip_if_not_or_load_if_installed("polycor")
+
+  # quantile cuts leave no empty cell in the o1 x o2 table, where psych and
+  # polycor would differ
+  qcut <- function(v, k) {
+    cut(
+      v,
+      stats::quantile(v, 0:k / k),
+      labels = paste0("L", 1:k),
+      include.lowest = TRUE,
+      ordered_result = TRUE
+    )
+  }
+  set.seed(260)
+  n <- 200
+  z <- rnorm(n)
+  d <- data.frame(
+    x = z + rnorm(n),
+    o1 = qcut(z + rnorm(n), 4),
+    o2 = qcut(z + rnorm(n), 3),
+    b = factor(z + rnorm(n) > 0, ordered = TRUE),
+    u = factor(sample(c("p", "q", "r"), n, TRUE))
+  )
+  expect_gt(min(table(d$o1, d$o2)), 0)
+  polychoric_o1_o2 <- polycor::polychor(d$o1, d$o2)
+  polyserial_x_o1 <- polycor::polyserial(d$x, d$o1)
+
+  out <- cor_test(d, "o1", "o2", method = "auto")
+  expect_identical(out$Method, "Polychoric")
+  expect_equal(out$rho, polychoric_o1_o2, tolerance = 1e-3)
+
+  out <- cor_test(d, "x", "o1", method = "auto")
+  expect_identical(out$Method, "Polyserial")
+  expect_equal(out$rho, polyserial_x_o1, tolerance = 1e-6)
+
+  out <- correlation(
+    d[c("x", "o1", "o2")],
+    method = "auto",
+    include_factors = TRUE
+  )
+  expect_identical(out$Parameter1, c("x", "x", "o1"))
+  expect_identical(out$Parameter2, c("o1", "o2", "o2"))
+  expect_identical(
+    out$Method,
+    paste(c("Polyserial", "Polyserial", "Polychoric"), "correlation")
+  )
+  expect_equal(
+    out$rho[c(1, 3)],
+    c(polyserial_x_o1, polychoric_o1_o2),
+    tolerance = 1e-3
+  )
+
+  # two-level ordered factors and unordered factors are handled as before
+  expect_identical(
+    cor_test(d, "x", "b", method = "auto")$Method,
+    "Point-biserial"
+  )
+  expect_identical(cor_test(d, "x", "u", method = "auto")$Method, "Pearson")
+  out <- correlation(
+    d[c("x", "b", "u")],
+    method = "auto",
+    include_factors = TRUE
+  )
+  expect_identical(
+    unique(c(out$Parameter1, out$Parameter2)),
+    c("x", "b.FALSE", "b.TRUE", "u.p", "u.q", "u.r")
+  )
+
+  # partial correlations are handled as before
+  expect_identical(
+    cor_test(d, "x", "o1", method = "auto", partial = TRUE)$Method,
+    "Pearson"
+  )
+  out <- correlation(
+    d[c("x", "o1", "o2")],
+    method = "auto",
+    include_factors = TRUE,
+    partial = TRUE
+  )
+  expect_false(any(c("o1", "o2") %in% c(out$Parameter1, out$Parameter2)))
+
+  # an ordered factor with an unordered factor is handled as before
+  expect_identical(cor_test(d, "o1", "u", method = "auto")$Method, "Pearson")
+
+  # Bayesian correlations are handled as before
+  skip_if_not_or_load_if_installed("BayesFactor")
+  for (args in list(list(bayesian = TRUE), list(partial_bayesian = TRUE))) {
+    out <- suppressWarnings(do.call(
+      correlation,
+      c(
+        list(d[c("x", "o1")], method = "auto", include_factors = TRUE),
+        args
+      )
+    ))
+    expect_identical(
+      unique(c(out$Parameter1, out$Parameter2)),
+      c("x", paste0("o1.L", 1:4))
+    )
+  }
+})
+
 test_that("correlation doesn't fail when BFs are NA", {
   skip_if_not_or_load_if_installed("ggplot2")
   skip_if_not_or_load_if_installed("BayesFactor")
