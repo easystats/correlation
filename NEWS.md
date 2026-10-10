@@ -21,6 +21,10 @@
   the function split the factor into one column per level and then failed with
   an error (#180).
 
+- `correlation()` now converts ordered factors to the ranks of their levels, as
+  `cor_test()` does, instead of splitting them into one dummy variable per
+  level. Unordered factors are still dummy-coded (#236).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
