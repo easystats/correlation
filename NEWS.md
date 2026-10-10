@@ -20,6 +20,10 @@
   `correlation()` now returns the correlations with the dummy variables of that
   factor. Previously, it returned no rows for that factor (#277).
 
+- If `data` and `data2` share a column name, `correlation()` now renames the
+  column in `data2` (for example, `x` to `x.1`) and returns all pairs across
+  the two sets. Previously, it dropped or mislabeled the pairs for that column.
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.

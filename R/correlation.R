@@ -562,6 +562,10 @@ correlation <- function(
   ...
 ) {
   if (!is.null(data2)) {
+    # rename shared columns in `data2` (e.g. `x` to `x.1`), so that its
+    # variables can be told apart from those in `data` after cbind()
+    all_names <- make.unique(c(names(data), names(data2)))
+    names(data2) <- all_names[-seq_len(ncol(data))]
     data <- cbind(data, data2)
   }
 

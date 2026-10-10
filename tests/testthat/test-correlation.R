@@ -296,6 +296,26 @@ test_that("data2 and select2 keep dummy-coded factors (#277)", {
   expect_identical(out$Parameter2, rep("weight", 4))
 })
 
+test_that("data and data2 can share column names", {
+  set.seed(277)
+  lv <- c("TT", "BT", "BB")
+  d1 <- data.frame(x = rnorm(30), z = rnorm(30))
+  d2 <- data.frame(x = rnorm(30), w = rnorm(30))
+
+  # the second `x` is renamed to `x.1`, and all four cross pairs are kept
+  out <- correlation(d1, d2)
+  expect_identical(out$Parameter1, c("x", "x", "z", "z"))
+  expect_identical(out$Parameter2, c("x.1", "w", "x.1", "w"))
+  expect_equal(out$r[1], stats::cor(d1$x, d2$x), tolerance = 1e-10)
+
+  # the same for dummy-coded factors
+  f1 <- data.frame(x = factor(sample(lv, 30, TRUE), levels = lv))
+  f2 <- data.frame(x = factor(sample(lv, 30, TRUE), levels = lv))
+  out <- correlation(f1, f2, include_factors = TRUE)
+  expect_identical(out$Parameter1, rep(paste0("x.", lv), each = 3))
+  expect_identical(out$Parameter2, rep(paste0("x.1.", lv), 3))
+})
+
 test_that("correlation doesn't fail when BFs are NA", {
   skip_if_not_or_load_if_installed("ggplot2")
   skip_if_not_or_load_if_installed("BayesFactor")
