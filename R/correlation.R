@@ -584,9 +584,12 @@ correlation <- function(
     include_factors <- TRUE
   }
 
-  # definitely need factors for polychoric
+  # definitely need factors for polychoric: keep them as factors when cleaning
+  # the data, but do not pass `multilevel = TRUE` on to `cor_test()`, which
+  # would turn the coefficients into multilevel partial correlations
+  keep_factors <- multilevel
   if (method == "polychoric") {
-    multilevel <- TRUE
+    keep_factors <- TRUE
     # convert all input to factors, but only if all input currently is numeric
     # we allow mix of numeric and factors
     if (all(vapply(data, is.numeric, FUN.VALUE = TRUE))) {
@@ -611,13 +614,13 @@ correlation <- function(
     data2 = NULL,
     redundant = FALSE,
     include_factors = include_factors,
-    multilevel = multilevel,
+    multilevel = keep_factors,
     method = method
   )
   data <- .clean_data(
     data,
     include_factors = include_factors,
-    multilevel = multilevel
+    multilevel = keep_factors
   )
 
   # LOOP ----------------

@@ -21,6 +21,12 @@
   the function split the factor into one column per level and then failed with
   an error (#180).
 
+- If the data have one numeric and one ordered variable,
+  `correlation(method = "polychoric")` no longer fails. With more variables, it
+  no longer returns partial correlations for pairs that include a numeric
+  variable. Each pair now gets the same polyserial or polychoric correlation as
+  `cor_test()` (#261).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.

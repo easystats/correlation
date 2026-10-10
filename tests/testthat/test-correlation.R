@@ -245,6 +245,43 @@ test_that("specific types", {
   )
 })
 
+test_that("polychoric correlation() matches polycor for numeric and ordered variables", {
+  skip_if_not_or_load_if_installed("psych")
+  skip_if_not_or_load_if_installed("polycor")
+
+  # one numeric and one ordered variable (#261)
+  set.seed(2024)
+  d2 <- data.frame(
+    o = factor(sample(LETTERS[1:4], 100, TRUE), ordered = TRUE),
+    x = rnorm(100)
+  )
+  out <- suppressWarnings(correlation(d2, method = "polychoric"))
+  expect_identical(out$Method, "Polyserial correlation")
+  expect_equal(out$rho, polycor::polyserial(d2$x, d2$o), tolerance = 1e-6)
+
+  # with more variables, the coefficients are not partial correlations
+  set.seed(3)
+  n <- 200
+  z <- rnorm(n)
+  d3 <- data.frame(
+    x = z + rnorm(n),
+    o1 = cut(z + rnorm(n), 4, ordered_result = TRUE),
+    o2 = cut(z + rnorm(n), 3, ordered_result = TRUE)
+  )
+  out <- correlation(d3, method = "polychoric")
+  expect_identical(out$Parameter1, c("x", "x", "o1"))
+  expect_identical(out$Parameter2, c("o1", "o2", "o2"))
+  expect_equal(
+    out$rho,
+    c(
+      polycor::polyserial(d3$x, d3$o1),
+      polycor::polyserial(d3$x, d3$o2),
+      polycor::polychor(d3$o1, d3$o2)
+    ),
+    tolerance = 1e-3
+  )
+})
+
 test_that("correlation doesn't fail when BFs are NA", {
   skip_if_not_or_load_if_installed("ggplot2")
   skip_if_not_or_load_if_installed("BayesFactor")
