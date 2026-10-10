@@ -16,6 +16,12 @@
 - `cor_test()` and `correlation()` now respect the `ci` argument when
   `bayesian = TRUE`. Previously, credible intervals were always 95% (#382).
 
+- If you pass `exact` to `cor_test()` or `correlation()`, the argument now goes
+  to `stats::cor.test()` without an error. Use `exact = TRUE` to get exact
+  *p*-values for Spearman and Kendall correlations. The documentation now
+  explains that these *p*-values are asymptotic by default, and that a very
+  small *p*-value can show as exactly 0 (#279).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.

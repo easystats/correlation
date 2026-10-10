@@ -17,6 +17,25 @@ test_that("cor_test kendall", {
   expect_equal(out$p, out2$p.value[[1]], tolerance = 0.001)
 })
 
+test_that("cor_test passes exact to cor.test for rank correlations", {
+  set.seed(2)
+  d <- data.frame(a = rnorm(10))
+  d$b <- d$a + rnorm(10)
+
+  for (m in c("spearman", "kendall")) {
+    exact_p <- stats::cor.test(d$a, d$b, method = m, exact = TRUE)$p.value
+    approx_p <- stats::cor.test(d$a, d$b, method = m, exact = FALSE)$p.value
+
+    # asymptotic p-value by default
+    expect_equal(cor_test(d, "a", "b", method = m)$p, approx_p)
+    expect_equal(
+      cor_test(d, "a", "b", method = m, exact = FALSE)$p,
+      approx_p
+    )
+    expect_equal(cor_test(d, "a", "b", method = m, exact = TRUE)$p, exact_p)
+  }
+})
+
 
 test_that("cor_test bayesian", {
   skip_if_not_or_load_if_installed("BayesFactor")
