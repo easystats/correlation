@@ -181,9 +181,19 @@ pcor_to_cor.easycorrelation <- function(
 .pcor_to_cor_params <- function(
   params,
   ci = 0.95,
+  method = "pearson",
   tol = .Machine$double.eps^(2 / 3)
 ) {
   coefficient_name <- intersect(c("r", "rho", "tau"), names(params))[1]
+  if (is.na(coefficient_name)) {
+    insight::format_error(
+      paste0(
+        "`multilevel = TRUE` with `partial = FALSE` is not available for `method = \"",
+        method,
+        "\"`."
+      )
+    )
+  }
   vars <- unique(c(params$Parameter1, params$Parameter2))
 
   pcor <- diag(length(vars))

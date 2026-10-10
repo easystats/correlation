@@ -139,3 +139,21 @@ test_that("multilevel back-conversion works with grouped data", {
     expect_equal(observed$p, expected$p, tolerance = 1e-10)
   }
 })
+
+
+test_that("multilevel back-conversion gives a clear error for Somers' D", {
+  skip_if_not_or_load_if_installed("lme4")
+  skip_if_not_or_load_if_installed("Hmisc")
+  d <- transform(mtcars, gear = factor(gear))
+
+  expect_error(
+    correlation(
+      d,
+      select = c("gear", "vs", "mpg"),
+      method = "somers",
+      multilevel = TRUE
+    ),
+    regexp = "not available",
+    fixed = TRUE
+  )
+})
