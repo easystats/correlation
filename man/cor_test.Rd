@@ -58,7 +58,8 @@ These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually
 converted to numeric or used as random effects (depending of \code{multilevel}).
-If \code{FALSE}, factors are removed upfront.}
+Ordered factors are converted to the ranks of their levels. If \code{FALSE},
+factors are removed upfront.}
 
 \item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and semi-partial
 correlations, respectively.}

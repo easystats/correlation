@@ -16,6 +16,10 @@
 - `cor_test()` and `correlation()` now respect the `ci` argument when
   `bayesian = TRUE`. Previously, credible intervals were always 95% (#382).
 
+- `correlation()` now converts ordered factors to the ranks of their levels, as
+  `cor_test()` does, instead of splitting them into one dummy variable per
+  level. Unordered factors are still dummy-coded (#236).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
