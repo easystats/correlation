@@ -51,3 +51,23 @@ test_that("subsetting a correlation matrix without labels behaves as before", {
   out <- x[, 2:3]
   expect_null(attr(out, "p"))
 })
+
+test_that("sorting a correlation matrix keeps its attributes aligned", {
+  x <- summary(
+    correlation(mtcars[c("mpg", "wt", "hp", "qsec")]),
+    redundant = TRUE
+  )
+  out <- cor_sort(x)
+  expect_false(identical(out$Parameter, x$Parameter))
+
+  # Each attribute cell matches the same pair in the unsorted matrix
+  for (i in c("p", "CI_low", "n_Obs")) {
+    a <- attr(out, i)
+    expect_identical(a$Parameter, out$Parameter)
+    expect_identical(names(a), names(out))
+    ref <- attr(x, i)
+    row.names(ref) <- ref$Parameter
+    ref <- ref[out$Parameter, names(out)]
+    expect_identical(unname(as.list(a)), unname(as.list(ref)))
+  }
+})
