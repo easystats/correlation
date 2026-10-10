@@ -87,6 +87,38 @@ summary.easycorrelation <- function(
 
 
 #' @export
+`[.easycormatrix` <- function(x, ...) {
+  out <- NextMethod()
+
+  # Only a labelled matrix keeps its attributes (it is what format() needs)
+  if (!is.data.frame(out) || !"Parameter" %in% names(out)) {
+    return(out)
+  }
+
+  rows <- match(row.names(out), row.names(x))
+  cols <- match(names(out), names(x))
+  if (anyNA(rows) || anyNA(cols)) {
+    return(out)
+  }
+
+  # Attributes that are matrices of the same shape are subsetted the same way
+  attri <- attributes(x)
+  attri <- attri[!names(attri) %in% c("names", "row.names", "class")]
+  for (i in names(attri)) {
+    if (
+      is.data.frame(attri[[i]]) &&
+        identical(names(attri[[i]]), names(x)) &&
+        nrow(attri[[i]]) == nrow(x)
+    ) {
+      attri[[i]] <- attri[[i]][rows, cols, drop = FALSE]
+    }
+    attr(out, i) <- attri[[i]]
+  }
+  out
+}
+
+
+#' @export
 as.data.frame.easycorrelation <- function(x, ..., redundant = FALSE) {
   if (redundant) {
     x <- .add_redundant(x)
