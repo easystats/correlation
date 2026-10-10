@@ -594,6 +594,14 @@ correlation <- function(
     }
   }
 
+  # biserial needs a dichotomous factor as one numeric column, not dummy-coded
+  if (
+    include_factors &&
+      tolower(method) %in% c("biserial", "pointbiserial", "point-biserial")
+  ) {
+    data <- datawizard::to_numeric(data, dummy_factors = FALSE)
+  }
+
   # Clean data and get combinations -------------
 
   combinations <- .get_combinations(

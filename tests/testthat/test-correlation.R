@@ -305,3 +305,17 @@ test_that("missing values", {
   expect_equal(as.matrix(corr_pairwise), r_pairwise)
   expect_equal(as.matrix(corr_complete), r_complete)
 })
+
+
+test_that("biserial correlations accept a dichotomous factor", {
+  d <- mtcars[c("am", "hp")]
+  d$am <- as.factor(d$am)
+
+  for (m in c("biserial", "pointbiserial")) {
+    out <- suppressWarnings(correlation(d, method = m))
+    ref <- cor_test(d, "am", "hp", method = m)
+    expect_identical(nrow(out), 1L)
+    expect_identical(c(out$Parameter1, out$Parameter2), c("am", "hp"))
+    expect_equal(out$rho, ref$rho, tolerance = 1e-10)
+  }
+})
