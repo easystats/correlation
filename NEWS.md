@@ -18,7 +18,7 @@
 
 - If `data2` or `select2` contains a factor and `include_factors = TRUE`,
   `correlation()` now returns the correlations with the dummy variables of that
-  factor. Previously, it returned no rows for that factor (#277).
+  factor. Previously, it returned no rows for that factor (#277, #292).
 
 - If `data` and `data2` share a column name, `correlation()` now renames the
   column in `data2` (for example, `x` to `x.1`) and returns all pairs across
