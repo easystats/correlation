@@ -327,6 +327,25 @@ test_that("method = 'auto' uses polychoric for ordered factors", {
     partial = TRUE
   )
   expect_false(any(c("o1", "o2") %in% c(out$Parameter1, out$Parameter2)))
+
+  # an ordered factor with an unordered factor is handled as before
+  expect_identical(cor_test(d, "o1", "u", method = "auto")$Method, "Pearson")
+
+  # Bayesian correlations are handled as before
+  skip_if_not_or_load_if_installed("BayesFactor")
+  for (args in list(list(bayesian = TRUE), list(partial_bayesian = TRUE))) {
+    out <- suppressWarnings(do.call(
+      correlation,
+      c(
+        list(d[c("x", "o1")], method = "auto", include_factors = TRUE),
+        args
+      )
+    ))
+    expect_identical(
+      unique(c(out$Parameter1, out$Parameter2)),
+      c("x", paste0("o1.L", 1:4))
+    )
+  }
 })
 
 test_that("correlation doesn't fail when BFs are NA", {

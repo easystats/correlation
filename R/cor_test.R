@@ -153,12 +153,18 @@ cor_test <- function(
 
   # "auto" with an ordered factor of three or more levels: polychoric (or
   # polyserial), which needs the factors, so pick it before they are converted
-  # (not for partial correlations)
+  # (not for partial correlations, nor when the other variable is an unordered
+  # factor or text)
   if (
     tolower(method) == "auto" &&
       !bayesian &&
       isFALSE(partial) &&
-      any(vapply(data[c(x, y)], .is_ordinal, logical(1)))
+      any(vapply(data[c(x, y)], .is_ordinal, logical(1))) &&
+      all(vapply(
+        data[c(x, y)],
+        function(v) is.numeric(v) || is.ordered(v),
+        logical(1)
+      ))
   ) {
     method <- "polychoric"
   }
