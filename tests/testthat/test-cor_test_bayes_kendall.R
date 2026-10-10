@@ -238,6 +238,14 @@ test_that("Bayesian Kendall rejects an interval level outside (0, 1]", {
       label = paste("ci =", deparse(level))
     )
   }
+  expect_error(
+    correlation(mtcars[, 1:3], method = "kendall", bayesian = TRUE, ci = 1.1),
+    regexp = "`ci` must be"
+  )
+  expect_error(
+    .bk(n = 20, tau = 0.3, scale = "medium", ci = 1.1),
+    regexp = "`ci` must be"
+  )
   # The x == y branch validates the level too
   expect_error(
     cor_test(mtcars, "mpg", "mpg", method = "kendall", bayesian = TRUE, ci = 2),

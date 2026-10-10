@@ -104,6 +104,7 @@
   ci = 0.95,
   ci_method = "hdi"
 ) {
+  .bayes_kendall_ci(ci)
   alpha <- 1 / .bayes_kendall_scale(scale)
   ci_method <- .bayes_kendall_ci_method(ci_method)
 
