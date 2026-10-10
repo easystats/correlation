@@ -362,6 +362,7 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      convert_back_to_r = convert_back_to_r,
       verbose = verbose,
       ...
     )
@@ -383,6 +384,7 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      convert_back_to_r = convert_back_to_r,
       verbose = verbose,
       ...
     )
@@ -400,7 +402,7 @@ correlation <- function(
       method = method,
       bayesian = bayesian,
       p_adjust = p_adjust,
-      partial = partial,
+      partial = partial && !convert_back_to_r,
       multilevel = multilevel,
       partial_bayesian = partial_bayesian,
       bayesian_prior = bayesian_prior,
@@ -428,10 +430,6 @@ correlation <- function(
     ))
   }
 
-  if (convert_back_to_r) {
-    out <- pcor_to_cor(pcor = out)
-  } # Revert back to r if needed.
-
   if (standardize_names) {
     insight::standardize_names(out, ...)
   }
@@ -457,6 +455,7 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  convert_back_to_r = FALSE,
   verbose = TRUE,
   ...
 ) {
@@ -486,7 +485,8 @@ correlation <- function(
         partial_bayesian = partial_bayesian,
         multilevel = multilevel,
         ranktransform = ranktransform,
-        winsorize = winsorize
+        winsorize = winsorize,
+        convert_back_to_r = convert_back_to_r
       )
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
@@ -524,7 +524,8 @@ correlation <- function(
           partial_bayesian = partial_bayesian,
           multilevel = multilevel,
           ranktransform = ranktransform,
-          winsorize = winsorize
+          winsorize = winsorize,
+          convert_back_to_r = convert_back_to_r
         )
         modelframe_current <- rez$data
         rez$params$Group <- modelframe_current$Group <- i
@@ -558,6 +559,7 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  convert_back_to_r = FALSE,
   verbose = TRUE,
   ...
 ) {
@@ -670,6 +672,12 @@ correlation <- function(
     if (!isFALSE(winsorize) && !is.null(winsorize)) {
       params$Method <- paste0("Winsorized ", params$Method)
     }
+  }
+
+  # Revert partial correlations back to r if needed. This needs the full
+  # matrix, so it happens before the variable sets are split.
+  if (convert_back_to_r) {
+    params <- .pcor_to_cor_params(params, ci = ci)
   }
 
   # Remove superfluous correlations when two variable sets provided
