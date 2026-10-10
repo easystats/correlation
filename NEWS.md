@@ -16,6 +16,11 @@
 - `cor_test()` and `correlation()` now respect the `ci` argument when
   `bayesian = TRUE`. Previously, credible intervals were always 95% (#382).
 
+- If the dichotomous variable is a factor, `correlation()` with
+  `method = "biserial"` or `method = "pointbiserial"` now works. Previously,
+  the function split the factor into one column per level and then failed with
+  an error (#180).
+
 - Subsetting the rows or columns of a correlation matrix from `summary()` now
   keeps its p-values, intervals, and other attributes, so the subset still
   prints with significance stars and the table footer (#26).
