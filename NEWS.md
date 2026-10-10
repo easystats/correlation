@@ -16,6 +16,11 @@
 - `cor_test()` and `correlation()` now respect the `ci` argument when
   `bayesian = TRUE`. Previously, credible intervals were always 95% (#382).
 
+- If the dichotomous variable is a factor, `correlation()` with
+  `method = "biserial"` or `method = "pointbiserial"` now works. Previously,
+  the function split the factor into one column per level and then failed with
+  an error (#180).
+
 - If `data2` or `select2` contains a factor and `include_factors = TRUE`,
   `correlation()` now returns the correlations with the dummy variables of that
   factor. Previously, it returned no rows for that factor (#277, #292).
