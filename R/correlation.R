@@ -66,6 +66,13 @@
 #' correlations are computed using the Fieller et al. (1957) correction (see
 #' Bishara and Hittner, 2017).
 #'
+#'   The *p*-values for Spearman's and Kendall's correlations are asymptotic
+#'   approximations (`exact = FALSE` in [stats::cor.test()]), so ties in the
+#'   data do not cause a warning. Pass `exact = TRUE` to get exact *p*-values
+#'   for small samples without ties. For large samples with strong
+#'   correlations, a *p*-value can be smaller than the smallest number that R
+#'   can store, and is then reported as exactly 0.
+#'
 #' - **Biweight midcorrelation**: A measure of similarity that is
 #' median-based, instead of the traditional mean-based, thus being less
 #' sensitive to outliers. It can be used as a robust alternative to other
@@ -486,7 +493,9 @@ correlation <- function(
         partial_bayesian = partial_bayesian,
         multilevel = multilevel,
         ranktransform = ranktransform,
-        winsorize = winsorize
+        winsorize = winsorize,
+        verbose = verbose,
+        ...
       )
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
@@ -524,7 +533,9 @@ correlation <- function(
           partial_bayesian = partial_bayesian,
           multilevel = multilevel,
           ranktransform = ranktransform,
-          winsorize = winsorize
+          winsorize = winsorize,
+          verbose = verbose,
+          ...
         )
         modelframe_current <- rez$data
         rez$params$Group <- modelframe_current$Group <- i
