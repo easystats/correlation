@@ -2,9 +2,20 @@
 
 ## Changes
 
+- `cor_test()` and `correlation()` with `method = "kendall"` and
+  `bayesian = TRUE` now compute a Bayesian Kendall's tau following van Doorn,
+  Ly, Marsman and Wagenmakers (2018), reporting the posterior median `tau`, its
+  credible interval, `pd`, `ROPE_Percentage`, and a Savage-Dickey Bayes factor,
+  instead of the Bayesian Pearson correlation of the raw data (#224). This
+  method does not require the `BayesFactor` package.
+
 - Documentation was updated and corrected in several places.
 
 ## Bug Fixes
+
+- `cor_test()` accepts the same variable for `x` and `y` again for plain
+  (non-partial, non-multilevel) correlations; it errored with "duplicate
+  subscripts for columns".
 
 - `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
   conditional formatting rule ordering to accommodate openxlsx2's new waterfall
