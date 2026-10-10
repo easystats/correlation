@@ -21,6 +21,11 @@
   the function split the factor into one column per level and then failed with
   an error (#180).
 
+- `correlation()` with `multilevel = TRUE` and `partial = FALSE` now returns
+  correct correlations when two variable sets are given (`select2` or `data2`)
+  and no longer fails on grouped data. The `Method` column now keeps the
+  requested method instead of always showing "Pearson" (#207).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.

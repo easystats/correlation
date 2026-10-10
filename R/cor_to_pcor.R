@@ -175,6 +175,58 @@ pcor_to_cor.easycorrelation <- function(
 }
 
 
+# Used by correlation() to back-convert multilevel partial correlations. It
+# needs every pair of the variables, before any split into two variable sets.
+#' @keywords internal
+.pcor_to_cor_params <- function(
+  params,
+  ci = 0.95,
+  method = "pearson",
+  tol = .Machine$double.eps^(2 / 3)
+) {
+  coefficient_name <- intersect(c("r", "rho", "tau"), names(params))[1]
+  if (is.na(coefficient_name)) {
+    insight::format_error(
+      paste0(
+        "`multilevel = TRUE` with `partial = FALSE` is not available for `method = \"",
+        method,
+        "\"`."
+      )
+    )
+  }
+  vars <- unique(c(params$Parameter1, params$Parameter2))
+
+  pcor <- diag(length(vars))
+  dimnames(pcor) <- list(vars, vars)
+  index <- cbind(params$Parameter1, params$Parameter2)
+  pcor[index] <- params[[coefficient_name]]
+  pcor[index[, 2:1, drop = FALSE]] <- params[[coefficient_name]]
+
+  r <- .pcor_to_cor(pcor, tol = tol)[index]
+  n <- params$n_Obs
+  p <- cor_to_p(r, n = n, method = "pearson")
+  ci_vals <- cor_to_ci(r, n = n, ci = ci)
+
+  out <- data.frame(
+    Parameter1 = params$Parameter1,
+    Parameter2 = params$Parameter2,
+    r = r,
+    CI = ci,
+    CI_low = ci_vals$CI_low,
+    CI_high = ci_vals$CI_high,
+    t = p$statistic,
+    df_error = n - 2,
+    p = p$p,
+    Method = params$Method,
+    n_Obs = n,
+    stringsAsFactors = FALSE
+  )
+  names(out)[names(out) == "r"] <- coefficient_name
+  attr(out, "coefficient_name") <- coefficient_name
+  out
+}
+
+
 #' @keywords internal
 .cor_to_pcor_easycormatrix <- function(
   pcor = NULL,

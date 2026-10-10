@@ -65,3 +65,95 @@ test_that("Reductio ad absurdum", {
     tolerance = 0.01
   )
 })
+
+
+test_that("multilevel back-conversion works with select2", {
+  skip_if_not_or_load_if_installed("lme4")
+  d <- transform(mtcars, gear = factor(gear))
+
+  full <- correlation(
+    d,
+    select = c("gear", "hp", "wt", "mpg"),
+    multilevel = TRUE
+  )
+  expect_silent({
+    rez <- correlation(
+      d,
+      select = c("gear", "hp", "wt"),
+      select2 = "mpg",
+      multilevel = TRUE
+    )
+  })
+
+  expected <- full[full$Parameter2 == "mpg", ]
+  expect_identical(rez$Parameter1, c("hp", "wt"))
+  expect_identical(rez$Parameter2, c("mpg", "mpg"))
+  expect_equal(rez$r, expected$r, tolerance = 1e-10)
+  expect_equal(rez$CI_low, expected$CI_low, tolerance = 1e-10)
+  expect_equal(rez$CI_high, expected$CI_high, tolerance = 1e-10)
+  expect_true(all(abs(rez$r) < 1))
+})
+
+
+test_that("multilevel back-conversion keeps the Method label", {
+  skip_if_not_or_load_if_installed("lme4")
+  d <- transform(mtcars, gear = factor(gear))
+
+  rez <- correlation(
+    d,
+    select = c("gear", "hp", "wt", "mpg"),
+    multilevel = TRUE,
+    method = "spearman"
+  )
+  expect_identical(unique(rez$Method), "Spearman correlation")
+
+  rez <- correlation(
+    d,
+    select = c("gear", "hp", "wt", "mpg"),
+    multilevel = TRUE
+  )
+  expect_identical(unique(rez$Method), "Pearson correlation")
+})
+
+
+test_that("multilevel back-conversion works with grouped data", {
+  skip_if_not_or_load_if_installed("lme4")
+  skip_if_not_or_load_if_installed("dplyr")
+  d <- transform(mtcars, gear = factor(gear))
+
+  rez <- correlation(
+    dplyr::group_by(d, am),
+    select = c("gear", "hp", "wt", "mpg"),
+    multilevel = TRUE
+  )
+  expect_identical(unique(rez$Group), c("0", "1"))
+
+  for (g in c(0, 1)) {
+    expected <- correlation(
+      d[d$am == g, ],
+      select = c("gear", "hp", "wt", "mpg"),
+      multilevel = TRUE
+    )
+    observed <- rez[rez$Group == as.character(g), ]
+    expect_equal(observed$r, expected$r, tolerance = 1e-10)
+    expect_equal(observed$p, expected$p, tolerance = 1e-10)
+  }
+})
+
+
+test_that("multilevel back-conversion gives a clear error for Somers' D", {
+  skip_if_not_or_load_if_installed("lme4")
+  skip_if_not_or_load_if_installed("Hmisc")
+  d <- transform(mtcars, gear = factor(gear))
+
+  expect_error(
+    correlation(
+      d,
+      select = c("gear", "vs", "mpg"),
+      method = "somers",
+      multilevel = TRUE
+    ),
+    regexp = "not available",
+    fixed = TRUE
+  )
+})
