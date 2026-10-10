@@ -493,7 +493,9 @@ correlation <- function(
         partial_bayesian = partial_bayesian,
         multilevel = multilevel,
         ranktransform = ranktransform,
-        winsorize = winsorize
+        winsorize = winsorize,
+        verbose = verbose,
+        ...
       )
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
@@ -531,7 +533,9 @@ correlation <- function(
           partial_bayesian = partial_bayesian,
           multilevel = multilevel,
           ranktransform = ranktransform,
-          winsorize = winsorize
+          winsorize = winsorize,
+          verbose = verbose,
+          ...
         )
         modelframe_current <- rez$data
         rez$params$Group <- modelframe_current$Group <- i
