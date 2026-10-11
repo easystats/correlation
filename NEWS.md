@@ -1,5 +1,17 @@
 # correlation (devel)
 
+## New features
+
+- `cor_test()` and `correlation()` gain `bootstrap`, `iterations`, and
+  `cluster` arguments. With `bootstrap = TRUE`, the confidence interval,
+  standard error (new `SE` column), and p-value of every non-Bayesian
+  correlation method come from a percentile bootstrap over resampled rows;
+  `cluster` names a column whose whole clusters are resampled instead, for
+  dependent rows such as repeated measures. The p-value is the achieved
+  significance level of the bootstrap distribution for a zero coefficient
+  and is `NA` for distance correlation and Hoeffding's D, whose bootstrap
+  cannot test independence (#14, #167, #168).
+
 ## Changes
 
 - Documentation was updated and corrected in several places.
