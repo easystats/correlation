@@ -25,6 +25,9 @@ cor_test(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   ...
 )
@@ -125,6 +128,30 @@ cor_test(
   [`datawizard::winsorize()`](https://easystats.github.io/datawizard/reference/winsorize.html)
   function for more details.
 
+- bootstrap:
+
+  If `TRUE`, the confidence interval, standard error, and p-value are
+  obtained from a nonparametric percentile bootstrap instead of the
+  analytic formulas: rows are resampled with replacement `iterations`
+  times and the coefficient is recomputed on each resample. See the
+  'Bootstrap' section. Not available for Bayesian, partial, or
+  multilevel correlations; the interval and p-value are two-sided, so
+  `alternative` (passed through `...`) must be `"two.sided"`, the
+  default.
+
+- iterations:
+
+  Number of bootstrap resamples (default `1000`). Only used when
+  `bootstrap = TRUE` or `cluster` is given.
+
+- cluster:
+
+  Name of a column in `data` identifying clusters of rows (for example,
+  participants with repeated measures). If given, a cluster bootstrap is
+  run (`bootstrap` is set to `TRUE`): whole clusters, rather than rows,
+  are resampled with replacement; rows with a missing cluster value are
+  dropped. See the 'Bootstrap' section.
+
 - verbose:
 
   Toggle warnings.
@@ -135,6 +162,19 @@ cor_test(
   methods. See
   [`stats::cor.test`](https://rdrr.io/r/stats/cor.test.html) for further
   details.
+
+## Value
+
+A data frame of class `easycor_test` with the coefficient, its
+confidence interval, the test statistic, and the p-value. Under
+bootstrap (`bootstrap = TRUE` or `cluster`), the object also has an `SE`
+column and three attributes: `ci_method` (`"bootstrap"` or
+`"cluster-bootstrap"`), `iterations` (the number of replicates kept
+after dropping the failed ones), and `bootstrap_replicates` (the kept
+replicate coefficients, from which `CI_low`, `CI_high`, `SE`, and,
+except for distance correlation and Hoeffding's D, `p` are computed).
+With fewer than three complete observations the bootstrap is skipped and
+neither the `SE` column nor these attributes are added.
 
 ## Details
 
@@ -188,7 +228,12 @@ cor_test(
   referred to as Blomqvist's Beta or medial correlation;
   Blomqvist, 1950) is a median-based non-parametric correlation that has
   some advantages over measures such as Spearman's or Kendall's
-  estimates (see Shmid & Schimdt, 2006).
+  estimates (see Shmid & Schimdt, 2006). It is computed by
+  [`wdm::wdm()`](https://tnagler.github.io/wdm-r/reference/wdm.html),
+  which splits each variable at its median by average rank (observations
+  with rank at or below `(n + 1) / 2` go in the lower half), so when an
+  observation sits exactly at the split (an odd number of rows, or ties
+  spanning the median) the coefficient is not exactly sign-symmetric.
 
 - **Hoeffding’s D**: The Hoeffding’s D statistics is a non-parametric
   rank based measure of association that detects more general departures
@@ -280,6 +325,105 @@ technically Pearson Bayesian correlations of rank transformed data,
 rather than pure Bayesian rank correlations (which have different
 priors).
 
+### Bootstrap confidence intervals
+
+With `bootstrap = TRUE`, or when `cluster` names a column, the
+confidence interval, standard error, and p-value of every non-Bayesian
+method are obtained by resampling instead of from the analytic formulas
+above. The rows with complete data on both variables (and on `cluster`,
+if given) or, with `cluster`, whole clusters of such rows, are resampled
+with replacement `iterations` times and the coefficient is recomputed on
+each resample. `CI_low` and `CI_high` are the `(1 - ci) / 2` and
+`1 - (1 - ci) / 2` quantiles of the replicates (the percentile interval;
+Efron & Tibshirani, 1993, section 13.3, pp. 170-171); `SE` is the
+standard deviation of the replicates (Efron & Tibshirani, 1993, eq. 6.6,
+p. 47); and `p` is the two-sided achieved significance level of the same
+replicate distribution,
+`2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)` capped at 1, where
+`t` are the `B` kept replicates (Efron & Tibshirani, 1993, section 15.4,
+pp. 214-215; the `+ 1` form is the Monte Carlo p-value of Davison &
+Hinkley, 1997, eq. 4.11, p. 141). This p-value tests whether the
+population coefficient is 0. It is approximate, somewhat above nominal
+in small samples, and can never be smaller than `2 / (iterations + 1)`;
+the `+ 1` makes it slightly conservative relative to the percentile
+interval, so near the boundary an interval that excludes 0 can go with a
+`p` just above `1 - ci`. The analytic test statistic and its degrees of
+freedom are set to `NA`.
+
+Distance correlation and Hoeffding's D are degenerate under
+independence, so the bootstrap cannot test whether they are 0: their `p`
+is `NA` under bootstrap (use the analytic test instead), and their
+interval and standard error are reliable only when an association is
+present.
+
+Replicates on which the coefficient cannot be computed (for instance, a
+resample in which a variable is constant or loses a category) are
+dropped with a warning naming the number kept; if fewer than half
+survive, an error is raised. In
+[`correlation()`](https://easystats.github.io/correlation/reference/correlation.md),
+this warning is shown for the first pair only, as for every other
+warning it raises. The `winsorize` and `ranktransform` transformations
+are applied once, to the full data, before resampling.
+
+The cluster bootstrap (`cluster`) resamples whole clusters, so the
+dependence within a cluster (repeated measures of one participant, say)
+is kept intact. Its accuracy is driven by the number of clusters, not
+the number of rows: a warning is raised below 20 clusters, and very
+unequal cluster sizes lower the coverage of the interval (Davison &
+Hinkley, 1997, section 3.8, pp. 100-102; Field & Welsh, 2007, section
+3.3, p. 383, whose cluster bootstrap this is). Giving each row its own
+cluster, numbered in row order, reproduces the plain bootstrap's
+replicates (the result is still labelled `"cluster-bootstrap"` and the
+fewer-than-20-clusters warning applies).
+
+In
+[`correlation()`](https://easystats.github.io/correlation/reference/correlation.md)
+with `p_adjust = "holm"` (the default) or `"bonferroni"`, adjusted
+p-values cannot fall below `2 * m / (iterations + 1)` for `m` pairs, so
+with many pairs raise `iterations` (to at least `2 * m / alpha` for a
+threshold `alpha`) or use `p_adjust = "none"`; the other adjustment
+methods have a lower floor, but never below `2 / (iterations + 1)`.
+Hoeffding's D and Shepherd's Pi are slow under bootstrap: each replicate
+recomputes a statistic quadratic in the number of rows, or an inner
+1000-sample outlier bootstrap.
+
+## References
+
+- Davison, A. C., & Hinkley, D. V. (1997). Bootstrap methods and their
+  application. Cambridge University Press.
+
+- Efron, B., & Tibshirani, R. J. (1993). An introduction to the
+  bootstrap. Chapman & Hall.
+
+- Field, C. A., & Welsh, A. H. (2007). Bootstrapping clustered data.
+  Journal of the Royal Statistical Society: Series B, 69(3), 369-390.
+
+- Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank
+  correlation estimator: robustness properties. Statistics and
+  Computing, 22(2), 471-483.
+
+- Bhushan, N., Mohnert, F., Sloot, D., Jans, L., Albers, C., & Steg, L.
+  (2019). Using a Gaussian graphical model to explore relationships
+  between items and variables in environmental psychology research.
+  Frontiers in psychology, 10, 1050.
+
+- Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
+  correlations when data are not normal. Behavior research methods,
+  49(1), 294-309.
+
+- Fieller, E. C., Hartley, H. O., & Pearson, E. S. (1957). Tests for
+  rank correlation coefficients. I. Biometrika, 44(3/4), 470-481.
+
+- Langfelder, P., & Horvath, S. (2012). Fast R functions for robust
+  correlations and hierarchical clustering. Journal of statistical
+  software, 46(11).
+
+- Blomqvist, N. (1950). On a measure of dependence between two random
+  variables,Annals of Mathematical Statistics,21, 593–600
+
+- Somers, R. H. (1962). A new asymmetric measure of association for
+  ordinal variables. American Sociological Review. 27 (6).
+
 ## Examples
 
 ``` r
@@ -298,6 +442,26 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 #> 
 #> Observations: 150
 # \donttest{
+# Bootstrap confidence interval, standard error, and p-value
+cor_test(iris, "Sepal.Length", "Sepal.Width", bootstrap = TRUE, iterations = 200)
+#> Parameter1   |  Parameter2 |     r |   SE |        95% CI | t | df |     p
+#> --------------------------------------------------------------------------
+#> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.27, 0.02] |   |    | 0.109
+#> 
+#> Confidence intervals: percentile bootstrap (200 iterations)
+#> Observations: 150
+
+# Cluster bootstrap: rows of the same cluster are resampled together
+data <- iris
+data$id <- rep(1:30, 5)
+cor_test(data, "Sepal.Length", "Sepal.Width", cluster = "id", iterations = 200)
+#> Parameter1   |  Parameter2 |     r |   SE |        95% CI | t | df |     p
+#> --------------------------------------------------------------------------
+#> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.29, 0.03] |   |    | 0.109
+#> 
+#> Confidence intervals: percentile cluster bootstrap (200 iterations)
+#> Observations: 150
+
 cor_test(iris, "Sepal.Length", "Sepal.Width", method = "kendall")
 #> Parameter1   |  Parameter2 |   tau |        95% CI |     z |     p
 #> ------------------------------------------------------------------
@@ -373,7 +537,7 @@ if (require("BayesFactor", quietly = TRUE)) {
 #> ************
 #> Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE
 #> -----------------------------------------------------------------------
-#> Sepal.Length | Sepal.Width | -0.11 | [-0.27, 0.04] | 91.90% |    42.70%
+#> Sepal.Length | Sepal.Width | -0.11 | [-0.25, 0.05] | 93.17% |    42.85%
 #> 
 #> Parameter1   |         Prior |    BF
 #> ------------------------------------
