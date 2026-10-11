@@ -221,9 +221,13 @@
 #' of them), then winsorized (`winsorize`), then rank transformed
 #' (`ranktransform`), and then the coefficient is computed. The rows
 #' resampled are those that enter at least one of the two regressions of the
-#' partial step, so a row with a missing value in one of the two variables is
-#' kept, while a row with a missing covariate, a missing value in both
-#' variables, or a missing `cluster` value is dropped. With `cluster`, a
+#' partial step (a variable that stays a factor, as with the polychoric and
+#' tetrachoric methods, is not partialled and needs only its own value). So a
+#' row with a missing value in one of the two variables is
+#' kept, and a row with a missing covariate, a missing value in both
+#' variables, or a missing `cluster` value is dropped (a row with a missing
+#' covariate is kept if one of the two variables stays a factor and is
+#' present). With `cluster`, a
 #' cluster with no such row is not resampled and not counted. The
 #' coefficient of each resample leaves out its incomplete rows as the point
 #' estimate does. Because each replicate refits

@@ -251,25 +251,6 @@ cor_test <- function(
       # rows with a missing cluster value cannot be resampled: drop them
       # here so the estimate, `n_Obs`, and the interval use the same rows
       data <- data[!is.na(data[[cluster]]), , drop = FALSE]
-      # the clusters the bootstrap resamples: with `partial`, those with a row
-      # that enters one of the two regressions
-      counted <- if (isTRUE(partial)) {
-        .partial_rows_used(data, x, y, cluster)
-      } else {
-        stats::complete.cases(data[c(x, y, cluster)])
-      }
-      n_clusters <- length(unique(data[[cluster]][counted]))
-      if (n_clusters < 2L) {
-        insight::format_error(
-          "`cluster` must have at least 2 distinct values among the complete cases."
-        )
-      }
-      if (n_clusters < 20L && isTRUE(verbose)) {
-        insight::format_warning(sprintf(
-          "`cluster` has only %d distinct values. The accuracy of the cluster bootstrap is driven by the number of clusters, not the number of rows; with fewer than 20 clusters the interval can undercover.",
-          n_clusters
-        ))
-      }
     }
   }
 
@@ -290,6 +271,29 @@ cor_test <- function(
     # convert all input to factors, but only if all input currently is numeric
     # we allow mix of numeric and factors
     data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
+  }
+
+  # the clusters the bootstrap resamples (counted after the conversions
+  # above, which decide whether x and y are partialled): with `partial`,
+  # those with a row that enters one of the two regressions
+  if (bootstrap && !is.null(cluster)) {
+    counted <- if (isTRUE(partial)) {
+      .partial_rows_used(data, x, y, cluster)
+    } else {
+      stats::complete.cases(data[c(x, y, cluster)])
+    }
+    n_clusters <- length(unique(data[[cluster]][counted]))
+    if (n_clusters < 2L) {
+      insight::format_error(
+        "`cluster` must have at least 2 distinct values among the complete cases."
+      )
+    }
+    if (n_clusters < 20L && isTRUE(verbose)) {
+      insight::format_warning(sprintf(
+        "`cluster` has only %d distinct values. The accuracy of the cluster bootstrap is driven by the number of clusters, not the number of rows; with fewer than 20 clusters the interval can undercover.",
+        n_clusters
+      ))
+    }
   }
 
   # semi-partial

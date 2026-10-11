@@ -289,7 +289,8 @@ test_that("each replicate re-partials instead of resampling fixed residuals", {
   set.seed(8)
   boot_fixed <- cor_test(fixed, "x", "y", bootstrap = TRUE, iterations = 100)
   expect_equal(attr(boot_fixed, "bootstrap_replicates"), by_hand)
-  # the partial bootstrap re-fits the covariates in each resample
+  # the partial bootstrap re-fits the regressions on the covariates in each
+  # resample
   expect_false(isTRUE(all.equal(attr(boot, "bootstrap_replicates"), by_hand)))
   expect_equal(boot$r, cor(fixed$x, fixed$y), tolerance = 1e-12)
 })
@@ -488,6 +489,14 @@ test_that("partial cluster bootstrap counts the clusters it resamples", {
     iterations = 5
   ))
   d$z3[d$id == 20] <- NA
+  expect_warning(
+    cor_test(d, "x", "y", partial = TRUE, cluster = "id", iterations = 5),
+    "only 19 distinct values"
+  )
+
+  # a factor x is converted to numeric and partialled, so the count is taken
+  # after the conversion: clusters 20 and 21 still have no usable row
+  d$x <- factor(round(d$y))
   expect_warning(
     cor_test(d, "x", "y", partial = TRUE, cluster = "id", iterations = 5),
     "only 19 distinct values"
