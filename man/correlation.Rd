@@ -25,6 +25,9 @@ correlation(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   standardize_names = getOption("easystats.standardize_names", FALSE),
   ...
@@ -125,6 +128,23 @@ limiting the impact of extreme values). Can be either \code{FALSE} or a number
 between 0 and 1 (e.g., \code{0.2}) that corresponds to the desired threshold.
 See the \code{\link[datawizard:winsorize]{datawizard::winsorize()}} function for more details.}
 
+\item{bootstrap}{If \code{TRUE}, the confidence interval, standard error, and
+p-value are obtained from a nonparametric percentile bootstrap instead of
+the analytic formulas: rows are resampled with replacement \code{iterations}
+times and the coefficient is recomputed on each resample. See the
+'Bootstrap' section. Not available for Bayesian, partial, or multilevel
+correlations; the interval and p-value are two-sided, so \code{alternative}
+(passed through \code{...}) must be \code{"two.sided"}, the default.}
+
+\item{iterations}{Number of bootstrap resamples (default \code{1000}). Only used
+when \code{bootstrap = TRUE} or \code{cluster} is given.}
+
+\item{cluster}{Name of a column in \code{data} identifying clusters of rows
+(for example, participants with repeated measures). If given, a cluster
+bootstrap is run (\code{bootstrap} is set to \code{TRUE}): whole clusters, rather
+than rows, are resampled with replacement; rows with a missing cluster
+value are dropped. See the 'Bootstrap' section.}
+
 \item{verbose}{Toggle warnings.}
 
 \item{standardize_names}{This option can be set to \code{TRUE} to run
@@ -137,7 +157,10 @@ other methods. See \code{stats::cor.test} for further details.}
 }
 \value{
 A correlation object that can be displayed using the \code{print}, \code{summary} or
-\code{table} methods.
+\code{table} methods. Under bootstrap (\code{bootstrap = TRUE} or \code{cluster}), the
+object has an \code{SE} column and the attributes \code{ci_method} (\code{"bootstrap"} or
+\code{"cluster-bootstrap"}) and \code{iterations} (the number of replicates requested
+for each pair); the per-pair replicates are not kept.
 
 \subsection{Multiple tests correction}{
 The \code{p_adjust} argument can be used to adjust p-values for multiple
@@ -192,7 +215,11 @@ distance).
 referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
 median-based non-parametric correlation that has some advantages over
 measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
-2006).
+2006). It is computed by \code{wdm::wdm()}, which splits each variable at its
+median by average rank (observations with rank at or below \code{(n + 1) / 2} go
+in the lower half), so when an observation sits exactly at the split (an odd
+number of rows, or ties spanning the median) the coefficient is not exactly
+sign-symmetric.
 \item \strong{Hoeffding’s D}: The Hoeffding’s D statistics is a
 non-parametric rank based measure of association that detects more general
 departures from independence (Hoeffding 1948), including non-linear
@@ -269,6 +296,63 @@ Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technical
 Pearson Bayesian correlations of rank transformed data, rather than pure
 Bayesian rank correlations (which have different priors).
 }
+
+\subsection{Bootstrap confidence intervals}{
+With \code{bootstrap = TRUE}, or when \code{cluster} names a column, the confidence
+interval, standard error, and p-value of every non-Bayesian method are
+obtained by resampling instead of from the analytic formulas above. The
+rows with complete data on both variables (and on \code{cluster}, if given) or,
+with \code{cluster}, whole clusters of such rows, are resampled with replacement
+\code{iterations} times and the coefficient is recomputed on each resample.
+\code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
+\code{1 - (1 - ci) / 2} quantiles of the replicates (the percentile interval;
+Efron & Tibshirani, 1993, section 13.3, pp. 170-171); \code{SE} is the standard
+deviation of the replicates (Efron & Tibshirani, 1993, eq. 6.6, p. 47); and
+\code{p} is the two-sided achieved significance level of the same replicate
+distribution, \code{2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)} capped
+at 1, where \code{t} are the \code{B} kept replicates (Efron & Tibshirani, 1993,
+section 15.4, pp. 214-215; the \code{+ 1} form is the Monte Carlo p-value of
+Davison & Hinkley, 1997, eq. 4.11, p. 141). This p-value tests whether the
+population coefficient is 0. It is approximate, somewhat above nominal in
+small samples, and can never be smaller than \code{2 / (iterations + 1)}; the
+\code{+ 1} makes it slightly conservative relative to the percentile interval,
+so near the boundary an interval that excludes 0 can go with a \code{p} just
+above \code{1 - ci}. The analytic test statistic and its degrees of freedom are
+set to \code{NA}.
+
+Distance correlation and Hoeffding's D are degenerate under independence,
+so the bootstrap cannot test whether they are 0: their \code{p} is \code{NA} under
+bootstrap (use the analytic test instead), and their interval and standard
+error are reliable only when an association is present.
+
+Replicates on which the coefficient cannot be computed (for instance, a
+resample in which a variable is constant or loses a category) are dropped
+with a warning naming the number kept; if fewer than half survive, an
+error is raised. In \code{correlation()}, this warning is shown for the first
+pair only, as for every other warning it raises. The \code{winsorize} and
+\code{ranktransform} transformations are applied once, to the full data, before
+resampling.
+
+The cluster bootstrap (\code{cluster}) resamples whole clusters, so the
+dependence within a cluster (repeated measures of one participant, say)
+is kept intact. Its accuracy is driven by the number of clusters, not the
+number of rows: a warning is raised below 20 clusters, and very unequal
+cluster sizes lower the coverage of the interval (Davison & Hinkley, 1997,
+section 3.8, pp. 100-102; Field & Welsh, 2007, section 3.3, p. 383, whose
+cluster bootstrap this is). Giving each row its own cluster, numbered in
+row order, reproduces the plain bootstrap's replicates (the result is still
+labelled \code{"cluster-bootstrap"} and the fewer-than-20-clusters warning
+applies).
+
+In \code{correlation()} with \code{p_adjust = "holm"} (the default) or
+\code{"bonferroni"}, adjusted p-values cannot fall below
+\code{2 * m / (iterations + 1)} for \code{m} pairs, so with many pairs raise
+\code{iterations} (to at least \code{2 * m / alpha} for a threshold \code{alpha}) or use
+\code{p_adjust = "none"}; the other adjustment methods have a lower floor, but
+never below \code{2 / (iterations + 1)}. Hoeffding's D and Shepherd's Pi are slow under
+bootstrap: each replicate recomputes a statistic quadratic in the number of
+rows, or an inner 1000-sample outlier bootstrap.
+}
 }
 \examples{
 \dontshow{if (all(insight::check_if_installed(c("psych", "datawizard"), quietly = TRUE)) && getRversion() >= "4.1.0") withAutoprint(\{ # examplesIf}
@@ -302,10 +386,21 @@ correlation(anscombe, select = c("x1", "x2"), rename = c("var1", "var2"))
 
 # automatic selection of correlation method
 correlation(mtcars[-2], method = "auto")
+
+# bootstrap confidence intervals, and a cluster bootstrap
+correlation(iris[1:4], bootstrap = TRUE, iterations = 200)
+iris$id <- rep(1:30, 5)
+correlation(iris, select = c("Sepal.Length", "Petal.Length"), cluster = "id", iterations = 200)
 \dontshow{\}) # examplesIf}
 }
 \references{
 \itemize{
+\item Davison, A. C., & Hinkley, D. V. (1997). Bootstrap methods and their
+application. Cambridge University Press.
+\item Efron, B., & Tibshirani, R. J. (1993). An introduction to the bootstrap.
+Chapman & Hall.
+\item Field, C. A., & Welsh, A. H. (2007). Bootstrapping clustered data. Journal
+of the Royal Statistical Society: Series B, 69(3), 369-390.
 \item Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank
 correlation estimator: robustness properties. Statistics and Computing,
 22(2), 471-483.
