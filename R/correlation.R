@@ -181,8 +181,9 @@
 #' \subsection{Bootstrap confidence intervals}{
 #' With `bootstrap = TRUE`, or when `cluster` names a column, the confidence
 #' interval, standard error, and p-value of every non-Bayesian method are
-#' obtained by resampling instead of from the analytic formulas above. The
-#' rows with complete data on both variables (and on `cluster`, if given) or,
+#' obtained by resampling instead of from the analytic formulas above. Without
+#' `partial`, the rows with complete data on both variables (and on `cluster`,
+#' if given) or,
 #' with `cluster`, whole clusters of such rows, are resampled with replacement
 #' `iterations` times and the coefficient is recomputed on each resample.
 #' `CI_low` and `CI_high` are the `(1 - ci) / 2` and
@@ -219,8 +220,9 @@
 #' partialled on the other variables again (the `cluster` column is never one
 #' of them), then winsorized (`winsorize`), then rank transformed
 #' (`ranktransform`), and then the coefficient is computed. All rows are
-#' resampled, those with missing values included, and each resample drops its
-#' incomplete rows as the point estimate does. Because each replicate refits
+#' resampled (except those with a missing `cluster` value), those with
+#' missing values included, and the coefficient of each resample leaves out
+#' its incomplete rows as the point estimate does. Because each replicate refits
 #' the regressions on the other variables, a partial bootstrap is slower than
 #' a bootstrap without `partial`.
 #'
@@ -412,6 +414,12 @@ correlation <- function(
     iterations <- .validate_iterations(iterations)
   } else if (isTRUE(bootstrap)) {
     iterations <- .validate_iterations(iterations)
+  }
+  # `partial_bayesian` is not passed on to cor_test(), which would refuse it
+  if (isTRUE(bootstrap) && isTRUE(partial_bayesian)) {
+    insight::format_error(
+      "Bootstrap confidence intervals are not available for full Bayesian partial correlations (`partial_bayesian = TRUE`)."
+    )
   }
 
   if (is.null(data2) && !is.null(select)) {

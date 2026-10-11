@@ -37,8 +37,9 @@
     data <- data[stats::complete.cases(data[cols]), cols, drop = FALSE]
   }
   # with `partial`, `data` holds every row and column before the chain (the
-  # covariates among them); each resample runs the chain, which drops the
-  # incomplete rows as for the point estimate
+  # covariates among them); in each resample the chain leaves NA where a row
+  # is incomplete, and the coefficient step drops those rows, as for the
+  # point estimate
   n <- nrow(data)
 
   # resampling units: rows, or whole clusters in split() order

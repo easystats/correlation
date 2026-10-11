@@ -487,8 +487,9 @@ cor_test <- function(
 # Utilities ---------------------------------------------------------------
 
 # The transformations applied to x and y before the coefficient, in order:
-# partial (x and y each adjusted for every other column except `cluster`),
-# winsorize, rank transform. `winsorize` is FALSE, NULL, or a threshold.
+# partial (x and y each adjusted for every column other than x, y, and
+# `cluster`), winsorize, rank transform. `winsorize` is FALSE, NULL, or a
+# threshold.
 #' @keywords internal
 .cor_test_chain <- function(
   data,

@@ -1,8 +1,9 @@
 # Bootstrap intervals for partial correlations --------------------------------
 #
 # Each replicate takes the resampled raw rows and runs the chain of the point
-# estimate: partial (x and y each regressed on every other column except the
-# cluster column), then winsorize, then rank transform, then the coefficient.
+# estimate: partial (x and y each regressed on every column other than x, y,
+# and the cluster column), then winsorize, then rank transform, then the
+# coefficient.
 #
 # Populations:
 # - sim_partial(n): z1, z2, z3 ~ iid N(0, 1); x = 0.5 z1 + 0.3 z2 + e,
@@ -341,4 +342,17 @@ test_that("AC6: correlation() runs the partial cluster bootstrap for each pair",
 
   plain <- correlation(no_id, partial = TRUE, bootstrap = TRUE, iterations = 50)
   expect_identical(attr(plain, "ci_method"), "bootstrap")
+})
+
+test_that("AC5: correlation() refuses the bootstrap with partial_bayesian", {
+  d <- sim_partial(30)
+  expect_error(
+    correlation(d, partial = TRUE, partial_bayesian = TRUE, bootstrap = TRUE),
+    "not available for full Bayesian\\s+partial correlations"
+  )
+  d$id <- rep(1:10, 3)
+  expect_error(
+    correlation(d, partial_bayesian = TRUE, cluster = "id"),
+    "not available for full Bayesian\\s+partial correlations"
+  )
 })

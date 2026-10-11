@@ -258,8 +258,9 @@ Bayesian rank correlations (which have different priors).
 \subsection{Bootstrap confidence intervals}{
 With \code{bootstrap = TRUE}, or when \code{cluster} names a column, the confidence
 interval, standard error, and p-value of every non-Bayesian method are
-obtained by resampling instead of from the analytic formulas above. The
-rows with complete data on both variables (and on \code{cluster}, if given) or,
+obtained by resampling instead of from the analytic formulas above. Without
+\code{partial}, the rows with complete data on both variables (and on \code{cluster},
+if given) or,
 with \code{cluster}, whole clusters of such rows, are resampled with replacement
 \code{iterations} times and the coefficient is recomputed on each resample.
 \code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
@@ -296,8 +297,9 @@ estimate on the resampled raw rows, in this order: the two variables are
 partialled on the other variables again (the \code{cluster} column is never one
 of them), then winsorized (\code{winsorize}), then rank transformed
 (\code{ranktransform}), and then the coefficient is computed. All rows are
-resampled, those with missing values included, and each resample drops its
-incomplete rows as the point estimate does. Because each replicate refits
+resampled (except those with a missing \code{cluster} value), those with
+missing values included, and the coefficient of each resample leaves out
+its incomplete rows as the point estimate does. Because each replicate refits
 the regressions on the other variables, a partial bootstrap is slower than
 a bootstrap without \code{partial}.
 
