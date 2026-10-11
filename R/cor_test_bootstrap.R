@@ -35,11 +35,14 @@
     # `data` is already winsorized and rank transformed
     cols <- unique(c(x, y, cluster))
     data <- data[stats::complete.cases(data[cols]), cols, drop = FALSE]
+  } else {
+    # every column before the chain (the covariates among them), and the rows
+    # that enter a regression, so that a cluster without such a row is not a
+    # resampling unit; in each resample the chain leaves NA where a row is
+    # incomplete, and the coefficient step drops those rows, as for the
+    # point estimate
+    data <- data[.partial_rows_used(data, x, y, cluster), , drop = FALSE]
   }
-  # with `partial`, `data` holds every row and column before the chain (the
-  # covariates among them); in each resample the chain leaves NA where a row
-  # is incomplete, and the coefficient step drops those rows, as for the
-  # point estimate
   n <- nrow(data)
 
   # resampling units: rows, or whole clusters in split() order

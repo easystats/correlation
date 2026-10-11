@@ -219,10 +219,14 @@
 #' estimate on the resampled raw rows, in this order: the two variables are
 #' partialled on the other variables again (the `cluster` column is never one
 #' of them), then winsorized (`winsorize`), then rank transformed
-#' (`ranktransform`), and then the coefficient is computed. All rows are
-#' resampled (except those with a missing `cluster` value), those with
-#' missing values included, and the coefficient of each resample leaves out
-#' its incomplete rows as the point estimate does. Because each replicate refits
+#' (`ranktransform`), and then the coefficient is computed. The rows
+#' resampled are those that enter at least one of the two regressions of the
+#' partial step, so a row with a missing value in one of the two variables is
+#' kept, while a row with a missing covariate, a missing value in both
+#' variables, or a missing `cluster` value is dropped. With `cluster`, a
+#' cluster with no such row is not resampled and not counted. The
+#' coefficient of each resample leaves out its incomplete rows as the point
+#' estimate does. Because each replicate refits
 #' the regressions on the other variables, a partial bootstrap is slower than
 #' a bootstrap without `partial`.
 #'

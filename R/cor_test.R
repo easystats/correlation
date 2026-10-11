@@ -251,12 +251,14 @@ cor_test <- function(
       # rows with a missing cluster value cannot be resampled: drop them
       # here so the estimate, `n_Obs`, and the interval use the same rows
       data <- data[!is.na(data[[cluster]]), , drop = FALSE]
-      # with `partial`, a row enters the coefficient only if it is complete
-      # on the covariates too
-      count_columns <- if (isTRUE(partial)) names(data) else c(x, y, cluster)
-      n_clusters <- length(unique(data[[cluster]][
-        stats::complete.cases(data[count_columns])
-      ]))
+      # the clusters the bootstrap resamples: with `partial`, those with a row
+      # that enters one of the two regressions
+      counted <- if (isTRUE(partial)) {
+        .partial_rows_used(data, x, y, cluster)
+      } else {
+        stats::complete.cases(data[c(x, y, cluster)])
+      }
+      n_clusters <- length(unique(data[[cluster]][counted]))
       if (n_clusters < 2L) {
         insight::format_error(
           "`cluster` must have at least 2 distinct values among the complete cases."
@@ -548,6 +550,23 @@ cor_test <- function(
   }
 
   data
+}
+
+# The rows that enter at least one step of the partial point estimate: the
+# regression of x (complete on x and the covariates) or that of y. A
+# non-numeric x or y is not adjusted, so its rows only need its own value.
+# Other rows change no estimate and are not resampled.
+#' @keywords internal
+.partial_rows_used <- function(data, x, y, cluster = NULL) {
+  columns <- setdiff(names(data), cluster)
+  used_for <- function(var, other) {
+    if (is.numeric(data[[var]])) {
+      stats::complete.cases(data[setdiff(columns, other)])
+    } else {
+      !is.na(data[[var]])
+    }
+  }
+  used_for(x, y) | used_for(y, x)
 }
 
 # `var` adjusted for every other column of `data`, as in

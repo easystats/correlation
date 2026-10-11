@@ -341,10 +341,14 @@ With \code{partial = TRUE}, each resample repeats the steps of the point
 estimate on the resampled raw rows, in this order: the two variables are
 partialled on the other variables again (the \code{cluster} column is never one
 of them), then winsorized (\code{winsorize}), then rank transformed
-(\code{ranktransform}), and then the coefficient is computed. All rows are
-resampled (except those with a missing \code{cluster} value), those with
-missing values included, and the coefficient of each resample leaves out
-its incomplete rows as the point estimate does. Because each replicate refits
+(\code{ranktransform}), and then the coefficient is computed. The rows
+resampled are those that enter at least one of the two regressions of the
+partial step, so a row with a missing value in one of the two variables is
+kept, while a row with a missing covariate, a missing value in both
+variables, or a missing \code{cluster} value is dropped. With \code{cluster}, a
+cluster with no such row is not resampled and not counted. The
+coefficient of each resample leaves out its incomplete rows as the point
+estimate does. Because each replicate refits
 the regressions on the other variables, a partial bootstrap is slower than
 a bootstrap without \code{partial}.
 

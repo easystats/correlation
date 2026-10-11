@@ -381,12 +381,39 @@ partial_by_hand <- function(d) {
   cor(rx, ry, use = "complete.obs")
 }
 
-test_that("partial bootstrap resamples all rows, those with missing values included", {
+# the replicates of resampling the rows of `d` by hand, after the same seed
+rows_by_hand <- function(d, seed, iterations) {
+  set.seed(seed)
+  vapply(
+    seq_len(iterations),
+    function(i) {
+      partial_by_hand(d[sample.int(nrow(d), nrow(d), replace = TRUE), ])
+    },
+    1
+  )
+}
+
+# the same for the clusters of `d` in split() order
+clusters_by_hand <- function(d, seed, iterations) {
+  set.seed(seed)
+  groups <- split(seq_len(nrow(d)), d$id)
+  vapply(
+    seq_len(iterations),
+    function(i) {
+      idx <- sample.int(length(groups), length(groups), replace = TRUE)
+      partial_by_hand(d[unlist(groups[idx], use.names = FALSE), ])
+    },
+    1
+  )
+}
+
+test_that("partial bootstrap resamples the rows that enter a regression", {
   set.seed(81)
   d <- sim_partial(40)
-  d$x[3] <- NA
-  d$y[7] <- NA
-  d$z2[11] <- NA
+  d$x[3] <- NA # enters the regression of y
+  d$y[7] <- NA # enters the regression of x
+  d$z2[11] <- NA # enters neither regression
+  d[15, c("x", "y")] <- NA # enters neither regression
   expect_equal(
     cor_test(d, "x", "y", partial = TRUE)$r,
     partial_by_hand(d),
@@ -402,32 +429,27 @@ test_that("partial bootstrap resamples all rows, those with missing values inclu
     bootstrap = TRUE,
     iterations = 5
   )
-  set.seed(9)
-  by_hand <- vapply(
-    seq_len(5),
-    function(i) {
-      partial_by_hand(d[sample.int(nrow(d), nrow(d), replace = TRUE), ])
-    },
-    1
+  replicates <- attr(boot, "bootstrap_replicates")
+  expect_equal(
+    replicates,
+    rows_by_hand(d[-c(11, 15), ], 9, 5),
+    tolerance = 1e-12
   )
-  expect_equal(attr(boot, "bootstrap_replicates"), by_hand, tolerance = 1e-12)
 
-  # discriminating control: resampling only the rows complete on all columns
-  # draws other rows
+  # discriminating controls: resampling every row, or only the rows complete
+  # on all columns, draws other rows
+  expect_gt(abs(replicates[1] - rows_by_hand(d, 9, 1)), 1e-6)
   complete <- d[stats::complete.cases(d), ]
-  set.seed(9)
-  first_complete <- partial_by_hand(
-    complete[sample.int(nrow(complete), nrow(complete), replace = TRUE), ]
-  )
-  expect_gt(abs(attr(boot, "bootstrap_replicates")[1] - first_complete), 1e-6)
+  expect_gt(abs(replicates[1] - rows_by_hand(complete, 9, 1)), 1e-6)
 })
 
-test_that("partial cluster bootstrap drops rows with a missing cluster value", {
+test_that("partial cluster bootstrap resamples only clusters with a usable row", {
   set.seed(82)
-  d <- sim_partial(60)
-  d$id <- rep(1:20, each = 3)
-  d$id[c(5, 6)] <- NA
-  d$z1[30] <- NA
+  d <- sim_partial(75)
+  d$id <- rep(1:25, each = 3)
+  d$id[c(5, 6)] <- NA # dropped: no cluster
+  d$z1[30] <- NA # dropped: enters neither regression
+  d$z3[d$id %in% 25] <- NA # cluster 25 has no usable row
   set.seed(10)
   boot <- cor_test(
     d,
@@ -437,27 +459,26 @@ test_that("partial cluster bootstrap drops rows with a missing cluster value", {
     cluster = "id",
     iterations = 5
   )
-  kept <- d[!is.na(d$id), ]
-  expect_equal(boot$r, partial_by_hand(kept), tolerance = 1e-12)
-  set.seed(10)
-  groups <- split(seq_len(nrow(kept)), kept$id)
-  by_hand <- vapply(
-    seq_len(5),
-    function(i) {
-      idx <- sample.int(length(groups), length(groups), replace = TRUE)
-      partial_by_hand(kept[unlist(groups[idx], use.names = FALSE), ])
-    },
-    1
-  )
-  expect_equal(attr(boot, "bootstrap_replicates"), by_hand, tolerance = 1e-12)
+  with_id <- d[!is.na(d$id), ]
+  expect_equal(boot$r, partial_by_hand(with_id), tolerance = 1e-12)
+  used <- d[!is.na(d$id) & !is.na(d$z1) & !is.na(d$z3), ]
+  expect_identical(length(unique(used$id)), 24L)
+  replicates <- attr(boot, "bootstrap_replicates")
+  expect_equal(replicates, clusters_by_hand(used, 10, 5), tolerance = 1e-12)
+
+  # discriminating control: keeping cluster 25 as a resampling unit draws
+  # other clusters
+  expect_gt(abs(replicates[1] - clusters_by_hand(with_id, 10, 1)), 1e-6)
 })
 
-test_that("partial cluster bootstrap counts clusters with complete covariates", {
+test_that("partial cluster bootstrap counts the clusters it resamples", {
   set.seed(83)
   d <- sim_partial(63)
   d$id <- rep(1:21, each = 3)
-  # cluster 21 has no row complete on the covariates: 20 clusters remain
+  # cluster 21 has no row that enters a regression: 20 clusters remain
   d$z3[d$id == 21] <- NA
+  # cluster 1 still counts: its rows enter the regression of y
+  d$x[d$id == 1] <- NA
   expect_silent(cor_test(
     d,
     "x",
