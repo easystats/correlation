@@ -183,9 +183,9 @@
 #' interval, standard error, and p-value of every non-Bayesian method are
 #' obtained by resampling instead of from the analytic formulas above. Without
 #' `partial`, the rows with complete data on both variables (and on `cluster`,
-#' if given) or,
-#' with `cluster`, whole clusters of such rows, are resampled with replacement
-#' `iterations` times and the coefficient is recomputed on each resample.
+#' if given) are resampled with replacement `iterations` times, or, with
+#' `cluster`, whole clusters of such rows are, and the coefficient is
+#' recomputed on each resample.
 #' `CI_low` and `CI_high` are the `(1 - ci) / 2` and
 #' `1 - (1 - ci) / 2` quantiles of the replicates (the percentile interval;
 #' Efron & Tibshirani, 1993, section 13.3, pp. 170-171); `SE` is the standard

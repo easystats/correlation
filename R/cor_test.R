@@ -251,8 +251,11 @@ cor_test <- function(
       # rows with a missing cluster value cannot be resampled: drop them
       # here so the estimate, `n_Obs`, and the interval use the same rows
       data <- data[!is.na(data[[cluster]]), , drop = FALSE]
+      # with `partial`, a row enters the coefficient only if it is complete
+      # on the covariates too
+      count_columns <- if (isTRUE(partial)) names(data) else c(x, y, cluster)
       n_clusters <- length(unique(data[[cluster]][
-        stats::complete.cases(data[c(x, y, cluster)])
+        stats::complete.cases(data[count_columns])
       ]))
       if (n_clusters < 2L) {
         insight::format_error(
@@ -507,16 +510,18 @@ cor_test <- function(
   if (isTRUE(partial)) {
     # the cluster column identifies resampling units and is never a covariate
     covariates <- setdiff(names(data), cluster)
-    data[[x]] <- datawizard::adjust(
+    data[[x]] <- .adjust_variable(
       data[setdiff(covariates, y)],
+      x,
       multilevel = multilevel,
       bayesian = partial_bayesian
-    )[[x]]
-    data[[y]] <- datawizard::adjust(
+    )
+    data[[y]] <- .adjust_variable(
       data[setdiff(covariates, x)],
+      y,
       multilevel = multilevel,
       bayesian = partial_bayesian
-    )[[y]]
+    )
   }
 
   # Winsorize
@@ -543,6 +548,25 @@ cor_test <- function(
   }
 
   data
+}
+
+# `var` adjusted for every other column of `data`, as in
+# `datawizard::adjust(data)[[var]]`, but fitting only the model for `var`
+# (the default `select = is.numeric` fits one model per numeric column). A
+# non-numeric `var` is returned unchanged, as `adjust()` leaves it.
+#' @keywords internal
+.adjust_variable <- function(data, var, multilevel = FALSE, bayesian = FALSE) {
+  if (!is.numeric(data[[var]])) {
+    return(data[[var]])
+  }
+  # `select` is inlined as a string: `adjust()` reads a symbol passed to
+  # `select` as a column name, so `select = var` would pick a column `var`
+  eval(bquote(datawizard::adjust(
+    data,
+    select = .(var),
+    multilevel = multilevel,
+    bayesian = bayesian
+  )))[[var]]
 }
 
 #' @keywords internal

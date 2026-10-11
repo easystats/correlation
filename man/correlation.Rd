@@ -305,9 +305,9 @@ With \code{bootstrap = TRUE}, or when \code{cluster} names a column, the confide
 interval, standard error, and p-value of every non-Bayesian method are
 obtained by resampling instead of from the analytic formulas above. Without
 \code{partial}, the rows with complete data on both variables (and on \code{cluster},
-if given) or,
-with \code{cluster}, whole clusters of such rows, are resampled with replacement
-\code{iterations} times and the coefficient is recomputed on each resample.
+if given) are resampled with replacement \code{iterations} times, or, with
+\code{cluster}, whole clusters of such rows are, and the coefficient is
+recomputed on each resample.
 \code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
 \code{1 - (1 - ci) / 2} quantiles of the replicates (the percentile interval;
 Efron & Tibshirani, 1993, section 13.3, pp. 170-171); \code{SE} is the standard

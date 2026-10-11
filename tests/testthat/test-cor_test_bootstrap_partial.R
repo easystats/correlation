@@ -248,6 +248,15 @@ test_that("AC4: each replicate partials, then winsorizes or rank transforms", {
     stats::residuals(stats::lm(y ~ z, data = rd))
   )
   expect_gt(abs(attr(w, "bootstrap_replicates")[1] - wrong_order), 1e-6)
+
+  # discriminating control: ranking before partialling gives another value
+  rd <- d[unlist(groups[idx], use.names = FALSE), ]
+  rd[c("x", "y")] <- ranked(rd[c("x", "y")])
+  wrong_order <- cor(
+    stats::residuals(stats::lm(x ~ z, data = rd)),
+    stats::residuals(stats::lm(y ~ z, data = rd))
+  )
+  expect_gt(abs(attr(rk, "bootstrap_replicates")[1] - wrong_order), 1e-6)
 })
 
 test_that("each replicate re-partials instead of resampling fixed residuals", {
@@ -354,5 +363,143 @@ test_that("AC5: correlation() refuses the bootstrap with partial_bayesian", {
   expect_error(
     correlation(d, partial_bayesian = TRUE, cluster = "id"),
     "not available for full Bayesian\\s+partial correlations"
+  )
+})
+
+# Missing values and the resampled rows -----------------------------------------
+
+# x and y given z1 to z3, each fitted on its own complete rows (as adjust()
+# does: x without y, y without x), then correlated on the rows where both
+# residuals exist
+partial_by_hand <- function(d) {
+  rx <- stats::residuals(
+    stats::lm(x ~ z1 + z2 + z3, data = d, na.action = stats::na.exclude)
+  )
+  ry <- stats::residuals(
+    stats::lm(y ~ z1 + z2 + z3, data = d, na.action = stats::na.exclude)
+  )
+  cor(rx, ry, use = "complete.obs")
+}
+
+test_that("partial bootstrap resamples all rows, those with missing values included", {
+  set.seed(81)
+  d <- sim_partial(40)
+  d$x[3] <- NA
+  d$y[7] <- NA
+  d$z2[11] <- NA
+  expect_equal(
+    cor_test(d, "x", "y", partial = TRUE)$r,
+    partial_by_hand(d),
+    tolerance = 1e-12
+  )
+
+  set.seed(9)
+  boot <- cor_test(
+    d,
+    "x",
+    "y",
+    partial = TRUE,
+    bootstrap = TRUE,
+    iterations = 5
+  )
+  set.seed(9)
+  by_hand <- vapply(
+    seq_len(5),
+    function(i) {
+      partial_by_hand(d[sample.int(nrow(d), nrow(d), replace = TRUE), ])
+    },
+    1
+  )
+  expect_equal(attr(boot, "bootstrap_replicates"), by_hand, tolerance = 1e-12)
+
+  # discriminating control: resampling only the rows complete on all columns
+  # draws other rows
+  complete <- d[stats::complete.cases(d), ]
+  set.seed(9)
+  first_complete <- partial_by_hand(
+    complete[sample.int(nrow(complete), nrow(complete), replace = TRUE), ]
+  )
+  expect_gt(abs(attr(boot, "bootstrap_replicates")[1] - first_complete), 1e-6)
+})
+
+test_that("partial cluster bootstrap drops rows with a missing cluster value", {
+  set.seed(82)
+  d <- sim_partial(60)
+  d$id <- rep(1:20, each = 3)
+  d$id[c(5, 6)] <- NA
+  d$z1[30] <- NA
+  set.seed(10)
+  boot <- cor_test(
+    d,
+    "x",
+    "y",
+    partial = TRUE,
+    cluster = "id",
+    iterations = 5
+  )
+  kept <- d[!is.na(d$id), ]
+  expect_equal(boot$r, partial_by_hand(kept), tolerance = 1e-12)
+  set.seed(10)
+  groups <- split(seq_len(nrow(kept)), kept$id)
+  by_hand <- vapply(
+    seq_len(5),
+    function(i) {
+      idx <- sample.int(length(groups), length(groups), replace = TRUE)
+      partial_by_hand(kept[unlist(groups[idx], use.names = FALSE), ])
+    },
+    1
+  )
+  expect_equal(attr(boot, "bootstrap_replicates"), by_hand, tolerance = 1e-12)
+})
+
+test_that("partial cluster bootstrap counts clusters with complete covariates", {
+  set.seed(83)
+  d <- sim_partial(63)
+  d$id <- rep(1:21, each = 3)
+  # cluster 21 has no row complete on the covariates: 20 clusters remain
+  d$z3[d$id == 21] <- NA
+  expect_silent(cor_test(
+    d,
+    "x",
+    "y",
+    partial = TRUE,
+    cluster = "id",
+    iterations = 5
+  ))
+  d$z3[d$id == 20] <- NA
+  expect_warning(
+    cor_test(d, "x", "y", partial = TRUE, cluster = "id", iterations = 5),
+    "only 19 distinct values"
+  )
+})
+
+test_that("partialling fits the target variable whatever the column names", {
+  # columns named like the internal arguments of the adjust step
+  set.seed(84)
+  d <- data.frame(
+    a = stats::rnorm(50),
+    b = stats::rnorm(50),
+    x = stats::rnorm(50),
+    var = stats::rnorm(50),
+    data = stats::rnorm(50)
+  )
+  d$a <- d$a + d$x
+  d$b <- d$b + d$var - d$data
+  expected <- cor(
+    stats::residuals(stats::lm(a ~ x + var + data, data = d)),
+    stats::residuals(stats::lm(b ~ x + var + data, data = d))
+  )
+  expect_equal(
+    cor_test(d, "a", "b", partial = TRUE)$r,
+    expected,
+    tolerance = 1e-12
+  )
+  expect_equal(
+    cor_test(d, "x", "var", partial = TRUE)$r,
+    cor(
+      stats::residuals(stats::lm(x ~ a + b + data, data = d)),
+      stats::residuals(stats::lm(var ~ a + b + data, data = d))
+    ),
+    tolerance = 1e-12
   )
 })
