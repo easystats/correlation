@@ -297,15 +297,15 @@ estimate on the resampled raw rows, in this order: the two variables are
 partialled on the other variables again (the \code{cluster} column is never one
 of them), then winsorized (\code{winsorize}), then rank transformed
 (\code{ranktransform}), and then the coefficient is computed. The rows
-resampled are those that enter at least one of the two regressions of the
-partial step (a variable that stays a factor, as with the polychoric and
-tetrachoric methods, is not partialled and needs only its own value). So a
-row with a missing value in one of the two variables is
-kept, and a row with a missing covariate, a missing value in both
-variables, or a missing \code{cluster} value is dropped (a row with a missing
-covariate is kept if one of the two variables stays a factor and is
-present). With \code{cluster}, a
-cluster with no such row is not resampled and not counted. The
+resampled are those that change the point estimate: the rows that enter
+one of the two regressions of the partial step or the coefficient. So a
+row with a missing value in one of the two variables is kept, and a row
+with a missing covariate, a missing value in both variables, or a missing
+\code{cluster} value is dropped. With the polychoric or tetrachoric method, a
+factor variable (polychoric also turns two numeric variables into factors)
+is not partialled, so it needs no covariate. With \code{cluster}, a cluster
+with no such row is not resampled, and the warning below 20 clusters
+counts only the clusters with a row that enters the coefficient. The
 coefficient of each resample leaves out its incomplete rows as the point
 estimate does. Because each replicate refits
 the regressions on the other variables, a partial bootstrap is slower than

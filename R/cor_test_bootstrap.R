@@ -37,11 +37,11 @@
     data <- data[stats::complete.cases(data[cols]), cols, drop = FALSE]
   } else {
     # every column before the chain (the covariates among them), and the rows
-    # that enter a regression, so that a cluster without such a row is not a
-    # resampling unit; in each resample the chain leaves NA where a row is
-    # incomplete, and the coefficient step drops those rows, as for the
-    # point estimate
-    data <- data[.partial_rows_used(data, x, y, cluster), , drop = FALSE]
+    # that enter a regression or the coefficient, so that a cluster without
+    # such a row is not a resampling unit; in each resample the chain leaves
+    # NA where a kept row misses x or y, and the coefficient step drops those
+    # rows, as for the point estimate
+    data <- data[.partial_rows(data, x, y, cluster)$used, , drop = FALSE]
   }
   n <- nrow(data)
 

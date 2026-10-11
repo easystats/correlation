@@ -249,7 +249,7 @@ cor_test <- function(
         )
       }
       # rows with a missing cluster value cannot be resampled: drop them
-      # here so the estimate, `n_Obs`, and the interval use the same rows
+      # here so the estimate, `n_Obs`, and the interval all leave them out
       data <- data[!is.na(data[[cluster]]), , drop = FALSE]
     }
   }
@@ -273,12 +273,13 @@ cor_test <- function(
     data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
   }
 
-  # the clusters the bootstrap resamples (counted after the conversions
-  # above, which decide whether x and y are partialled): with `partial`,
-  # those with a row that enters one of the two regressions
+  # the clusters with a row that enters the coefficient (counted after the
+  # conversions above, which decide whether x and y are partialled); with
+  # `partial`, the bootstrap also resamples clusters whose rows enter only a
+  # regression, but those supply no pair of values
   if (bootstrap && !is.null(cluster)) {
     counted <- if (isTRUE(partial)) {
-      .partial_rows_used(data, x, y, cluster)
+      .partial_rows(data, x, y, cluster)$coefficient
     } else {
       stats::complete.cases(data[c(x, y, cluster)])
     }
@@ -556,21 +557,31 @@ cor_test <- function(
   data
 }
 
-# The rows that enter at least one step of the partial point estimate: the
-# regression of x (complete on x and the covariates) or that of y. A
-# non-numeric x or y is not adjusted, so its rows only need its own value.
-# Other rows change no estimate and are not resampled.
+# The rows of the partial point estimate. A numeric x enters its regression
+# where x and the covariates are complete, and then has an adjusted value; a
+# non-numeric x is not adjusted and has a value where x is present (the same
+# for y). `coefficient`: rows with both values, which enter the coefficient.
+# `used`: rows that enter a regression or the coefficient. Other rows change
+# no estimate and are not resampled.
 #' @keywords internal
-.partial_rows_used <- function(data, x, y, cluster = NULL) {
+.partial_rows <- function(data, x, y, cluster = NULL) {
   columns <- setdiff(names(data), cluster)
-  used_for <- function(var, other) {
-    if (is.numeric(data[[var]])) {
+  in_regression <- function(var, other) {
+    is.numeric(data[[var]]) &
       stats::complete.cases(data[setdiff(columns, other)])
+  }
+  has_value <- function(var, other) {
+    if (is.numeric(data[[var]])) {
+      in_regression(var, other)
     } else {
       !is.na(data[[var]])
     }
   }
-  used_for(x, y) | used_for(y, x)
+  coefficient <- has_value(x, y) & has_value(y, x)
+  list(
+    coefficient = coefficient,
+    used = in_regression(x, y) | in_regression(y, x) | coefficient
+  )
 }
 
 # `var` adjusted for every other column of `data`, as in

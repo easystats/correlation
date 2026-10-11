@@ -451,6 +451,7 @@ test_that("partial cluster bootstrap resamples only clusters with a usable row",
   d$id[c(5, 6)] <- NA # dropped: no cluster
   d$z1[30] <- NA # dropped: enters neither regression
   d$z3[d$id %in% 25] <- NA # cluster 25 has no usable row
+  d$x[d$id %in% 24] <- NA # cluster 24 enters only the regression of y
   set.seed(10)
   boot <- cor_test(
     d,
@@ -464,21 +465,25 @@ test_that("partial cluster bootstrap resamples only clusters with a usable row",
   expect_equal(boot$r, partial_by_hand(with_id), tolerance = 1e-12)
   used <- d[!is.na(d$id) & !is.na(d$z1) & !is.na(d$z3), ]
   expect_identical(length(unique(used$id)), 24L)
+  expect_true(24 %in% used$id)
   replicates <- attr(boot, "bootstrap_replicates")
   expect_equal(replicates, clusters_by_hand(used, 10, 5), tolerance = 1e-12)
 
-  # discriminating control: keeping cluster 25 as a resampling unit draws
-  # other clusters
-  expect_gt(abs(replicates[1] - clusters_by_hand(with_id, 10, 1)), 1e-6)
+  # discriminating controls: keeping cluster 25 as a resampling unit, or
+  # dropping cluster 24, draws other clusters
+  with_25 <- d[!is.na(d$id) & !is.na(d$z1), ]
+  expect_gt(abs(replicates[1] - clusters_by_hand(with_25, 10, 1)), 1e-6)
+  without_24 <- used[used$id != 24, ]
+  expect_gt(abs(replicates[1] - clusters_by_hand(without_24, 10, 1)), 1e-6)
 })
 
-test_that("partial cluster bootstrap counts the clusters it resamples", {
+test_that("partial cluster bootstrap counts the clusters that enter the coefficient", {
   set.seed(83)
-  d <- sim_partial(63)
-  d$id <- rep(1:21, each = 3)
-  # cluster 21 has no row that enters a regression: 20 clusters remain
-  d$z3[d$id == 21] <- NA
-  # cluster 1 still counts: its rows enter the regression of y
+  d <- sim_partial(66)
+  d$id <- rep(1:22, each = 3)
+  # cluster 22 has no row that enters a regression, and cluster 1 enters
+  # only the regression of y: 20 clusters enter the coefficient
+  d$z3[d$id == 22] <- NA
   d$x[d$id == 1] <- NA
   expect_silent(cor_test(
     d,
@@ -488,19 +493,64 @@ test_that("partial cluster bootstrap counts the clusters it resamples", {
     cluster = "id",
     iterations = 5
   ))
-  d$z3[d$id == 20] <- NA
+  d$z3[d$id == 21] <- NA
   expect_warning(
     cor_test(d, "x", "y", partial = TRUE, cluster = "id", iterations = 5),
     "only 19 distinct values"
   )
 
   # a factor x is converted to numeric and partialled, so the count is taken
-  # after the conversion: clusters 20 and 21 still have no usable row
-  d$x <- factor(round(d$y))
+  # after the conversion and is the same
+  d$x <- factor(round(d$x))
   expect_warning(
     cor_test(d, "x", "y", partial = TRUE, cluster = "id", iterations = 5),
     "only 19 distinct values"
   )
+
+  # x missing in every row: no cluster enters the coefficient
+  d$x <- NA_real_
+  expect_error(
+    cor_test(d, "x", "y", partial = TRUE, cluster = "id", iterations = 5),
+    "at least 2 distinct values"
+  )
+})
+
+test_that("correlation() warns for a pair with few clusters in the coefficient", {
+  set.seed(85)
+  d <- data.frame(
+    a = stats::rnorm(90),
+    b = stats::rnorm(90),
+    c = stats::rnorm(90),
+    id = rep(1:30, each = 3)
+  )
+  # a is missing in clusters 1 to 15: every pair has 15 clusters in its
+  # coefficient (a is a variable of the first pair and a covariate of b-c)
+  d$a[d$id <= 15] <- NA
+  expect_warning(
+    correlation(d, partial = TRUE, cluster = "id", iterations = 5),
+    "only 15 distinct values"
+  )
+})
+
+test_that("the partial rows: regressions, coefficient, and factors", {
+  d <- data.frame(
+    x = c(1, NA, 3, 4, 5, NA),
+    y = c(1, 2, NA, 4, 5, NA),
+    z = c(1, 2, 3, NA, 5, 6)
+  )
+  rows <- .partial_rows(d, "x", "y")
+  # row 4 misses the covariate, row 6 both variables
+  expect_identical(rows$coefficient, c(TRUE, FALSE, FALSE, FALSE, TRUE, FALSE))
+  expect_identical(rows$used, c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE))
+
+  # factors are not partialled: a factor needs only its own value, and a row
+  # with a factor but no value of the other variable changes no estimate
+  f <- d
+  f$x <- factor(c("a", NA, "b", "a", "b", "a"))
+  f$y <- factor(c("a", "b", NA, "b", "a", NA))
+  rows <- .partial_rows(f, "x", "y")
+  expect_identical(rows$coefficient, c(TRUE, FALSE, FALSE, TRUE, TRUE, FALSE))
+  expect_identical(rows$used, rows$coefficient)
 })
 
 test_that("partialling fits the target variable whatever the column names", {
