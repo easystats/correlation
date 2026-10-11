@@ -210,9 +210,19 @@
 #' resample in which a variable is constant or loses a category) are dropped
 #' with a warning naming the number kept; if fewer than half survive, an
 #' error is raised. In `correlation()`, this warning is shown for the first
-#' pair only, as for every other warning it raises. The `winsorize` and
-#' `ranktransform` transformations are applied once, to the full data, before
-#' resampling.
+#' pair only, as for every other warning it raises. Without `partial`, the
+#' `winsorize` and `ranktransform` transformations are applied once, to the
+#' full data, before resampling.
+#'
+#' With `partial = TRUE`, each resample repeats the steps of the point
+#' estimate on the resampled raw rows, in this order: the two variables are
+#' partialled on the other variables again (the `cluster` column is never one
+#' of them), then winsorized (`winsorize`), then rank transformed
+#' (`ranktransform`), and then the coefficient is computed. All rows are
+#' resampled, those with missing values included, and each resample drops its
+#' incomplete rows as the point estimate does. Because each replicate refits
+#' the regressions on the other variables, a partial bootstrap is slower than
+#' a bootstrap without `partial`.
 #'
 #' The cluster bootstrap (`cluster`) resamples whole clusters, so the
 #' dependence within a cluster (repeated measures of one participant, say)

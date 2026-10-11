@@ -53,8 +53,10 @@
 #' @param bootstrap If `TRUE`, the confidence interval, standard error, and
 #'   p-value are obtained from a nonparametric percentile bootstrap instead of
 #'   the analytic formulas: rows are resampled with replacement `iterations`
-#'   times and the coefficient is recomputed on each resample. See the
-#'   'Bootstrap' section. Not available for Bayesian, partial, or multilevel
+#'   times and the coefficient is recomputed on each resample. With
+#'   `partial = TRUE`, each resample is partialled again, then winsorized and
+#'   rank transformed if requested. See the 'Bootstrap' section. Not available
+#'   for Bayesian, full Bayesian partial (`partial_bayesian`), or multilevel
 #'   correlations; the interval and p-value are two-sided, so `alternative`
 #'   (passed through `...`) must be `"two.sided"`, the default.
 #' @param iterations Number of bootstrap resamples (default `1000`). Only used
@@ -63,7 +65,8 @@
 #'   (for example, participants with repeated measures). If given, a cluster
 #'   bootstrap is run (`bootstrap` is set to `TRUE`): whole clusters, rather
 #'   than rows, are resampled with replacement; rows with a missing cluster
-#'   value are dropped. See the 'Bootstrap' section.
+#'   value are dropped. With `partial = TRUE`, the cluster column is not one
+#'   of the variables partialled out. See the 'Bootstrap' section.
 #' @param verbose Toggle warnings.
 #' @param ... Additional arguments (e.g., `alternative`) to be passed to
 #'   other methods. See `stats::cor.test` for further details.
@@ -201,9 +204,14 @@ cor_test <- function(
         "Bootstrap confidence intervals are not available for Bayesian correlations (`bayesian = TRUE`)."
       )
     }
-    if (!isFALSE(partial) || multilevel) {
+    if (partial_bayesian) {
       insight::format_error(
-        "Bootstrap confidence intervals are not available for partial or multilevel correlations (`partial`, `partial_bayesian`, or `multilevel`)."
+        "Bootstrap confidence intervals are not available for full Bayesian partial correlations (`partial_bayesian = TRUE`)."
+      )
+    }
+    if (multilevel) {
+      insight::format_error(
+        "Bootstrap confidence intervals are not available for multilevel correlations (`multilevel = TRUE`)."
       )
     }
     iterations <- .validate_iterations(iterations)
@@ -279,57 +287,33 @@ cor_test <- function(
     data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
   }
 
-  # Partial
-  if (!isFALSE(partial)) {
-    # partial
-    if (isTRUE(partial)) {
-      data[[x]] <- datawizard::adjust(
-        data[names(data) != y],
-        multilevel = multilevel,
-        bayesian = partial_bayesian
-      )[[x]]
-      data[[y]] <- datawizard::adjust(
-        data[names(data) != x],
-        multilevel = multilevel,
-        bayesian = partial_bayesian
-      )[[y]]
-    }
-
-    # semi-partial
-    if (partial == "semi") {
-      insight::format_error(
-        "Semi-partial correlations are not supported yet. Get in touch if you want to contribute."
-      )
-    }
-  }
-
-  # Winsorize
-  if (!isFALSE(winsorize) && !is.null(winsorize)) {
-    # set default (if not specified)
-    if (isTRUE(winsorize)) {
-      winsorize <- 0.2
-    }
-
-    # winsorize the complete cases of x and y in place, keeping the other
-    # columns (the cluster column among them) and the incomplete rows
-    complete <- stats::complete.cases(data[c(x, y)])
-    data[complete, c(x, y)] <- as.data.frame(
-      datawizard::winsorize(
-        data[complete, c(x, y)],
-        threshold = winsorize,
-        verbose = verbose
-      )
+  # semi-partial
+  if (!isFALSE(partial) && partial == "semi") {
+    insight::format_error(
+      "Semi-partial correlations are not supported yet. Get in touch if you want to contribute."
     )
   }
 
-  # Rank transform (i.e., "robust")
-  if (ranktransform) {
-    data[c(x, y)] <- datawizard::ranktransform(
-      data[c(x, y)],
-      sign = FALSE,
-      method = "average"
-    )
+  # set default (if not specified)
+  if (isTRUE(winsorize)) {
+    winsorize <- 0.2
   }
+
+  # Partial, winsorize, rank transform. A partial bootstrap re-runs this chain
+  # on each resample of the rows as they are before it.
+  data_before_chain <- data
+  data <- .cor_test_chain(
+    data,
+    x,
+    y,
+    partial = partial,
+    multilevel = multilevel,
+    partial_bayesian = partial_bayesian,
+    winsorize = winsorize,
+    ranktransform = ranktransform,
+    cluster = cluster,
+    verbose = verbose
+  )
 
   # check if enough no. of obs ------------------------------
 
@@ -369,13 +353,16 @@ cor_test <- function(
     if (bootstrap && !invalid) {
       out <- .cor_test_bootstrap(
         out,
-        data,
+        if (isTRUE(partial)) data_before_chain else data,
         x,
         y,
         ci = ci,
         method = method,
         cluster = cluster,
         iterations = iterations,
+        partial = isTRUE(partial),
+        winsorize = winsorize,
+        ranktransform = ranktransform,
         verbose = verbose,
         ...
       )
@@ -498,6 +485,64 @@ cor_test <- function(
 
 
 # Utilities ---------------------------------------------------------------
+
+# The transformations applied to x and y before the coefficient, in order:
+# partial (x and y each adjusted for every other column except `cluster`),
+# winsorize, rank transform. `winsorize` is FALSE, NULL, or a threshold.
+#' @keywords internal
+.cor_test_chain <- function(
+  data,
+  x,
+  y,
+  partial = FALSE,
+  multilevel = FALSE,
+  partial_bayesian = FALSE,
+  winsorize = FALSE,
+  ranktransform = FALSE,
+  cluster = NULL,
+  verbose = TRUE
+) {
+  # Partial
+  if (isTRUE(partial)) {
+    # the cluster column identifies resampling units and is never a covariate
+    covariates <- setdiff(names(data), cluster)
+    data[[x]] <- datawizard::adjust(
+      data[setdiff(covariates, y)],
+      multilevel = multilevel,
+      bayesian = partial_bayesian
+    )[[x]]
+    data[[y]] <- datawizard::adjust(
+      data[setdiff(covariates, x)],
+      multilevel = multilevel,
+      bayesian = partial_bayesian
+    )[[y]]
+  }
+
+  # Winsorize
+  if (!isFALSE(winsorize) && !is.null(winsorize)) {
+    # winsorize the complete cases of x and y in place, keeping the other
+    # columns (the cluster column among them) and the incomplete rows
+    complete <- stats::complete.cases(data[c(x, y)])
+    data[complete, c(x, y)] <- as.data.frame(
+      datawizard::winsorize(
+        data[complete, c(x, y)],
+        threshold = winsorize,
+        verbose = verbose
+      )
+    )
+  }
+
+  # Rank transform (i.e., "robust")
+  if (ranktransform) {
+    data[c(x, y)] <- datawizard::ranktransform(
+      data[c(x, y)],
+      sign = FALSE,
+      method = "average"
+    )
+  }
+
+  data
+}
 
 #' @keywords internal
 .cor_test_frequentist <- function(
