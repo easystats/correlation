@@ -245,6 +245,77 @@ test_that("specific types", {
   )
 })
 
+test_that("data2 and select2 keep dummy-coded factors (#277)", {
+  set.seed(277)
+  lv <- c("TT", "BT", "BB")
+  d <- data.frame(
+    age = rnorm(60),
+    weight = rnorm(60),
+    clinical = factor(sample(lv, 60, TRUE), levels = lv),
+    histo = factor(sample(lv, 60, TRUE), levels = lv)
+  )
+  dummies <- function(v) paste0(v, ".", lv)
+
+  # numeric variable against two factors
+  out <- correlation(
+    d["age"],
+    d[c("clinical", "histo")],
+    include_factors = TRUE
+  )
+  expect_identical(out$Parameter1, rep("age", 6))
+  expect_identical(out$Parameter2, c(dummies("clinical"), dummies("histo")))
+  expect_equal(
+    out$r[1],
+    stats::cor(d$age, as.numeric(d$clinical == "TT")),
+    tolerance = 1e-10
+  )
+
+  # factor against factor: only pairs across the two sets
+  out <- correlation(d["clinical"], d["histo"], include_factors = TRUE)
+  expect_identical(out$Parameter1, rep(dummies("clinical"), each = 3))
+  expect_identical(out$Parameter2, rep(dummies("histo"), 3))
+
+  # the same with select and select2
+  out2 <- correlation(
+    d,
+    select = "clinical",
+    select2 = "histo",
+    include_factors = TRUE
+  )
+  expect_identical(nrow(out2), 9L)
+  expect_identical(out2$Parameter1, out$Parameter1)
+  expect_identical(out2$Parameter2, out$Parameter2)
+
+  # numeric second sets are unchanged
+  out <- correlation(
+    d[c("age", "clinical")],
+    d["weight"],
+    include_factors = TRUE
+  )
+  expect_identical(out$Parameter1, c("age", dummies("clinical")))
+  expect_identical(out$Parameter2, rep("weight", 4))
+})
+
+test_that("data and data2 can share column names", {
+  set.seed(277)
+  lv <- c("TT", "BT", "BB")
+  d1 <- data.frame(x = rnorm(30), z = rnorm(30))
+  d2 <- data.frame(x = rnorm(30), w = rnorm(30))
+
+  # the second `x` is renamed to `x.1`, and all four cross pairs are kept
+  out <- correlation(d1, d2)
+  expect_identical(out$Parameter1, c("x", "x", "z", "z"))
+  expect_identical(out$Parameter2, c("x.1", "w", "x.1", "w"))
+  expect_equal(out$r[1], stats::cor(d1$x, d2$x), tolerance = 1e-10)
+
+  # the same for dummy-coded factors
+  f1 <- data.frame(x = factor(sample(lv, 30, TRUE), levels = lv))
+  f2 <- data.frame(x = factor(sample(lv, 30, TRUE), levels = lv))
+  out <- correlation(f1, f2, include_factors = TRUE)
+  expect_identical(out$Parameter1, rep(paste0("x.", lv), each = 3))
+  expect_identical(out$Parameter2, rep(paste0("x.1.", lv), 3))
+})
+
 test_that("correlation doesn't fail when BFs are NA", {
   skip_if_not_or_load_if_installed("ggplot2")
   skip_if_not_or_load_if_installed("BayesFactor")
