@@ -131,8 +131,10 @@ See the \code{\link[datawizard:winsorize]{datawizard::winsorize()}} function for
 \item{bootstrap}{If \code{TRUE}, the confidence interval, standard error, and
 p-value are obtained from a nonparametric percentile bootstrap instead of
 the analytic formulas: rows are resampled with replacement \code{iterations}
-times and the coefficient is recomputed on each resample. See the
-'Bootstrap' section. Not available for Bayesian, partial, or multilevel
+times and the coefficient is recomputed on each resample. With
+\code{partial = TRUE}, each resample is partialled again, then winsorized and
+rank transformed if requested. See the 'Bootstrap' section. Not available
+for Bayesian, full Bayesian partial (\code{partial_bayesian}), or multilevel
 correlations; the interval and p-value are two-sided, so \code{alternative}
 (passed through \code{...}) must be \code{"two.sided"}, the default.}
 
@@ -143,7 +145,8 @@ when \code{bootstrap = TRUE} or \code{cluster} is given.}
 (for example, participants with repeated measures). If given, a cluster
 bootstrap is run (\code{bootstrap} is set to \code{TRUE}): whole clusters, rather
 than rows, are resampled with replacement; rows with a missing cluster
-value are dropped. See the 'Bootstrap' section.}
+value are dropped. With \code{partial = TRUE}, the cluster column is not one
+of the variables partialled out. See the 'Bootstrap' section.}
 
 \item{verbose}{Toggle warnings.}
 
@@ -329,9 +332,19 @@ Replicates on which the coefficient cannot be computed (for instance, a
 resample in which a variable is constant or loses a category) are dropped
 with a warning naming the number kept; if fewer than half survive, an
 error is raised. In \code{correlation()}, this warning is shown for the first
-pair only, as for every other warning it raises. The \code{winsorize} and
-\code{ranktransform} transformations are applied once, to the full data, before
-resampling.
+pair only, as for every other warning it raises. Without \code{partial}, the
+\code{winsorize} and \code{ranktransform} transformations are applied once, to the
+full data, before resampling.
+
+With \code{partial = TRUE}, each resample repeats the steps of the point
+estimate on the resampled raw rows, in this order: the two variables are
+partialled on the other variables again (the \code{cluster} column is never one
+of them), then winsorized (\code{winsorize}), then rank transformed
+(\code{ranktransform}), and then the coefficient is computed. All rows are
+resampled, those with missing values included, and each resample drops its
+incomplete rows as the point estimate does. Because each replicate refits
+the regressions on the other variables, a partial bootstrap is slower than
+a bootstrap without \code{partial}.
 
 The cluster bootstrap (\code{cluster}) resamples whole clusters, so the
 dependence within a cluster (repeated measures of one participant, say)

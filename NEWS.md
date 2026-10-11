@@ -12,6 +12,12 @@
   and is `NA` for distance correlation and Hoeffding's D, whose bootstrap
   cannot test independence (#14, #167, #168).
 
+- The bootstrap and the cluster bootstrap now work with `partial = TRUE` in
+  `cor_test()` and `correlation()`. Each resample is partialled again before
+  the coefficient is computed. With `winsorize` or `ranktransform`, these
+  steps follow the partialling in each resample. The `cluster` column is not
+  one of the variables partialled out (#63).
+
 ## Changes
 
 - Documentation was updated and corrected in several places.
