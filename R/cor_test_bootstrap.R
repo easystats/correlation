@@ -24,12 +24,25 @@
   method = "pearson",
   cluster = NULL,
   iterations = 1000,
+  partial = FALSE,
+  winsorize = FALSE,
+  ranktransform = FALSE,
   verbose = TRUE,
   ...
 ) {
-  # complete cases on the two variables and, if any, the cluster column
-  cols <- unique(c(x, y, cluster))
-  data <- data[stats::complete.cases(data[cols]), cols, drop = FALSE]
+  if (!partial) {
+    # complete cases on the two variables and, if any, the cluster column;
+    # `data` is already winsorized and rank transformed
+    cols <- unique(c(x, y, cluster))
+    data <- data[stats::complete.cases(data[cols]), cols, drop = FALSE]
+  } else {
+    # every column before the chain (the covariates among them), and the rows
+    # that enter a regression or the coefficient, so that a cluster without
+    # such a row is not a resampling unit; in each resample the chain leaves
+    # NA where a kept row misses x or y, and the coefficient step drops those
+    # rows, as for the point estimate
+    data <- data[.partial_rows(data, x, y, cluster)$used, , drop = FALSE]
+  }
   n <- nrow(data)
 
   # resampling units: rows, or whole clusters in split() order
@@ -48,16 +61,29 @@
     rows <- if (is.null(groups)) idx else unlist(groups[idx], use.names = FALSE)
     tryCatch(
       {
-        rez <- suppressWarnings(suppressMessages(
+        rez <- suppressWarnings(suppressMessages({
+          resample <- data[rows, , drop = FALSE]
+          if (partial) {
+            resample <- .cor_test_chain(
+              resample,
+              x,
+              y,
+              partial = TRUE,
+              winsorize = winsorize,
+              ranktransform = ranktransform,
+              cluster = cluster,
+              verbose = FALSE
+            )
+          }
           .cor_test_frequentist(
-            data[rows, , drop = FALSE],
+            resample,
             x,
             y,
             ci = ci,
             method = method,
             ...
           )
-        ))
+        }))
         coef_name <- intersect(c("r", "rho", "tau", "Dxy"), names(rez))[1]
         as.numeric(rez[[coef_name]][1])
       },

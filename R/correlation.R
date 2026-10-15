@@ -181,10 +181,11 @@
 #' \subsection{Bootstrap confidence intervals}{
 #' With `bootstrap = TRUE`, or when `cluster` names a column, the confidence
 #' interval, standard error, and p-value of every non-Bayesian method are
-#' obtained by resampling instead of from the analytic formulas above. The
-#' rows with complete data on both variables (and on `cluster`, if given) or,
-#' with `cluster`, whole clusters of such rows, are resampled with replacement
-#' `iterations` times and the coefficient is recomputed on each resample.
+#' obtained by resampling instead of from the analytic formulas above. Without
+#' `partial`, the rows with complete data on both variables (and on `cluster`,
+#' if given) are resampled with replacement `iterations` times, or, with
+#' `cluster`, whole clusters of such rows are, and the coefficient is
+#' recomputed on each resample.
 #' `CI_low` and `CI_high` are the `(1 - ci) / 2` and
 #' `1 - (1 - ci) / 2` quantiles of the replicates (the percentile interval;
 #' Efron & Tibshirani, 1993, section 13.3, pp. 170-171); `SE` is the standard
@@ -210,9 +211,28 @@
 #' resample in which a variable is constant or loses a category) are dropped
 #' with a warning naming the number kept; if fewer than half survive, an
 #' error is raised. In `correlation()`, this warning is shown for the first
-#' pair only, as for every other warning it raises. The `winsorize` and
-#' `ranktransform` transformations are applied once, to the full data, before
-#' resampling.
+#' pair only, as for every other warning it raises. Without `partial`, the
+#' `winsorize` and `ranktransform` transformations are applied once, to the
+#' full data, before resampling.
+#'
+#' With `partial = TRUE`, each resample repeats the steps of the point
+#' estimate on the resampled raw rows, in this order: the two variables are
+#' partialled on the other variables again (the `cluster` column is never one
+#' of them), then winsorized (`winsorize`), then rank transformed
+#' (`ranktransform`), and then the coefficient is computed. The rows
+#' resampled are those that change the point estimate: the rows that enter
+#' one of the two regressions of the partial step or the coefficient. So a
+#' row with a missing value in one of the two variables is kept, and a row
+#' with a missing covariate, a missing value in both variables, or a missing
+#' `cluster` value is dropped. With the polychoric or tetrachoric method, a
+#' factor variable (polychoric also turns two numeric variables into factors)
+#' is not partialled, so it needs no covariate. With `cluster`, a cluster
+#' with no such row is not resampled, and the warning below 20 clusters
+#' counts only the clusters with a row that enters the coefficient. The
+#' coefficient of each resample leaves out its incomplete rows as the point
+#' estimate does. Because each replicate refits
+#' the regressions on the other variables, a partial bootstrap is slower than
+#' a bootstrap without `partial`.
 #'
 #' The cluster bootstrap (`cluster`) resamples whole clusters, so the
 #' dependence within a cluster (repeated measures of one participant, say)
@@ -402,6 +422,12 @@ correlation <- function(
     iterations <- .validate_iterations(iterations)
   } else if (isTRUE(bootstrap)) {
     iterations <- .validate_iterations(iterations)
+  }
+  # `partial_bayesian` is not passed on to cor_test(), which would refuse it
+  if (isTRUE(bootstrap) && isTRUE(partial_bayesian)) {
+    insight::format_error(
+      "Bootstrap confidence intervals are not available for full Bayesian partial correlations (`partial_bayesian = TRUE`)."
+    )
   }
 
   if (is.null(data2) && !is.null(select)) {
