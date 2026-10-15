@@ -28,7 +28,8 @@
 #'   frequentist partialization).
 #' @param include_factors If `TRUE`, the factors are kept and eventually
 #'   converted to numeric or used as random effects (depending of `multilevel`).
-#'   If `FALSE`, factors are removed upfront.
+#'   Ordered factors are converted to the ranks of their levels. If `FALSE`,
+#'   factors are removed upfront.
 #' @param partial Can be `TRUE` or `"semi"` for partial and semi-partial
 #'   correlations, respectively.
 #' @inheritParams datawizard::adjust

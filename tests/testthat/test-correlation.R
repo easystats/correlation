@@ -351,3 +351,36 @@ test_that("biserial correlations keep the multilevel grouping factor", {
     expect_equal(with_factors$rho, ref$rho, tolerance = 1e-10)
   }
 })
+
+
+test_that("ordered factors are converted to ranks, not dummy-coded", {
+  set.seed(1337)
+  df <- data.frame(
+    a = sample(1:5, 10, replace = TRUE),
+    b = factor(
+      sample(c("s", "m", "l"), 10, replace = TRUE),
+      levels = c("s", "m", "l"),
+      ordered = TRUE
+    ),
+    c = rnorm(10)
+  )
+
+  out <- correlation(df, method = "spearman", include_factors = TRUE)
+  expect_identical(
+    paste(out$Parameter1, out$Parameter2),
+    c("a b", "a c", "b c")
+  )
+
+  ct <- cor_test(df, "a", "b", method = "spearman")
+  expect_equal(out$rho[1], ct$rho, tolerance = 1e-10)
+  expect_equal(
+    out$rho[1],
+    stats::cor(df$a, as.integer(df$b), method = "spearman"),
+    tolerance = 1e-10
+  )
+
+  # unordered factors are still dummy-coded
+  df$b <- factor(df$b, ordered = FALSE)
+  out <- correlation(df, method = "spearman", include_factors = TRUE)
+  expect_true(all(c("b.s", "b.m", "b.l") %in% out$Parameter1))
+})
