@@ -747,15 +747,12 @@ correlation <- function(
     include_factors <- TRUE
   }
 
-  # below, `multilevel = TRUE` also means "do not convert factors to numeric",
-  # which polychoric needs; cor_test() errors on multilevel with bootstrap, so
-  # when `bootstrap` is TRUE (correlation() sets it when `cluster` is given) it
-  # gets the user's value instead
-  multilevel_user <- multilevel
-
-  # definitely need factors for polychoric
+  # definitely need factors for polychoric: keep them as factors when cleaning
+  # the data, but do not pass `multilevel = TRUE` on to `cor_test()`, which
+  # would turn the coefficients into multilevel partial correlations
+  keep_factors <- multilevel
   if (method == "polychoric") {
-    multilevel <- TRUE
+    keep_factors <- TRUE
     # convert all input to factors, but only if all input currently is numeric
     # we allow mix of numeric and factors
     if (all(vapply(data, is.numeric, FUN.VALUE = TRUE))) {
@@ -780,13 +777,13 @@ correlation <- function(
     data2 = NULL,
     redundant = FALSE,
     include_factors = include_factors,
-    multilevel = multilevel,
+    multilevel = keep_factors,
     method = method
   )
   data <- .clean_data(
     data,
     include_factors = include_factors,
-    multilevel = multilevel
+    multilevel = keep_factors
   )
   if (!is.null(cluster)) {
     data <- cbind(data, cluster_column)
@@ -814,11 +811,7 @@ correlation <- function(
       bayesian_ci_method = bayesian_ci_method,
       bayesian_test = bayesian_test,
       partial = partial,
-      multilevel = if (isTRUE(bootstrap) && method == "polychoric") {
-        multilevel_user
-      } else {
-        multilevel
-      },
+      multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
       bootstrap = bootstrap,
