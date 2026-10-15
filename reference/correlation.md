@@ -134,8 +134,9 @@ correlation(
 - include_factors:
 
   If `TRUE`, the factors are kept and eventually converted to numeric or
-  used as random effects (depending of `multilevel`). If `FALSE`,
-  factors are removed upfront.
+  used as random effects (depending of `multilevel`). Ordered factors
+  are converted to the ranks of their levels. If `FALSE`, factors are
+  removed upfront.
 
 - partial:
 
