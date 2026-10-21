@@ -481,6 +481,7 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      convert_back_to_r = convert_back_to_r,
       bootstrap = bootstrap,
       iterations = iterations,
       cluster = cluster,
@@ -505,6 +506,7 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      convert_back_to_r = convert_back_to_r,
       bootstrap = bootstrap,
       iterations = iterations,
       cluster = cluster,
@@ -525,7 +527,7 @@ correlation <- function(
       method = method,
       bayesian = bayesian,
       p_adjust = p_adjust,
-      partial = partial,
+      partial = partial && !convert_back_to_r,
       multilevel = multilevel,
       partial_bayesian = partial_bayesian,
       bayesian_prior = bayesian_prior,
@@ -568,10 +570,6 @@ correlation <- function(
     ))
   }
 
-  if (convert_back_to_r) {
-    out <- pcor_to_cor(pcor = out)
-  } # Revert back to r if needed.
-
   if (standardize_names) {
     insight::standardize_names(out, ...)
   }
@@ -597,6 +595,7 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  convert_back_to_r = FALSE,
   bootstrap = FALSE,
   iterations = 1000,
   cluster = NULL,
@@ -630,6 +629,7 @@ correlation <- function(
         multilevel = multilevel,
         ranktransform = ranktransform,
         winsorize = winsorize,
+        convert_back_to_r = convert_back_to_r,
         bootstrap = bootstrap,
         iterations = iterations,
         cluster = cluster,
@@ -673,6 +673,7 @@ correlation <- function(
           multilevel = multilevel,
           ranktransform = ranktransform,
           winsorize = winsorize,
+          convert_back_to_r = convert_back_to_r,
           bootstrap = bootstrap,
           iterations = iterations,
           cluster = cluster,
@@ -711,6 +712,7 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  convert_back_to_r = FALSE,
   bootstrap = FALSE,
   iterations = 1000,
   cluster = NULL,
@@ -852,6 +854,11 @@ correlation <- function(
     if (!isFALSE(winsorize) && !is.null(winsorize)) {
       params$Method <- paste0("Winsorized ", params$Method)
     }
+  }
+
+  # Revert back to r if needed (before the variable sets are split)
+  if (convert_back_to_r) {
+    params <- .pcor_to_cor_params(params, ci = ci, method = method)
   }
 
   # Remove superfluous correlations when two variable sets provided

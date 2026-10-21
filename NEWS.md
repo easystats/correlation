@@ -43,6 +43,9 @@
   variable. Each pair now gets the same polyserial or polychoric correlation as
   `cor_test()` (#261).
 
+- Fixed `correlation()` with `multilevel = TRUE` for `select2`, `data2`, and
+  grouped data. The `Method` column now shows the requested method (#207).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
