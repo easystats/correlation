@@ -10,6 +10,20 @@
   bayesian_test = c("pd", "rope", "bf"),
   ...
 ) {
+  # Kendall (van Doorn et al. 2018) does not use BayesFactor
+  if (tolower(method) %in% c("kendall", "ken", "k")) {
+    return(.cor_test_bayes_kendall(
+      data,
+      x,
+      y,
+      ci = ci,
+      bayesian_prior = bayesian_prior,
+      bayesian_ci_method = bayesian_ci_method,
+      bayesian_test = bayesian_test,
+      ...
+    ))
+  }
+
   insight::check_if_installed("BayesFactor")
 
   var_x <- .complete_variable_x(data, x, y)

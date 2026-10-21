@@ -36,9 +36,11 @@
 #' @param bayesian_prior For the prior argument, several named values are
 #'   recognized: `"medium.narrow"`, `"medium"`, `"wide"`, and `"ultrawide"`.
 #'   These correspond to scale values of `1/sqrt(27)`, `1/3`, `1/sqrt(3)` and
-#'   `1`, respectively. See the `BayesFactor::correlationBF` function.
+#'   `1`, respectively. See the `BayesFactor::correlationBF` function. For
+#'   `method = "kendall"`, a numeric scale must be in (0, 2].
 #' @param bayesian_ci_method,bayesian_test See arguments in
-#'   [`parameters::model_parameters()`] for `BayesFactor` tests.
+#'   [`parameters::model_parameters()`] for `BayesFactor` tests. For
+#'   `method = "kendall"`, `bayesian_ci_method` must be `"hdi"` or `"eti"`.
 #' @param ranktransform If `TRUE`, will rank-transform the variables prior to
 #'   estimating the correlation, which is one way of making the analysis more
 #'   resistant to extreme values (outliers). Note that, for instance, a
@@ -189,6 +191,9 @@ cor_test <- function(
     partial <- TRUE
   }
 
+  # one column when x == y
+  vars <- unique(c(x, y))
+
   # Bootstrap arguments
   if (!isTRUE(bootstrap) && !isFALSE(bootstrap)) {
     insight::format_error("`bootstrap` must be `TRUE` or `FALSE`.")
@@ -263,8 +268,8 @@ cor_test <- function(
 
   # Make sure factor is no factor
   if (!method %in% c("tetra", "tetrachoric", "poly", "polychoric")) {
-    data[c(x, y)] <- datawizard::to_numeric(
-      data[c(x, y)],
+    data[vars] <- datawizard::to_numeric(
+      data[vars],
       dummy_factors = FALSE
     )
   }
@@ -273,11 +278,11 @@ cor_test <- function(
   if (
     method %in%
       c("poly", "polychoric") &&
-      all(vapply(data[c(x, y)], is.numeric, FUN.VALUE = TRUE))
+      all(vapply(data[vars], is.numeric, FUN.VALUE = TRUE))
   ) {
     # convert all input to factors, but only if all input currently is numeric
     # we allow mix of numeric and factors
-    data[c(x, y)] <- datawizard::to_factor(data[c(x, y)])
+    data[vars] <- datawizard::to_factor(data[vars])
   }
 
   # Partial
@@ -313,10 +318,10 @@ cor_test <- function(
 
     # winsorize the complete cases of x and y in place, keeping the other
     # columns (the cluster column among them) and the incomplete rows
-    complete <- stats::complete.cases(data[c(x, y)])
-    data[complete, c(x, y)] <- as.data.frame(
+    complete <- stats::complete.cases(data[vars])
+    data[complete, vars] <- as.data.frame(
       datawizard::winsorize(
-        data[complete, c(x, y)],
+        data[complete, vars],
         threshold = winsorize,
         verbose = verbose
       )
@@ -325,8 +330,8 @@ cor_test <- function(
 
   # Rank transform (i.e., "robust")
   if (ranktransform) {
-    data[c(x, y)] <- datawizard::ranktransform(
-      data[c(x, y)],
+    data[vars] <- datawizard::ranktransform(
+      data[vars],
       sign = FALSE,
       method = "average"
     )
