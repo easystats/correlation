@@ -718,6 +718,9 @@ correlation <- function(
   ...
 ) {
   if (!is.null(data2)) {
+    # make names in `data2` unique (e.g. `x` to `x.1`) before cbind()
+    all_names <- make.unique(c(names(data), names(data2)))
+    names(data2) <- all_names[-seq_len(ncol(data))]
     data <- cbind(data, data2)
   }
 
@@ -856,8 +859,14 @@ correlation <- function(
 
   # Remove superfluous correlations when two variable sets provided
   if (!is.null(data2)) {
-    params <- params[!params$Parameter1 %in% names(data2), ]
-    params <- params[params$Parameter2 %in% names(data2), ]
+    # match the cleaned names, so that dummy-coded factors in `data2` are kept
+    vars2 <- names(.clean_data(
+      data2,
+      include_factors = include_factors,
+      multilevel = multilevel
+    ))
+    params <- params[!params$Parameter1 %in% vars2, ]
+    params <- params[params$Parameter2 %in% vars2, ]
   }
 
   # P-values adjustments
