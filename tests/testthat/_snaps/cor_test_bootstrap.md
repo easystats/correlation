@@ -1,4 +1,4 @@
-# AC5: the printed footer names the bootstrap
+# the printed footer names the bootstrap
 
     Code
       print(out)

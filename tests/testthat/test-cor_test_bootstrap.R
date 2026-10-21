@@ -1,49 +1,8 @@
 # Bootstrap confidence intervals, standard errors, and p-values ---------------
 #
-# Oracle records (one line per oracle: id | type | asserting test | source and
-# provenance). The asserting test is the record of the value; nothing here
-# restates a number a test does not assert.
-#
-# O1  | simulation-coverage | "AC1: plain bootstrap covers rho = 0.5 at n = 50"
-#       | data simulated from a bivariate normal with rho = 0.5; bounds
-#       [0.88, 0.99] give a correct implementation a pass probability of 0.997
-#       at its measured coverage 0.93 (cairn/reviews/archive/RR01 section 6).
-# O2  | closed-form | "AC1: bootstrap endpoints match Fisher-z endpoints at n = 2000"
-#       | Fisher-z interval from stats::cor.test(); tolerance 0.006 covers the
-#       measured maximum endpoint difference 0.0043 over 100 seeds (RR01 s. 4).
-# O3  | simulation-coverage | "AC2: cluster bootstrap covers rho = 0.5 with 50 clusters"
-#       | x_ij = u_i + e_ij, y_ij = u_i + f_ij, u, e, f ~ N(0, 1): marginal
-#       correlation 0.5, intraclass correlation 0.5; the Fisher interval on the
-#       same data has coverage about 0.71 (RR01 section 5).
-# O4  | invariant | "AC2: cluster = row number reproduces the plain bootstrap"
-#       | sample.int(G, G, TRUE) over split() order makes both draws identical.
-# O5  | closed-form | "AC6: SE and p are recomputed from the replicates"
-#       | SE = sd of kept replicates (Efron & Tibshirani 1993 eq. 6.6, p. 47);
-#       p in the (count + 1) / (B + 1) form (Davison & Hinkley 1997 eq. 4.11,
-#       p. 141); see cairn/references/efron1993.md and davison1997.md.
-# O6  | simulation-coverage | "AC6: type-I error at rho = 0 is near nominal"
-#       | expected rejection rate 0.065 at n = 50 for the percentile p under
-#       bivariate normality (RR01 section 1 table); bounds [0.02, 0.10].
-# O7  | closed-form | "AC6: bootstrap p agrees with cor_to_p() at n = 2000"
-#       | dataset constructed with sample correlation exactly 0.04 so that the
-#       analytic p is about 0.074; measured maximum difference 0.031 (RR01 s. 6).
-# O8  | closed-form | "AC6: SE agrees with (1 - r^2) / sqrt(n) at n = 2000"
-#       | large-sample sd of Pearson r under bivariate normality.
-# O9  | frozen (published) | "AC6: law-school SE matches Efron & Tibshirani"
-#       | Efron & Tibshirani (1993) Table 3.1, p. 19 (the 15 law schools' LSAT
-#       and GPA) and Table 6.1, p. 50 (bootstrap SE .132 at B = 3200); values
-#       read against the source (cairn/references/efron1993.md); the sample
-#       correlation .776 (p. 50) is checked as a transcription control.
-# O10 | invariant | "AC6: sign flip and affine map of y", the definition's
-#       invariances: negating y negates and swaps the endpoints and keeps SE
-#       and p; 2 * y + 5 changes nothing for the listed methods.
-# O11 | invariant | "coherence: p and the interval agree on excluding 0"
-#       | (p < 1 - ci) == (CI excludes 0) except within 4 / (B + 1) of the
-#       threshold, where type-7 interpolation can disagree (RR01 section 6).
-# O12 | simulation-coverage | "negative control: y = x^2 + noise"
-#       | dependent but uncorrelated data: the bootstrap tests coefficient = 0
-#       (rate measured 0.069) while the Fisher test tests independence under
-#       normality (rate measured 0.290) (RR01 section 1).
+# SE is the sd of the replicates (Efron & Tibshirani, 1993, eq. 6.6); p uses
+# the (count + 1) / (B + 1) form (Davison & Hinkley, 1997, eq. 4.11). The
+# law-school SE is from Efron & Tibshirani (1993), Tables 3.1 and 6.1.
 
 # Helpers ---------------------------------------------------------------------
 
@@ -253,9 +212,9 @@ with_warnings <- function(expr) {
   list(value = value, warnings = msgs)
 }
 
-# AC1 -------------------------------------------------------------------------
+# plain bootstrap ------------------------------------------------------------
 
-test_that("AC1: plain bootstrap covers rho = 0.5 at n = 50", {
+test_that("plain bootstrap covers rho = 0.5 at n = 50", {
   skip_on_cran()
   set.seed(101)
   covered <- vapply(
@@ -278,7 +237,7 @@ test_that("AC1: plain bootstrap covers rho = 0.5 at n = 50", {
   expect_lte(mean(covered), 0.99)
 })
 
-test_that("AC1: bootstrap endpoints match Fisher-z endpoints at n = 2000", {
+test_that("bootstrap endpoints match Fisher-z endpoints at n = 2000", {
   skip_on_cran()
   set.seed(102)
   d <- sim_bvn(2000, 0.5)
@@ -290,14 +249,14 @@ test_that("AC1: bootstrap endpoints match Fisher-z endpoints at n = 2000", {
   expect_lt(abs(boot$CI_low - fisher$CI_low), 0.006)
   expect_lt(abs(boot$CI_high - fisher$CI_high), 0.006)
 
-  # O8: SE against the large-sample sd of r
+  # SE against the large-sample sd of r
   r <- boot$r
   expect_lt(abs(boot$SE - (1 - r^2) / sqrt(2000)), 0.002)
 })
 
-# AC2 -------------------------------------------------------------------------
+# cluster bootstrap ----------------------------------------------------------
 
-test_that("AC2: cluster bootstrap covers rho = 0.5 with 50 clusters", {
+test_that("cluster bootstrap covers rho = 0.5 with 50 clusters", {
   skip_on_cran()
   set.seed(201)
   res <- vapply(
@@ -318,7 +277,7 @@ test_that("AC2: cluster bootstrap covers rho = 0.5 with 50 clusters", {
   expect_lt(mean(res["fisher", ]), 0.85)
 })
 
-test_that("AC2: cluster = row number reproduces the plain bootstrap", {
+test_that("cluster = row number reproduces the plain bootstrap", {
   d <- iris
   d$row <- seq_len(nrow(d))
   clus <- seeded(
@@ -349,11 +308,11 @@ test_that("AC2: cluster = row number reproduces the plain bootstrap", {
   expect_identical(attr(plain, "ci_method"), "bootstrap")
 })
 
-# AC3 -------------------------------------------------------------------------
+# every frequentist method ---------------------------------------------------
 
 for (spec in method_sweep) {
   test_that(
-    paste("AC3: bootstrap runs for every frequentist method:", spec$label),
+    paste("bootstrap runs for every frequentist method:", spec$label),
     {
       skip_sweep_entry(spec)
       d <- iris_boot()
@@ -393,9 +352,9 @@ for (spec in method_sweep) {
   )
 }
 
-# AC4: argument errors and warnings ----------------------------------------------
+# argument errors and warnings -----------------------------------------------
 
-test_that("AC4: bootstrap is refused for Bayesian, partial, and multilevel correlations", {
+test_that("bootstrap is refused for Bayesian, partial, and multilevel correlations", {
   expect_error(
     cor_test(
       iris,
@@ -428,7 +387,7 @@ test_that("AC4: bootstrap is refused for Bayesian, partial, and multilevel corre
   )
 })
 
-test_that("AC4: cluster and iterations are validated", {
+test_that("cluster and iterations are validated", {
   expect_error(
     cor_test(iris, "Sepal.Length", "Petal.Length", cluster = "no_such_column"),
     "name of one column"
@@ -461,7 +420,7 @@ test_that("AC4: cluster and iterations are validated", {
   )
 })
 
-test_that("AC4: fewer than 20 clusters warns", {
+test_that("fewer than 20 clusters warns", {
   d <- iris
   d$g <- rep(seq_len(10), length.out = nrow(d))
   expect_warning(
@@ -470,7 +429,7 @@ test_that("AC4: fewer than 20 clusters warns", {
   )
 })
 
-test_that("AC4: winsorize keeps the cluster column and matches winsorizing beforehand", {
+test_that("winsorize keeps the cluster column and matches winsorizing beforehand", {
   d <- iris
   d$g <- rep(seq_len(30), length.out = nrow(d))
   inline <- seeded(
@@ -508,9 +467,9 @@ test_that("AC4: winsorize keeps the cluster column and matches winsorizing befor
   )
 })
 
-# AC4: dropped replicates -------------------------------------------------------
+# dropped replicates ---------------------------------------------------------
 
-test_that("AC4: NA replicates are dropped with one warning naming the kept count", {
+test_that("NA replicates are dropped with one warning naming the kept count", {
   set.seed(401)
   for (constant in c("x", "y")) {
     d <- data.frame(
@@ -539,7 +498,7 @@ test_that("AC4: NA replicates are dropped with one warning naming the kept count
   }
 })
 
-test_that("AC4: more than half failing replicates is an error naming the counts", {
+test_that("more than half failing replicates is an error naming the counts", {
   original <- .cor_test_freq
   calls <- 0L
   local_mocked_bindings(
@@ -564,7 +523,7 @@ test_that("AC4: more than half failing replicates is an error naming the counts"
   )
 })
 
-test_that("AC4: fewer than half failing replicates warns with the kept count", {
+test_that("fewer than half failing replicates warns with the kept count", {
   original <- .cor_test_freq
   calls <- 0L
   local_mocked_bindings(
@@ -590,7 +549,7 @@ test_that("AC4: fewer than half failing replicates warns with the kept count", {
   expect_identical(attr(out, "iterations"), 600L)
 })
 
-test_that("AC4: no failing replicate raises no dropped-replicate warning", {
+test_that("no failing replicate raises no dropped-replicate warning", {
   expect_no_warning(
     cor_test(
       iris,
@@ -602,7 +561,7 @@ test_that("AC4: no failing replicate raises no dropped-replicate warning", {
   )
 })
 
-test_that("AC4: verbose = FALSE suppresses the cluster and dropped-replicate warnings", {
+test_that("verbose = FALSE suppresses the cluster and dropped-replicate warnings", {
   set.seed(402)
   d <- data.frame(
     g = rep(1:2, each = 20),
@@ -623,9 +582,9 @@ test_that("AC4: verbose = FALSE suppresses the cluster and dropped-replicate war
   expect_lt(attr(out, "iterations"), 200L)
 })
 
-# AC5 -------------------------------------------------------------------------
+# correlation() --------------------------------------------------------------
 
-test_that("AC5: correlation() runs the cluster bootstrap per pair", {
+test_that("correlation() runs the cluster bootstrap per pair", {
   d <- iris[1:3]
   d$id <- rep(seq_len(30), length.out = nrow(d))
   out <- seeded(501, correlation(d, cluster = "id", iterations = 100))
@@ -655,14 +614,14 @@ test_that("AC5: correlation() runs the cluster bootstrap per pair", {
   expect_null(attr(correlation(iris[1:3]), "ci_method"))
 })
 
-test_that("AC5: the printed footer names the bootstrap", {
+test_that("the printed footer names the bootstrap", {
   d <- iris[1:3]
   d$id <- rep(seq_len(30), length.out = nrow(d))
   out <- seeded(503, correlation(d, cluster = "id", iterations = 100))
   expect_snapshot(print(out))
 })
 
-test_that("AC5: grouped data keeps the cluster column out of every group", {
+test_that("grouped data keeps the cluster column out of every group", {
   d <- iris
   d$id <- rep(seq_len(30), length.out = nrow(d))
   g <- datawizard::data_group(d, "Species")
@@ -676,7 +635,7 @@ test_that("AC5: grouped data keeps the cluster column out of every group", {
   )
 })
 
-test_that("AC5: distance correlation returns NA p-values under adjustment", {
+test_that("distance correlation returns NA p-values under adjustment", {
   out <- seeded(
     505,
     correlation(
@@ -690,11 +649,11 @@ test_that("AC5: distance correlation returns NA p-values under adjustment", {
   expect_identical(nrow(out), 3L)
 })
 
-# AC6 -------------------------------------------------------------------------
+# SE and p-values ------------------------------------------------------------
 
 for (spec in method_sweep) {
   test_that(
-    paste("AC6: SE and p are recomputed from the replicates:", spec$label),
+    paste("SE and p are recomputed from the replicates:", spec$label),
     {
       skip_sweep_entry(spec)
       d <- iris_boot()
@@ -724,7 +683,7 @@ for (spec in method_sweep) {
   )
 }
 
-test_that("AC6: type-I error at rho = 0 is near nominal", {
+test_that("type-I error at rho = 0 is near nominal", {
   skip_on_cran()
   set.seed(602)
   rejected <- vapply(
@@ -739,7 +698,7 @@ test_that("AC6: type-I error at rho = 0 is near nominal", {
   expect_lte(mean(rejected), 0.10)
 })
 
-test_that("AC6: bootstrap p agrees with cor_to_p() at n = 2000", {
+test_that("bootstrap p agrees with cor_to_p() at n = 2000", {
   skip_on_cran()
   set.seed(603)
   n <- 2000
@@ -753,7 +712,7 @@ test_that("AC6: bootstrap p agrees with cor_to_p() at n = 2000", {
   expect_lt(abs(out$p - cor_to_p(out$r, n = n)$p), 0.05)
 })
 
-test_that("AC6: law-school SE matches Efron & Tibshirani", {
+test_that("law-school SE matches Efron & Tibshirani", {
   # transcription control: Efron & Tibshirani report r = 0.776
   expect_equal(
     stats::cor(law_school$LSAT, law_school$GPA),
@@ -772,7 +731,7 @@ for (spec in method_sweep[vapply(
   function(s) s$method %in% odd_methods,
   logical(1)
 )]) {
-  test_that(paste("AC6: sign flip and affine map of y:", spec$label), {
+  test_that(paste("sign flip and affine map of y:", spec$label), {
     skip_sweep_entry(spec)
     d <- iris_integer()
     original <- seeded(
@@ -846,7 +805,7 @@ for (spec in method_sweep[vapply(
   })
 }
 
-# Review findings ---------------------------------------------------------------
+# missing values, alternatives, and other inputs -----------------------------
 
 test_that("rows with a missing cluster value are dropped before the estimate", {
   d <- iris
@@ -1057,7 +1016,7 @@ test_that("fewer than two kept replicates is an error", {
   expect_true(found)
 })
 
-# Extra invariants beyond the criteria -----------------------------------------
+# coherence and negative control ---------------------------------------------
 
 test_that("coherence: p and the interval agree on excluding 0", {
   skip_on_cran()
