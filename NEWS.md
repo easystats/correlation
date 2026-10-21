@@ -43,6 +43,9 @@
   variable. Each pair now gets the same polyserial or polychoric correlation as
   `cor_test()` (#261).
 
+- Subsetting a correlation matrix from `summary()` now keeps its attributes, so
+  significance stars are still shown (#26).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
