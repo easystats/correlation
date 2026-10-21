@@ -197,6 +197,10 @@ difference between the percentage of concordant and discordant pairs among
 all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
 Bishara and Hittner, 2017).
+
+The p-values for Spearman's and Kendall's correlations are asymptotic
+(\code{exact = FALSE} in \code{\link[stats:cor.test]{stats::cor.test()}}); use \code{exact = TRUE} for exact
+p-values. Very small p-values may be reported as 0.
 \item \strong{Biweight midcorrelation}: A measure of similarity that is
 median-based, instead of the traditional mean-based, thus being less
 sensitive to outliers. It can be used as a robust alternative to other

@@ -66,6 +66,10 @@
 #' correlations are computed using the Fieller et al. (1957) correction (see
 #' Bishara and Hittner, 2017).
 #'
+#'   The p-values for Spearman's and Kendall's correlations are asymptotic
+#'   (`exact = FALSE` in [stats::cor.test()]); use `exact = TRUE` for exact
+#'   p-values. Very small p-values may be reported as 0.
+#'
 #' - **Biweight midcorrelation**: A measure of similarity that is
 #' median-based, instead of the traditional mean-based, thus being less
 #' sensitive to outliers. It can be used as a robust alternative to other

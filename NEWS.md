@@ -43,6 +43,9 @@
   variable. Each pair now gets the same polyserial or polychoric correlation as
   `cor_test()` (#261).
 
+- `cor_test()` and `correlation()` now pass `exact` to `stats::cor.test()`, to
+  get exact p-values for Spearman and Kendall correlations (#279).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
