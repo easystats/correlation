@@ -189,6 +189,21 @@ cor_test <- function(
     partial <- TRUE
   }
 
+  # "auto" with ordered factors: pick polychoric before factors are converted
+  if (
+    tolower(method) == "auto" &&
+      !bayesian &&
+      isFALSE(partial) &&
+      any(vapply(data[c(x, y)], .is_ordinal, logical(1))) &&
+      all(vapply(
+        data[c(x, y)],
+        function(v) is.numeric(v) || is.ordered(v),
+        logical(1)
+      ))
+  ) {
+    method <- "polychoric"
+  }
+
   # Bootstrap arguments
   if (!isTRUE(bootstrap) && !isFALSE(bootstrap)) {
     insight::format_error("`bootstrap` must be `TRUE` or `FALSE`.")

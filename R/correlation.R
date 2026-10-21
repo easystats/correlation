@@ -772,18 +772,25 @@ correlation <- function(
 
   # Clean data and get combinations -------------
 
+  # with "auto", keep ordered factors for `cor_test()` to pick polychoric
+  keep_ordinal <- tolower(method) == "auto" &&
+    isFALSE(partial) &&
+    !isTRUE(partial_bayesian) &&
+    !isTRUE(bayesian)
   combinations <- .get_combinations(
     data,
     data2 = NULL,
     redundant = FALSE,
     include_factors = include_factors,
     multilevel = keep_factors,
-    method = method
+    method = method,
+    keep_ordinal = keep_ordinal
   )
   data <- .clean_data(
     data,
     include_factors = include_factors,
-    multilevel = keep_factors
+    multilevel = keep_factors,
+    keep_ordinal = keep_ordinal
   )
   if (!is.null(cluster)) {
     data <- cbind(data, cluster_column)

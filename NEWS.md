@@ -43,6 +43,9 @@
   variable. Each pair now gets the same polyserial or polychoric correlation as
   `cor_test()` (#261).
 
+- `method = "auto"` now selects a polychoric (or polyserial) correlation for
+  ordered factors with three or more levels, instead of Pearson (#260).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
