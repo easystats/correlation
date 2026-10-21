@@ -12,6 +12,9 @@
   and is `NA` for distance correlation and Hoeffding's D, whose bootstrap
   cannot test independence (#14, #167, #168).
 
+- The bootstrap and cluster bootstrap now work with `partial = TRUE`. Each
+  resample is partialled again (#63).
+
 ## Changes
 
 - Documentation was updated and corrected in several places.

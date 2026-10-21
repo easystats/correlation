@@ -181,10 +181,11 @@
 #' \subsection{Bootstrap confidence intervals}{
 #' With `bootstrap = TRUE`, or when `cluster` names a column, the confidence
 #' interval, standard error, and p-value of every non-Bayesian method are
-#' obtained by resampling instead of from the analytic formulas above. The
-#' rows with complete data on both variables (and on `cluster`, if given) or,
-#' with `cluster`, whole clusters of such rows, are resampled with replacement
-#' `iterations` times and the coefficient is recomputed on each resample.
+#' obtained by resampling instead of from the analytic formulas above. Without
+#' `partial`, the rows with complete data on both variables (and on `cluster`,
+#' if given) are resampled with replacement `iterations` times, or, with
+#' `cluster`, whole clusters of such rows are, and the coefficient is
+#' recomputed on each resample.
 #' `CI_low` and `CI_high` are the `(1 - ci) / 2` and
 #' `1 - (1 - ci) / 2` quantiles of the replicates (the percentile interval;
 #' Efron & Tibshirani, 1993, section 13.3, pp. 170-171); `SE` is the standard
@@ -210,9 +211,14 @@
 #' resample in which a variable is constant or loses a category) are dropped
 #' with a warning naming the number kept; if fewer than half survive, an
 #' error is raised. In `correlation()`, this warning is shown for the first
-#' pair only, as for every other warning it raises. The `winsorize` and
-#' `ranktransform` transformations are applied once, to the full data, before
-#' resampling.
+#' pair only, as for every other warning it raises. Without `partial`, the
+#' `winsorize` and `ranktransform` transformations are applied once, to the
+#' full data, before resampling.
+#'
+#' With `partial = TRUE`, each resample is partialled again (the `cluster`
+#' column is never a covariate), then winsorized and rank transformed if
+#' requested. Rows that enter neither the regressions nor the coefficient are
+#' not resampled. This is slower than a bootstrap without `partial`.
 #'
 #' The cluster bootstrap (`cluster`) resamples whole clusters, so the
 #' dependence within a cluster (repeated measures of one participant, say)
@@ -402,6 +408,12 @@ correlation <- function(
     iterations <- .validate_iterations(iterations)
   } else if (isTRUE(bootstrap)) {
     iterations <- .validate_iterations(iterations)
+  }
+  # `partial_bayesian` is not passed on to cor_test(), which would refuse it
+  if (isTRUE(bootstrap) && isTRUE(partial_bayesian)) {
+    insight::format_error(
+      "Bootstrap confidence intervals are not available for full Bayesian partial correlations (`partial_bayesian = TRUE`)."
+    )
   }
 
   if (is.null(data2) && !is.null(select)) {

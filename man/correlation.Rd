@@ -132,10 +132,12 @@ See the \code{\link[datawizard:winsorize]{datawizard::winsorize()}} function for
 \item{bootstrap}{If \code{TRUE}, the confidence interval, standard error, and
 p-value are obtained from a nonparametric percentile bootstrap instead of
 the analytic formulas: rows are resampled with replacement \code{iterations}
-times and the coefficient is recomputed on each resample. See the
-'Bootstrap' section. Not available for Bayesian, partial, or multilevel
-correlations; the interval and p-value are two-sided, so \code{alternative}
-(passed through \code{...}) must be \code{"two.sided"}, the default.}
+times and the coefficient is recomputed on each resample (with
+\code{partial = TRUE}, each resample is partialled again). See the 'Bootstrap'
+section. Not available for Bayesian, full Bayesian partial
+(\code{partial_bayesian}), or multilevel correlations; the interval and p-value
+are two-sided, so \code{alternative} (passed through \code{...}) must be
+\code{"two.sided"}, the default.}
 
 \item{iterations}{Number of bootstrap resamples (default \code{1000}). Only used
 when \code{bootstrap = TRUE} or \code{cluster} is given.}
@@ -144,7 +146,8 @@ when \code{bootstrap = TRUE} or \code{cluster} is given.}
 (for example, participants with repeated measures). If given, a cluster
 bootstrap is run (\code{bootstrap} is set to \code{TRUE}): whole clusters, rather
 than rows, are resampled with replacement; rows with a missing cluster
-value are dropped. See the 'Bootstrap' section.}
+value are dropped. With \code{partial = TRUE}, the cluster column is not one
+of the variables partialled out. See the 'Bootstrap' section.}
 
 \item{verbose}{Toggle warnings.}
 
@@ -301,10 +304,11 @@ Bayesian rank correlations (which have different priors).
 \subsection{Bootstrap confidence intervals}{
 With \code{bootstrap = TRUE}, or when \code{cluster} names a column, the confidence
 interval, standard error, and p-value of every non-Bayesian method are
-obtained by resampling instead of from the analytic formulas above. The
-rows with complete data on both variables (and on \code{cluster}, if given) or,
-with \code{cluster}, whole clusters of such rows, are resampled with replacement
-\code{iterations} times and the coefficient is recomputed on each resample.
+obtained by resampling instead of from the analytic formulas above. Without
+\code{partial}, the rows with complete data on both variables (and on \code{cluster},
+if given) are resampled with replacement \code{iterations} times, or, with
+\code{cluster}, whole clusters of such rows are, and the coefficient is
+recomputed on each resample.
 \code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
 \code{1 - (1 - ci) / 2} quantiles of the replicates (the percentile interval;
 Efron & Tibshirani, 1993, section 13.3, pp. 170-171); \code{SE} is the standard
@@ -330,9 +334,14 @@ Replicates on which the coefficient cannot be computed (for instance, a
 resample in which a variable is constant or loses a category) are dropped
 with a warning naming the number kept; if fewer than half survive, an
 error is raised. In \code{correlation()}, this warning is shown for the first
-pair only, as for every other warning it raises. The \code{winsorize} and
-\code{ranktransform} transformations are applied once, to the full data, before
-resampling.
+pair only, as for every other warning it raises. Without \code{partial}, the
+\code{winsorize} and \code{ranktransform} transformations are applied once, to the
+full data, before resampling.
+
+With \code{partial = TRUE}, each resample is partialled again (the \code{cluster}
+column is never a covariate), then winsorized and rank transformed if
+requested. Rows that enter neither the regressions nor the coefficient are
+not resampled. This is slower than a bootstrap without \code{partial}.
 
 The cluster bootstrap (\code{cluster}) resamples whole clusters, so the
 dependence within a cluster (repeated measures of one participant, say)
