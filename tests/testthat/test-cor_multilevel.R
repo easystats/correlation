@@ -118,11 +118,10 @@ test_that("multilevel back-conversion keeps the Method label", {
 
 test_that("multilevel back-conversion works with grouped data", {
   skip_if_not_or_load_if_installed("lme4")
-  skip_if_not_or_load_if_installed("dplyr")
   d <- transform(mtcars, gear = factor(gear))
 
   rez <- correlation(
-    dplyr::group_by(d, am),
+    datawizard::data_group(d, "am"),
     select = c("gear", "hp", "wt", "mpg"),
     multilevel = TRUE
   )
