@@ -122,10 +122,13 @@ setting the `multilevel` argument to `TRUE`.
 \
 [`correlation`](https://easystats.github.io/correlation/reference/correlation.md)`(``data``, multilevel ``=`` ``TRUE``)`
 
-    ## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
+    ## # Correlation Matrix (pearson-method)
+    ## 
+    ## Parameter1 | Parameter2 |    r |       95% CI | t(998) |         p
     ## ------------------------------------------------------------------
     ## V1         |         V2 | 0.50 | [0.45, 0.55] |  18.24 | < .001***
     ## 
+    ## p-value adjustment method: Holm (1979)
     ## Observations: 1000
 
 For completeness, let’s also see if its Bayesian cousin agrees with it:
@@ -133,7 +136,9 @@ For completeness, let’s also see if its Bayesian cousin agrees with it:
 \
 [`correlation`](https://easystats.github.io/correlation/reference/correlation.md)`(``data``, multilevel ``=`` ``TRUE``, bayesian ``=`` ``TRUE``)`
 
-    ## Parameter1 | Parameter2 |    r |           CI | t(998) |         p
+    ## # Correlation Matrix (pearson-method)
+    ## 
+    ## Parameter1 | Parameter2 |  rho |       95% CI | t(998) |         p
     ## ------------------------------------------------------------------
     ## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.12 | < .001***
     ## 

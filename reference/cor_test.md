@@ -208,6 +208,12 @@ neither the `SE` column nor these attributes are added.
   are computed using the Fieller et al. (1957) correction (see Bishara
   and Hittner, 2017).
 
+  The p-values for Spearman's and Kendall's correlations are asymptotic
+  (`exact = FALSE` in
+  [`stats::cor.test()`](https://rdrr.io/r/stats/cor.test.html)); use
+  `exact = TRUE` for exact p-values. Very small p-values may be reported
+  as 0.
+
 - **Biweight midcorrelation**: A measure of similarity that is
   median-based, instead of the traditional mean-based, thus being less
   sensitive to outliers. It can be used as a robust alternative to other
@@ -460,7 +466,7 @@ cor_test(iris, "Sepal.Length", "Sepal.Width", method = "spearman")
 cor_test(iris, "Sepal.Length", "Sepal.Width", bootstrap = TRUE, iterations = 200)
 #> Parameter1   |  Parameter2 |     r |   SE |        95% CI | t | df |     p
 #> --------------------------------------------------------------------------
-#> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.27, 0.02] |   |    | 0.109
+#> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.26, 0.02] |   |    | 0.149
 #> 
 #> Confidence intervals: percentile bootstrap (200 iterations)
 #> Observations: 150
@@ -471,7 +477,7 @@ data$id <- rep(1:30, 5)
 cor_test(data, "Sepal.Length", "Sepal.Width", cluster = "id", iterations = 200)
 #> Parameter1   |  Parameter2 |     r |   SE |        95% CI | t | df |     p
 #> --------------------------------------------------------------------------
-#> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.29, 0.03] |   |    | 0.109
+#> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.28, 0.02] |   |    | 0.109
 #> 
 #> Confidence intervals: percentile cluster bootstrap (200 iterations)
 #> Observations: 150
@@ -551,7 +557,7 @@ if (require("BayesFactor", quietly = TRUE)) {
 #> ************
 #> Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE
 #> -----------------------------------------------------------------------
-#> Sepal.Length | Sepal.Width | -0.11 | [-0.25, 0.05] | 93.17% |    42.85%
+#> Sepal.Length | Sepal.Width | -0.11 | [-0.25, 0.05] | 93.15% |    42.98%
 #> 
 #> Parameter1   |         Prior |    BF
 #> ------------------------------------

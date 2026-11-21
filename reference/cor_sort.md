@@ -6,7 +6,13 @@ Sort a correlation matrix based on
 ## Usage
 
 ``` r
-cor_sort(x, distance = "correlation", hclust_method = "complete", ...)
+cor_sort(
+  x,
+  distance = "correlation",
+  hclust_method = "complete",
+  na_action = "infer",
+  ...
+)
 ```
 
 ## Arguments
@@ -31,9 +37,60 @@ cor_sort(x, distance = "correlation", hclust_method = "complete", ...)
   Argument passed down into the `method` argument of
   [`hclust()`](https://rdrr.io/r/stats/hclust.html).
 
+- na_action:
+
+  How to deal with undefined correlations, i.e. `NA` values in the
+  matrix (which typically arise when two variables were never observed
+  together). Can be `"infer"` (default), `"zero"`, `"omit"` or
+  `"error"`. See the *Undefined correlations* section below.
+
 - ...:
 
   Other arguments to be passed to or from other functions.
+
+## Undefined correlations
+
+Clustering requires a complete distance matrix, so undefined
+correlations have to be resolved before
+[`hclust()`](https://rdrr.io/r/stats/hclust.html) can be run. Note that
+this only affects the *ordering*: the matrix that is returned keeps its
+`NA` values, and no imputed value is ever reported as a coefficient.
+
+- `"infer"` (default) estimates each undefined correlation from the
+  variables that were observed with both members of the pair, as
+  \\(r\_{bc} = r\_{bS} R\_{SS}^{-1} R\_{Sc}\\). This is the
+  maximum-entropy (maximum-determinant) positive-definite completion of
+  the matrix, i.e. the value that sets the partial correlation of the
+  pair, given the remaining variables, to zero (Dempster, 1972). When no
+  variable was observed with both members of the pair, or when the
+  estimate cannot be computed, it falls back to `0` for that pair. With
+  a single mediating variable it reduces to \\(r\_{ab} \times
+  r\_{ac}\\).
+
+- `"zero"` treats every undefined correlation as `0`. Cheaper and fully
+  transparent, but it asserts that the pair is unrelated, which can pull
+  apart variables that the rest of the matrix suggests belong together
+  (especially with `hclust_method = "complete"`).
+
+- `"omit"` computes the ordering on the complete-case submatrix, and
+  appends the variables involved in undefined pairs at the end, in their
+  original order.
+
+- `"error"` throws an error listing the undefined pairs.
+
+`"infer"` is only available for square correlation matrices (i.e., with
+`distance = "correlation"`). For other distances, and for non-square
+matrices, undefined distances are replaced by the average of the defined
+ones unless `na_action = "error"`.
+
+## References
+
+Dempster, A. P. (1972). Covariance selection. *Biometrics*, 28(1),
+157-175.
+
+Grone, R., Johnson, C. R., Sá, E. M., & Wolkowicz, H. (1984). Positive
+definite completions of partial Hermitian matrices. *Linear Algebra and
+its Applications*, 58, 109-124.
 
 ## Examples
 
@@ -160,4 +217,38 @@ cor_sort(summary(x, redundant = TRUE)) # As well as from the summary
 #> gear      |     0.21 |     0.48 |  0.70*** |  0.79*** |        
 #> 
 #> p-value adjustment method: Holm (1979)
+
+# Matrices with undefined correlations (e.g., variables that were never
+# observed together) can be sorted too
+d <- data.frame(
+  a = rnorm(50),
+  b = c(rnorm(25), rep(NA, 25)),
+  c = c(rep(NA, 25), rnorm(25))
+)
+rez <- correlation(d)
+cor_sort(rez)
+#> # Correlation Matrix (pearson-method)
+#> 
+#> Parameter1 | Parameter2 |     r |        95% CI | t(23) |     p
+#> ---------------------------------------------------------------
+#> a          |          b | -0.10 | [-0.48, 0.30] | -0.50 | 0.623
+#> a          |          c | -0.36 | [-0.66, 0.04] | -1.84 | 0.156
+#> b          |          c |       |               |       |      
+#> 
+#> p-value adjustment method: Holm (1979)
+#> Observations: 0-25
+cor_sort(rez, na_action = "omit")
+#> Warning: Fewer than two variables are free of undefined correlations, so the
+#>   matrix cannot be sorted. Returning it unsorted.
+#>   Use a different `na_action` to sort it anyway.
+#> # Correlation Matrix (pearson-method)
+#> 
+#> Parameter1 | Parameter2 |     r |        95% CI | t(23) |     p
+#> ---------------------------------------------------------------
+#> a          |          b | -0.10 | [-0.48, 0.30] | -0.50 | 0.623
+#> a          |          c | -0.36 | [-0.66, 0.04] | -1.84 | 0.156
+#> b          |          c |       |               |       |      
+#> 
+#> p-value adjustment method: Holm (1979)
+#> Observations: 0-25
 ```

@@ -9,7 +9,7 @@ You can easily visualize the result using plot() (see examples here)."><meta pro
 
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -252,7 +252,10 @@ less direct than that of Spearman's rho, in the sense that it quantifies the
 difference between the percentage of concordant and discordant pairs among
 all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
-Bishara and Hittner, 2017).</p></li>
+Bishara and Hittner, 2017).</p>
+<p>The p-values for Spearman's and Kendall's correlations are asymptotic
+(<code>exact = FALSE</code> in <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">stats::cor.test()</a></code>); use <code>exact = TRUE</code> for exact
+p-values. Very small p-values may be reported as 0.</p></li>
 <li><p><strong>Biweight midcorrelation</strong>: A measure of similarity that is
 median-based, instead of the traditional mean-based, thus being less
 sensitive to outliers. It can be used as a robust alternative to other
@@ -468,7 +471,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-in"><span><span class="fu">cor_test</span><span class="op">(</span><span class="va">iris</span>, <span class="st">"Sepal.Length"</span>, <span class="st">"Sepal.Width"</span>, bootstrap <span class="op">=</span> <span class="cn">TRUE</span>, iterations <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |  Parameter2 |     r |   SE |        95% CI | t | df |     p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.27, 0.02] |   |    | 0.109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.26, 0.02] |   |    | 0.149</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence intervals: percentile bootstrap (200 iterations)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 150</span>
@@ -479,7 +482,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-in"><span><span class="fu">cor_test</span><span class="op">(</span><span class="va">data</span>, <span class="st">"Sepal.Length"</span>, <span class="st">"Sepal.Width"</span>, cluster <span class="op">=</span> <span class="st">"id"</span>, iterations <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |  Parameter2 |     r |   SE |        95% CI | t | df |     p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.29, 0.03] |   |    | 0.109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Sepal.Width | -0.12 | 0.08 | [-0.28, 0.02] |   |    | 0.109</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence intervals: percentile cluster bootstrap (200 iterations)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 150</span>
@@ -559,7 +562,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ************</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |  Parameter2 |   rho |        95% CI |     pd | % in ROPE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -----------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Sepal.Width | -0.11 | [-0.25, 0.05] | 93.17% |    42.85%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Sepal.Width | -0.11 | [-0.25, 0.05] | 93.15% |    42.98%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |         Prior |    BF</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------------------</span>

@@ -11,7 +11,7 @@ You can easily visualize the result using plot()
 
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -312,7 +312,10 @@ less direct than that of Spearman's rho, in the sense that it quantifies the
 difference between the percentage of concordant and discordant pairs among
 all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
-Bishara and Hittner, 2017).</p></li>
+Bishara and Hittner, 2017).</p>
+<p>The p-values for Spearman's and Kendall's correlations are asymptotic
+(<code>exact = FALSE</code> in <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">stats::cor.test()</a></code>); use <code>exact = TRUE</code> for exact
+p-values. Very small p-values may be reported as 0.</p></li>
 <li><p><strong>Biweight midcorrelation</strong>: A measure of similarity that is
 median-based, instead of the traditional mean-based, thus being less
 sensitive to outliers. It can be used as a robust alternative to other
@@ -682,12 +685,12 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |   Parameter2 |     r |       SE |         95% CI | t | df |     p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --------------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length |  Sepal.Width | -0.12 |     0.08 | [-0.26,  0.05] |   |    | 0.139</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length |  Sepal.Width | -0.12 |     0.07 | [-0.26,  0.03] |   |    | 0.119</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Petal.Length |  0.87 |     0.02 | [ 0.83,  0.90] |   |    | 0.060</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length |  Petal.Width |  0.82 |     0.02 | [ 0.77,  0.86] |   |    | 0.060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width  | Petal.Length | -0.43 |     0.07 | [-0.56, -0.29] |   |    | 0.060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width  |  Petal.Width | -0.37 |     0.07 | [-0.48, -0.23] |   |    | 0.060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length |  Petal.Width |  0.96 | 5.53e-03 | [ 0.95,  0.97] |   |    | 0.060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width  | Petal.Length | -0.43 |     0.08 | [-0.57, -0.28] |   |    | 0.060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width  |  Petal.Width | -0.37 |     0.07 | [-0.50, -0.22] |   |    | 0.060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length |  Petal.Width |  0.96 | 5.08e-03 | [ 0.95,  0.97] |   |    | 0.060</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence intervals: percentile bootstrap (200 iterations)</span>
@@ -698,7 +701,7 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |   Parameter2 |    r |   SE |       95% CI | t | df |       p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Petal.Length | 0.87 | 0.02 | [0.84, 0.91] |   |    | 0.010**</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Petal.Length | 0.87 | 0.02 | [0.84, 0.90] |   |    | 0.010**</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence intervals: percentile cluster bootstrap (200 iterations)</span>

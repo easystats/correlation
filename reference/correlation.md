@@ -266,6 +266,12 @@ comparisons. All adjustment methods available in `p.adjust` function
   are computed using the Fieller et al. (1957) correction (see Bishara
   and Hittner, 2017).
 
+  The p-values for Spearman's and Kendall's correlations are asymptotic
+  (`exact = FALSE` in
+  [`stats::cor.test()`](https://rdrr.io/r/stats/cor.test.html)); use
+  `exact = TRUE` for exact p-values. Very small p-values may be reported
+  as 0.
+
 - **Biweight midcorrelation**: A measure of similarity that is
   median-based, instead of the traditional mean-based, thus being less
   sensitive to outliers. It can be used as a robust alternative to other
@@ -670,12 +676,12 @@ correlation(iris[1:4], bootstrap = TRUE, iterations = 200)
 #> 
 #> Parameter1   |   Parameter2 |     r |       SE |         95% CI | t | df |     p
 #> --------------------------------------------------------------------------------
-#> Sepal.Length |  Sepal.Width | -0.12 |     0.08 | [-0.26,  0.05] |   |    | 0.139
+#> Sepal.Length |  Sepal.Width | -0.12 |     0.07 | [-0.26,  0.03] |   |    | 0.119
 #> Sepal.Length | Petal.Length |  0.87 |     0.02 | [ 0.83,  0.90] |   |    | 0.060
 #> Sepal.Length |  Petal.Width |  0.82 |     0.02 | [ 0.77,  0.86] |   |    | 0.060
-#> Sepal.Width  | Petal.Length | -0.43 |     0.07 | [-0.56, -0.29] |   |    | 0.060
-#> Sepal.Width  |  Petal.Width | -0.37 |     0.07 | [-0.48, -0.23] |   |    | 0.060
-#> Petal.Length |  Petal.Width |  0.96 | 5.53e-03 | [ 0.95,  0.97] |   |    | 0.060
+#> Sepal.Width  | Petal.Length | -0.43 |     0.08 | [-0.57, -0.28] |   |    | 0.060
+#> Sepal.Width  |  Petal.Width | -0.37 |     0.07 | [-0.50, -0.22] |   |    | 0.060
+#> Petal.Length |  Petal.Width |  0.96 | 5.08e-03 | [ 0.95,  0.97] |   |    | 0.060
 #> 
 #> p-value adjustment method: Holm (1979)
 #> Confidence intervals: percentile bootstrap (200 iterations)
@@ -686,7 +692,7 @@ correlation(iris, select = c("Sepal.Length", "Petal.Length"), cluster = "id", it
 #> 
 #> Parameter1   |   Parameter2 |    r |   SE |       95% CI | t | df |       p
 #> ---------------------------------------------------------------------------
-#> Sepal.Length | Petal.Length | 0.87 | 0.02 | [0.84, 0.91] |   |    | 0.010**
+#> Sepal.Length | Petal.Length | 0.87 | 0.02 | [0.84, 0.90] |   |    | 0.010**
 #> 
 #> p-value adjustment method: Holm (1979)
 #> Confidence intervals: percentile cluster bootstrap (200 iterations)

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cor_sort</span><span class="op">(</span><span class="va">x</span>, distance <span class="op">=</span> <span class="st">"correlation"</span>, hclust_method <span class="op">=</span> <span class="st">"complete"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cor_sort</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  distance <span class="op">=</span> <span class="st">"correlation"</span>,</span>
+<span>  hclust_method <span class="op">=</span> <span class="st">"complete"</span>,</span>
+<span>  na_action <span class="op">=</span> <span class="st">"infer"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -85,10 +91,54 @@ arguments for it).</p></dd>
 <dd><p>Argument passed down into the <code>method</code> argument of <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust()</a></code>.</p></dd>
 
 
+<dt id="arg-na-action">na_action<a class="anchor" aria-label="anchor" href="#arg-na-action"></a></dt>
+<dd><p>How to deal with undefined correlations, i.e. <code>NA</code> values in
+the matrix (which typically arise when two variables were never observed
+together). Can be <code>"infer"</code> (default), <code>"zero"</code>, <code>"omit"</code> or <code>"error"</code>. See
+the <em>Undefined correlations</em> section below.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Other arguments to be passed to or from other functions.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="undefined-correlations">Undefined correlations<a class="anchor" aria-label="anchor" href="#undefined-correlations"></a></h2>
+
+
+
+<p>Clustering requires a complete distance matrix, so undefined correlations
+have to be resolved before <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust()</a></code> can be run. Note that this only
+affects the <em>ordering</em>: the matrix that is returned keeps its <code>NA</code> values,
+and no imputed value is ever reported as a coefficient.</p><ul><li><p><code>"infer"</code> (default) estimates each undefined correlation from the variables
+that were observed with both members of the pair, as
+\(r_{bc} = r_{bS} R_{SS}^{-1} R_{Sc}\). This is the maximum-entropy
+(maximum-determinant) positive-definite completion of the matrix, i.e. the
+value that sets the partial correlation of the pair, given the remaining
+variables, to zero (Dempster, 1972). When no variable was observed with
+both members of the pair, or when the estimate cannot be computed, it falls
+back to <code>0</code> for that pair. With a single mediating variable it reduces to
+\(r_{ab} \times r_{ac}\).</p></li>
+<li><p><code>"zero"</code> treats every undefined correlation as <code>0</code>. Cheaper and fully
+transparent, but it asserts that the pair is unrelated, which can pull
+apart variables that the rest of the matrix suggests belong together
+(especially with <code>hclust_method = "complete"</code>).</p></li>
+<li><p><code>"omit"</code> computes the ordering on the complete-case submatrix, and appends
+the variables involved in undefined pairs at the end, in their original
+order.</p></li>
+<li><p><code>"error"</code> throws an error listing the undefined pairs.</p></li>
+</ul><p><code>"infer"</code> is only available for square correlation matrices (i.e., with
+<code>distance = "correlation"</code>). For other distances, and for non-square
+matrices, undefined distances are replaced by the average of the defined
+ones unless <code>na_action = "error"</code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Dempster, A. P. (1972). Covariance selection. <em>Biometrics</em>, 28(1), 157-175.</p>
+<p>Grone, R., Johnson, C. R., Sá, E. M., &amp; Wolkowicz, H. (1984). Positive
+definite completions of partial Hermitian matrices. <em>Linear Algebra and its
+Applications</em>, 58, 109-124.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -214,6 +264,40 @@ arguments for it).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> gear      |     0.21 |     0.48 |  0.70*** |  0.79*** |        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Matrices with undefined correlations (e.g., variables that were never</span></span></span>
+<span class="r-in"><span><span class="co"># observed together) can be sorted too</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">25</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">25</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rez</span> <span class="op">&lt;-</span> <span class="fu"><a href="correlation.html">correlation</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">cor_sort</span><span class="op">(</span><span class="va">rez</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1 | Parameter2 |     r |        95% CI | t(23) |     p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a          |          b | -0.10 | [-0.48, 0.30] | -0.50 | 0.623</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a          |          c | -0.36 | [-0.66, 0.04] | -1.84 | 0.156</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> b          |          c |       |               |       |      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 0-25</span>
+<span class="r-in"><span><span class="fu">cor_sort</span><span class="op">(</span><span class="va">rez</span>, na_action <span class="op">=</span> <span class="st">"omit"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Fewer than two variables are free of undefined correlations, so the</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   matrix cannot be sorted. Returning it unsorted.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Use a different `na_action` to sort it anyway.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;"># Correlation Matrix (pearson-method)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1 | Parameter2 |     r |        95% CI | t(23) |     p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a          |          b | -0.10 | [-0.48, 0.30] | -0.50 | 0.623</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a          |          c | -0.36 | [-0.66, 0.04] | -1.84 | 0.156</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> b          |          c |       |               |       |      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Observations: 0-25</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

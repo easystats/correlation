@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">correlation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.8.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -196,16 +196,21 @@ package by setting the <code>multilevel</code> argument to
 <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Parameter1 | Parameter2 |    r |           CI | t(998) |         p</span></span>
+<pre><code><span><span class="co">## # Correlation Matrix (pearson-method)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Parameter1 | Parameter2 |    r |       95% CI | t(998) |         p</span></span>
 <span><span class="co">## ------------------------------------------------------------------</span></span>
 <span><span class="co">## V1         |         V2 | 0.50 | [0.45, 0.55] |  18.24 | &lt; .001***</span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## p-value adjustment method: Holm (1979)</span></span>
 <span><span class="co">## Observations: 1000</span></span></code></pre>
 <p>For completeness, let’s also see if its Bayesian cousin agrees with
 it:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/correlation.html">correlation</a></span><span class="op">(</span><span class="va">data</span>, multilevel <span class="op">=</span> <span class="cn">TRUE</span>, bayesian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Parameter1 | Parameter2 |    r |           CI | t(998) |         p</span></span>
+<pre><code><span><span class="co">## # Correlation Matrix (pearson-method)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Parameter1 | Parameter2 |  rho |       95% CI | t(998) |         p</span></span>
 <span><span class="co">## ------------------------------------------------------------------</span></span>
 <span><span class="co">## V1         |         V2 | 0.50 | [0.45, 0.54] |  18.12 | &lt; .001***</span></span>
 <span><span class="co">## </span></span>
