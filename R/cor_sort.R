@@ -92,31 +92,12 @@ cor_sort.easycormatrix <- function(
   x$Parameter <- factor(x$Parameter, levels = row.names(m))
   reordered <- x[order(x$Parameter), c("Parameter", colnames(m))]
 
-  # Restore class and attributes
-  attributes(reordered) <- utils::modifyList(
-    attributes(x)[!names(attributes(x)) %in% c("names", "row.names")],
-    attributes(reordered)
-  )
-
-  # Reorder attributes (p-values) etc.
-  for (id in c(
-    "p",
-    "CI",
-    "CI_low",
-    "CI_high",
-    "BF",
-    "Method",
-    "n_Obs",
-    "df_error",
-    "t"
-  )) {
-    if (id %in% names(attributes(reordered))) {
-      attributes(reordered)[[id]] <- attributes(reordered)[[id]][
-        order(x$Parameter),
-        names(reordered)
-      ]
-    }
-  }
+  # Restore missing attributes (`[` already reordered p-values etc.)
+  attri <- attributes(x)
+  attri <- attri[
+    !names(attri) %in% c("names", "row.names", names(attributes(reordered)))
+  ]
+  attributes(reordered) <- c(attributes(reordered), attri)
 
   # make sure Parameter columns are character
   reordered$Parameter <- as.character(reordered$Parameter)
