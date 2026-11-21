@@ -50,6 +50,12 @@
   variable. Each pair now gets the same polyserial or polychoric correlation as
   `cor_test()` (#261).
 
+- Fixed `correlation()` dropping factors in `data2` or `select2` when
+  `include_factors = TRUE` (#277, #292).
+
+- Fixed `correlation()` dropping or mislabeling pairs when `data` and `data2`
+  share a column name. The column in `data2` is now renamed (e.g. `x.1`).
+
 - Subsetting a correlation matrix from `summary()` now keeps its attributes, so
   significance stars are still shown (#26).
 
