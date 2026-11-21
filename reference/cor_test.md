@@ -75,13 +75,15 @@ cor_test(
   correspond to scale values of `1/sqrt(27)`, `1/3`, `1/sqrt(3)` and
   `1`, respectively. See the
   [`BayesFactor::correlationBF`](https://rdrr.io/pkg/BayesFactor/man/correlationBF.html)
-  function.
+  function. For `method = "kendall"`, a numeric scale must be in (0,
+  2\].
 
 - bayesian_ci_method, bayesian_test:
 
   See arguments in
   [`parameters::model_parameters()`](https://easystats.github.io/parameters/reference/model_parameters.html)
-  for `BayesFactor` tests.
+  for `BayesFactor` tests. For `method = "kendall"`,
+  `bayesian_ci_method` must be `"hdi"` or `"eti"`.
 
 - include_factors:
 
@@ -321,10 +323,16 @@ anymore). To keep Bayesian scores, set `partial = TRUE`.
 
 ### Notes
 
-Kendall and Spearman correlations when `bayesian=TRUE`: These are
-technically Pearson Bayesian correlations of rank transformed data,
-rather than pure Bayesian rank correlations (which have different
-priors).
+Spearman correlations when `bayesian=TRUE`: These are technically
+Pearson Bayesian correlations of rank transformed data, rather than pure
+Bayesian rank correlations (which have different priors).
+
+Kendall correlations when `bayesian=TRUE` follow van Doorn et al.
+(2018). The prior on tau comes from a stretched beta prior on the
+Pearson correlation, with alpha = 1/scale (as in
+[`BayesFactor::correlationBF()`](https://rdrr.io/pkg/BayesFactor/man/correlationBF.html)).
+`tau` is the posterior median and `BF` the Savage-Dickey Bayes factor.
+Ties are not corrected for.
 
 ### Bootstrap confidence intervals
 
@@ -407,6 +415,11 @@ recomputes a statistic quadratic in the number of rows, or an inner
   (2019). Using a Gaussian graphical model to explore relationships
   between items and variables in environmental psychology research.
   Frontiers in psychology, 10, 1050.
+
+- van Doorn, J., Ly, A., Marsman, M., & Wagenmakers, E.-J. (2018).
+  Bayesian inference for Kendall's rank correlation coefficient. The
+  American Statistician, 72(4), 303-308.
+  [doi:10.1080/00031305.2016.1264998](https://doi.org/10.1080/00031305.2016.1264998)
 
 - Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
   correlations when data are not normal. Behavior research methods,
