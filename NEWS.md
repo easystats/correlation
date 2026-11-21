@@ -17,9 +17,29 @@
 
 ## Changes
 
+- `cor_test()` and `correlation()` with `method = "kendall"` and
+  `bayesian = TRUE` now compute a Bayesian Kendall's tau (van Doorn et al.,
+  2018), instead of a Bayesian Pearson correlation of the raw data (#224).
+
 - Documentation was updated and corrected in several places.
 
+- `cor_sort()` gains a `na_action` argument, controlling how undefined
+  correlations (which arise when two variables were never observed together) are
+  handled when computing the ordering. Defaults to `"infer"`, which estimates
+  them from the variables observed with both members of the pair (the
+  maximum-entropy positive-definite completion). The sorted matrix that is
+  returned keeps its `NA` values.
+
 ## Bug Fixes
+
+- `cor_sort()` no longer fails with `NA/NaN/Inf in foreign function call` when
+  the matrix contains undefined correlations.
+
+- `cor_sort()` no longer mistakes a redundant matrix containing undefined
+  correlations for a non-redundant one.
+
+- `cor_test()` works again when `x` and `y` are the same variable (not yet for
+  partial or multilevel correlations).
 
 - `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
   conditional formatting rule ordering to accommodate openxlsx2's new waterfall
@@ -35,6 +55,31 @@
   `method = "biserial"` or `method = "pointbiserial"` now works. Previously,
   the function split the factor into one column per level and then failed with
   an error (#180).
+
+- `correlation()` now converts ordered factors to the ranks of their levels, as
+  `cor_test()` does, instead of splitting them into one dummy variable per
+  level. Unordered factors are still dummy-coded (#236).
+
+- If the data have one numeric and one ordered variable,
+  `correlation(method = "polychoric")` no longer fails. With more variables, it
+  no longer returns partial correlations for pairs that include a numeric
+  variable. Each pair now gets the same polyserial or polychoric correlation as
+  `cor_test()` (#261).
+
+- `cor_test()` and `correlation()` now pass `exact` to `stats::cor.test()`, to
+  get exact p-values for Spearman and Kendall correlations (#279).
+
+- Fixed `correlation()` dropping factors in `data2` or `select2` when
+  `include_factors = TRUE` (#277, #292).
+
+- Fixed `correlation()` dropping or mislabeling pairs when `data` and `data2`
+  share a column name. The column in `data2` is now renamed (e.g. `x.1`).
+
+- Subsetting a correlation matrix from `summary()` now keeps its attributes, so
+  significance stars are still shown (#26).
+
+- Fixed `correlation()` with `multilevel = TRUE` for `select2`, `data2`, and
+  grouped data. The `Method` column now shows the requested method (#207).
 
 # correlation 0.8.8
 

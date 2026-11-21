@@ -54,14 +54,17 @@ framework.}
 \item{bayesian_prior}{For the prior argument, several named values are
 recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and \code{"ultrawide"}.
 These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(3)} and
-\code{1}, respectively. See the \code{BayesFactor::correlationBF} function.}
+\code{1}, respectively. See the \code{BayesFactor::correlationBF} function. For
+\code{method = "kendall"}, a numeric scale must be in (0, 2].}
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in
-\code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests.}
+\code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests. For
+\code{method = "kendall"}, \code{bayesian_ci_method} must be \code{"hdi"} or \code{"eti"}.}
 
 \item{include_factors}{If \code{TRUE}, the factors are kept and eventually
 converted to numeric or used as random effects (depending of \code{multilevel}).
-If \code{FALSE}, factors are removed upfront.}
+Ordered factors are converted to the ranks of their levels. If \code{FALSE},
+factors are removed upfront.}
 
 \item{partial}{Can be \code{TRUE} or \code{"semi"} for partial and semi-partial
 correlations, respectively.}
@@ -154,6 +157,10 @@ difference between the percentage of concordant and discordant pairs among
 all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
 Bishara and Hittner, 2017).
+
+The p-values for Spearman's and Kendall's correlations are asymptotic
+(\code{exact = FALSE} in \code{\link[stats:cor.test]{stats::cor.test()}}); use \code{exact = TRUE} for exact
+p-values. Very small p-values may be reported as 0.
 \item \strong{Biweight midcorrelation}: A measure of similarity that is
 median-based, instead of the traditional mean-based, thus being less
 sensitive to outliers. It can be used as a robust alternative to other
@@ -250,9 +257,15 @@ Bayesian scores, set \code{partial = TRUE}.
 }
 
 \subsection{Notes}{
-Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technically
-Pearson Bayesian correlations of rank transformed data, rather than pure
-Bayesian rank correlations (which have different priors).
+Spearman correlations when \code{bayesian=TRUE}: These are technically Pearson
+Bayesian correlations of rank transformed data, rather than pure Bayesian
+rank correlations (which have different priors).
+
+Kendall correlations when \code{bayesian=TRUE} follow van Doorn et al. (2018).
+The prior on tau comes from a stretched beta prior on the Pearson
+correlation, with alpha = 1/scale (as in \code{BayesFactor::correlationBF()}).
+\code{tau} is the posterior median and \code{BF} the Savage-Dickey Bayes factor. Ties
+are not corrected for.
 }
 
 \subsection{Bootstrap confidence intervals}{
@@ -402,6 +415,9 @@ correlation estimator: robustness properties. Statistics and Computing,
 (2019). Using a Gaussian graphical model to explore relationships between
 items and variables in environmental psychology research. Frontiers in
 psychology, 10, 1050.
+\item van Doorn, J., Ly, A., Marsman, M., & Wagenmakers, E.-J. (2018). Bayesian
+inference for Kendall's rank correlation coefficient. The American
+Statistician, 72(4), 303-308. \doi{10.1080/00031305.2016.1264998}
 \item Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
 correlations when data are not normal. Behavior research methods, 49(1),
 294-309.
