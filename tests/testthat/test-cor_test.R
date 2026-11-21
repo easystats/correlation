@@ -17,6 +17,58 @@ test_that("cor_test kendall", {
   expect_equal(out$p, out2$p.value[[1]], tolerance = 0.001)
 })
 
+test_that("cor_test passes exact to cor.test for rank correlations", {
+  set.seed(2)
+  d <- data.frame(a = rnorm(10))
+  d$b <- d$a + rnorm(10)
+
+  for (m in c("spearman", "kendall")) {
+    exact_p <- stats::cor.test(d$a, d$b, method = m, exact = TRUE)$p.value
+    approx_p <- stats::cor.test(d$a, d$b, method = m, exact = FALSE)$p.value
+
+    # asymptotic p-value by default
+    expect_equal(cor_test(d, "a", "b", method = m)$p, approx_p)
+    expect_equal(
+      cor_test(d, "a", "b", method = m, exact = FALSE)$p,
+      approx_p
+    )
+    expect_equal(cor_test(d, "a", "b", method = m, exact = TRUE)$p, exact_p)
+  }
+})
+
+test_that("correlation passes exact to cor.test for grouped data", {
+  skip_if_not_or_load_if_installed("poorman")
+  set.seed(2)
+  d <- data.frame(g = rep(c("x", "y"), each = 10), a = rnorm(20))
+  d$b <- d$a + rnorm(20)
+  exact_p <- vapply(
+    split(d, d$g),
+    function(s) {
+      stats::cor.test(s$a, s$b, method = "kendall", exact = TRUE)$p.value
+    },
+    numeric(1)
+  )
+  grouped <- group_by(d, g)
+
+  out <- correlation(
+    grouped,
+    method = "kendall",
+    p_adjust = "none",
+    exact = TRUE
+  )
+  expect_equal(out$p, unname(exact_p))
+
+  # the data2 branch
+  out <- correlation(
+    group_by(d[c("g", "a")], g),
+    group_by(d[c("g", "b")], g),
+    method = "kendall",
+    p_adjust = "none",
+    exact = TRUE
+  )
+  expect_equal(out$p, unname(exact_p))
+})
+
 
 test_that("cor_test bayesian", {
   skip_if_not_or_load_if_installed("BayesFactor")
@@ -64,6 +116,14 @@ test_that("cor_test bayesian", {
     out6 <- cor_test(mtcars, "wt", "mpg", method = "gaussian", bayesian = TRUE)
     expect_equal(out6$rho, -0.8294838, tolerance = 0.01)
   }
+
+  # ci is respected (#382)
+  set.seed(123)
+  out_95 <- cor_test(mtcars, "wt", "mpg", bayesian = TRUE)
+  set.seed(123)
+  out_50 <- cor_test(mtcars, "wt", "mpg", bayesian = TRUE, ci = 0.5)
+  expect_identical(out_50$CI, 0.5)
+  expect_lt(out_50$CI_high - out_50$CI_low, out_95$CI_high - out_95$CI_low)
 
   # unsupported
   expect_error(cor_test(

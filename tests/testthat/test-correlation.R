@@ -245,6 +245,114 @@ test_that("specific types", {
   )
 })
 
+test_that("data2 and select2 keep dummy-coded factors (#277)", {
+  set.seed(277)
+  lv <- c("TT", "BT", "BB")
+  d <- data.frame(
+    age = rnorm(60),
+    weight = rnorm(60),
+    clinical = factor(sample(lv, 60, TRUE), levels = lv),
+    histo = factor(sample(lv, 60, TRUE), levels = lv)
+  )
+  dummies <- function(v) paste0(v, ".", lv)
+
+  # numeric variable against two factors
+  out <- correlation(
+    d["age"],
+    d[c("clinical", "histo")],
+    include_factors = TRUE
+  )
+  expect_identical(out$Parameter1, rep("age", 6))
+  expect_identical(out$Parameter2, c(dummies("clinical"), dummies("histo")))
+  expect_equal(
+    out$r[1],
+    stats::cor(d$age, as.numeric(d$clinical == "TT")),
+    tolerance = 1e-10
+  )
+
+  # factor against factor: only pairs across the two sets
+  out <- correlation(d["clinical"], d["histo"], include_factors = TRUE)
+  expect_identical(out$Parameter1, rep(dummies("clinical"), each = 3))
+  expect_identical(out$Parameter2, rep(dummies("histo"), 3))
+
+  # the same with select and select2
+  out2 <- correlation(
+    d,
+    select = "clinical",
+    select2 = "histo",
+    include_factors = TRUE
+  )
+  expect_identical(nrow(out2), 9L)
+  expect_identical(out2$Parameter1, out$Parameter1)
+  expect_identical(out2$Parameter2, out$Parameter2)
+
+  # numeric second sets are unchanged
+  out <- correlation(
+    d[c("age", "clinical")],
+    d["weight"],
+    include_factors = TRUE
+  )
+  expect_identical(out$Parameter1, c("age", dummies("clinical")))
+  expect_identical(out$Parameter2, rep("weight", 4))
+})
+
+test_that("data and data2 can share column names", {
+  set.seed(277)
+  lv <- c("TT", "BT", "BB")
+  d1 <- data.frame(x = rnorm(30), z = rnorm(30))
+  d2 <- data.frame(x = rnorm(30), w = rnorm(30))
+
+  # the second `x` is renamed to `x.1`, and all four cross pairs are kept
+  out <- correlation(d1, d2)
+  expect_identical(out$Parameter1, c("x", "x", "z", "z"))
+  expect_identical(out$Parameter2, c("x.1", "w", "x.1", "w"))
+  expect_equal(out$r[1], stats::cor(d1$x, d2$x), tolerance = 1e-10)
+
+  # the same for dummy-coded factors
+  f1 <- data.frame(x = factor(sample(lv, 30, TRUE), levels = lv))
+  f2 <- data.frame(x = factor(sample(lv, 30, TRUE), levels = lv))
+  out <- correlation(f1, f2, include_factors = TRUE)
+  expect_identical(out$Parameter1, rep(paste0("x.", lv), each = 3))
+  expect_identical(out$Parameter2, rep(paste0("x.1.", lv), 3))
+})
+
+test_that("polychoric correlation() matches polycor for numeric and ordered variables", {
+  skip_if_not_or_load_if_installed("psych")
+  skip_if_not_or_load_if_installed("polycor")
+
+  # one numeric and one ordered variable (#261)
+  set.seed(2024)
+  d2 <- data.frame(
+    o = factor(sample(LETTERS[1:4], 100, TRUE), ordered = TRUE),
+    x = rnorm(100)
+  )
+  out <- suppressWarnings(correlation(d2, method = "polychoric"))
+  expect_identical(out$Method, "Polyserial correlation")
+  expect_equal(out$rho, polycor::polyserial(d2$x, d2$o), tolerance = 1e-6)
+
+  # with more variables, the coefficients are not partial correlations
+  set.seed(3)
+  n <- 200
+  z <- rnorm(n)
+  d3 <- data.frame(
+    x = z + rnorm(n),
+    o1 = cut(z + rnorm(n), 4, ordered_result = TRUE),
+    o2 = cut(z + rnorm(n), 3, ordered_result = TRUE)
+  )
+  out <- correlation(d3, method = "polychoric")
+  expect_identical(out$Parameter1, c("x", "x", "o1"))
+  expect_identical(out$Parameter2, c("o1", "o2", "o2"))
+  expect_equal(
+    out$rho,
+    c(
+      polycor::polyserial(d3$x, d3$o1),
+      polycor::polyserial(d3$x, d3$o2),
+      polycor::polychor(d3$o1, d3$o2)
+    ),
+    tolerance = 1e-3
+  )
+})
+
 test_that("correlation doesn't fail when BFs are NA", {
   skip_if_not_or_load_if_installed("ggplot2")
   skip_if_not_or_load_if_installed("BayesFactor")
@@ -304,4 +412,83 @@ test_that("missing values", {
 
   expect_equal(as.matrix(corr_pairwise), r_pairwise)
   expect_equal(as.matrix(corr_complete), r_complete)
+})
+
+
+test_that("biserial correlations accept a dichotomous factor", {
+  d <- mtcars[c("am", "hp")]
+  d$am <- as.factor(d$am)
+
+  for (m in c("biserial", "pointbiserial")) {
+    out <- suppressWarnings(correlation(d, method = m))
+    ref <- cor_test(d, "am", "hp", method = m)
+    expect_identical(nrow(out), 1L)
+    expect_identical(c(out$Parameter1, out$Parameter2), c("am", "hp"))
+    expect_equal(out$rho, ref$rho, tolerance = 1e-10)
+  }
+})
+
+
+test_that("biserial correlations keep the multilevel grouping factor", {
+  skip_if_not_or_load_if_installed("lme4")
+  # equal 0s and 1s in each group, so the multilevel adjustment keeps `am`
+  # dichotomous
+  cyl <- factor(rep(1:6, each = 20))
+  am <- rep(0:1, 60)
+  d <- data.frame(am = am, hp = sin(1:120) + as.numeric(cyl) + am, cyl = cyl)
+
+  for (m in c("biserial", "pointbiserial")) {
+    with_factors <- suppressMessages(suppressWarnings(correlation(
+      d,
+      method = m,
+      multilevel = TRUE,
+      partial = TRUE,
+      include_factors = TRUE
+    )))
+    ref <- suppressMessages(suppressWarnings(correlation(
+      d,
+      method = m,
+      multilevel = TRUE,
+      partial = TRUE
+    )))
+    expect_identical(nrow(with_factors), 1L)
+    expect_identical(
+      c(with_factors$Parameter1, with_factors$Parameter2),
+      c("am", "hp")
+    )
+    expect_equal(with_factors$rho, ref$rho, tolerance = 1e-10)
+  }
+})
+
+
+test_that("ordered factors are converted to ranks, not dummy-coded", {
+  set.seed(1337)
+  df <- data.frame(
+    a = sample(1:5, 10, replace = TRUE),
+    b = factor(
+      sample(c("s", "m", "l"), 10, replace = TRUE),
+      levels = c("s", "m", "l"),
+      ordered = TRUE
+    ),
+    c = rnorm(10)
+  )
+
+  out <- correlation(df, method = "spearman", include_factors = TRUE)
+  expect_identical(
+    paste(out$Parameter1, out$Parameter2),
+    c("a b", "a c", "b c")
+  )
+
+  ct <- cor_test(df, "a", "b", method = "spearman")
+  expect_equal(out$rho[1], ct$rho, tolerance = 1e-10)
+  expect_equal(
+    out$rho[1],
+    stats::cor(df$a, as.integer(df$b), method = "spearman"),
+    tolerance = 1e-10
+  )
+
+  # unordered factors are still dummy-coded
+  df$b <- factor(df$b, ordered = FALSE)
+  out <- correlation(df, method = "spearman", include_factors = TRUE)
+  expect_true(all(c("b.s", "b.m", "b.l") %in% out$Parameter1))
 })

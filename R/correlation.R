@@ -66,6 +66,10 @@
 #' correlations are computed using the Fieller et al. (1957) correction (see
 #' Bishara and Hittner, 2017).
 #'
+#'   The p-values for Spearman's and Kendall's correlations are asymptotic
+#'   (`exact = FALSE` in [stats::cor.test()]); use `exact = TRUE` for exact
+#'   p-values. Very small p-values may be reported as 0.
+#'
 #' - **Biweight midcorrelation**: A measure of similarity that is
 #' median-based, instead of the traditional mean-based, thus being less
 #' sensitive to outliers. It can be used as a robust alternative to other
@@ -89,7 +93,11 @@
 #' referred to as Blomqvist's Beta or medial correlation; Blomqvist, 1950) is a
 #' median-based non-parametric correlation that has some advantages over
 #' measures such as Spearman's or Kendall's estimates (see Shmid & Schimdt,
-#' 2006).
+#' 2006). It is computed by `wdm::wdm()`, which splits each variable at its
+#' median by average rank (observations with rank at or below `(n + 1) / 2` go
+#' in the lower half), so when an observation sits exactly at the split (an odd
+#' number of rows, or ties spanning the median) the coefficient is not exactly
+#' sign-symmetric.
 #'
 #' - **Hoeffding’s D**: The Hoeffding’s D statistics is a
 #' non-parametric rank based measure of association that detects more general
@@ -169,15 +177,81 @@
 #' }
 #'
 #' \subsection{Notes}{
-#' Kendall and Spearman correlations when `bayesian=TRUE`: These are technically
-#' Pearson Bayesian correlations of rank transformed data, rather than pure
-#' Bayesian rank correlations (which have different priors).
+#' Spearman correlations when `bayesian=TRUE`: These are technically Pearson
+#' Bayesian correlations of rank transformed data, rather than pure Bayesian
+#' rank correlations (which have different priors).
+#'
+#' Kendall correlations when `bayesian=TRUE` follow van Doorn et al. (2018).
+#' The prior on tau comes from a stretched beta prior on the Pearson
+#' correlation, with alpha = 1/scale (as in `BayesFactor::correlationBF()`).
+#' `tau` is the posterior median and `BF` the Savage-Dickey Bayes factor. Ties
+#' are not corrected for.
+#' }
+#'
+#' \subsection{Bootstrap confidence intervals}{
+#' With `bootstrap = TRUE`, or when `cluster` names a column, the confidence
+#' interval, standard error, and p-value of every non-Bayesian method are
+#' obtained by resampling instead of from the analytic formulas above. The
+#' rows with complete data on both variables (and on `cluster`, if given) or,
+#' with `cluster`, whole clusters of such rows, are resampled with replacement
+#' `iterations` times and the coefficient is recomputed on each resample.
+#' `CI_low` and `CI_high` are the `(1 - ci) / 2` and
+#' `1 - (1 - ci) / 2` quantiles of the replicates (the percentile interval;
+#' Efron & Tibshirani, 1993, section 13.3, pp. 170-171); `SE` is the standard
+#' deviation of the replicates (Efron & Tibshirani, 1993, eq. 6.6, p. 47); and
+#' `p` is the two-sided achieved significance level of the same replicate
+#' distribution, `2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)` capped
+#' at 1, where `t` are the `B` kept replicates (Efron & Tibshirani, 1993,
+#' section 15.4, pp. 214-215; the `+ 1` form is the Monte Carlo p-value of
+#' Davison & Hinkley, 1997, eq. 4.11, p. 141). This p-value tests whether the
+#' population coefficient is 0. It is approximate, somewhat above nominal in
+#' small samples, and can never be smaller than `2 / (iterations + 1)`; the
+#' `+ 1` makes it slightly conservative relative to the percentile interval,
+#' so near the boundary an interval that excludes 0 can go with a `p` just
+#' above `1 - ci`. The analytic test statistic and its degrees of freedom are
+#' set to `NA`.
+#'
+#' Distance correlation and Hoeffding's D are degenerate under independence,
+#' so the bootstrap cannot test whether they are 0: their `p` is `NA` under
+#' bootstrap (use the analytic test instead), and their interval and standard
+#' error are reliable only when an association is present.
+#'
+#' Replicates on which the coefficient cannot be computed (for instance, a
+#' resample in which a variable is constant or loses a category) are dropped
+#' with a warning naming the number kept; if fewer than half survive, an
+#' error is raised. In `correlation()`, this warning is shown for the first
+#' pair only, as for every other warning it raises. The `winsorize` and
+#' `ranktransform` transformations are applied once, to the full data, before
+#' resampling.
+#'
+#' The cluster bootstrap (`cluster`) resamples whole clusters, so the
+#' dependence within a cluster (repeated measures of one participant, say)
+#' is kept intact. Its accuracy is driven by the number of clusters, not the
+#' number of rows: a warning is raised below 20 clusters, and very unequal
+#' cluster sizes lower the coverage of the interval (Davison & Hinkley, 1997,
+#' section 3.8, pp. 100-102; Field & Welsh, 2007, section 3.3, p. 383, whose
+#' cluster bootstrap this is). Giving each row its own cluster, numbered in
+#' row order, reproduces the plain bootstrap's replicates (the result is still
+#' labelled `"cluster-bootstrap"` and the fewer-than-20-clusters warning
+#' applies).
+#'
+#' In `correlation()` with `p_adjust = "holm"` (the default) or
+#' `"bonferroni"`, adjusted p-values cannot fall below
+#' `2 * m / (iterations + 1)` for `m` pairs, so with many pairs raise
+#' `iterations` (to at least `2 * m / alpha` for a threshold `alpha`) or use
+#' `p_adjust = "none"`; the other adjustment methods have a lower floor, but
+#' never below `2 / (iterations + 1)`. Hoeffding's D and Shepherd's Pi are slow under
+#' bootstrap: each replicate recomputes a statistic quadratic in the number of
+#' rows, or an inner 1000-sample outlier bootstrap.
 #' }
 #'
 #' @return
 #'
 #' A correlation object that can be displayed using the `print`, `summary` or
-#' `table` methods.
+#' `table` methods. Under bootstrap (`bootstrap = TRUE` or `cluster`), the
+#' object has an `SE` column and the attributes `ci_method` (`"bootstrap"` or
+#' `"cluster-bootstrap"`) and `iterations` (the number of replicates requested
+#' for each pair); the per-pair replicates are not kept.
 #'
 #' \subsection{Multiple tests correction}{
 #' The `p_adjust` argument can be used to adjust p-values for multiple
@@ -217,7 +291,21 @@
 #' # automatic selection of correlation method
 #' correlation(mtcars[-2], method = "auto")
 #'
+#' # bootstrap confidence intervals, and a cluster bootstrap
+#' correlation(iris[1:4], bootstrap = TRUE, iterations = 200)
+#' iris$id <- rep(1:30, 5)
+#' correlation(iris, select = c("Sepal.Length", "Petal.Length"), cluster = "id", iterations = 200)
+#'
 #' @references
+#'
+#' - Davison, A. C., & Hinkley, D. V. (1997). Bootstrap methods and their
+#'   application. Cambridge University Press.
+#'
+#' - Efron, B., & Tibshirani, R. J. (1993). An introduction to the bootstrap.
+#'   Chapman & Hall.
+#'
+#' - Field, C. A., & Welsh, A. H. (2007). Bootstrapping clustered data. Journal
+#'   of the Royal Statistical Society: Series B, 69(3), 369-390.
 #'
 #' - Boudt, K., Cornelissen, J., & Croux, C. (2012). The Gaussian rank
 #'   correlation estimator: robustness properties. Statistics and Computing,
@@ -227,6 +315,10 @@
 #'   (2019). Using a Gaussian graphical model to explore relationships between
 #'   items and variables in environmental psychology research. Frontiers in
 #'   psychology, 10, 1050.
+#'
+#' - van Doorn, J., Ly, A., Marsman, M., & Wagenmakers, E.-J. (2018). Bayesian
+#'   inference for Kendall's rank correlation coefficient. The American
+#'   Statistician, 72(4), 303-308. \doi{10.1080/00031305.2016.1264998}
 #'
 #' - Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
 #'   correlations when data are not normal. Behavior research methods, 49(1),
@@ -267,6 +359,9 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   standardize_names = getOption("easystats.standardize_names", FALSE),
   ...
@@ -287,6 +382,40 @@ correlation <- function(
   # CI
   if (ci == "default") {
     ci <- 0.95
+  }
+
+  # Bootstrap: the cluster column identifies resampling units and is never
+  # itself correlated; it must be a column of `data` and not a grouping variable
+  if (!isTRUE(bootstrap) && !isFALSE(bootstrap)) {
+    insight::format_error("`bootstrap` must be `TRUE` or `FALSE`.")
+  }
+  if (!is.null(cluster)) {
+    bootstrap <- TRUE
+    if (
+      !is.character(cluster) ||
+        length(cluster) != 1L ||
+        !cluster %in% colnames(data)
+    ) {
+      insight::format_error(
+        "`cluster` must be the name of one column in the data."
+      )
+    }
+    if (
+      inherits(data, "grouped_df") &&
+        cluster %in% setdiff(colnames(attributes(data)$groups), ".rows")
+    ) {
+      insight::format_error(
+        "`cluster` cannot be one of the grouping variables of the data."
+      )
+    }
+    if (cluster %in% c(select, select2)) {
+      insight::format_error(
+        "`cluster` cannot be one of the selected variables (`select`, `select2`)."
+      )
+    }
+    iterations <- .validate_iterations(iterations)
+  } else if (isTRUE(bootstrap)) {
+    iterations <- .validate_iterations(iterations)
   }
 
   if (is.null(data2) && !is.null(select)) {
@@ -313,6 +442,9 @@ correlation <- function(
       grp_df <- NULL
     }
 
+    # the cluster column travels with the data without being selected
+    select <- unique(c(select, cluster))
+
     data2 <- if (!is.null(select2)) data[select2]
     data <- data[select]
 
@@ -322,10 +454,11 @@ correlation <- function(
 
   # renaming the columns if so desired
   if (!is.null(rename)) {
-    if (length(data) != length(rename)) {
+    to_rename <- setdiff(colnames(data), cluster)
+    if (length(to_rename) != length(rename)) {
       insight::format_warning("Mismatch between number of variables and names.")
     } else {
-      colnames(data) <- rename
+      colnames(data)[colnames(data) %in% to_rename] <- rename
     }
   }
 
@@ -362,6 +495,10 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      convert_back_to_r = convert_back_to_r,
+      bootstrap = bootstrap,
+      iterations = iterations,
+      cluster = cluster,
       verbose = verbose,
       ...
     )
@@ -383,6 +520,10 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      convert_back_to_r = convert_back_to_r,
+      bootstrap = bootstrap,
+      iterations = iterations,
+      cluster = cluster,
       verbose = verbose,
       ...
     )
@@ -400,7 +541,7 @@ correlation <- function(
       method = method,
       bayesian = bayesian,
       p_adjust = p_adjust,
-      partial = partial,
+      partial = partial && !convert_back_to_r,
       multilevel = multilevel,
       partial_bayesian = partial_bayesian,
       bayesian_prior = bayesian_prior,
@@ -408,6 +549,21 @@ correlation <- function(
       missing = missing
     )
   )
+
+  # bootstrap attributes: `params <- result` above carried the first pair's
+  # `ci_method`, `iterations` (kept), and `bootstrap_replicates` into `out`;
+  # overwrite the first two with the whole-table values (`iterations` is the
+  # number requested for every pair) and clear the replicates, which are
+  # per-pair and not kept
+  if (isTRUE(bootstrap)) {
+    attr(out, "ci_method") <- if (is.null(cluster)) {
+      "bootstrap"
+    } else {
+      "cluster-bootstrap"
+    }
+    attr(out, "iterations") <- iterations
+    attr(out, "bootstrap_replicates") <- NULL
+  }
 
   attr(out, "additional_arguments") <- list(...)
 
@@ -427,10 +583,6 @@ correlation <- function(
       class(out)
     ))
   }
-
-  if (convert_back_to_r) {
-    out <- pcor_to_cor(pcor = out)
-  } # Revert back to r if needed.
 
   if (standardize_names) {
     insight::standardize_names(out, ...)
@@ -457,6 +609,10 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  convert_back_to_r = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   ...
 ) {
@@ -486,7 +642,13 @@ correlation <- function(
         partial_bayesian = partial_bayesian,
         multilevel = multilevel,
         ranktransform = ranktransform,
-        winsorize = winsorize
+        winsorize = winsorize,
+        convert_back_to_r = convert_back_to_r,
+        bootstrap = bootstrap,
+        iterations = iterations,
+        cluster = cluster,
+        verbose = verbose,
+        ...
       )
       modelframe_current <- rez$data
       rez$params$Group <- modelframe_current$Group <- i
@@ -524,7 +686,13 @@ correlation <- function(
           partial_bayesian = partial_bayesian,
           multilevel = multilevel,
           ranktransform = ranktransform,
-          winsorize = winsorize
+          winsorize = winsorize,
+          convert_back_to_r = convert_back_to_r,
+          bootstrap = bootstrap,
+          iterations = iterations,
+          cluster = cluster,
+          verbose = verbose,
+          ...
         )
         modelframe_current <- rez$data
         rez$params$Group <- modelframe_current$Group <- i
@@ -558,11 +726,25 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  convert_back_to_r = FALSE,
+  bootstrap = FALSE,
+  iterations = 1000,
+  cluster = NULL,
   verbose = TRUE,
   ...
 ) {
   if (!is.null(data2)) {
+    # make names in `data2` unique (e.g. `x` to `x.1`) before cbind()
+    all_names <- make.unique(c(names(data), names(data2)))
+    names(data2) <- all_names[-seq_len(ncol(data))]
     data <- cbind(data, data2)
+  }
+
+  # set the cluster column aside: it is not a variable to correlate, and the
+  # cleaning below would drop or dummy-code a non-numeric one
+  if (!is.null(cluster)) {
+    cluster_column <- data[cluster]
+    data[[cluster]] <- NULL
   }
 
   if (ncol(data) <= 2L && any(sapply(data, is.factor)) && !include_factors) {
@@ -584,14 +766,27 @@ correlation <- function(
     include_factors <- TRUE
   }
 
-  # definitely need factors for polychoric
+  # definitely need factors for polychoric: keep them as factors when cleaning
+  # the data, but do not pass `multilevel = TRUE` on to `cor_test()`, which
+  # would turn the coefficients into multilevel partial correlations
+  keep_factors <- multilevel
   if (method == "polychoric") {
-    multilevel <- TRUE
+    keep_factors <- TRUE
     # convert all input to factors, but only if all input currently is numeric
     # we allow mix of numeric and factors
     if (all(vapply(data, is.numeric, FUN.VALUE = TRUE))) {
       data <- datawizard::to_factor(data)
     }
+  }
+
+  # biserial needs a dichotomous factor as one numeric column, not dummy-coded;
+  # with multilevel, factors are the grouping variables and stay factors
+  if (
+    include_factors &&
+      !multilevel &&
+      tolower(method) %in% c("biserial", "pointbiserial", "point-biserial")
+  ) {
+    data <- datawizard::to_numeric(data, dummy_factors = FALSE)
   }
 
   # Clean data and get combinations -------------
@@ -601,14 +796,17 @@ correlation <- function(
     data2 = NULL,
     redundant = FALSE,
     include_factors = include_factors,
-    multilevel = multilevel,
+    multilevel = keep_factors,
     method = method
   )
   data <- .clean_data(
     data,
     include_factors = include_factors,
-    multilevel = multilevel
+    multilevel = keep_factors
   )
+  if (!is.null(cluster)) {
+    data <- cbind(data, cluster_column)
+  }
 
   # LOOP ----------------
 
@@ -635,6 +833,9 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      bootstrap = bootstrap,
+      iterations = iterations,
+      cluster = cluster,
       verbose = verbose,
       ...
     )
@@ -672,10 +873,21 @@ correlation <- function(
     }
   }
 
+  # Revert back to r if needed (before the variable sets are split)
+  if (convert_back_to_r) {
+    params <- .pcor_to_cor_params(params, ci = ci, method = method)
+  }
+
   # Remove superfluous correlations when two variable sets provided
   if (!is.null(data2)) {
-    params <- params[!params$Parameter1 %in% names(data2), ]
-    params <- params[params$Parameter2 %in% names(data2), ]
+    # match the cleaned names, so that dummy-coded factors in `data2` are kept
+    vars2 <- names(.clean_data(
+      data2,
+      include_factors = include_factors,
+      multilevel = multilevel
+    ))
+    params <- params[!params$Parameter1 %in% vars2, ]
+    params <- params[params$Parameter2 %in% vars2, ]
   }
 
   # P-values adjustments
