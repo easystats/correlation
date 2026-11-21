@@ -50,6 +50,9 @@
   variable. Each pair now gets the same polyserial or polychoric correlation as
   `cor_test()` (#261).
 
+- Subsetting a correlation matrix from `summary()` now keeps its attributes, so
+  significance stars are still shown (#26).
+
 - Fixed `correlation()` with `multilevel = TRUE` for `select2`, `data2`, and
   grouped data. The `Method` column now shows the requested method (#207).
 
