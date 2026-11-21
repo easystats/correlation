@@ -14,9 +14,16 @@
 
 ## Changes
 
+- `cor_test()` and `correlation()` with `method = "kendall"` and
+  `bayesian = TRUE` now compute a Bayesian Kendall's tau (van Doorn et al.,
+  2018), instead of a Bayesian Pearson correlation of the raw data (#224).
+
 - Documentation was updated and corrected in several places.
 
 ## Bug Fixes
+
+- `cor_test()` works again when `x` and `y` are the same variable (not yet for
+  partial or multilevel correlations).
 
 - `cormatrix_to_excel()` now works correctly with openxlsx2 v1.16+. Fixed
   conditional formatting rule ordering to accommodate openxlsx2's new waterfall
@@ -45,6 +52,18 @@
 
 - `cor_test()` and `correlation()` now pass `exact` to `stats::cor.test()`, to
   get exact p-values for Spearman and Kendall correlations (#279).
+
+- Fixed `correlation()` dropping factors in `data2` or `select2` when
+  `include_factors = TRUE` (#277, #292).
+
+- Fixed `correlation()` dropping or mislabeling pairs when `data` and `data2`
+  share a column name. The column in `data2` is now renamed (e.g. `x.1`).
+
+- Subsetting a correlation matrix from `summary()` now keeps its attributes, so
+  significance stars are still shown (#26).
+
+- Fixed `correlation()` with `multilevel = TRUE` for `select2`, `data2`, and
+  grouped data. The `Method` column now shows the requested method (#207).
 
 # correlation 0.8.8
 

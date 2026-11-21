@@ -177,9 +177,15 @@
 #' }
 #'
 #' \subsection{Notes}{
-#' Kendall and Spearman correlations when `bayesian=TRUE`: These are technically
-#' Pearson Bayesian correlations of rank transformed data, rather than pure
-#' Bayesian rank correlations (which have different priors).
+#' Spearman correlations when `bayesian=TRUE`: These are technically Pearson
+#' Bayesian correlations of rank transformed data, rather than pure Bayesian
+#' rank correlations (which have different priors).
+#'
+#' Kendall correlations when `bayesian=TRUE` follow van Doorn et al. (2018).
+#' The prior on tau comes from a stretched beta prior on the Pearson
+#' correlation, with alpha = 1/scale (as in `BayesFactor::correlationBF()`).
+#' `tau` is the posterior median and `BF` the Savage-Dickey Bayes factor. Ties
+#' are not corrected for.
 #' }
 #'
 #' \subsection{Bootstrap confidence intervals}{
@@ -309,6 +315,10 @@
 #'   (2019). Using a Gaussian graphical model to explore relationships between
 #'   items and variables in environmental psychology research. Frontiers in
 #'   psychology, 10, 1050.
+#'
+#' - van Doorn, J., Ly, A., Marsman, M., & Wagenmakers, E.-J. (2018). Bayesian
+#'   inference for Kendall's rank correlation coefficient. The American
+#'   Statistician, 72(4), 303-308. \doi{10.1080/00031305.2016.1264998}
 #'
 #' - Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
 #'   correlations when data are not normal. Behavior research methods, 49(1),
@@ -485,6 +495,7 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      convert_back_to_r = convert_back_to_r,
       bootstrap = bootstrap,
       iterations = iterations,
       cluster = cluster,
@@ -509,6 +520,7 @@ correlation <- function(
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
+      convert_back_to_r = convert_back_to_r,
       bootstrap = bootstrap,
       iterations = iterations,
       cluster = cluster,
@@ -529,7 +541,7 @@ correlation <- function(
       method = method,
       bayesian = bayesian,
       p_adjust = p_adjust,
-      partial = partial,
+      partial = partial && !convert_back_to_r,
       multilevel = multilevel,
       partial_bayesian = partial_bayesian,
       bayesian_prior = bayesian_prior,
@@ -572,10 +584,6 @@ correlation <- function(
     ))
   }
 
-  if (convert_back_to_r) {
-    out <- pcor_to_cor(pcor = out)
-  } # Revert back to r if needed.
-
   if (standardize_names) {
     insight::standardize_names(out, ...)
   }
@@ -601,6 +609,7 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  convert_back_to_r = FALSE,
   bootstrap = FALSE,
   iterations = 1000,
   cluster = NULL,
@@ -634,6 +643,7 @@ correlation <- function(
         multilevel = multilevel,
         ranktransform = ranktransform,
         winsorize = winsorize,
+        convert_back_to_r = convert_back_to_r,
         bootstrap = bootstrap,
         iterations = iterations,
         cluster = cluster,
@@ -677,6 +687,7 @@ correlation <- function(
           multilevel = multilevel,
           ranktransform = ranktransform,
           winsorize = winsorize,
+          convert_back_to_r = convert_back_to_r,
           bootstrap = bootstrap,
           iterations = iterations,
           cluster = cluster,
@@ -715,6 +726,7 @@ correlation <- function(
   multilevel = FALSE,
   ranktransform = FALSE,
   winsorize = FALSE,
+  convert_back_to_r = FALSE,
   bootstrap = FALSE,
   iterations = 1000,
   cluster = NULL,
@@ -722,6 +734,9 @@ correlation <- function(
   ...
 ) {
   if (!is.null(data2)) {
+    # make names in `data2` unique (e.g. `x` to `x.1`) before cbind()
+    all_names <- make.unique(c(names(data), names(data2)))
+    names(data2) <- all_names[-seq_len(ncol(data))]
     data <- cbind(data, data2)
   }
 
@@ -858,10 +873,21 @@ correlation <- function(
     }
   }
 
+  # Revert back to r if needed (before the variable sets are split)
+  if (convert_back_to_r) {
+    params <- .pcor_to_cor_params(params, ci = ci, method = method)
+  }
+
   # Remove superfluous correlations when two variable sets provided
   if (!is.null(data2)) {
-    params <- params[!params$Parameter1 %in% names(data2), ]
-    params <- params[params$Parameter2 %in% names(data2), ]
+    # match the cleaned names, so that dummy-coded factors in `data2` are kept
+    vars2 <- names(.clean_data(
+      data2,
+      include_factors = include_factors,
+      multilevel = multilevel
+    ))
+    params <- params[!params$Parameter1 %in% vars2, ]
+    params <- params[params$Parameter2 %in% vars2, ]
   }
 
   # P-values adjustments
