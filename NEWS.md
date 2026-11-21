@@ -50,6 +50,9 @@
   variable. Each pair now gets the same polyserial or polychoric correlation as
   `cor_test()` (#261).
 
+- `cor_test()` and `correlation()` now pass `exact` to `stats::cor.test()`, to
+  get exact p-values for Spearman and Kendall correlations (#279).
+
 - Fixed `correlation()` dropping factors in `data2` or `select2` when
   `include_factors = TRUE` (#277, #292).
 

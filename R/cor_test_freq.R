@@ -15,6 +15,7 @@
   var_y,
   ci = 0.95,
   method = "pearson",
+  exact = FALSE,
   ...
 ) {
   method <- match.arg(
@@ -27,7 +28,7 @@
     var_y,
     conf.level = ci,
     method = method,
-    exact = FALSE,
+    exact = exact,
     ...
   )
 
