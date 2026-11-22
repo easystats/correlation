@@ -209,6 +209,7 @@ test_that("format checks", {
   # Bayesian full partial
   skip_if_not_or_load_if_installed("BayesFactor")
   skip_if_not_or_load_if_installed("lme4")
+  skip_if_not_or_load_if_installed("rstanarm")
 
   out <- correlation(
     iris,
