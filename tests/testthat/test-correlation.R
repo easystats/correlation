@@ -492,3 +492,22 @@ test_that("ordered factors are converted to ranks, not dummy-coded", {
   out <- correlation(df, method = "spearman", include_factors = TRUE)
   expect_true(all(c("b.s", "b.m", "b.l") %in% out$Parameter1))
 })
+
+test_that("full Bayesian partial correlations use partial_bayesian (#301)", {
+  skip_on_cran()
+  skip_if_not_or_load_if_installed("BayesFactor")
+  skip_if_not_or_load_if_installed("rstanarm")
+
+  set.seed(123)
+  ref <- cor_test(
+    iris[1:3],
+    "Sepal.Length",
+    "Sepal.Width",
+    bayesian = TRUE,
+    partial_bayesian = TRUE
+  )
+  set.seed(123)
+  out <- correlation(iris[1:3], bayesian = TRUE, partial_bayesian = TRUE)
+  expect_equal(out$rho[1], ref$rho, tolerance = 1e-8)
+  expect_true(attributes(out)$partial)
+})
