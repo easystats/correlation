@@ -379,6 +379,10 @@ correlation <- function(
   } else {
     convert_back_to_r <- FALSE
   }
+  # as in cor_test(), full Bayesian partialization implies partial correlations
+  if (!partial && partial_bayesian) {
+    partial <- TRUE
+  }
 
   # p-adjustment
   if (bayesian) {
@@ -842,6 +846,7 @@ correlation <- function(
       bayesian_ci_method = bayesian_ci_method,
       bayesian_test = bayesian_test,
       partial = partial,
+      partial_bayesian = partial_bayesian,
       multilevel = multilevel,
       ranktransform = ranktransform,
       winsorize = winsorize,
