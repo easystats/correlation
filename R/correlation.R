@@ -427,12 +427,6 @@ correlation <- function(
   } else if (isTRUE(bootstrap)) {
     iterations <- .validate_iterations(iterations)
   }
-  # `partial_bayesian` is not passed on to cor_test(), which would refuse it
-  if (isTRUE(bootstrap) && isTRUE(partial_bayesian)) {
-    insight::format_error(
-      "Bootstrap confidence intervals are not available for full Bayesian partial correlations (`partial_bayesian = TRUE`)."
-    )
-  }
 
   if (is.null(data2) && !is.null(select)) {
     # check for valid names
