@@ -81,6 +81,11 @@
 - `method = "auto"` now selects a polychoric (or polyserial) correlation for
   ordered factors with three or more levels, instead of Pearson (#260).
 
+- `correlation()` with `partial_bayesian = TRUE` now computes full Bayesian
+  partial correlations, as `cor_test()` does. Previously, the argument was
+  ignored: the variables were partialled out with frequentist regressions, or
+  not at all when `partial = FALSE` (#301).
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.
