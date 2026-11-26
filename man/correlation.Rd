@@ -89,10 +89,12 @@ framework.}
 \item{bayesian_prior}{For the prior argument, several named values are
 recognized: \code{"medium.narrow"}, \code{"medium"}, \code{"wide"}, and \code{"ultrawide"}.
 These correspond to scale values of \code{1/sqrt(27)}, \code{1/3}, \code{1/sqrt(3)} and
-\code{1}, respectively. See the \code{BayesFactor::correlationBF} function.}
+\code{1}, respectively. See the \code{BayesFactor::correlationBF} function. For
+\code{method = "kendall"}, a numeric scale must be in (0, 2].}
 
 \item{bayesian_ci_method, bayesian_test}{See arguments in
-\code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests.}
+\code{\link[parameters:model_parameters]{parameters::model_parameters()}} for \code{BayesFactor} tests. For
+\code{method = "kendall"}, \code{bayesian_ci_method} must be \code{"hdi"} or \code{"eti"}.}
 
 \item{redundant}{Should the data include redundant rows (where each given
 correlation is repeated two times).}
@@ -132,10 +134,12 @@ See the \code{\link[datawizard:winsorize]{datawizard::winsorize()}} function for
 \item{bootstrap}{If \code{TRUE}, the confidence interval, standard error, and
 p-value are obtained from a nonparametric percentile bootstrap instead of
 the analytic formulas: rows are resampled with replacement \code{iterations}
-times and the coefficient is recomputed on each resample. See the
-'Bootstrap' section. Not available for Bayesian, partial, or multilevel
-correlations; the interval and p-value are two-sided, so \code{alternative}
-(passed through \code{...}) must be \code{"two.sided"}, the default.}
+times and the coefficient is recomputed on each resample (with
+\code{partial = TRUE}, each resample is partialled again). See the 'Bootstrap'
+section. Not available for Bayesian, full Bayesian partial
+(\code{partial_bayesian}), or multilevel correlations; the interval and p-value
+are two-sided, so \code{alternative} (passed through \code{...}) must be
+\code{"two.sided"}, the default.}
 
 \item{iterations}{Number of bootstrap resamples (default \code{1000}). Only used
 when \code{bootstrap = TRUE} or \code{cluster} is given.}
@@ -144,7 +148,8 @@ when \code{bootstrap = TRUE} or \code{cluster} is given.}
 (for example, participants with repeated measures). If given, a cluster
 bootstrap is run (\code{bootstrap} is set to \code{TRUE}): whole clusters, rather
 than rows, are resampled with replacement; rows with a missing cluster
-value are dropped. See the 'Bootstrap' section.}
+value are dropped. With \code{partial = TRUE}, the cluster column is not one
+of the variables partialled out. See the 'Bootstrap' section.}
 
 \item{verbose}{Toggle warnings.}
 
@@ -197,6 +202,10 @@ difference between the percentage of concordant and discordant pairs among
 all possible pairwise events. Confidence Intervals (CI) for Kendall's
 correlations are computed using the Fieller et al. (1957) correction (see
 Bishara and Hittner, 2017).
+
+The p-values for Spearman's and Kendall's correlations are asymptotic
+(\code{exact = FALSE} in \code{\link[stats:cor.test]{stats::cor.test()}}); use \code{exact = TRUE} for exact
+p-values. Very small p-values may be reported as 0.
 \item \strong{Biweight midcorrelation}: A measure of similarity that is
 median-based, instead of the traditional mean-based, thus being less
 sensitive to outliers. It can be used as a robust alternative to other
@@ -293,18 +302,25 @@ Bayesian scores, set \code{partial = TRUE}.
 }
 
 \subsection{Notes}{
-Kendall and Spearman correlations when \code{bayesian=TRUE}: These are technically
-Pearson Bayesian correlations of rank transformed data, rather than pure
-Bayesian rank correlations (which have different priors).
+Spearman correlations when \code{bayesian=TRUE}: These are technically Pearson
+Bayesian correlations of rank transformed data, rather than pure Bayesian
+rank correlations (which have different priors).
+
+Kendall correlations when \code{bayesian=TRUE} follow van Doorn et al. (2018).
+The prior on tau comes from a stretched beta prior on the Pearson
+correlation, with alpha = 1/scale (as in \code{BayesFactor::correlationBF()}).
+\code{tau} is the posterior median and \code{BF} the Savage-Dickey Bayes factor. Ties
+are not corrected for.
 }
 
 \subsection{Bootstrap confidence intervals}{
 With \code{bootstrap = TRUE}, or when \code{cluster} names a column, the confidence
 interval, standard error, and p-value of every non-Bayesian method are
-obtained by resampling instead of from the analytic formulas above. The
-rows with complete data on both variables (and on \code{cluster}, if given) or,
-with \code{cluster}, whole clusters of such rows, are resampled with replacement
-\code{iterations} times and the coefficient is recomputed on each resample.
+obtained by resampling instead of from the analytic formulas above. Without
+\code{partial}, the rows with complete data on both variables (and on \code{cluster},
+if given) are resampled with replacement \code{iterations} times, or, with
+\code{cluster}, whole clusters of such rows are, and the coefficient is
+recomputed on each resample.
 \code{CI_low} and \code{CI_high} are the \code{(1 - ci) / 2} and
 \code{1 - (1 - ci) / 2} quantiles of the replicates (the percentile interval;
 Efron & Tibshirani, 1993, section 13.3, pp. 170-171); \code{SE} is the standard
@@ -330,9 +346,14 @@ Replicates on which the coefficient cannot be computed (for instance, a
 resample in which a variable is constant or loses a category) are dropped
 with a warning naming the number kept; if fewer than half survive, an
 error is raised. In \code{correlation()}, this warning is shown for the first
-pair only, as for every other warning it raises. The \code{winsorize} and
-\code{ranktransform} transformations are applied once, to the full data, before
-resampling.
+pair only, as for every other warning it raises. Without \code{partial}, the
+\code{winsorize} and \code{ranktransform} transformations are applied once, to the
+full data, before resampling.
+
+With \code{partial = TRUE}, each resample is partialled again (the \code{cluster}
+column is never a covariate), then winsorized and rank transformed if
+requested. Rows that enter neither the regressions nor the coefficient are
+not resampled. This is slower than a bootstrap without \code{partial}.
 
 The cluster bootstrap (\code{cluster}) resamples whole clusters, so the
 dependence within a cluster (repeated measures of one participant, say)
@@ -409,6 +430,9 @@ correlation estimator: robustness properties. Statistics and Computing,
 (2019). Using a Gaussian graphical model to explore relationships between
 items and variables in environmental psychology research. Frontiers in
 psychology, 10, 1050.
+\item van Doorn, J., Ly, A., Marsman, M., & Wagenmakers, E.-J. (2018). Bayesian
+inference for Kendall's rank correlation coefficient. The American
+Statistician, 72(4), 303-308. \doi{10.1080/00031305.2016.1264998}
 \item Bishara, A. J., & Hittner, J. B. (2017). Confidence intervals for
 correlations when data are not normal. Behavior research methods, 49(1),
 294-309.

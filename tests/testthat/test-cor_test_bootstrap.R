@@ -354,7 +354,7 @@ for (spec in method_sweep) {
 
 # argument errors and warnings -----------------------------------------------
 
-test_that("bootstrap is refused for Bayesian, partial, and multilevel correlations", {
+test_that("bootstrap is refused for Bayesian and multilevel correlations", {
   expect_error(
     cor_test(
       iris,
@@ -371,19 +371,9 @@ test_that("bootstrap is refused for Bayesian, partial, and multilevel correlatio
       "Sepal.Length",
       "Petal.Length",
       bootstrap = TRUE,
-      partial = TRUE
-    ),
-    "not available for partial"
-  )
-  expect_error(
-    cor_test(
-      iris,
-      "Sepal.Length",
-      "Petal.Length",
-      bootstrap = TRUE,
       multilevel = TRUE
     ),
-    "not available for partial"
+    "not available for multilevel"
   )
 })
 

@@ -206,18 +206,22 @@ test_that("format checks", {
   expect_identical(out$Parameter1, c("Petal.Width", "Petal.Width"))
   expect_identical(out$Parameter2, c("Sepal.Length", "Sepal.Width"))
 
-  # Bayesian full partial
+  # Bayesian full partial: the rstanarm fits are slow, and the sampler can
+  # warn about divergent transitions; only the shape of the output is checked
+  skip_on_cran()
   skip_if_not_or_load_if_installed("BayesFactor")
   skip_if_not_or_load_if_installed("lme4")
+  skip_if_not_or_load_if_installed("rstanarm")
 
-  out <- correlation(
+  set.seed(123)
+  out <- suppressWarnings(correlation(
     iris,
     include_factors = TRUE,
     multilevel = TRUE,
     bayesian = TRUE,
     partial = TRUE,
     partial_bayesian = TRUE
-  )
+  ))
   expect_identical(c(nrow(out), ncol(out)), c(6L, 14L))
   expect_identical(
     c(
@@ -243,6 +247,77 @@ test_that("specific types", {
     correlation(data, method = "polychoric"),
     regex = "It seems like"
   )
+})
+
+test_that("data2 and select2 keep dummy-coded factors (#277)", {
+  set.seed(277)
+  lv <- c("TT", "BT", "BB")
+  d <- data.frame(
+    age = rnorm(60),
+    weight = rnorm(60),
+    clinical = factor(sample(lv, 60, TRUE), levels = lv),
+    histo = factor(sample(lv, 60, TRUE), levels = lv)
+  )
+  dummies <- function(v) paste0(v, ".", lv)
+
+  # numeric variable against two factors
+  out <- correlation(
+    d["age"],
+    d[c("clinical", "histo")],
+    include_factors = TRUE
+  )
+  expect_identical(out$Parameter1, rep("age", 6))
+  expect_identical(out$Parameter2, c(dummies("clinical"), dummies("histo")))
+  expect_equal(
+    out$r[1],
+    stats::cor(d$age, as.numeric(d$clinical == "TT")),
+    tolerance = 1e-10
+  )
+
+  # factor against factor: only pairs across the two sets
+  out <- correlation(d["clinical"], d["histo"], include_factors = TRUE)
+  expect_identical(out$Parameter1, rep(dummies("clinical"), each = 3))
+  expect_identical(out$Parameter2, rep(dummies("histo"), 3))
+
+  # the same with select and select2
+  out2 <- correlation(
+    d,
+    select = "clinical",
+    select2 = "histo",
+    include_factors = TRUE
+  )
+  expect_identical(nrow(out2), 9L)
+  expect_identical(out2$Parameter1, out$Parameter1)
+  expect_identical(out2$Parameter2, out$Parameter2)
+
+  # numeric second sets are unchanged
+  out <- correlation(
+    d[c("age", "clinical")],
+    d["weight"],
+    include_factors = TRUE
+  )
+  expect_identical(out$Parameter1, c("age", dummies("clinical")))
+  expect_identical(out$Parameter2, rep("weight", 4))
+})
+
+test_that("data and data2 can share column names", {
+  set.seed(277)
+  lv <- c("TT", "BT", "BB")
+  d1 <- data.frame(x = rnorm(30), z = rnorm(30))
+  d2 <- data.frame(x = rnorm(30), w = rnorm(30))
+
+  # the second `x` is renamed to `x.1`, and all four cross pairs are kept
+  out <- correlation(d1, d2)
+  expect_identical(out$Parameter1, c("x", "x", "z", "z"))
+  expect_identical(out$Parameter2, c("x.1", "w", "x.1", "w"))
+  expect_equal(out$r[1], stats::cor(d1$x, d2$x), tolerance = 1e-10)
+
+  # the same for dummy-coded factors
+  f1 <- data.frame(x = factor(sample(lv, 30, TRUE), levels = lv))
+  f2 <- data.frame(x = factor(sample(lv, 30, TRUE), levels = lv))
+  out <- correlation(f1, f2, include_factors = TRUE)
+  expect_identical(out$Parameter1, rep(paste0("x.", lv), each = 3))
+  expect_identical(out$Parameter2, rep(paste0("x.1.", lv), 3))
 })
 
 test_that("polychoric correlation() matches polycor for numeric and ordered variables", {
@@ -420,4 +495,23 @@ test_that("ordered factors are converted to ranks, not dummy-coded", {
   df$b <- factor(df$b, ordered = FALSE)
   out <- correlation(df, method = "spearman", include_factors = TRUE)
   expect_true(all(c("b.s", "b.m", "b.l") %in% out$Parameter1))
+})
+
+test_that("full Bayesian partial correlations use partial_bayesian (#301)", {
+  skip_on_cran()
+  skip_if_not_or_load_if_installed("BayesFactor")
+  skip_if_not_or_load_if_installed("rstanarm")
+
+  set.seed(123)
+  ref <- cor_test(
+    iris[1:3],
+    "Sepal.Length",
+    "Sepal.Width",
+    bayesian = TRUE,
+    partial_bayesian = TRUE
+  )
+  set.seed(123)
+  out <- correlation(iris[1:3], bayesian = TRUE, partial_bayesian = TRUE)
+  expect_equal(out$rho[1], ref$rho, tolerance = 1e-8)
+  expect_true(attributes(out)$partial)
 })
