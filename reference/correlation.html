@@ -237,10 +237,12 @@ See the <code><a href="https://easystats.github.io/datawizard/reference/winsoriz
 <dd><p>If <code>TRUE</code>, the confidence interval, standard error, and
 p-value are obtained from a nonparametric percentile bootstrap instead of
 the analytic formulas: rows are resampled with replacement <code>iterations</code>
-times and the coefficient is recomputed on each resample. See the
-'Bootstrap' section. Not available for Bayesian, partial, or multilevel
-correlations; the interval and p-value are two-sided, so <code>alternative</code>
-(passed through <code>...</code>) must be <code>"two.sided"</code>, the default.</p></dd>
+times and the coefficient is recomputed on each resample (with
+<code>partial = TRUE</code>, each resample is partialled again). See the 'Bootstrap'
+section. Not available for Bayesian, full Bayesian partial
+(<code>partial_bayesian</code>), or multilevel correlations; the interval and p-value
+are two-sided, so <code>alternative</code> (passed through <code>...</code>) must be
+<code>"two.sided"</code>, the default.</p></dd>
 
 
 <dt id="arg-iterations">iterations<a class="anchor" aria-label="anchor" href="#arg-iterations"></a></dt>
@@ -253,7 +255,8 @@ when <code>bootstrap = TRUE</code> or <code>cluster</code> is given.</p></dd>
 (for example, participants with repeated measures). If given, a cluster
 bootstrap is run (<code>bootstrap</code> is set to <code>TRUE</code>): whole clusters, rather
 than rows, are resampled with replacement; rows with a missing cluster
-value are dropped. See the 'Bootstrap' section.</p></dd>
+value are dropped. With <code>partial = TRUE</code>, the cluster column is not one
+of the variables partialled out. See the 'Bootstrap' section.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -426,10 +429,11 @@ are not corrected for.</p>
 <h3 id="bootstrap-confidence-intervals">Bootstrap confidence intervals<a class="anchor" aria-label="anchor" href="#bootstrap-confidence-intervals"></a></h3>
 <p>With <code>bootstrap = TRUE</code>, or when <code>cluster</code> names a column, the confidence
 interval, standard error, and p-value of every non-Bayesian method are
-obtained by resampling instead of from the analytic formulas above. The
-rows with complete data on both variables (and on <code>cluster</code>, if given) or,
-with <code>cluster</code>, whole clusters of such rows, are resampled with replacement
-<code>iterations</code> times and the coefficient is recomputed on each resample.
+obtained by resampling instead of from the analytic formulas above. Without
+<code>partial</code>, the rows with complete data on both variables (and on <code>cluster</code>,
+if given) are resampled with replacement <code>iterations</code> times, or, with
+<code>cluster</code>, whole clusters of such rows are, and the coefficient is
+recomputed on each resample.
 <code>CI_low</code> and <code>CI_high</code> are the <code>(1 - ci) / 2</code> and
 <code>1 - (1 - ci) / 2</code> quantiles of the replicates (the percentile interval;
 Efron &amp; Tibshirani, 1993, section 13.3, pp. 170-171); <code>SE</code> is the standard
@@ -453,9 +457,13 @@ error are reliable only when an association is present.</p>
 resample in which a variable is constant or loses a category) are dropped
 with a warning naming the number kept; if fewer than half survive, an
 error is raised. In <code>correlation()</code>, this warning is shown for the first
-pair only, as for every other warning it raises. The <code>winsorize</code> and
-<code>ranktransform</code> transformations are applied once, to the full data, before
-resampling.</p>
+pair only, as for every other warning it raises. Without <code>partial</code>, the
+<code>winsorize</code> and <code>ranktransform</code> transformations are applied once, to the
+full data, before resampling.</p>
+<p>With <code>partial = TRUE</code>, each resample is partialled again (the <code>cluster</code>
+column is never a covariate), then winsorized and rank transformed if
+requested. Rows that enter neither the regressions nor the coefficient are
+not resampled. This is slower than a bootstrap without <code>partial</code>.</p>
 <p>The cluster bootstrap (<code>cluster</code>) resamples whole clusters, so the
 dependence within a cluster (repeated measures of one participant, say)
 is kept intact. Its accuracy is driven by the number of clusters, not the
@@ -685,12 +693,12 @@ ordinal variables. American Sociological Review. 27 (6).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameter1   |   Parameter2 |     r |       SE |         95% CI | t | df |     p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --------------------------------------------------------------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length |  Sepal.Width | -0.12 |     0.07 | [-0.26,  0.03] |   |    | 0.119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length |  Sepal.Width | -0.12 |     0.07 | [-0.25,  0.05] |   |    | 0.139</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length | Petal.Length |  0.87 |     0.02 | [ 0.83,  0.90] |   |    | 0.060</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length |  Petal.Width |  0.82 |     0.02 | [ 0.77,  0.86] |   |    | 0.060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width  | Petal.Length | -0.43 |     0.08 | [-0.57, -0.28] |   |    | 0.060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width  |  Petal.Width | -0.37 |     0.07 | [-0.50, -0.22] |   |    | 0.060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length |  Petal.Width |  0.96 | 5.08e-03 | [ 0.95,  0.97] |   |    | 0.060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width  | Petal.Length | -0.43 |     0.06 | [-0.56, -0.29] |   |    | 0.060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width  |  Petal.Width | -0.37 |     0.07 | [-0.49, -0.24] |   |    | 0.060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length |  Petal.Width |  0.96 | 5.49e-03 | [ 0.95,  0.97] |   |    | 0.060</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p-value adjustment method: Holm (1979)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence intervals: percentile bootstrap (200 iterations)</span>

@@ -136,11 +136,12 @@ cor_test(
   If `TRUE`, the confidence interval, standard error, and p-value are
   obtained from a nonparametric percentile bootstrap instead of the
   analytic formulas: rows are resampled with replacement `iterations`
-  times and the coefficient is recomputed on each resample. See the
-  'Bootstrap' section. Not available for Bayesian, partial, or
-  multilevel correlations; the interval and p-value are two-sided, so
-  `alternative` (passed through `...`) must be `"two.sided"`, the
-  default.
+  times and the coefficient is recomputed on each resample (with
+  `partial = TRUE`, each resample is partialled again). See the
+  'Bootstrap' section. Not available for Bayesian, full Bayesian partial
+  (`partial_bayesian`), or multilevel correlations; the interval and
+  p-value are two-sided, so `alternative` (passed through `...`) must be
+  `"two.sided"`, the default.
 
 - iterations:
 
@@ -153,7 +154,8 @@ cor_test(
   participants with repeated measures). If given, a cluster bootstrap is
   run (`bootstrap` is set to `TRUE`): whole clusters, rather than rows,
   are resampled with replacement; rows with a missing cluster value are
-  dropped. See the 'Bootstrap' section.
+  dropped. With `partial = TRUE`, the cluster column is not one of the
+  variables partialled out. See the 'Bootstrap' section.
 
 - verbose:
 
@@ -345,15 +347,15 @@ Ties are not corrected for.
 With `bootstrap = TRUE`, or when `cluster` names a column, the
 confidence interval, standard error, and p-value of every non-Bayesian
 method are obtained by resampling instead of from the analytic formulas
-above. The rows with complete data on both variables (and on `cluster`,
-if given) or, with `cluster`, whole clusters of such rows, are resampled
-with replacement `iterations` times and the coefficient is recomputed on
-each resample. `CI_low` and `CI_high` are the `(1 - ci) / 2` and
-`1 - (1 - ci) / 2` quantiles of the replicates (the percentile interval;
-Efron & Tibshirani, 1993, section 13.3, pp. 170-171); `SE` is the
-standard deviation of the replicates (Efron & Tibshirani, 1993, eq. 6.6,
-p. 47); and `p` is the two-sided achieved significance level of the same
-replicate distribution,
+above. Without `partial`, the rows with complete data on both variables
+(and on `cluster`, if given) are resampled with replacement `iterations`
+times, or, with `cluster`, whole clusters of such rows are, and the
+coefficient is recomputed on each resample. `CI_low` and `CI_high` are
+the `(1 - ci) / 2` and `1 - (1 - ci) / 2` quantiles of the replicates
+(the percentile interval; Efron & Tibshirani, 1993, section 13.3, pp.
+170-171); `SE` is the standard deviation of the replicates (Efron &
+Tibshirani, 1993, eq. 6.6, p. 47); and `p` is the two-sided achieved
+significance level of the same replicate distribution,
 `2 * min(sum(t <= 0) + 1, sum(t >= 0) + 1) / (B + 1)` capped at 1, where
 `t` are the `B` kept replicates (Efron & Tibshirani, 1993, section 15.4,
 pp. 214-215; the `+ 1` form is the Monte Carlo p-value of Davison &
@@ -377,8 +379,14 @@ dropped with a warning naming the number kept; if fewer than half
 survive, an error is raised. In
 [`correlation()`](https://easystats.github.io/correlation/reference/correlation.md),
 this warning is shown for the first pair only, as for every other
-warning it raises. The `winsorize` and `ranktransform` transformations
-are applied once, to the full data, before resampling.
+warning it raises. Without `partial`, the `winsorize` and
+`ranktransform` transformations are applied once, to the full data,
+before resampling.
+
+With `partial = TRUE`, each resample is partialled again (the `cluster`
+column is never a covariate), then winsorized and rank transformed if
+requested. Rows that enter neither the regressions nor the coefficient
+are not resampled. This is slower than a bootstrap without `partial`.
 
 The cluster bootstrap (`cluster`) resamples whole clusters, so the
 dependence within a cluster (repeated measures of one participant, say)
