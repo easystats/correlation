@@ -206,19 +206,22 @@ test_that("format checks", {
   expect_identical(out$Parameter1, c("Petal.Width", "Petal.Width"))
   expect_identical(out$Parameter2, c("Sepal.Length", "Sepal.Width"))
 
-  # Bayesian full partial
+  # Bayesian full partial: the rstanarm fits are slow, and the sampler can
+  # warn about divergent transitions; only the shape of the output is checked
+  skip_on_cran()
   skip_if_not_or_load_if_installed("BayesFactor")
   skip_if_not_or_load_if_installed("lme4")
   skip_if_not_or_load_if_installed("rstanarm")
 
-  out <- correlation(
+  set.seed(123)
+  out <- suppressWarnings(correlation(
     iris,
     include_factors = TRUE,
     multilevel = TRUE,
     bayesian = TRUE,
     partial = TRUE,
     partial_bayesian = TRUE
-  )
+  ))
   expect_identical(c(nrow(out), ncol(out)), c(6L, 14L))
   expect_identical(
     c(
