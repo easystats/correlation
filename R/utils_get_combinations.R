@@ -5,12 +5,14 @@
   redundant = TRUE,
   include_factors = TRUE,
   multilevel = FALSE,
-  method = "pearson"
+  method = "pearson",
+  keep_ordinal = FALSE
 ) {
   data <- .clean_data(
     data,
     include_factors = include_factors,
-    multilevel = multilevel
+    multilevel = multilevel,
+    keep_ordinal = keep_ordinal
   )
 
   if (method == "polychoric") {
@@ -28,7 +30,8 @@
     data2 <- .clean_data(
       data2,
       include_factors = include_factors,
-      multilevel = multilevel
+      multilevel = multilevel,
+      keep_ordinal = keep_ordinal
     )
     data2_nums <- data2[sapply(data2, is.numeric)]
     vars2 <- names(data2_nums)

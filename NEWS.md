@@ -81,6 +81,9 @@
 - Fixed `correlation()` with `multilevel = TRUE` for `select2`, `data2`, and
   grouped data. The `Method` column now shows the requested method (#207).
 
+- `method = "auto"` now selects a polychoric (or polyserial) correlation for
+  ordered factors with three or more levels, instead of Pearson (#260).
+
 - `correlation()` with `partial_bayesian = TRUE` now computes full Bayesian
   partial correlations, as `cor_test()` does. Previously, the argument was
   ignored: the variables were partialled out with frequentist regressions, or
