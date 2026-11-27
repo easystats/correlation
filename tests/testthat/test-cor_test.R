@@ -97,6 +97,34 @@ test_that("cor_test bayesian", {
   )
   expect_equal(out2$rho, 0.9323004, tolerance = 0.01)
 
+  # Bayesian Spearman uses unsigned ranks (matching ranktransform = TRUE),
+  # so zeros and negative values are not dropped or distorted (#227)
+  df_zeros <- data.frame(
+    x = c(0, 0, 1, 2, 2, 2, 3, 4, 5, 5),
+    y = c(1, 0, 2, 0, 1, 2, 2, 2, 2, 2)
+  )
+  set.seed(123)
+  sp_zeros <- cor_test(df_zeros, "x", "y", method = "spearman", bayesian = TRUE)
+  set.seed(123)
+  rt_zeros <- cor_test(
+    df_zeros,
+    "x",
+    "y",
+    method = "pearson",
+    ranktransform = TRUE,
+    bayesian = TRUE
+  )
+  expect_equal(sp_zeros$rho, rt_zeros$rho, tolerance = 1e-6)
+  expect_equal(sp_zeros$BF, rt_zeros$BF, tolerance = 1e-6)
+
+  df_neg <- data.frame(
+    x = c(-10, 1, 2, 3, 4, 5, 6, 7),
+    y = 1:8
+  )
+  set.seed(123)
+  sp_neg <- cor_test(df_neg, "x", "y", method = "spearman", bayesian = TRUE)
+  expect_gt(sp_neg$rho, 0.95)
+
   df <- iris
   df$Petal.Length2 <- df$Petal.Length
   out3 <- suppressWarnings(cor_test(

@@ -10,7 +10,7 @@
     data <- data[not_outliers, ]
     data[c(x, y)] <- datawizard::ranktransform(
       data[c(x, y)],
-      sign = TRUE,
+      sign = FALSE,
       method = "average"
     )
     out <- .cor_test_bayes(data, x, y, ci = ci)
