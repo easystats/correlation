@@ -74,6 +74,51 @@ test_that("cor_test tetrachoric", {
 })
 
 
+test_that("cor_test biweight p and CI use the complete cases", {
+  data <- iris
+  data$Sepal.Length[1:30] <- NA
+  complete <- data[!is.na(data$Sepal.Length), ]
+
+  out <- cor_test(data, "Sepal.Length", "Petal.Length", method = "biweight")
+  out2 <- cor_test(
+    complete,
+    "Sepal.Length",
+    "Petal.Length",
+    method = "biweight"
+  )
+  expect_equal(
+    c(out$p, out$CI_low, out$CI_high),
+    c(out2$p, out2$CI_low, out2$CI_high)
+  )
+})
+
+test_that("cor_test tetrachoric p and CI use the complete cases", {
+  skip_if_not_or_load_if_installed("psych")
+  data <- iris
+  data$Sepal.Width_binary <- as.numeric(data$Sepal.Width > 3)
+  data$Petal.Width_binary <- as.numeric(data$Petal.Width > 1.2)
+  data$Sepal.Width_binary[1:30] <- NA
+  complete <- data[!is.na(data$Sepal.Width_binary), ]
+
+  out <- cor_test(
+    data,
+    "Sepal.Width_binary",
+    "Petal.Width_binary",
+    method = "tetrachoric"
+  )
+  out2 <- cor_test(
+    complete,
+    "Sepal.Width_binary",
+    "Petal.Width_binary",
+    method = "tetrachoric"
+  )
+  expect_equal(
+    c(out$p, out$CI_low, out$CI_high),
+    c(out2$p, out2$CI_low, out2$CI_high)
+  )
+})
+
+
 test_that("cor_test robust", {
   skip_if_not_or_load_if_installed("ggplot2")
 

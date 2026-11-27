@@ -86,6 +86,12 @@
   ignored: the variables were partialled out with frequentist regressions, or
   not at all when `partial = FALSE` (#301).
 
+- `cor_test()` and `correlation()` with `method = "biweight"` or
+  `method = "tetrachoric"` now compute the p-value and confidence interval
+  from the number of complete pairs. Previously, they used the number of rows,
+  so with missing values the p-values were too small and the confidence
+  intervals too narrow.
+
 # correlation 0.8.8
 
 - `correlation()` gains a `missing=` argument, similar to `stats::cor(use=)`, for controlling how missing data is handled.

@@ -21,8 +21,8 @@
 
   r <- sum(x_curly * y_curly)
 
-  p <- cor_to_p(r, n = nrow(data))
-  ci_vals <- cor_to_ci(r, n = nrow(data), ci = ci)
+  p <- cor_to_p(r, n = length(var_x))
+  ci_vals <- cor_to_ci(r, n = length(var_x), ci = ci)
 
   data.frame(
     Parameter1 = x,
